@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PanelController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +19,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::prefix('/panel')->group(function (){
+    Route::get('/', [PanelController::class, 'index'])->name('panel.index');
+});
+
+Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
