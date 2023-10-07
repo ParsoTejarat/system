@@ -31,7 +31,11 @@
     <!-- App styles -->
     <link rel="stylesheet" href="/assets/css/app.css" type="text/css">
 
+    <!-- sweet alert -->
     <script src="/assets/js/sweetalert.min.js"></script>
+
+    <link rel="stylesheet" href="/vendors/select2/css/select2.min.css" type="text/css">
+
 </head>
 <body>
 

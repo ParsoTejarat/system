@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Panel\RoleController;
 use App\Http\Controllers\Panel\UserController;
 use App\Http\Controllers\PanelController;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,9 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
 
     // Users
     Route::resource('users',UserController::class)->except('show');
+
+    // Roles
+    Route::resource('roles', RoleController::class)->except('show');
 });
 
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);

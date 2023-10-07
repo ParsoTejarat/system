@@ -44,6 +44,10 @@
 <script src="/assets/js/app.js"></script>
 <script src="/assets/js/sweetalert2@11"></script>
 
+<!-- Select2 -->
+<script src="/vendors/select2/js/select2.min.js"></script>
+<script src="/assets/js/examples/select2.js"></script>
+
 <script>
     {{-- ajax setup --}}
         $.ajaxSetup({
@@ -72,11 +76,28 @@
                         id: self.data('id'),
                         _method: 'delete'
                     },
-                    success: function(res) {
+                    success: function(res,w,s) {
                         $('.table').html($(res).find('.table').html());
                         Swal.fire({
                             title: 'با موفقیت حذف شد',
                             icon: 'success',
+                            showConfirmButton: false,
+                            toast: true,
+                            timer: 2000,
+                            timerProgressBar: true,
+                            position: 'top-start',
+                            customClass: {
+                                popup: 'my-toast',
+                                icon: 'icon-center',
+                                title: 'left-gap',
+                                content: 'left-gap',
+                            }
+                        })
+                    },
+                    error: function (jqXHR, exception) {
+                        Swal.fire({
+                            title: jqXHR.responseText,
+                            icon: 'error',
                             showConfirmButton: false,
                             toast: true,
                             timer: 2000,

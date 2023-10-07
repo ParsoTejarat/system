@@ -2,7 +2,7 @@
 <div class="navigation">
     <div class="navigation-icon-menu">
         <ul>
-            <li class="{{ active_sidebar(['panel','users','users/create','users/{user}/edit']) ? 'active' : '' }}" data-toggle="tooltip" title="داشبورد">
+            <li class="{{ active_sidebar(['panel','users','users/create','users/{user}/edit','roles','roles/create','roles/{role}/edit']) ? 'active' : '' }}" data-toggle="tooltip" title="داشبورد">
                 <a href="#navigationDashboards" title="داشبوردها">
                     <i class="icon ti-pie-chart"></i>
                 </a>
@@ -34,6 +34,11 @@
             @can('users-list')
                 <li>
                     <a class="{{ active_sidebar(['users','users/create','users/{user}/edit']) ? 'active' : '' }}" href="{{ route('users.index') }}">کاربران</a>
+                </li>
+            @endcan
+            @can('roles-list')
+                <li>
+                    <a class="{{ active_sidebar(['roles','roles/create','roles/{role}/edit']) ? 'active' : '' }}" href="{{ route('roles.index') }}">نقش ها</a>
                 </li>
             @endcan
         </ul>
