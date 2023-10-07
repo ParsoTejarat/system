@@ -8,26 +8,30 @@
     <title>@yield('title')</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="assets/media/image/favicon.png">
+    <link rel="shortcut icon" href="/assets/media/image/favicon.png">
 
     <!-- Theme Color -->
     <meta name="theme-color" content="#5867dd">
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- Plugin styles -->
-    <link rel="stylesheet" href="vendors/bundle.css" type="text/css">
+    <link rel="stylesheet" href="/vendors/bundle.css" type="text/css">
 
     <!-- Datepicker -->
-    <link rel="stylesheet" href="vendors/datepicker/daterangepicker.css">
+    <link rel="stylesheet" href="/vendors/datepicker/daterangepicker.css">
 
     <!-- Slick -->
-    <link rel="stylesheet" href="vendors/slick/slick.css">
-    <link rel="stylesheet" href="vendors/slick/slick-theme.css">
+    <link rel="stylesheet" href="/vendors/slick/slick.css">
+    <link rel="stylesheet" href="/vendors/slick/slick-theme.css">
 
     <!-- Vmap -->
-    <link rel="stylesheet" href="vendors/vmap/jqvmap.min.css">
+    <link rel="stylesheet" href="/vendors/vmap/jqvmap.min.css">
 
     <!-- App styles -->
-    <link rel="stylesheet" href="assets/css/app.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/app.css" type="text/css">
+
+    <script src="/assets/js/sweetalert.min.js"></script>
 </head>
 <body>
 

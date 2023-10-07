@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Panel\UserController;
 use App\Http\Controllers\PanelController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -20,10 +21,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('/panel')->group(function (){
-    Route::get('/', [PanelController::class, 'index'])->name('panel.index');
+Route::get('test/{id}',function ($id){
+    return \auth()->loginUsingId($id);
+});
+
+Route::middleware('auth')->prefix('/panel')->group(function (){
+    Route::get('/', [PanelController::class, 'index'])->name('panel');
+
+    // Users
+    Route::resource('users',UserController::class)->except('show');
 });
 
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+Route::fallback(function (){
+    abort(404);
+});
