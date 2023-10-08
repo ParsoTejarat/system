@@ -1,14 +1,14 @@
 @extends('panel.layouts.master')
-@section('title', 'نقش ها')
+@section('title', 'دسته بندی ها')
 @section('content')
     <div class="card">
         <div class="card-body">
             <div class="card-title d-flex justify-content-between align-items-center">
-                <h6>نقش ها</h6>
-                @can('roles-create')
-                    <a href="{{ route('roles.create') }}" class="btn btn-primary">
+                <h6>دسته بندی ها</h6>
+                @can('categories-create')
+                    <a href="{{ route('categories.create') }}" class="btn btn-primary">
                         <i class="fa fa-plus mr-2"></i>
-                        ایجاد نقش
+                        ایجاد دسته بندی
                     </a>
                 @endcan
             </div>
@@ -17,32 +17,34 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>نقش</th>
+                        <th>دسته بندی</th>
+                        <th>اسلاگ</th>
                         <th>تاریخ ایجاد</th>
-                        @can('roles-edit')
+                        @can('categories-edit')
                             <th>ویرایش</th>
                         @endcan
-                        @can('roles-delete')
+                        @can('categories-delete')
                             <th>حذف</th>
                         @endcan
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($roles as $key => $role)
+                    @foreach($categories as $key => $category)
                         <tr>
                             <td>{{ ++$key }}</td>
-                            <td>{{ $role->label }}</td>
-                            <td>{{ verta($role->created_at)->format('H:i - Y/m/d') }}</td>
-                            @can('roles-edit')
+                            <td>{{ $category->name }}</td>
+                            <td>{{ $category->slug }}</td>
+                            <td>{{ verta($category->created_at)->format('H:i - Y/m/d') }}</td>
+                            @can('categories-edit')
                                 <td>
-                                    <a class="btn btn-warning btn-floating {{ $role->name == 'admin' || $role->name == 'user' ? 'disabled' : '' }}" href="{{ route('roles.edit', $role->id) }}">
+                                    <a class="btn btn-warning btn-floating" href="{{ route('categories.edit', $category->id) }}">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 </td>
                             @endcan
-                            @can('roles-delete')
+                            @can('categories-delete')
                                 <td>
-                                    <button class="btn btn-danger btn-floating trashRow" data-url="{{ route('roles.destroy',$role->id) }}" data-id="{{ $role->id }}" {{ $role->name == 'admin' || $role->name == 'user' ? 'disabled' : '' }}>
+                                    <button class="btn btn-danger btn-floating trashRow" data-url="{{ route('categories.destroy',$category->id) }}" data-id="{{ $category->id }}">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>
@@ -56,7 +58,7 @@
                     </tfoot>
                 </table>
             </div>
-            <div class="d-flex justify-content-center">{{ $roles->links() }}</div>
+            <div class="d-flex justify-content-center">{{ $categories->links() }}</div>
         </div>
     </div>
 @endsection

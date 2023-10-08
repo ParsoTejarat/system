@@ -15,7 +15,7 @@ class RoleController extends Controller
     {
         $this->authorize('roles-list');
 
-        $roles = Role::where('name','!=','admin')->latest()->paginate(30);
+        $roles = Role::latest()->paginate(30);
         return view('panel.roles.index', compact('roles'));
     }
 
@@ -81,6 +81,5 @@ class RoleController extends Controller
         }else{
             return response('کاربرانی با این نقش وجود دارند',500);
         }
-
     }
 }

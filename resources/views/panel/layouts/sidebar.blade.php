@@ -7,6 +7,11 @@
                     <i class="icon ti-pie-chart"></i>
                 </a>
             </li>
+            <li class="{{ active_sidebar(['categories','categories/create','categories/{category}/edit','products','products/create','products/{product}/edit']) ? 'active' : '' }}" data-toggle="tooltip" title="محصولات">
+                <a href="#navigationProducts" title="محصولات">
+                    <i class="icon ti-view-list"></i>
+                </a>
+            </li>
         </ul>
         <ul>
             <li data-toggle="tooltip" title="ویرایش پروفایل">
@@ -26,7 +31,7 @@
         </ul>
     </div>
     <div class="navigation-menu-body">
-        <ul id="navigationDashboards" class="navigation-active">
+        <ul id="navigationDashboards" class="{{ active_sidebar(['panel','users','users/create','users/{user}/edit','roles','roles/create','roles/{role}/edit']) ? 'navigation-active' : '' }}">
             <li class="navigation-divider">داشبورد</li>
             <li>
                 <a class="{{ active_sidebar(['panel']) ? 'active' : '' }}" href="{{ route('panel') }}">پنل</a>
@@ -39,6 +44,19 @@
             @can('roles-list')
                 <li>
                     <a class="{{ active_sidebar(['roles','roles/create','roles/{role}/edit']) ? 'active' : '' }}" href="{{ route('roles.index') }}">نقش ها</a>
+                </li>
+            @endcan
+        </ul>
+        <ul id="navigationProducts" class="{{ active_sidebar(['categories','categories/create','categories/{category}/edit','products','products/create','products/{product}/edit']) ? 'navigation-active' : '' }}">
+            <li class="navigation-divider">محصولات</li>
+{{--            @can('categories-list')--}}
+{{--                <li>--}}
+{{--                    <a class="{{ active_sidebar(['categories','categories/create','categories/{category}/edit']) ? 'active' : '' }}" href="{{ route('categories.index') }}">دسته بندی ها</a>--}}
+{{--                </li>--}}
+{{--            @endcan--}}
+            @can('products-list')
+                <li>
+                    <a class="{{ active_sidebar(['products','products/create','products/{product}/edit']) ? 'active' : '' }}" href="{{ route('products.index') }}">محصولات</a>
                 </li>
             @endcan
         </ul>

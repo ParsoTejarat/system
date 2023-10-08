@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Panel\CategoryController;
+use App\Http\Controllers\Panel\ProductController;
 use App\Http\Controllers\Panel\RoleController;
 use App\Http\Controllers\Panel\UserController;
 use App\Http\Controllers\PanelController;
@@ -34,6 +36,12 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
 
     // Roles
     Route::resource('roles', RoleController::class)->except('show');
+
+    // Categories
+//    Route::resource('categories',CategoryController::class)->except('show');
+
+    // Products
+    Route::resource('products', ProductController::class)->except('show');
 });
 
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);

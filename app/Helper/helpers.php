@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 if (!function_exists('active_sidebar')){
@@ -19,6 +20,29 @@ if (!function_exists('active_sidebar')){
             return true;
         } else {
             return false;
+        }
+    }
+}
+
+if (!function_exists('make_slug')){
+    function make_slug(string $string)
+    {
+        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $string)));
+        return $slug;
+    }
+}
+
+if (!function_exists('upload_file')) {
+    function upload_file($file, $folder)
+    {
+        if ($file) {
+            $filename = time() . $file->getClientOriginalName();
+            $year = Carbon::now()->year;
+            $month = Carbon::now()->month;
+            $path = public_path("/uploads/{$folder}/{$year}/{$month}/");
+            $file->move($path, $filename);
+            $img = "/uploads/{$folder}/{$year}/{$month}/" . $filename;
+            return $img;
         }
     }
 }

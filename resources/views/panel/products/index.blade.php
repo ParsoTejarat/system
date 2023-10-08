@@ -1,14 +1,14 @@
 @extends('panel.layouts.master')
-@section('title', 'نقش ها')
+@section('title', 'محصولات')
 @section('content')
     <div class="card">
         <div class="card-body">
             <div class="card-title d-flex justify-content-between align-items-center">
-                <h6>نقش ها</h6>
-                @can('roles-create')
-                    <a href="{{ route('roles.create') }}" class="btn btn-primary">
+                <h6>محصولات</h6>
+                @can('products-create')
+                    <a href="{{ route('products.create') }}" class="btn btn-primary">
                         <i class="fa fa-plus mr-2"></i>
-                        ایجاد نقش
+                        ایجاد محصول
                     </a>
                 @endcan
             </div>
@@ -17,32 +17,40 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>نقش</th>
+                        <th>تصویر محصول</th>
+                        <th>عنوان محصول</th>
+                        <th>کد محصول</th>
+                        <th>دسته بندی</th>
+                        <th>موجودی</th>
                         <th>تاریخ ایجاد</th>
-                        @can('roles-edit')
+                        @can('products-edit')
                             <th>ویرایش</th>
                         @endcan
-                        @can('roles-delete')
+                        @can('products-delete')
                             <th>حذف</th>
                         @endcan
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($roles as $key => $role)
+                    @foreach($products as $key => $product)
                         <tr>
                             <td>{{ ++$key }}</td>
-                            <td>{{ $role->label }}</td>
-                            <td>{{ verta($role->created_at)->format('H:i - Y/m/d') }}</td>
-                            @can('roles-edit')
+                            <td><a href="{{ $product->image }}" target="_blank"><img src="{{ $product->image }}" width="40px"></a></td>
+                            <td>{{ $product->title }}</td>
+                            <td>{{ $product->code }}</td>
+                            <td>{{ $product->category->name }}</td>
+                            <td>{{ $product->total_count }}</td>
+                            <td>{{ verta($product->created_at)->format('H:i - Y/m/d') }}</td>
+                            @can('products-edit')
                                 <td>
-                                    <a class="btn btn-warning btn-floating {{ $role->name == 'admin' || $role->name == 'user' ? 'disabled' : '' }}" href="{{ route('roles.edit', $role->id) }}">
+                                    <a class="btn btn-warning btn-floating" href="{{ route('products.edit', $product->id) }}">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 </td>
                             @endcan
-                            @can('roles-delete')
+                            @can('products-delete')
                                 <td>
-                                    <button class="btn btn-danger btn-floating trashRow" data-url="{{ route('roles.destroy',$role->id) }}" data-id="{{ $role->id }}" {{ $role->name == 'admin' || $role->name == 'user' ? 'disabled' : '' }}>
+                                    <button class="btn btn-danger btn-floating trashRow" data-url="{{ route('products.destroy',$product->id) }}" data-id="{{ $product->id }}">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>
@@ -56,7 +64,7 @@
                     </tfoot>
                 </table>
             </div>
-            <div class="d-flex justify-content-center">{{ $roles->links() }}</div>
+            <div class="d-flex justify-content-center">{{ $products->links() }}</div>
         </div>
     </div>
 @endsection

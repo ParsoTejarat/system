@@ -88,7 +88,7 @@ return [
         'string' => 'The :attribute must not be greater than :max characters.',
         'array' => 'The :attribute must not have more than :max items.',
     ],
-    'mimes' => 'The :attribute must be a file of type: :values.',
+    'mimes' => 'فیلد :attribute باید از این نوع باشد: :values',
     'mimetypes' => 'The :attribute must be a file of type: :values.',
     'min' => [
         'numeric' => 'The :attribute must be at least :min.',
@@ -164,6 +164,15 @@ return [
         'phone' => 'شماره موبایل',
         'role' => 'نقش',
         'password' => 'رمزعبور',
+        'slug' => 'اسلاگ',
+        'code' => 'کد',
+        'image' => 'تصویر',
+        'title' => 'عنوان',
+        'description' => 'توضیحات',
+        'system_price' => 'قیمت سامانه',
+        'partner_price_tehran' => 'قیمت همکار - تهران',
+        'partner_price_other' => 'قیمت همکار - شهرستان',
+        'single_price' => 'قیمت تک فروشی',
     ],
 
 ];

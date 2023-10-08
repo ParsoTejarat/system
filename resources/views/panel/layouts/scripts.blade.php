@@ -22,6 +22,10 @@
 <script src="/vendors/vmap/maps/jquery.vmap.usa.js"></script>
 <script src="/assets/js/examples/vmap.js"></script>
 
+<!-- CKEditor -->
+<script src="/vendors/ckeditor/ckeditor.js"></script>
+<script src="/assets/js/examples/ckeditor.js"></script>
+
 <!-- Dashboard scripts -->
 <script src="/assets/js/examples/dashboard.js"></script>
 <div class="colors">
@@ -47,6 +51,8 @@
 <!-- Select2 -->
 <script src="/vendors/select2/js/select2.min.js"></script>
 <script src="/assets/js/examples/select2.js"></script>
+
+@yield('scripts')
 
 <script>
     {{-- ajax setup --}}
