@@ -173,6 +173,8 @@ return [
         'partner_price_tehran' => 'قیمت همکار - تهران',
         'partner_price_other' => 'قیمت همکار - شهرستان',
         'single_price' => 'قیمت تک فروشی',
+        'printer_name' => 'نام پرینتر',
+        'printer_model' => 'مدل پرینتر',
     ],
 
 ];

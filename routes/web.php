@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Panel\CategoryController;
+use App\Http\Controllers\Panel\PrinterController;
 use App\Http\Controllers\Panel\ProductController;
 use App\Http\Controllers\Panel\RoleController;
 use App\Http\Controllers\Panel\UserController;
@@ -24,7 +25,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('test/{id}',function ($id){
+Route::get('test/{id?}',function ($id = null){
+//    dd(\App\Models\Product::whereJsonContains('printers',['sony'])->get());
     return \auth()->loginUsingId($id);
 });
 
@@ -42,6 +44,9 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
 
     // Products
     Route::resource('products', ProductController::class)->except('show');
+
+    // Printers
+    Route::resource('printers', PrinterController::class)->except('show');
 });
 
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);

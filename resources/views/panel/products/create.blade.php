@@ -48,6 +48,17 @@
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3" id="compatible_printers_sec">
+                        <label for="compatible_printers">پرینترهای سازگار </label>
+                        <select name="compatible_printers[]" id="compatible_printers" class="js-example-basic-single select2-hidden-accessible" multiple="" data-select2-id="4" tabindex="-1" aria-hidden="true">
+                            @foreach(\App\Models\Printer::all() as $printer)
+                                <option value="{{ $printer->id }}" {{ old('compatible_printers') ? (in_array($printer->id, old('compatible_printers')) ? 'selected' : '') : '' }}>{{ $printer->printer_name.' '.$printer->printer_model }}</option>
+                            @endforeach
+                        </select>
+                        @error('compatible_printers')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
                     <div class="col-12">
                         <hr>
                     </div>
@@ -152,6 +163,8 @@
 
 
         $(document).ready(function () {
+            printers_properties($('select[name="category"]').val());
+
             // add property
                 $('#btn_add').on('click', function () {
                     $('#properties_table tbody').append(`
@@ -175,14 +188,21 @@
 
             // change category
                 $('select[name="category"]').on('change', function () {
-                    if (this.value != printer_category_id){
-                        $('#printer_properties').addClass('d-none')
-                    }else{
-                        $('#printer_properties').removeClass('d-none')
-                    }
+                    printers_properties(this.value);
                 })
             // end change category
+
         })
+
+        function printers_properties(value){
+            if (value != printer_category_id){
+                $('#printer_properties').addClass('d-none')
+                $('#compatible_printers_sec').addClass('d-none')
+            }else{
+                $('#printer_properties').removeClass('d-none')
+                $('#compatible_printers_sec').removeClass('d-none')
+            }
+        }
     </script>
 @endsection
 

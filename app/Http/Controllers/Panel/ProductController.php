@@ -40,7 +40,7 @@ class ProductController extends Controller
         $total_count = array_sum($request->counts);
 
         // create product
-        Product::create([
+        $product = Product::create([
             'title' => $request->title,
             'slug' => make_slug($request->slug),
             'code' => $request->code,
@@ -56,6 +56,10 @@ class ProductController extends Controller
             'total_count' => $total_count,
         ]);
 
+        if ($request->compatible_printers){
+            $product->printers()->sync($request->compatible_printers);
+        }
+
         alert()->success('محصول مورد نظر با موفقیت ایجاد شد','ایجاد محصول');
         return redirect()->route('products.index');
     }
@@ -68,11 +72,47 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $this->authorize('products-edit');
+
+        return view('panel.products.edit', compact('product'));
     }
 
     public function update(UpdateProductRequest $request, Product $product)
     {
         $this->authorize('products-edit');
+        if ($request->has('image'))
+        {
+            $image = upload_file($request->image, 'Products');
+        }
+
+        // product properties
+        $properties = $this->json_properties($request);
+        $total_count = array_sum($request->counts);
+
+        // create product
+        $product->update([
+            'title' => $request->title,
+            'slug' => make_slug($request->slug),
+            'code' => $request->code,
+            'image' => $image ?? $product->image,
+            'category_id' => $request->category,
+            'properties' => $properties,
+            'description' => $request->description,
+            'system_price' => $request->system_price,
+            'partner_price_tehran' => $request->partner_price_tehran,
+            'partner_price_other' => $request->partner_price_other,
+            'single_price' => $request->single_price,
+            'creator_id' => auth()->id(),
+            'total_count' => $total_count,
+        ]);
+
+        if ($request->compatible_printers){
+            $product->printers()->sync($request->compatible_printers);
+        }else{
+            $product->printers()->detach();
+        }
+
+        alert()->success('محصول مورد نظر با موفقیت ویرایش شد','ویرایش محصول');
+        return redirect()->route('products.index');
     }
 
     public function destroy(Product $product)
