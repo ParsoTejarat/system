@@ -40,14 +40,22 @@ class PermissionSeeder extends Seeder
 //            'printers-create' => 'ایجاد پرینتر',
 //            'printers-edit' => 'ویرایش پرینتر',
 //            'printers-delete' => 'حذف پرینتر',
+//
+//            'invoices-list' => 'لیست پیش فاکتور ها',
+//            'invoices-create' => 'ایجاد پیش فاکتور',
+//            'invoices-edit' => 'ویرایش پیش فاکتور',
+//            'invoices-delete' => 'حذف پیش فاکتور',
         ];
 
         foreach ($items as $key => $item)
         {
-            Permission::create([
+            $permission = Permission::create([
                 'name' => $key,
                 'label' => $item,
             ]);
+
+            $role = Role::whereName('admin')->first();
+            $role->permissions()->attach($permission->id);
         }
     }
 }

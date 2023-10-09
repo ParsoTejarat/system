@@ -12,6 +12,11 @@
                     <i class="icon ti-view-list"></i>
                 </a>
             </li>
+            <li class="{{ active_sidebar(['invoices','invoices/create','invoices/{invoice}/edit']) ? 'active' : '' }}" data-toggle="tooltip" title="پیش فاکتور">
+                <a href="#navigationInvoices" title="پیش فاکتور">
+                    <i class="icon ti-shopping-cart"></i>
+                </a>
+            </li>
         </ul>
         <ul>
             <li data-toggle="tooltip" title="ویرایش پروفایل">
@@ -62,6 +67,14 @@
             @can('printers-list')
                 <li>
                     <a class="{{ active_sidebar(['printers','printers/create','printers/{printer}/edit']) ? 'active' : '' }}" href="{{ route('printers.index') }}">پرینتر ها</a>
+                </li>
+            @endcan
+        </ul>
+        <ul id="navigationInvoices" class="{{ active_sidebar(['invoices','invoices/create','invoices/{invoice}/edit']) ? 'navigation-active' : '' }}">
+            <li class="navigation-divider">پیش فاکتور</li>
+            @can('invoices-list')
+                <li>
+                    <a class="{{ active_sidebar(['invoices','invoices/create','invoices/{invoice}/edit']) ? 'active' : '' }}" href="{{ route('invoices.index') }}">پیش فاکتور</a>
                 </li>
             @endcan
         </ul>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Panel\CategoryController;
+use App\Http\Controllers\Panel\InvoiceController;
 use App\Http\Controllers\Panel\PrinterController;
 use App\Http\Controllers\Panel\ProductController;
 use App\Http\Controllers\Panel\RoleController;
@@ -47,6 +48,10 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
 
     // Printers
     Route::resource('printers', PrinterController::class)->except('show');
+
+    // Invoices
+    Route::resource('invoices', InvoiceController::class)->except('show');
+    Route::post('calcProductsInvoice', [InvoiceController::class, 'calcProductsInvoice'])->name('calcProductsInvoice');
 });
 
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);

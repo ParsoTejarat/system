@@ -99,7 +99,7 @@ return [
     'multiple_of' => 'The :attribute must be a multiple of :value.',
     'not_in' => 'The selected :attribute is invalid.',
     'not_regex' => 'The :attribute format is invalid.',
-    'numeric' => 'The :attribute must be a number.',
+    'numeric' => 'فیلد :attribute باید از نوع عددی باشد',
     'password' => 'The password is incorrect.',
     'present' => 'The :attribute field must be present.',
     'prohibited' => 'The :attribute field is prohibited.',
@@ -175,6 +175,13 @@ return [
         'single_price' => 'قیمت تک فروشی',
         'printer_name' => 'نام پرینتر',
         'printer_model' => 'مدل پرینتر',
+        'buyer_name' => 'نام شخص حقیقی/حقوقی',
+        'economical_number' => 'شماره اقتصادی',
+        'national_number' => 'شماره ثبت/ملی',
+        'postal_code' => 'کد پستی',
+        'province' => 'استان',
+        'city' => 'شهر',
+        'address' => 'نشانی',
     ],
 
 ];
