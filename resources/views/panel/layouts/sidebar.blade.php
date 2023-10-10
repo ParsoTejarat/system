@@ -7,16 +7,20 @@
                     <i class="icon ti-pie-chart"></i>
                 </a>
             </li>
-            <li class="{{ active_sidebar(['categories','categories/create','categories/{category}/edit','products','products/create','products/{product}/edit','printers','printers/create','printers/{printer}/edit']) ? 'active' : '' }}" data-toggle="tooltip" title="محصولات">
-                <a href="#navigationProducts" title="محصولات">
-                    <i class="icon ti-view-list"></i>
-                </a>
-            </li>
+            @canany(['categories-list','products-list','printers-list'])
+                <li class="{{ active_sidebar(['categories','categories/create','categories/{category}/edit','products','products/create','products/{product}/edit','printers','printers/create','printers/{printer}/edit']) ? 'active' : '' }}" data-toggle="tooltip" title="محصولات">
+                    <a href="#navigationProducts" title="محصولات">
+                        <i class="icon ti-view-list"></i>
+                    </a>
+                </li>
+            @endcanany
+            @canany(['invoices-list'])
             <li class="{{ active_sidebar(['invoices','invoices/create','invoices/{invoice}/edit']) ? 'active' : '' }}" data-toggle="tooltip" title="پیش فاکتور">
                 <a href="#navigationInvoices" title="پیش فاکتور">
                     <i class="icon ti-shopping-cart"></i>
                 </a>
             </li>
+            @endcanany
         </ul>
         <ul>
             <li data-toggle="tooltip" title="ویرایش پروفایل">

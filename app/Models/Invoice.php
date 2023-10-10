@@ -11,6 +11,11 @@ class Invoice extends Model
 
     protected $guarded = [];
 
+    const STATUS = [
+        'pending' => 'در دست اقدام',
+        'paid' => 'تسویه شده',
+    ];
+
     public function products()
     {
         return $this->belongsToMany(Product::class)->withPivot([

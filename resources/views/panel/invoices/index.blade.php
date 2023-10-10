@@ -22,6 +22,7 @@
                         <th>استان</th>
                         <th>شهر</th>
                         <th>شماره تماس</th>
+                        <th>وضعیت</th>
                         <th>تاریخ ایجاد</th>
                         @can('invoices-edit')
                             <th>ویرایش</th>
@@ -40,6 +41,13 @@
                             <td>{{ $invoice->province }}</td>
                             <td>{{ $invoice->city }}</td>
                             <td>{{ $invoice->phone }}</td>
+                            <td>
+                                @if($invoice->status == 'paid')
+                                    <span class="badge badge-success">{{ \App\Models\Invoice::STATUS[$invoice->status] }}</span>
+                                @else
+                                    <span class="badge badge-warning">{{ \App\Models\Invoice::STATUS[$invoice->status] }}</span>
+                                @endif
+                            </td>
                             <td>{{ verta($invoice->created_at)->format('H:i - Y/m/d') }}</td>
                             @can('invoices-edit')
                                 <td>

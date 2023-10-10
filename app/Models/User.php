@@ -53,4 +53,9 @@ class User extends Authenticatable
     {
         return $this->role->name == 'admin';
     }
+
+    public function hasPermission(string $permission)
+    {
+        return $this->role->permissions->pluck('name')->contains($permission);
+    }
 }

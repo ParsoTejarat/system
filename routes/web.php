@@ -28,7 +28,12 @@ Route::get('/', function () {
 
 Route::get('test/{id?}',function ($id = null){
 //    dd(\App\Models\Product::whereJsonContains('printers',['sony'])->get());
-    return \auth()->loginUsingId($id);
+//    return \auth()->loginUsingId($id);
+
+//    $pdf = PDF::loadView('pdfs.invoice',[],[],[
+//        'orientation' => 'L'
+//    ]);
+//    return $pdf->stream('document.pdf');
 });
 
 Route::middleware('auth')->prefix('/panel')->group(function (){
@@ -50,7 +55,7 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
     Route::resource('printers', PrinterController::class)->except('show');
 
     // Invoices
-    Route::resource('invoices', InvoiceController::class)->except('show');
+    Route::resource('invoices', InvoiceController::class);
     Route::post('calcProductsInvoice', [InvoiceController::class, 'calcProductsInvoice'])->name('calcProductsInvoice');
 });
 

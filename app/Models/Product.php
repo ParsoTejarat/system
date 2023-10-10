@@ -42,4 +42,17 @@ class Product extends Model
             'invoice_net',
         ]);
     }
+
+    public function getPrice()
+    {
+        if (auth()->user()->hasPermission('system-user')){
+            return $this->system_price;
+        }elseif (auth()->user()->hasPermission('partner-other-user')){
+            return $this->partner_price_other;
+        }elseif (auth()->user()->hasPermission('partner_price_tehran')){
+            return $this->partner_price_tehran;
+        }else{
+            return $this->single_price;
+        }
+    }
 }

@@ -12,6 +12,7 @@
         <div class="card-body">
             <div class="card-title d-flex justify-content-between align-items-center">
                 <h6>ویرایش پیش فاکتور</h6>
+                <a href="{{ route('invoices.show', $invoice->id) }}" class="btn btn-outline-info"><i class="fa fa-print mr-2"></i>نسخه چاپی </a>
             </div>
             <form action="{{ route('invoices.update', $invoice->id) }}" method="post">
                 @csrf
@@ -70,14 +71,24 @@
                         <label for="city">شهر<span class="text-danger">*</span></label>
                         <input type="text" name="city" class="form-control" id="city" value="{{ $invoice->city }}">
                         @error('city')
-                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="address">نشانی<span class="text-danger">*</span></label>
                         <textarea name="address" id="address" class="form-control">{{ $invoice->address }}</textarea>
                         @error('address')
-                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                        <label for="status">وضعیت <span class="text-danger">*</span></label>
+                        <select name="status" id="status" class="js-example-basic-single select2-hidden-accessible" data-select2-id="5" tabindex="-2" aria-hidden="true">
+                            <option value="pending" {{ $invoice->status == 'pending' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['pending'] }}</option>
+                            <option value="paid" {{ $invoice->status == 'paid' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['paid'] }}</option>
+                        </select>
+                        @error('status')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-12 mb-4 mt-2 text-center">

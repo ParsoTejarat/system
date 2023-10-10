@@ -45,6 +45,11 @@ class PermissionSeeder extends Seeder
 //            'invoices-create' => 'ایجاد پیش فاکتور',
 //            'invoices-edit' => 'ویرایش پیش فاکتور',
 //            'invoices-delete' => 'حذف پیش فاکتور',
+//
+//            'system-user' => 'سامانه',
+//            'partner-tehran-user' => 'همکار تهران',
+//            'partner-other-user' => 'همکار شهرستان',
+//            'single-price-user' => 'تک فروشی',
         ];
 
         foreach ($items as $key => $item)

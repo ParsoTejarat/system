@@ -1,8 +1,8 @@
 @include('panel.layouts.head')
 
 {{--@include('panel.layouts.loader')--}}
-@include('panel.layouts.sidebar')
-@include('panel.layouts.header')
+@includeWhen(!isset($sidebar), 'panel.layouts.sidebar')
+@includeWhen(!isset($header), 'panel.layouts.header')
 
 <!-- begin::main content -->
 <main class="main-content">

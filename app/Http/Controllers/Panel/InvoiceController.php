@@ -41,6 +41,7 @@ class InvoiceController extends Controller
             'province' => $request->province,
             'city' => $request->city,
             'address' => $request->address,
+            'status' => $request->status,
         ]);
 
         // create products for invoice
@@ -52,7 +53,9 @@ class InvoiceController extends Controller
 
     public function show(Invoice $invoice)
     {
-        //
+        $this->authorize('invoices-edit');
+
+        return view('panel.invoices.printable', compact('invoice'));
     }
 
     public function edit(Invoice $invoice)
@@ -75,6 +78,7 @@ class InvoiceController extends Controller
             'province' => $request->province,
             'city' => $request->city,
             'address' => $request->address,
+            'status' => $request->status,
         ]);
 
         $invoice->products()->detach();
@@ -97,7 +101,7 @@ class InvoiceController extends Controller
     public function calcProductsInvoice(Request $request)
     {
         $product = Product::find($request->product_id);
-        $price = $product->system_price;
+        $price = $product->getPrice();
         $total_price = $price * $request->count;
         $discount_amount = 0;
         $extra_amount = 0;
