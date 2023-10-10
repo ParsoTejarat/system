@@ -13,7 +13,7 @@ class UpdateInvoiceRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,14 @@ class UpdateInvoiceRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'buyer_name' => 'required',
+            'economical_number' => 'required|numeric',
+            'national_number' => 'required|numeric',
+            'postal_code' => 'required|numeric',
+            'phone' => 'required',
+            'province' => 'required',
+            'city' => 'required',
+            'address' => 'required',
         ];
     }
 }

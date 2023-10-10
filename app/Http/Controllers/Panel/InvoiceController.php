@@ -43,6 +43,9 @@ class InvoiceController extends Controller
             'address' => $request->address,
         ]);
 
+        // create products for invoice
+        $this->storeInvoiceProducts($invoice, $request);
+
         alert()->success('پیش فاکتور مورد نظر با موفقیت ایجاد شد','ایجاد پیش فاکتور');
         return redirect()->route('invoices.index');
     }
@@ -56,18 +59,39 @@ class InvoiceController extends Controller
     {
         $this->authorize('invoices-edit');
 
+        return view('panel.invoices.edit', compact('invoice'));
     }
 
     public function update(UpdateInvoiceRequest $request, Invoice $invoice)
     {
         $this->authorize('invoices-edit');
 
+        $invoice->update([
+            'buyer_name' => $request->buyer_name,
+            'economical_number' => $request->economical_number,
+            'national_number' => $request->national_number,
+            'postal_code' => $request->postal_code,
+            'phone' => $request->phone,
+            'province' => $request->province,
+            'city' => $request->city,
+            'address' => $request->address,
+        ]);
+
+        $invoice->products()->detach();
+
+        // create products for invoice
+        $this->storeInvoiceProducts($invoice, $request);
+
+        alert()->success('پیش فاکتور مورد نظر با موفقیت ویرایش شد','ویرایش پیش فاکتور');
+        return redirect()->route('invoices.index');
     }
 
     public function destroy(Invoice $invoice)
     {
         $this->authorize('invoices-delete');
 
+        $invoice->delete();
+        return back();
     }
 
     public function calcProductsInvoice(Request $request)
@@ -77,7 +101,7 @@ class InvoiceController extends Controller
         $total_price = $price * $request->count;
         $discount_amount = 0;
         $extra_amount = 0;
-        $total_price_with_off = $total_price + $discount_amount + $extra_amount;
+        $total_price_with_off = $total_price - ($discount_amount + $extra_amount);
         $tax = (int) ($total_price * self::TAX_AMOUNT);
         $invoice_net = $tax + $total_price;
 
@@ -92,5 +116,21 @@ class InvoiceController extends Controller
         ];
 
         return response()->json(['data' => $data]);
+    }
+
+    private function storeInvoiceProducts(Invoice $invoice, $request)
+    {
+        foreach ($request->products as $key => $product_id){
+            $invoice->products()->attach($product_id, [
+                'count' => $request->counts[$key],
+                'unit' => $request->units[$key],
+                'price' => $request->prices[$key],
+                'total_price' => $request->total_prices[$key],
+                'discount_amount' => $request->discount_amounts[$key],
+                'extra_amount' => $request->extra_amounts[$key],
+                'tax' => $request->taxes[$key],
+                'invoice_net' => $request->invoice_nets[$key],
+            ]);
+        }
     }
 }

@@ -15,6 +15,10 @@ class Product extends Model
         'black' => 'مشکی'
     ];
 
+    const UNITS = [
+        'number' => 'عدد'
+    ];
+
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -23,5 +27,19 @@ class Product extends Model
     public function printers()
     {
         return $this->belongsToMany(Printer::class);
+    }
+
+    public function invoices()
+    {
+        return $this->belongsToMany(Invoice::class)->withPivot([
+            'count',
+            'unit',
+            'price',
+            'total_price',
+            'discount_amount',
+            'extra_amount',
+            'tax',
+            'invoice_net',
+        ]);
     }
 }

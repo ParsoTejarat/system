@@ -232,32 +232,38 @@
             // end remove property
 
             // calc the product invoice
-            $('#products_table select[name="products[]"], #products_table input[name="counts[]"]').on('change', function () {
-                console.log('sdf')
-                var index = $(this).index()
-                let product_id =  $('#products_table select[name="products[]"]')[index].value;
-                let count =  $('#products_table input[name="counts[]"]')[index].value;
-
-                $.ajax({
-                    url: "{{ route('calcProductsInvoice') }}",
-                    type: 'post',
-                    data: {
-                        'product_id': product_id,
-                        'count': count,
-                    },
-                    success: function (res) {
-                        $('#products_table input[name="prices[]"]')[index].value = res.data.price;
-                        $('#products_table input[name="total_prices[]"]')[index].value = res.data.total_price;
-                        $('#products_table input[name="discount_amounts[]"]')[index].value = res.data.discount_amount;
-                        $('#products_table input[name="extra_amounts[]"]')[index].value = res.data.extra_amount;
-                        $('#products_table input[name="total_prices_with_off[]"]')[index].value = res.data.total_price_with_off;
-                        $('#products_table input[name="taxes[]"]')[index].value = res.data.tax;
-                        $('#products_table input[name="invoice_nets[]"]')[index].value = res.data.invoice_net;
-                    }
-                })
+            $(document).on('change', '#products_table select[name="products[]"]', function () {
+                CalcProductInvoice(this)
+            })
+            $(document).on('change', '#products_table input[name="counts[]"]', function () {
+                CalcProductInvoice(this)
             })
             // end calc the product invoice
         })
+
+        function CalcProductInvoice(changeable) {
+            var index = $(changeable).parent().parent().index()
+            let product_id =  $('#products_table select[name="products[]"]')[index].value;
+            let count =  $('#products_table input[name="counts[]"]')[index].value;
+
+            $.ajax({
+                url: "{{ route('calcProductsInvoice') }}",
+                type: 'post',
+                data: {
+                    'product_id': product_id,
+                    'count': count,
+                },
+                success: function (res) {
+                    $('#products_table input[name="prices[]"]')[index].value = res.data.price;
+                    $('#products_table input[name="total_prices[]"]')[index].value = res.data.total_price;
+                    $('#products_table input[name="discount_amounts[]"]')[index].value = res.data.discount_amount;
+                    $('#products_table input[name="extra_amounts[]"]')[index].value = res.data.extra_amount;
+                    $('#products_table input[name="total_prices_with_off[]"]')[index].value = res.data.total_price_with_off;
+                    $('#products_table input[name="taxes[]"]')[index].value = res.data.tax;
+                    $('#products_table input[name="invoice_nets[]"]')[index].value = res.data.invoice_net;
+                }
+            })
+        }
 
     </script>
 @endsection
