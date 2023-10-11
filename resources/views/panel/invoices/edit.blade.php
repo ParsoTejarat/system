@@ -8,6 +8,34 @@
     </style>
 @endsection
 @section('content')
+    {{--  discount Modal  --}}
+        <div class="modal fade" id="discountModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="discountModalLabel">اعمال کد تخفیف</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="بستن">
+                            <i class="ti-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="code" class="col-form-label"> کد تخفیف:<span class="text-danger">*</span> </label>
+                                <input type="text" class="form-control" id="code">
+                                <div class="invalid-feedback d-flex" id="error_div"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                        <button type="button" class="btn btn-primary" id="btn_apply_discount">اعمال</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{--  end discount Modal  --}}
+
     <div class="card">
         <div class="card-body">
             <div class="card-title d-flex justify-content-between align-items-center">
@@ -104,6 +132,7 @@
                                 <thead>
                                 <tr>
                                     <th>کالا</th>
+                                    <th>رنگ</th>
                                     <th>تعداد</th>
                                     <th>واحد اندازه گیری</th>
                                     <th>مبلغ واحد</th>
@@ -113,12 +142,14 @@
                                     <th>مبلغ کل پس از تخفیف و اضافات</th>
                                     <th>جمع مالیات و عوارض</th>
                                     <th>خالص فاکتور</th>
+                                    <th>اعمال تخفیف</th>
                                     <th>حذف</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @if(!$invoice->products()->exists())
                                     <tr>
+                                        <td>1</td>
                                         <td>
                                             <select class="form-control" name="products[]" required>
                                                 <option value="" disabled selected>انتخاب کنید...</option>
@@ -164,11 +195,27 @@
                                             <input type="number" name="invoice_nets[]" class="form-control" min="0" value="0" readonly>
                                         </td>
                                         <td>
+                                            <button type="button" class="btn btn-primary btn-floating btn_discount" data-toggle="modal" data-target="#discountModal"><i class="fa fa-percent"></i></button>
+                                        </td>
+                                        <td>
                                             <button class="btn btn-danger btn-floating btn_remove" type="button"><i class="fa fa-trash"></i></button>
                                         </td>
                                     </tr>
                                 @else
                                     @foreach($invoice->products as $item)
+                                        @php
+                                            $usedCoupon = DB::table('coupon_invoice')->where([
+                                                'product_id' => $item->pivot->product_id,
+                                                'invoice_id' => $invoice->id,
+                                            ])->first();
+
+                                            if ($usedCoupon){
+                                                $coupon = \App\Models\Coupon::find($usedCoupon->coupon_id);
+                                                $discount_amount = $item->pivot->total_price * ($coupon->amount_pc / 100);
+                                            }else{
+                                                $discount_amount = 0;
+                                            }
+                                        @endphp
                                         <tr>
                                             <td>
                                                 <select class="form-control" name="products[]" required>
@@ -200,19 +247,22 @@
                                                 <input type="number" name="total_prices[]" class="form-control" min="0" value="{{ $item->pivot->total_price }}" readonly>
                                             </td>
                                             <td>
-                                                <input type="number" name="discount_amounts[]" class="form-control" min="0" value="{{ $item->pivot->discount_amount }}" readonly>
+                                                <input type="number" name="discount_amounts[]" class="form-control" min="0" value="{{ $discount_amount }}" readonly>
                                             </td>
                                             <td>
                                                 <input type="number" name="extra_amounts[]" class="form-control" min="0" value="{{ $item->pivot->extra_amount }}" readonly>
                                             </td>
                                             <td>
-                                                <input type="number" name="total_prices_with_off[]" class="form-control" min="0" value="{{ $item->pivot->total_price - ($item->pivot->extra_amount + $item->pivot->discount_amount) }}" readonly>
+                                                <input type="number" name="total_prices_with_off[]" class="form-control" min="0" value="{{ $item->pivot->total_price - ($item->pivot->extra_amount + $discount_amount) }}" readonly>
                                             </td>
                                             <td>
                                                 <input type="number" name="taxes[]" class="form-control" min="0" value="{{ $item->pivot->tax }}" readonly>
                                             </td>
                                             <td>
                                                 <input type="number" name="invoice_nets[]" class="form-control" min="0" value="{{ $item->pivot->invoice_net }}" readonly>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary btn-floating btn_discount" data-toggle="modal" data-target="#discountModal"><i class="fa fa-percent"></i></button>
                                             </td>
                                             <td>
                                                 <button class="btn btn-danger btn-floating btn_remove" type="button"><i class="fa fa-trash"></i></button>
@@ -236,6 +286,7 @@
 
         var products = [];
         var colors = [];
+        var invoice_id = "{{ $invoice->id }}";
 
         @foreach(\App\Models\Product::all(['id','title']) as $product)
         products.push({
@@ -307,6 +358,9 @@
                     <input type="number" name="invoice_nets[]" class="form-control" min="0" value="0" readonly>
                 </td>
                 <td>
+                    <button type="button" class="btn btn-primary btn-floating btn_discount" data-toggle="modal" data-target="#discountModal"><i class="fa fa-percent"></i></button>
+                </td>
+                <td>
                     <button class="btn btn-danger btn-floating btn_remove" type="button"><i class="fa fa-trash"></i></button>
                 </td>
             </tr>
@@ -329,6 +383,58 @@
                 CalcProductInvoice(this)
             })
             // end calc the product invoice
+
+            // apply discount on products
+            var active_row_index;
+            $(document).on('click','.btn_discount', function () {
+                active_row_index = $(this).parent().parent().index();
+            })
+
+            $(document).on('click','#btn_apply_discount', function () {
+                let code = $('#code').val();
+                let product_id = $('#products_table select[name="products[]"]')[active_row_index].value;
+                let count =  $('#products_table input[name="counts[]"]')[active_row_index].value;
+
+                $.ajax({
+                    url: "{{ route('invoices.applyDiscount') }}",
+                    type: 'post',
+                    data: {
+                        code,
+                        count,
+                        invoice_id,
+                        product_id,
+                    },
+                    success: function (res) {
+                        if(res.error){
+                            $('#error_div').text(res.message)
+                        }else{
+                            $('#products_table input[name="discount_amounts[]"]')[active_row_index].value = res.data.discount_amount;
+                            $('#products_table input[name="total_prices_with_off[]"]')[active_row_index].value = res.data.total_price_with_off;
+                            $('#products_table input[name="taxes[]"]')[active_row_index].value = res.data.tax;
+                            $('#products_table input[name="invoice_nets[]"]')[active_row_index].value = res.data.invoice_net;
+
+                            Swal.fire({
+                                title: res.message,
+                                icon: 'success',
+                                showConfirmButton: false,
+                                toast: true,
+                                timer: 2000,
+                                timerProgressBar: true,
+                                position: 'top-start',
+                                customClass: {
+                                    popup: 'my-toast',
+                                    icon: 'icon-center',
+                                    title: 'left-gap',
+                                    content: 'left-gap',
+                                }
+                            })
+
+                            $('#discountModal').modal('hide')
+                        }
+                    }
+                })
+            })
+            // end apply discount on products
         })
 
         function CalcProductInvoice(changeable) {
@@ -340,6 +446,7 @@
                 url: "{{ route('calcProductsInvoice') }}",
                 type: 'post',
                 data: {
+                    'invoice_id': invoice_id,
                     'product_id': product_id,
                     'count': count,
                 },

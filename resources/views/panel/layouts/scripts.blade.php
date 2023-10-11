@@ -82,7 +82,7 @@
                         id: self.data('id'),
                         _method: 'delete'
                     },
-                    success: function(res,w,s) {
+                    success: function(res) {
                         $('.table').html($(res).find('.table').html());
                         Swal.fire({
                             title: 'با موفقیت حذف شد',

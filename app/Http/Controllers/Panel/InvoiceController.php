@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Panel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
+use App\Models\Coupon;
 use App\Models\Invoice;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceController extends Controller
 {
@@ -100,14 +102,26 @@ class InvoiceController extends Controller
 
     public function calcProductsInvoice(Request $request)
     {
+        $usedCoupon = DB::table('coupon_invoice')->where([
+            'product_id' => $request->product_id,
+            'invoice_id' => $request->invoice_id,
+        ])->first();
+
         $product = Product::find($request->product_id);
         $price = $product->getPrice();
         $total_price = $price * $request->count;
-        $discount_amount = 0;
+
+        if ($usedCoupon){
+            $coupon = Coupon::find($usedCoupon->coupon_id);
+            $discount_amount = $total_price * ($coupon->amount_pc / 100);
+        }else{
+            $discount_amount = 0;
+        }
+
         $extra_amount = 0;
         $total_price_with_off = $total_price - ($discount_amount + $extra_amount);
-        $tax = (int) ($total_price * self::TAX_AMOUNT);
-        $invoice_net = $tax + $total_price;
+        $tax = (int) ($total_price_with_off * self::TAX_AMOUNT);
+        $invoice_net = $tax + $total_price_with_off;
 
         $data = [
             'price' => $price,
@@ -129,6 +143,54 @@ class InvoiceController extends Controller
 
         $invoices = Invoice::whereIn('status', $status)->latest()->paginate(30);
         return view('panel.invoices.index', compact('invoices'));
+    }
+
+    public function applyDiscount(Request $request)
+    {
+        $coupon = Coupon::whereCode($request->code)->first();
+
+        if (!$coupon){
+            return response()->json(['error' => 1, 'message' => 'کد وارد شده صحیح نیست']);
+        }
+
+        $usedCoupon = DB::table('coupon_invoice')->where([
+            'coupon_id' => $coupon->id,
+            'product_id' => $request->product_id,
+            'invoice_id' => $request->invoice_id,
+        ])->exists();
+
+        if ($usedCoupon){
+            return response()->json(['error' => 1, 'message' => 'این کد تخفیف قبلا برای این کالا اعمال شده است']);
+        }
+
+        DB::table('coupon_invoice')->insert([
+            'user_id' => auth()->id(),
+            'coupon_id' => $coupon->id,
+            'product_id' => $request->product_id,
+            'invoice_id' => $request->invoice_id,
+            'created_at' => now(),
+        ]);
+
+        $product = Product::find($request->product_id);
+        $price = $product->getPrice();
+        $total_price = $price * $request->count;
+        $discount_amount = $total_price * ($coupon->amount_pc / 100);
+        $extra_amount = 0;
+        $total_price_with_off = $total_price - ($discount_amount + $extra_amount);
+        $tax = (int) ($total_price_with_off * self::TAX_AMOUNT);
+        $invoice_net = $tax + $total_price_with_off;
+
+        $data = [
+            'price' => $price,
+            'total_price' => $total_price,
+            'discount_amount' => $discount_amount,
+            'extra_amount' => $extra_amount,
+            'total_price_with_off' => $total_price_with_off,
+            'tax' => $tax,
+            'invoice_net' => $invoice_net,
+        ];
+
+        return response()->json(['error' => 0, 'message' => 'کد تخفیف اعمال شد', 'data' => $data]);
     }
 
     private function storeInvoiceProducts(Invoice $invoice, $request)
