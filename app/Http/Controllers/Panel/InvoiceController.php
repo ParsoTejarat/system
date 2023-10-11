@@ -41,7 +41,7 @@ class InvoiceController extends Controller
             'province' => $request->province,
             'city' => $request->city,
             'address' => $request->address,
-            'status' => $request->status,
+//            'status' => $request->status,
         ]);
 
         // create products for invoice
@@ -69,6 +69,11 @@ class InvoiceController extends Controller
     {
         $this->authorize('invoices-edit');
 
+        $invoice->products()->detach();
+
+        // create products for invoice
+        $this->storeInvoiceProducts($invoice, $request);
+
         $invoice->update([
             'buyer_name' => $request->buyer_name,
             'economical_number' => $request->economical_number,
@@ -80,11 +85,6 @@ class InvoiceController extends Controller
             'address' => $request->address,
             'status' => $request->status,
         ]);
-
-        $invoice->products()->detach();
-
-        // create products for invoice
-        $this->storeInvoiceProducts($invoice, $request);
 
         alert()->success('پیش فاکتور مورد نظر با موفقیت ویرایش شد','ویرایش پیش فاکتور');
         return redirect()->route('invoices.index');
@@ -122,10 +122,36 @@ class InvoiceController extends Controller
         return response()->json(['data' => $data]);
     }
 
+    public function search(Request $request)
+    {
+        $this->authorize('invoices-list');
+        $status = $request->status == 'all' ? array_keys(Invoice::STATUS) : [$request->status];
+
+        $invoices = Invoice::whereIn('status', $status)->latest()->paginate(30);
+        return view('panel.invoices.index', compact('invoices'));
+    }
+
     private function storeInvoiceProducts(Invoice $invoice, $request)
     {
         foreach ($request->products as $key => $product_id){
+            if ($request->status == 'paid' && $request->status != $invoice->status){
+                // decrease product counts
+
+                $product = Product::find($product_id);
+                $properties = json_decode($product->properties);
+                $product_exist = array_keys(array_column($properties, 'color'), $request->colors[$key]);
+
+                if ($product_exist){
+                    $properties[$product_exist[0]]->counts -= $request->counts[$key];
+                    $changed_properties = json_encode($properties);
+                    $product->update(['properties' => $changed_properties]);
+                }
+
+                $product->update(['total_count' => $product->total_count -= $request->counts[$key]]);
+            }
+
             $invoice->products()->attach($product_id, [
+                'color' => $request->colors[$key],
                 'count' => $request->counts[$key],
                 'unit' => $request->units[$key],
                 'price' => $request->prices[$key],
@@ -135,6 +161,7 @@ class InvoiceController extends Controller
                 'tax' => $request->taxes[$key],
                 'invoice_net' => $request->invoice_nets[$key],
             ]);
+
         }
     }
 }

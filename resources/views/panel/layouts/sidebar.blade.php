@@ -15,7 +15,7 @@
                 </li>
             @endcanany
             @canany(['invoices-list'])
-            <li class="{{ active_sidebar(['invoices','invoices/create','invoices/{invoice}/edit']) ? 'active' : '' }}" data-toggle="tooltip" title="پیش فاکتور">
+            <li class="{{ active_sidebar(['invoices','invoices/create','invoices/{invoice}/edit','search/invoices']) ? 'active' : '' }}" data-toggle="tooltip" title="پیش فاکتور">
                 <a href="#navigationInvoices" title="پیش فاکتور">
                     <i class="icon ti-shopping-cart"></i>
                 </a>
@@ -74,11 +74,11 @@
                 </li>
             @endcan
         </ul>
-        <ul id="navigationInvoices" class="{{ active_sidebar(['invoices','invoices/create','invoices/{invoice}/edit']) ? 'navigation-active' : '' }}">
+        <ul id="navigationInvoices" class="{{ active_sidebar(['invoices','invoices/create','invoices/{invoice}/edit','search/invoices']) ? 'navigation-active' : '' }}">
             <li class="navigation-divider">پیش فاکتور</li>
             @can('invoices-list')
                 <li>
-                    <a class="{{ active_sidebar(['invoices','invoices/create','invoices/{invoice}/edit']) ? 'active' : '' }}" href="{{ route('invoices.index') }}">پیش فاکتور</a>
+                    <a class="{{ active_sidebar(['invoices','invoices/create','invoices/{invoice}/edit','search/invoices']) ? 'active' : '' }}" href="{{ route('invoices.index') }}">پیش فاکتور</a>
                 </li>
             @endcan
         </ul>

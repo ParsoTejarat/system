@@ -12,6 +12,25 @@
                     </a>
                 @endcan
             </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <form action="{{ route('invoices.search') }}" method="post">
+                        @csrf
+                        <div class="row">
+                            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
+                                <select class="form-control" name="status">
+                                    <option value="all">وضعیت (همه)</option>
+                                    <option value="paid">تسویه شده</option>
+                                    <option value="pending">در دست اقدام</option>
+                                </select>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
+                                <button class="btn btn-primary">جستجو</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <div class="table-responsive">
                 <table class="table table-striped table-bordered dataTable dtr-inline text-center">
                     <thead>
@@ -25,6 +44,8 @@
                         <th>وضعیت</th>
                         <th>تاریخ ایجاد</th>
                         @can('invoices-edit')
+                            <th>پیش فاکتور</th>
+                            <th>فاکتور</th>
                             <th>ویرایش</th>
                         @endcan
                         @can('invoices-delete')
@@ -51,6 +72,16 @@
                             <td>{{ verta($invoice->created_at)->format('H:i - Y/m/d') }}</td>
                             @can('invoices-edit')
                                 <td>
+                                    <a class="btn btn-info btn-floating" href="{{ route('invoices.show', [$invoice->id, 'type' => 'pishfactor']) }}">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-info btn-floating" href="{{ route('invoices.show', [$invoice->id, 'type' => 'factor']) }}">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </td>
+                                <td>
                                     <a class="btn btn-warning btn-floating" href="{{ route('invoices.edit', $invoice->id) }}">
                                         <i class="fa fa-edit"></i>
                                     </a>
@@ -72,7 +103,7 @@
                     </tfoot>
                 </table>
             </div>
-            <div class="d-flex justify-content-center">{{ $invoices->links() }}</div>
+            <div class="d-flex justify-content-center">{{ $invoices->appends(request()->all())->links() }}</div>
         </div>
     </div>
 @endsection

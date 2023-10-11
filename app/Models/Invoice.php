@@ -19,6 +19,7 @@ class Invoice extends Model
     public function products()
     {
         return $this->belongsToMany(Product::class)->withPivot([
+            'color',
             'count',
             'unit',
             'price',

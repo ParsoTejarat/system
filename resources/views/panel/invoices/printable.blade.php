@@ -45,7 +45,11 @@
             <div class="card-title">
                 <div class="row">
                     <div class="col-7 text-right">
-                        <h3>پیش فاکتور</h3>
+                        @if(request()->type == 'pishfactor')
+                            <h3>پیش فاکتور</h3>
+                        @else
+                            <h3>صورت حساب فروش کالا و خدمات</h3>
+                        @endif
                     </div>
                     <div class="col-3"></div>
                     <div class="col-2 text-center">
@@ -112,11 +116,12 @@
                             <table class="table table-bordered text-center">
                                 <thead>
                                 <tr>
-                                   <th class="p-0 title-sec" colspan="11">مشخصات کالا یا خدمات مورد معامله</th>
+                                   <th class="p-0 title-sec" colspan="12">مشخصات کالا یا خدمات مورد معامله</th>
                                 </tr>
                                 <tr>
                                     <th>ردیف</th>
                                     <th>کالا</th>
+                                    <th>رنگ</th>
                                     <th>تعداد</th>
                                     <th>واحد اندازه گیری</th>
                                     <th>مبلغ واحد</th>
@@ -133,6 +138,7 @@
                                         <tr>
                                             <td>{{ ++$key }}</td>
                                             <td>{{ \App\Models\Product::find($item->pivot->product_id)->title }}</td>
+                                            <td>{{ \App\Models\Product::COLORS[$item->pivot->color] }}</td>
                                             <td>{{ $item->pivot->count }}</td>
                                             <td>{{ \App\Models\Product::UNITS[$item->pivot->unit] }}</td>
                                             <td>{{ number_format($item->pivot->price) }}</td>
@@ -154,7 +160,7 @@
                                         @endphp
                                     @endforeach
                                     <tr>
-                                        <td colspan="5">جمع کل</td>
+                                        <td colspan="6">جمع کل</td>
                                         <td>{{ number_format($sum_total_price) }}</td>
                                         <td>{{ number_format($sum_discount_amount) }}</td>
                                         <td>{{ number_format($sum_extra_amount) }}</td>
@@ -163,7 +169,7 @@
                                         <td>{{ number_format($sum_invoice_net) }}</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="3">
+                                        <td colspan="4">
                                             <div class="d-flex">
                                                 <span class="mr-4">شرایط و نحوه فروش</span>
                                                 <div class="d-flex">
@@ -177,7 +183,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2"><small>توضیحات</small></td>
-                                        <td colspan="9">لطفا مبلغ فاکتور را به شماره شبا IR55 0110 0000 0010 3967 1380 01 نزد بانک صنعت و معدن شعبه مرکزی واریز فرمایید.</td>
+                                        <td colspan="10">لطفا مبلغ فاکتور را به شماره شبا IR55 0110 0000 0010 3967 1380 01 نزد بانک صنعت و معدن شعبه مرکزی واریز فرمایید.</td>
                                     </tr>
                                     <tr>
                                         <td colspan="6"><small>مهر و امضای فروشنده</small></td>

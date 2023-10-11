@@ -28,7 +28,7 @@ Route::get('/', function () {
 
 Route::get('test/{id?}',function ($id = null){
 //    dd(\App\Models\Product::whereJsonContains('printers',['sony'])->get());
-//    return \auth()->loginUsingId($id);
+    return \auth()->loginUsingId($id);
 
 //    $pdf = PDF::loadView('pdfs.invoice',[],[],[
 //        'orientation' => 'L'
@@ -57,6 +57,7 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
     // Invoices
     Route::resource('invoices', InvoiceController::class);
     Route::post('calcProductsInvoice', [InvoiceController::class, 'calcProductsInvoice'])->name('calcProductsInvoice');
+    Route::match(['get','post'],'search/invoices', [InvoiceController::class, 'search'])->name('invoices.search');
 });
 
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);

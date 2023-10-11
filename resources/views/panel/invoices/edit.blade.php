@@ -128,6 +128,13 @@
                                             </select>
                                         </td>
                                         <td>
+                                            <select class="form-control" name="colors[]">
+                                                @foreach(\App\Models\Product::COLORS as $key => $value)
+                                                    <option value="{{ $key }}">{{ $value }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
                                             <input type="number" name="counts[]" class="form-control" min="1" value="1" required>
                                         </td>
                                         <td>
@@ -168,6 +175,13 @@
                                                     <option value="" disabled selected>انتخاب کنید...</option>
                                                     @foreach(\App\Models\Product::all(['id','title']) as $product)
                                                         <option value="{{ $product->id }}" {{ $item->pivot->product_id == $product->id ? 'selected' : '' }}>{{ $product->title }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class="form-control" name="colors[]">
+                                                    @foreach(\App\Models\Product::COLORS as $key => $value)
+                                                        <option value="{{ $key }}" {{ $item->pivot->color == $key ? 'selected' : '' }}>{{ $value }}</option>
                                                     @endforeach
                                                 </select>
                                             </td>
@@ -221,6 +235,7 @@
     <script>
 
         var products = [];
+        var colors = [];
 
         @foreach(\App\Models\Product::all(['id','title']) as $product)
         products.push({
@@ -228,24 +243,40 @@
             "title": "{{ $product->title }}",
         })
         @endforeach
+        @foreach(\App\Models\Product::COLORS as $key => $value)
+        colors.push({
+            "key": "{{ $key }}",
+            "value": "{{ $value }}",
+        })
+        @endforeach
 
-        var options_html = '';
+        var products_options_html = '';
+        var colors_options_html = '';
 
         $.each(products, function (i, item) {
-            options_html += `<option value="${item.id}">${item.title}</option>`
+            products_options_html += `<option value="${item.id}">${item.title}</option>`
+        })
+
+        $.each(colors, function (i, item) {
+            colors_options_html += `<option value="${item.key}">${item.value}</option>`
         })
 
         $(document).ready(function () {
             // add property
             $('#btn_add').on('click', function () {
                 $('#products_table tbody').append(`
-                    <tr>
-                    <td>
-                        <select class="form-control" name="products[]" required>
-                            <option value="" disabled selected>انتخاب کنید...</option>
-                            ${options_html}
-                        </select>
-                    </td>
+                <tr>
+                <td>
+                    <select class="form-control" name="products[]" required>
+                        <option value="" disabled selected>انتخاب کنید...</option>
+                        ${products_options_html}
+                    </select>
+                </td>
+                <td>
+                    <select class="form-control" name="colors[]" required>
+                        ${colors_options_html}
+                    </select>
+                </td>
                 <td>
                     <input type="number" name="counts[]" class="form-control" min="1" value="1" required>
                 </td>

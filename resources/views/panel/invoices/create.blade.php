@@ -79,16 +79,16 @@
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
-                        <label for="status">وضعیت <span class="text-danger">*</span></label>
-                        <select name="status" id="status" class="js-example-basic-single select2-hidden-accessible" data-select2-id="5" tabindex="-2" aria-hidden="true">
-                            <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['pending'] }}</option>
-                            <option value="paid" {{ old('status') == 'paid' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['paid'] }}</option>
-                        </select>
-                        @error('status')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
+{{--                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">--}}
+{{--                        <label for="status">وضعیت <span class="text-danger">*</span></label>--}}
+{{--                        <select name="status" id="status" class="js-example-basic-single select2-hidden-accessible" data-select2-id="5" tabindex="-2" aria-hidden="true">--}}
+{{--                            <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['pending'] }}</option>--}}
+{{--                            <option value="paid" {{ old('status') == 'paid' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['paid'] }}</option>--}}
+{{--                        </select>--}}
+{{--                        @error('status')--}}
+{{--                            <div class="invalid-feedback d-block">{{ $message }}</div>--}}
+{{--                        @enderror--}}
+{{--                    </div>--}}
                     <div class="col-12 mb-4 mt-2 text-center">
                         <hr>
                         <h4>مشخصات کالا یا خدمات مورد معامله</h4>
@@ -102,6 +102,7 @@
                                 <thead>
                                     <tr>
                                         <th>کالا</th>
+                                        <th>رنگ</th>
                                         <th>تعداد</th>
                                         <th>واحد اندازه گیری</th>
                                         <th>مبلغ واحد</th>
@@ -121,6 +122,13 @@
                                             <option value="" disabled selected>انتخاب کنید...</option>
                                             @foreach(\App\Models\Product::all(['id','title']) as $product)
                                                 <option value="{{ $product->id }}">{{ $product->title }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" name="colors[]">
+                                            @foreach(\App\Models\Product::COLORS as $key => $value)
+                                                <option value="{{ $key }}">{{ $value }}</option>
                                             @endforeach
                                         </select>
                                     </td>
@@ -172,6 +180,7 @@
     <script>
 
         var products = [];
+        var colors = [];
 
         @foreach(\App\Models\Product::all(['id','title']) as $product)
             products.push({
@@ -179,24 +188,40 @@
                 "title": "{{ $product->title }}",
             })
         @endforeach
+        @foreach(\App\Models\Product::COLORS as $key => $value)
+            colors.push({
+                "key": "{{ $key }}",
+                "value": "{{ $value }}",
+            })
+        @endforeach
 
-        var options_html = '';
+        var products_options_html = '';
+        var colors_options_html = '';
 
         $.each(products, function (i, item) {
-            options_html += `<option value="${item.id}">${item.title}</option>`
+            products_options_html += `<option value="${item.id}">${item.title}</option>`
+        })
+
+        $.each(colors, function (i, item) {
+            colors_options_html += `<option value="${item.key}">${item.value}</option>`
         })
 
         $(document).ready(function () {
             // add property
                 $('#btn_add').on('click', function () {
                     $('#products_table tbody').append(`
-                    <tr>
-                    <td>
-                        <select class="form-control" name="products[]" required>
-                            <option value="" disabled selected>انتخاب کنید...</option>
-                            ${options_html}
-                        </select>
-                    </td>
+                <tr>
+                <td>
+                    <select class="form-control" name="products[]" required>
+                        <option value="" disabled selected>انتخاب کنید...</option>
+                        ${products_options_html}
+                    </select>
+                </td>
+                <td>
+                    <select class="form-control" name="colors[]" required>
+                        ${colors_options_html}
+                    </select>
+                </td>
                 <td>
                     <input type="number" name="counts[]" class="form-control" min="1" value="1" required>
                 </td>
