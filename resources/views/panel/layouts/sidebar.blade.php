@@ -8,7 +8,7 @@
                 </a>
             </li>
             @canany(['categories-list','products-list','printers-list'])
-                <li class="{{ active_sidebar(['categories','categories/create','categories/{category}/edit','products','products/create','products/{product}/edit','printers','printers/create','printers/{printer}/edit']) ? 'active' : '' }}" data-toggle="tooltip" title="محصولات">
+                <li class="{{ active_sidebar(['categories','categories/create','categories/{category}/edit','products','products/create','products/{product}/edit','printers','printers/create','printers/{printer}/edit','coupons','coupons/create','coupons/{printer}/edit']) ? 'active' : '' }}" data-toggle="tooltip" title="محصولات">
                     <a href="#navigationProducts" title="محصولات">
                         <i class="icon ti-view-list"></i>
                     </a>
@@ -56,7 +56,7 @@
                 </li>
             @endcan
         </ul>
-        <ul id="navigationProducts" class="{{ active_sidebar(['categories','categories/create','categories/{category}/edit','products','products/create','products/{product}/edit','printers','printers/create','printers/{printer}/edit']) ? 'navigation-active' : '' }}">
+        <ul id="navigationProducts" class="{{ active_sidebar(['categories','categories/create','categories/{category}/edit','products','products/create','products/{product}/edit','printers','printers/create','printers/{printer}/edit','coupons','coupons/create','coupons/{printer}/edit']) ? 'navigation-active' : '' }}">
             <li class="navigation-divider">محصولات</li>
 {{--            @can('categories-list')--}}
 {{--                <li>--}}
@@ -71,6 +71,11 @@
             @can('printers-list')
                 <li>
                     <a class="{{ active_sidebar(['printers','printers/create','printers/{printer}/edit']) ? 'active' : '' }}" href="{{ route('printers.index') }}">پرینتر ها</a>
+                </li>
+            @endcan
+            @can('coupons-list')
+                <li>
+                    <a class="{{ active_sidebar(['coupons','coupons/create','coupons/{printer}/edit']) ? 'active' : '' }}" href="{{ route('coupons.index') }}">کد تخفیف</a>
                 </li>
             @endcan
         </ul>

@@ -182,6 +182,7 @@ return [
         'province' => 'استان',
         'city' => 'شهر',
         'address' => 'نشانی',
+        'amount_pc' => 'درصد تخفیف',
     ],
 
 ];

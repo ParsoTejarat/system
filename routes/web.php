@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Panel\CategoryController;
+use App\Http\Controllers\Panel\CouponController;
 use App\Http\Controllers\Panel\InvoiceController;
 use App\Http\Controllers\Panel\PrinterController;
 use App\Http\Controllers\Panel\ProductController;
@@ -58,6 +59,9 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
     Route::resource('invoices', InvoiceController::class);
     Route::post('calcProductsInvoice', [InvoiceController::class, 'calcProductsInvoice'])->name('calcProductsInvoice');
     Route::match(['get','post'],'search/invoices', [InvoiceController::class, 'search'])->name('invoices.search');
+
+    // Coupons
+    Route::resource('coupons', CouponController::class)->except('show');
 });
 
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);
