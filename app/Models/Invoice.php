@@ -14,6 +14,7 @@ class Invoice extends Model
     const STATUS = [
         'pending' => 'در دست اقدام',
         'paid' => 'تسویه شده',
+        'return' => 'عودت داده شده',
     ];
 
     public function products()
