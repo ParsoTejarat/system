@@ -35,4 +35,9 @@ class Invoice extends Model
     {
         return $this->belongsToMany(Coupon::class);
     }
+
+    public function packet()
+    {
+        return $this->hasOne(Packet::class);
+    }
 }

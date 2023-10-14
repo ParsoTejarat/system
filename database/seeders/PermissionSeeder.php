@@ -50,11 +50,16 @@ class PermissionSeeder extends Seeder
 //            'partner-tehran-user' => 'همکار تهران',
 //            'partner-other-user' => 'همکار شهرستان',
 //            'single-price-user' => 'تک فروشی',
-
+//
 //            'coupons-list' => 'لیست کد تخفیف',
 //            'coupons-create' => 'ایجاد کد تخفیف',
 //            'coupons-edit' => 'ویرایش کد تخفیف',
 //            'coupons-delete' => 'حذف کد تخفیف',
+//
+//            'packets-list' => 'لیست بسته های ارسالی',
+//            'packets-create' => 'ایجاد بسته ارسالی',
+//            'packets-edit' => 'ویرایش بسته ارسالی ',
+//            'packets-delete' => 'حذف بسته ارسالی',
         ];
 
         foreach ($items as $key => $item)

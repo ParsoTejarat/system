@@ -1,0 +1,94 @@
+@extends('panel.layouts.master')
+@section('title', 'ایجاد بسته ارسالی')
+@section('content')
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title d-flex justify-content-between align-items-center">
+                <h6>ایجاد بسته ارسالی</h6>
+            </div>
+            <form action="{{ route('packets.store') }}" method="post">
+                @csrf
+                <div class="form-row">
+                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                        <label for="invoice">فاکتور<span class="text-danger">*</span></label>
+                        <select class="form-control" name="invoice" id="invoice">
+                            @if($invoices->count())
+                                @foreach($invoices as $invoice)
+                                    <option value="{{ $invoice->id }}" {{ old('invoice') == $invoice->id ? 'selected' : '' }}> {{ $invoice->id }} - {{ $invoice->buyer_name }}</option>
+                                @endforeach
+                            @else
+                                <option value="" disabled selected>فاکتوری موجود نیست!</option>
+                            @endif
+                        </select>
+                        @error('invoice')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                        <label for="receiver">گیرنده <span class="text-danger">*</span></label>
+                        <input type="text" name="receiver" class="form-control" id="receiver" value="{{ old('receiver') }}">
+                        @error('receiver')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                        <label for="address">آدرس <span class="text-danger">*</span></label>
+                        <input type="text" name="address" class="form-control" id="address" value="{{ old('address') }}">
+                        @error('address')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                        <label for="sent_type">نوع ارسال <span class="text-danger">*</span></label>
+                        <select class="form-control" name="sent_type" id="sent_type">
+                            @foreach(\App\Models\Packet::SENT_TYPE as $key => $value)
+                                <option value="{{ $key }}" {{ old('sent_type') == $key ? 'selected' : '' }}>{{ $value }}</option>
+                            @endforeach
+                        </select>
+                        @error('sent_type')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                        <label for="send_tracking_code">کد رهگیری ارسالی <span class="text-danger">*</span></label>
+                        <input type="text" name="send_tracking_code" class="form-control" id="send_tracking_code" value="{{ old('send_tracking_code') }}">
+                        @error('send_tracking_code')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                        <label for="receive_tracking_code">کد رهگیری دریافتی </label>
+                        <input type="text" name="receive_tracking_code" class="form-control" id="receive_tracking_code" value="{{ old('receive_tracking_code') }}">
+                        @error('receive_tracking_code')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                        <label for="packet_status">وضعیت بسته <span class="text-danger">*</span></label>
+                        <select class="form-control" name="packet_status" id="packet_status">
+                            @foreach(\App\Models\Packet::PACKET_STATUS as $key => $value)
+                                <option value="{{ $key }}" {{ old('packet_status') == $key ? 'selected' : '' }}>{{ $value }}</option>
+                            @endforeach
+                        </select>
+                        @error('packet_status')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                        <label for="invoice_status">وضعیت فاکتور <span class="text-danger">*</span></label>
+                        <select class="form-control" name="invoice_status" id="invoice_status">
+                            @foreach(\App\Models\Packet::INVOICE_STATUS as $key => $value)
+                                <option value="{{ $key }}" {{ old('invoice_status') == $key ? 'selected' : '' }}>{{ $value }}</option>
+                            @endforeach
+                        </select>
+                        @error('invoice_status')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">ثبت فرم</button>
+            </form>
+        </div>
+    </div>
+@endsection
+

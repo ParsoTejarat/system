@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Panel\CategoryController;
 use App\Http\Controllers\Panel\CouponController;
 use App\Http\Controllers\Panel\InvoiceController;
+use App\Http\Controllers\Panel\PacketController;
 use App\Http\Controllers\Panel\PrinterController;
 use App\Http\Controllers\Panel\ProductController;
 use App\Http\Controllers\Panel\RoleController;
@@ -63,6 +63,9 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
 
     // Coupons
     Route::resource('coupons', CouponController::class)->except('show');
+
+    // Packets
+    Route::resource('packets', PacketController::class)->except('show');
 });
 
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);

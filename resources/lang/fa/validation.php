@@ -183,6 +183,10 @@ return [
         'city' => 'شهر',
         'address' => 'نشانی',
         'amount_pc' => 'درصد تخفیف',
+        'invoice' => 'فاکتور',
+        'receiver' => 'گیرنده',
+        'send_tracking_code' => 'کد رهگیری ارسالی',
+        'receive_tracking_code' => 'کد رهگیری دریافتی',
     ],
 
 ];
