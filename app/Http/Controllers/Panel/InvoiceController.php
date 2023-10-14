@@ -50,7 +50,7 @@ class InvoiceController extends Controller
         $this->storeInvoiceProducts($invoice, $request);
 
         alert()->success('پیش فاکتور مورد نظر با موفقیت ایجاد شد','ایجاد پیش فاکتور');
-        return redirect()->route('invoices.index');
+        return redirect()->route('invoices.edit', $invoice->id);
     }
 
     public function show(Invoice $invoice)
@@ -96,6 +96,7 @@ class InvoiceController extends Controller
     {
         $this->authorize('invoices-delete');
 
+        $invoice->coupons()->detach();
         $invoice->delete();
         return back();
     }
@@ -179,6 +180,19 @@ class InvoiceController extends Controller
         $total_price_with_off = $total_price - ($discount_amount + $extra_amount);
         $tax = (int) ($total_price_with_off * self::TAX_AMOUNT);
         $invoice_net = $tax + $total_price_with_off;
+
+
+        DB::table('invoice_product')->where([
+            'invoice_id' => $request->invoice_id,
+            'product_id' => $request->product_id,
+        ])->update([
+            'price' => $price,
+            'total_price' => $total_price,
+            'discount_amount' => $discount_amount,
+            'extra_amount' => $extra_amount,
+            'tax' => $tax,
+            'invoice_net' => $invoice_net,
+        ]);
 
         $data = [
             'price' => $price,

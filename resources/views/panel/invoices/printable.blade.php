@@ -135,6 +135,19 @@
                                 </thead>
                                 <tbody>
                                     @foreach($invoice->products as $key => $item)
+                                        @php
+                                            $usedCoupon = DB::table('coupon_invoice')->where([
+                                                'product_id' => $item->pivot->product_id,
+                                                'invoice_id' => $invoice->id,
+                                            ])->first();
+
+                                            if ($usedCoupon){
+                                                $coupon = \App\Models\Coupon::find($usedCoupon->coupon_id);
+                                                $discount_amount = $item->pivot->total_price * ($coupon->amount_pc / 100);
+                                            }else{
+                                                $discount_amount = 0;
+                                            }
+                                        @endphp
                                         <tr>
                                             <td>{{ ++$key }}</td>
                                             <td>{{ \App\Models\Product::find($item->pivot->product_id)->title }}</td>
@@ -143,18 +156,18 @@
                                             <td>{{ \App\Models\Product::UNITS[$item->pivot->unit] }}</td>
                                             <td>{{ number_format($item->pivot->price) }}</td>
                                             <td>{{ number_format($item->pivot->total_price) }}</td>
-                                            <td>{{ number_format($item->pivot->discount_amount) }}</td>
+                                            <td>{{ number_format($discount_amount) }}</td>
                                             <td>{{ number_format($item->pivot->extra_amount) }}</td>
-                                            <td>{{ number_format($item->pivot->total_price - ($item->pivot->extra_amount + $item->pivot->discount_amount)) }}</td>
+                                            <td>{{ number_format($item->pivot->total_price - ($item->pivot->extra_amount + $discount_amount)) }}</td>
                                             <td>{{ number_format($item->pivot->tax) }}</td>
                                             <td>{{ number_format($item->pivot->invoice_net) }}</td>
                                         </tr>
 
                                         @php
                                             $sum_total_price += $item->pivot->total_price;
-                                            $sum_discount_amount += $item->pivot->discount_amount;
+                                            $sum_discount_amount += $discount_amount;
                                             $sum_extra_amount += $item->pivot->extra_amount;
-                                            $sum_total_price_with_off += $item->pivot->total_price - ($item->pivot->extra_amount + $item->pivot->discount_amount);
+                                            $sum_total_price_with_off += $item->pivot->total_price - ($item->pivot->extra_amount + $discount_amount);
                                             $sum_tax += $item->pivot->tax;
                                             $sum_invoice_net += $item->pivot->invoice_net;
                                         @endphp

@@ -10,4 +10,9 @@ class Coupon extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function invoices()
+    {
+        return $this->belongsToMany(Invoice::class);
+    }
 }

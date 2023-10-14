@@ -30,4 +30,9 @@ class Invoice extends Model
             'invoice_net',
         ]);
     }
+
+    public function coupons()
+    {
+        return $this->belongsToMany(Coupon::class);
+    }
 }
