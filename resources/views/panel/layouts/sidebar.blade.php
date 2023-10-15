@@ -28,6 +28,13 @@
                     </a>
                 </li>
             @endcanany
+            @canany(['customers-list'])
+                <li class="{{ active_sidebar(['customers','customers/create','customers/{customer}/edit','search/customers']) ? 'active' : '' }}" data-toggle="tooltip" title="مشتریان">
+                    <a href="#navigationCustomers" title="مشتریان">
+                        <i class="icon ti-user"></i>
+                    </a>
+                </li>
+            @endcanany
         </ul>
         <ul>
             <li data-toggle="tooltip" title="ویرایش پروفایل">
@@ -99,6 +106,14 @@
             @can('packets-list')
                 <li>
                     <a class="{{ active_sidebar(['packets','packets/create','packets/{packet}/edit','search/packets']) ? 'active' : '' }}" href="{{ route('packets.index') }}">بسته های ارسالی</a>
+                </li>
+            @endcan
+        </ul>
+        <ul id="navigationCustomers" class="{{ active_sidebar(['customers','customers/create','customers/{customer}/edit','search/customers']) ? 'navigation-active' : '' }}">
+            <li class="navigation-divider">مشتریان</li>
+            @can('customers-list')
+                <li>
+                    <a class="{{ active_sidebar(['customers','customers/create','customers/{customer}/edit','search/customers']) ? 'active' : '' }}" href="{{ route('customers.index') }}">مشتریان</a>
                 </li>
             @endcan
         </ul>

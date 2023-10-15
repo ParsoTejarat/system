@@ -60,6 +60,11 @@ class PermissionSeeder extends Seeder
 //            'packets-create' => 'ایجاد بسته ارسالی',
 //            'packets-edit' => 'ویرایش بسته ارسالی ',
 //            'packets-delete' => 'حذف بسته ارسالی',
+
+//            'customers-list' => 'لیست مشتریان',
+//            'customers-create' => 'ایجاد مشتری',
+//            'customers-edit' => 'ویرایش مشتری ',
+//            'customers-delete' => 'حذف مشتری',
         ];
 
         foreach ($items as $key => $item)

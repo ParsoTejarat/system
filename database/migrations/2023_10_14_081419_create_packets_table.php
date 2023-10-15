@@ -23,6 +23,8 @@ class CreatePacketsTable extends Migration
             $table->enum('packet_status', ['delivered','sending']);
             $table->enum('invoice_status', ['delivered','unknown']);
             $table->string('receive_tracking_code')->comment('کد رهگیری دریافتی')->nullable();
+            $table->timestamp('sent_time')->comment('زمان ارسال');
+            $table->longText('description')->nullable();
             $table->timestamps();
 
             $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');

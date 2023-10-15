@@ -37,7 +37,14 @@
                         <label for="address">آدرس <span class="text-danger">*</span></label>
                         <input type="text" name="address" class="form-control" id="address" value="{{ $packet->address }}">
                         @error('address')
-                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                        <label for="sent_time">زمان ارسال <span class="text-danger">*</span></label>
+                        <input type="text" name="sent_time" class="form-control date-picker-shamsi-list" id="sent_time" value="{{ verta($packet->sent_time)->format('Y/m/d') }}">
+                        @error('sent_time')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
@@ -85,6 +92,13 @@
                         </select>
                         @error('invoice_status')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                        <label for="description">توضیحات</label>
+                        <textarea name="description" id="description" class="form-control">{{ $packet->description }}</textarea>
+                        @error('description')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>

@@ -39,6 +39,13 @@
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                        <label for="sent_time">زمان ارسال <span class="text-danger">*</span></label>
+                        <input type="text" name="sent_time" class="form-control date-picker-shamsi-list" id="sent_time" value="{{ old('sent_time') }}">
+                        @error('sent_time')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="sent_type">نوع ارسال <span class="text-danger">*</span></label>
                         <select class="form-control" name="sent_type" id="sent_type">
                             @foreach(\App\Models\Packet::SENT_TYPE as $key => $value)
@@ -82,6 +89,13 @@
                             @endforeach
                         </select>
                         @error('invoice_status')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                        <label for="description">توضیحات</label>
+                        <textarea name="description" id="description" class="form-control">{{ old('description') }}</textarea>
+                        @error('description')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>

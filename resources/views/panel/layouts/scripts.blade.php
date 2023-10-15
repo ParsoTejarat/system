@@ -52,6 +52,12 @@
 <script src="/vendors/select2/js/select2.min.js"></script>
 <script src="/assets/js/examples/select2.js"></script>
 
+<!-- Datepicker -->
+<script src="/vendors/datepicker-jalali/bootstrap-datepicker.min.js"></script>
+<script src="/vendors/datepicker-jalali/bootstrap-datepicker.fa.min.js"></script>
+<script src="/vendors/datepicker/daterangepicker.js"></script>
+<script src="/assets/js/examples/datepicker.js"></script>
+
 @yield('scripts')
 
 <script>

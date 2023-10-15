@@ -9,7 +9,7 @@ $(document).ready(function () {
 		selectOtherMonths: false
 	});
 
-	$('input[name="date-picker-shamsi-list"]').datepicker({
+	$('.date-picker-shamsi-list').datepicker({
 		dateFormat: "yy/mm/dd",
 		showOtherMonths: true,
 		selectOtherMonths: true,
@@ -25,7 +25,7 @@ $(document).ready(function () {
 		minDate: 0,
 		maxDate: "+14D"
 	});
-	
+
 	// ------
 
     $('input[name="single-date-picker"]').daterangepicker({

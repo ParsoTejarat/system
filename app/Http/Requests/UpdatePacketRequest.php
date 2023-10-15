@@ -32,6 +32,14 @@ class UpdatePacketRequest extends FormRequest
             'receive_tracking_code' => 'nullable|numeric',
             'packet_status' => 'required',
             'invoice_status' => 'required',
+            'sent_time' => 'required|size:10',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'sent_time.size' => 'فرمت زمان ارسال صحیح نیست'
         ];
     }
 }

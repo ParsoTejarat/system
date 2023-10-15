@@ -24,6 +24,7 @@
                         <th>کد رهگیری ارسالی شرکت</th>
                         <th>وضعیت بسته</th>
                         <th>وضعیت فاکتور</th>
+                        <th>زمان ارسال</th>
                         <th>تاریخ ایجاد</th>
                         @can('packets-edit')
                             <th>ویرایش</th>
@@ -58,6 +59,7 @@
                                     <span class="badge badge-warning">{{ \App\Models\Packet::INVOICE_STATUS[$packet->invoice_status] }}</span>
                                 @endif
                             </td>
+                            <td>{{ verta($packet->sent_time)->format('Y/m/d') }}</td>
                             <td>{{ verta($packet->created_at)->format('H:i - Y/m/d') }}</td>
                             @can('packets-edit')
                                 <td>

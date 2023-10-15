@@ -7,6 +7,7 @@ use App\Http\Requests\StorePacketRequest;
 use App\Http\Requests\UpdatePacketRequest;
 use App\Models\Invoice;
 use App\Models\Packet;
+use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Request;
 
 class PacketController extends Controller
@@ -31,6 +32,8 @@ class PacketController extends Controller
     {
         $this->authorize('packets-create');
 
+        $sent_time = Verta::parse($request->sent_time)->datetime();
+
         Packet::create([
             'invoice_id' => $request->invoice,
             'receiver' => $request->receiver,
@@ -40,6 +43,8 @@ class PacketController extends Controller
             'receive_tracking_code' => $request->receive_tracking_code,
             'packet_status' => $request->packet_status,
             'invoice_status' => $request->invoice_status,
+            'description' => $request->description,
+            'sent_time' => $sent_time,
         ]);
 
         alert()->success('بسته مورد نظر با موفقیت ایجاد شد','ایجاد بسته');
@@ -63,6 +68,8 @@ class PacketController extends Controller
     {
         $this->authorize('packets-edit');
 
+        $sent_time = Verta::parse($request->sent_time)->datetime();
+
         $packet->update([
             'invoice_id' => $request->invoice,
             'receiver' => $request->receiver,
@@ -72,6 +79,8 @@ class PacketController extends Controller
             'receive_tracking_code' => $request->receive_tracking_code,
             'packet_status' => $request->packet_status,
             'invoice_status' => $request->invoice_status,
+            'description' => $request->description,
+            'sent_time' => $sent_time,
         ]);
 
         alert()->success('بسته مورد نظر با موفقیت ویرایش شد','ویرایش بسته');

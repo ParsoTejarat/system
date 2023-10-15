@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Panel\CouponController;
+use App\Http\Controllers\Panel\CustomerController;
 use App\Http\Controllers\Panel\InvoiceController;
 use App\Http\Controllers\Panel\PacketController;
 use App\Http\Controllers\Panel\PrinterController;
@@ -24,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('test/{id?}',function ($id = null){
@@ -66,6 +67,9 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
 
     // Packets
     Route::resource('packets', PacketController::class)->except('show');
+
+    // Customers
+    Route::resource('customers', CustomerController::class)->except('show');
 });
 
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);

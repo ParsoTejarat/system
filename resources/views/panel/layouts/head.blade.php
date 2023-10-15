@@ -36,6 +36,10 @@
 
     <link rel="stylesheet" href="/vendors/select2/css/select2.min.css" type="text/css">
 
+    <!-- Datepicker -->
+    <link rel="stylesheet" href="/vendors/datepicker-jalali/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="/vendors/datepicker/daterangepicker.css">
+
     @yield('styles')
 </head>
 <body>

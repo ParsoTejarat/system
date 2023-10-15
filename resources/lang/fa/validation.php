@@ -187,6 +187,12 @@ return [
         'receiver' => 'گیرنده',
         'send_tracking_code' => 'کد رهگیری ارسالی',
         'receive_tracking_code' => 'کد رهگیری دریافتی',
+        'sent_time' => 'زمان ارسال',
+        'phone1' => 'شماره تماس 1',
+        'phone2' => 'شماره تماس 2',
+        'phone3' => 'شماره تماس 3',
+        'address1' => 'آدرس 1',
+        'address2' => 'آدرس 2',
     ],
 
 ];
