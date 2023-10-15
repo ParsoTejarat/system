@@ -7,6 +7,7 @@ use App\Http\Requests\StorePacketRequest;
 use App\Http\Requests\UpdatePacketRequest;
 use App\Models\Invoice;
 use App\Models\Packet;
+use Carbon\Carbon;
 use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Request;
 
@@ -35,6 +36,7 @@ class PacketController extends Controller
         $sent_time = Verta::parse($request->sent_time)->datetime();
 
         Packet::create([
+            'user_id' => auth()->id(),
             'invoice_id' => $request->invoice,
             'receiver' => $request->receiver,
             'address' => $request->address,
@@ -45,6 +47,7 @@ class PacketController extends Controller
             'invoice_status' => $request->invoice_status,
             'description' => $request->description,
             'sent_time' => $sent_time,
+            'notif_time' => Carbon::parse($sent_time)->addDays(20),
         ]);
 
         alert()->success('بسته مورد نظر با موفقیت ایجاد شد','ایجاد بسته');
@@ -81,6 +84,7 @@ class PacketController extends Controller
             'invoice_status' => $request->invoice_status,
             'description' => $request->description,
             'sent_time' => $sent_time,
+            'notif_time' => Carbon::parse($sent_time)->addDays(20),
         ]);
 
         alert()->success('بسته مورد نظر با موفقیت ویرایش شد','ویرایش بسته');

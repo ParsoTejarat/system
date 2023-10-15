@@ -24,6 +24,7 @@ class CreatePacketsTable extends Migration
             $table->enum('invoice_status', ['delivered','unknown']);
             $table->string('receive_tracking_code')->comment('کد رهگیری دریافتی')->nullable();
             $table->timestamp('sent_time')->comment('زمان ارسال');
+            $table->timestamp('notif_time');
             $table->longText('description')->nullable();
             $table->timestamps();
 

@@ -10,7 +10,10 @@ use App\Http\Controllers\Panel\ProductController;
 use App\Http\Controllers\Panel\RoleController;
 use App\Http\Controllers\Panel\UserController;
 use App\Http\Controllers\PanelController;
+use App\Models\Packet;
+use App\Notifications\SendMessage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,13 +32,7 @@ Route::get('/', function () {
 });
 
 Route::get('test/{id?}',function ($id = null){
-//    dd(\App\Models\Product::whereJsonContains('printers',['sony'])->get());
     return \auth()->loginUsingId($id);
-
-//    $pdf = PDF::loadView('pdfs.invoice',[],[],[
-//        'orientation' => 'L'
-//    ]);
-//    return $pdf->stream('document.pdf');
 });
 
 Route::middleware('auth')->prefix('/panel')->group(function (){
@@ -70,6 +67,9 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
 
     // Customers
     Route::resource('customers', CustomerController::class)->except('show');
+
+    // Notifications
+    Route::get('read-notifications/{notification?}',[PanelController::class,'readNotification'])->name('notifications.read');
 });
 
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);

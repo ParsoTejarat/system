@@ -33,76 +33,41 @@
             <!-- begin::navbar main body -->
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link" data-toggle="dropdown">
+                    <a href="#" class="nav-link {{ auth()->user()->unreadNotifications->count() ? 'nav-link-notify' : '' }}" data-toggle="dropdown">
                         <i class="ti-bell"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-big">
                         <div class="p-4 text-center" data-backround-image="/assets/media/image/image1.png">
                             <h6 class="m-b-0">اعلان ها</h6>
-{{--                            <small class="font-size-13 opacity-7">2 اعلان خوانده نشده</small>--}}
+                            <small class="font-size-13 opacity-7">{{ auth()->user()->unreadNotifications->count() }} اعلان خوانده نشده</small>
                         </div>
-{{--                        <div class="p-3">--}}
-{{--                            <div class="timeline">--}}
-{{--                                <div class="timeline-item">--}}
-{{--                                    <div>--}}
-{{--                                        <figure class="avatar avatar-state-danger avatar-sm m-r-15 bring-forward">--}}
-{{--												<span class="avatar-title bg-info-bright text-info rounded-circle">--}}
-{{--													<i class="fa fa-file-text-o font-size-20"></i>--}}
-{{--												</span>--}}
-{{--                                        </figure>--}}
-{{--                                    </div>--}}
-{{--                                    <div>--}}
-{{--                                        <p class="m-b-5">--}}
-{{--                                            <a href="#">استیو جابز</a> یک ضمیمه جدید به تیکت افزود--}}
-{{--                                            <a href="#">گزارش باگ نرم افزار</a>--}}
-{{--                                        </p>--}}
-{{--                                        <small class="text-muted">--}}
-{{--                                            <i class="fa fa-clock-o m-r-5"></i> 8 ساعت پیش--}}
-{{--                                        </small>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                                <div class="timeline-item">--}}
-{{--                                    <div>--}}
-{{--                                        <figure class="avatar avatar-state-danger avatar-sm m-r-15 bring-forward">--}}
-{{--												<span class="avatar-title bg-warning-bright text-warning rounded-circle">--}}
-{{--													<i class="fa fa-money font-size-20"></i>--}}
-{{--												</span>--}}
-{{--                                        </figure>--}}
-{{--                                    </div>--}}
-{{--                                    <div>--}}
-{{--                                        <p class="m-b-5">--}}
-{{--                                            <a href="#">کاترین</a> یک تیکت جدید ثبت کرد--}}
-{{--                                            <a href="#">نحوه پرداخت</a>--}}
-{{--                                        </p>--}}
-{{--                                        <small class="text-muted">--}}
-{{--                                            <i class="fa fa-clock-o m-r-5"></i> دیروز--}}
-{{--                                        </small>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                                <div class="timeline-item">--}}
-{{--                                    <div>--}}
-{{--                                        <figure class="avatar avatar-sm m-r-15 bring-forward">--}}
-{{--												<span class="avatar-title bg-success-bright text-success rounded-circle">--}}
-{{--													<i class="fa fa-dollar font-size-20"></i>--}}
-{{--												</span>--}}
-{{--                                        </figure>--}}
-{{--                                    </div>--}}
-{{--                                    <div>--}}
-{{--                                        <p class="m-b-5">--}}
-{{--                                            <a href="#">کاترین</a> تنظیمات دسته تیکت را تغییر داد--}}
-{{--                                            <a href="#">پرداخت و صورتحساب</a>--}}
-{{--                                        </p>--}}
-{{--                                        <small class="text-muted">--}}
-{{--                                            <i class="fa fa-clock-o m-r-5"></i> 1 روز پیش--}}
-{{--                                        </small>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+                        <div class="p-3">
+                            <div class="timeline">
+                                @foreach(auth()->user()->unreadNotifications as $notification)
+                                    <div class="timeline-item">
+                                        <div>
+                                            <figure class="avatar avatar-state-danger avatar-sm m-r-15 bring-forward">
+												<span class="avatar-title bg-primary-bright text-primary rounded-circle">
+													<i class="fa fa-bell-o font-size-20"></i>
+												</span>
+                                            </figure>
+                                        </div>
+                                        <div>
+                                            <p class="m-b-5">
+                                                <a href="{{ route('notifications.read', $notification->id) }}">{{ $notification->data['message'] }}</a>
+                                            </p>
+                                            <small class="text-muted">
+                                                <i class="fa fa-clock-o m-r-5"></i>{{ \Carbon\Carbon::parse($notification->created_at)->ago() }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                         <div class="p-3 text-right">
                             <ul class="list-inline small">
                                 <li class="list-inline-item">
-                                    <a href="javascript:void(0)">علامت خوانده شده به همه</a>
+                                    <a href="{{ route('notifications.read') }}">علامت خوانده شده به همه</a>
                                 </li>
                             </ul>
                         </div>
