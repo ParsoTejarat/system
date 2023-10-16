@@ -25,9 +25,9 @@ class StoreInvoiceRequest extends FormRequest
     {
         return [
             'buyer_name' => 'required',
-            'economical_number' => 'required|numeric',
             'national_number' => 'required|numeric',
             'postal_code' => 'required|numeric',
+            'economical_number' => (auth()->user()->isSystemUser() ? 'required|numeric' : 'nullable|numeric'),
             'phone' => 'required',
             'province' => 'required',
             'city' => 'required',

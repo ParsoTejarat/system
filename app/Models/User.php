@@ -56,4 +56,9 @@ class User extends Authenticatable
         return $this->hasMany(Packet::class);
     }
 
+    public function isSystemUser()
+    {
+        return $this->hasPermission('system-user');
+    }
+
 }

@@ -27,7 +27,7 @@
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
-                        <label for="economical_number">شماره اقتصادی<span class="text-danger">*</span></label>
+                        <label for="economical_number">شماره اقتصادی @can('system-user')<span class="text-danger">*</span>@endcan</label>
                         <input type="text" name="economical_number" class="form-control" id="economical_number" value="{{ old('economical_number') }}">
                         @error('economical_number')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
