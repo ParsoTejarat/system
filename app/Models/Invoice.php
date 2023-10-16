@@ -41,4 +41,9 @@ class Invoice extends Model
     {
         return $this->hasOne(Packet::class);
     }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
 }

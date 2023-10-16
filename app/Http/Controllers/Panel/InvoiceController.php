@@ -35,7 +35,7 @@ class InvoiceController extends Controller
         $this->authorize('invoices-create');
 
         $invoice = Invoice::create([
-            'buyer_name' => $request->buyer_name,
+            'customer_id' => $request->buyer_name,
             'economical_number' => $request->economical_number,
             'national_number' => $request->national_number,
             'postal_code' => $request->postal_code,
@@ -77,7 +77,7 @@ class InvoiceController extends Controller
         $this->storeInvoiceProducts($invoice, $request);
 
         $invoice->update([
-            'buyer_name' => $request->buyer_name,
+            'customer_id' => $request->buyer_name,
             'economical_number' => $request->economical_number,
             'national_number' => $request->national_number,
             'postal_code' => $request->postal_code,

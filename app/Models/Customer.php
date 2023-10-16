@@ -15,4 +15,9 @@ class Customer extends Model
         'government' => 'دولتی',
         'private' => 'خصوصی',
     ];
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
 }

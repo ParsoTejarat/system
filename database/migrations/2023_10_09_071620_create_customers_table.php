@@ -17,12 +17,17 @@ class CreateCustomersTable extends Migration
             $table->id();
             $table->string('name');
             $table->enum('type',['government','private']);
+            $table->string('economical_number')->comment('شماره اقتصادی')->nullable();
+            $table->string('national_number')->comment('شماره ملی');
+            $table->string('province');
+            $table->string('city');
             $table->longText('description')->nullable();
             $table->string('phone1');
             $table->string('phone2')->nullable();
             $table->string('phone3')->nullable();
             $table->string('address1')->nullable();
             $table->string('address2')->nullable();
+            $table->string('postal_code');
             $table->timestamps();
         });
     }

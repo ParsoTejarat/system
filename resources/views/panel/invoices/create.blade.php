@@ -20,8 +20,13 @@
                         <h4>مشخصات خریدار</h4>
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
-                        <label for="buyer_name">نام شخص حقیقی/حقوقی<span class="text-danger">*</span></label>
-                        <input type="text" name="buyer_name" class="form-control" id="buyer_name" value="{{ old('buyer_name') }}">
+                        <label for="buyer_name">نام شخص حقیقی/حقوقی <span class="text-danger">*</span></label>
+                        <select name="buyer_name" id="buyer_name" class="js-example-basic-single select2-hidden-accessible" data-select2-id="5" tabindex="-2" aria-hidden="true">
+                            <option value="" disabled selected>انتخاب کنید...</option>
+                            @foreach(\App\Models\Customer::all(['id','name']) as $customer)
+                                <option value="{{ $customer->id }}" {{ old('buyer_name') == $customer->id ? 'selected' : '' }}>{{ $customer->name }}</option>
+                            @endforeach
+                        </select>
                         @error('buyer_name')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -274,6 +279,26 @@
                 CalcProductInvoice(this)
             })
             // end calc the product invoice
+
+            // get customer info
+            $(document).on('change', 'select[name="buyer_name"]', function () {
+                let customer_id = this.value;
+
+                $.ajax({
+                    url: '/panel/get-customer-info/'+customer_id,
+                    type: 'post',
+                    success: function(res) {
+                        $('#economical_number').val(res.data.economical_number)
+                        $('#national_number').val(res.data.national_number)
+                        $('#postal_code').val(res.data.postal_code)
+                        $('#phone').val(res.data.phone1)
+                        $('#address').val(res.data.address1)
+                        $('#province').val(res.data.province).trigger('change');
+                        $('#city').val(res.data.city)
+                    }
+                })
+            })
+            // end get customer info
         })
 
         function CalcProductInvoice(changeable) {

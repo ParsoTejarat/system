@@ -96,7 +96,7 @@
                             <tr>
                                 <td class="text-center">
                                     <div class="mb-3">
-                                        <span class="mr-100">نام شخص حقیقی/حقوقی: {{ $invoice->buyer_name }}</span>
+                                        <span class="mr-100">نام شخص حقیقی/حقوقی: {{ $invoice->customer->name }}</span>
                                         <span class="mr-100">شماره اقتصادی: {{ $invoice->economical_number }}</span>
                                         <span class="mr-100">شماره ثبت/شماره ملی: {{ $invoice->national_number }}</span>
                                         <span class="mr-100">استان: {{ $invoice->province }}</span>

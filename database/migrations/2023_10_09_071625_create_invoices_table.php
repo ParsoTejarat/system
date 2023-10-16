@@ -15,7 +15,7 @@ class CreateInvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->string('buyer_name');
+            $table->unsignedBigInteger('customer_id');
             $table->unsignedInteger('economical_number')->comment('شماره اقتصادی');
             $table->unsignedInteger('national_number')->comment('شماره ملی');
             $table->string('province');
@@ -24,6 +24,8 @@ class CreateInvoicesTable extends Migration
             $table->string('postal_code');
             $table->string('phone');
             $table->timestamps();
+
+            $table->foreign('customer_id')->references('id')->on('customers');
         });
     }
 

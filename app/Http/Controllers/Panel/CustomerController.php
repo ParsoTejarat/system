@@ -32,6 +32,11 @@ class CustomerController extends Controller
         Customer::create([
             'name' => $request->name,
             'type' => $request->type,
+            'economical_number' => $request->economical_number,
+            'national_number' => $request->national_number,
+            'postal_code' => $request->postal_code,
+            'province' => $request->province,
+            'city' => $request->city,
             'phone1' => $request->phone1,
             'phone2' => $request->phone2,
             'phone3' => $request->phone3,
@@ -63,6 +68,11 @@ class CustomerController extends Controller
         $customer->update([
             'name' => $request->name,
             'type' => $request->type,
+            'economical_number' => $request->economical_number,
+            'national_number' => $request->national_number,
+            'postal_code' => $request->postal_code,
+            'province' => $request->province,
+            'city' => $request->city,
             'phone1' => $request->phone1,
             'phone2' => $request->phone2,
             'phone3' => $request->phone3,
@@ -81,5 +91,10 @@ class CustomerController extends Controller
 
         $customer->delete();
         return back();
+    }
+
+    public function getCustomerInfo(Customer $customer)
+    {
+        return response()->json(['data' => $customer]);
     }
 }

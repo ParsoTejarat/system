@@ -57,7 +57,7 @@
                     @foreach($invoices as $key => $invoice)
                         <tr>
                             <td>{{ ++$key }}</td>
-                            <td>{{ $invoice->buyer_name }}</td>
+                            <td>{{ $invoice->customer->name }}</td>
                             <td>{{ $invoice->economical_number }}</td>
                             <td>{{ $invoice->province }}</td>
                             <td>{{ $invoice->city }}</td>

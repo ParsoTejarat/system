@@ -26,6 +26,11 @@ class UpdateCustomerRequest extends FormRequest
         return [
             'name' => 'required',
             'type' => 'required',
+            'national_number' => 'required|numeric',
+            'postal_code' => 'required|numeric',
+            'economical_number' => 'nullable|numeric',
+            'province' => 'required',
+            'city' => 'required',
             'phone1' => 'required|numeric',
             'phone2' => 'nullable|numeric',
             'phone3' => 'nullable|numeric',
