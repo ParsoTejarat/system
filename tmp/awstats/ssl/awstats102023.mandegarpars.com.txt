@@ -1,0 +1,435 @@
+AWSTATS DATA FILE 7.8 (build 20200416)
+# If you remove this file, all statistics for date 202310 will be lost/reset.
+# Last config file used to build this data file was /home/admin/public_html/tmp/awstats/ssl/awstats.mandegarpars.com.conf.
+
+# Position (offset in bytes) in this file for beginning of each section for
+# direct I/O access. If you made changes somewhere in this file, you should
+# also remove completely the MAP section (AWStats will rewrite it at next
+# update).
+BEGIN_MAP 28
+POS_GENERAL 2026                
+POS_TIME 2709                
+POS_VISITOR 3533                
+POS_DAY 4450                
+POS_DOMAIN 4627                
+POS_LOGIN 4912                
+POS_ROBOT 5067                
+POS_WORMS 5434                
+POS_EMAILSENDER 5565                
+POS_EMAILRECEIVER 5708                
+POS_SESSION 5784                
+POS_SIDER 5978                
+POS_FILETYPES 6744                
+POS_DOWNLOADS 6976                
+POS_OS 7024                
+POS_BROWSER 7271                
+POS_SCREENSIZE 7725                
+POS_UNKNOWNREFERER 7799                
+POS_UNKNOWNREFERERBROWSER 8018                
+POS_ORIGIN 8146                
+POS_SEREFERRALS 8281                
+POS_PAGEREFS 8444                
+POS_SEARCHWORDS 9292                
+POS_KEYWORDS 9444                
+POS_MISC 2373                
+POS_ERRORS 9503                
+POS_CLUSTER 4768                
+POS_SIDER_404 9641                
+END_MAP
+
+# LastLine    = Date of last record processed - Last record line number in last log - Last record offset in last log - Last record signature value
+# FirstTime   = Date of first visit for history file
+# LastTime    = Date of last visit for history file
+# LastUpdate  = Date of last update - Nb of parsed records - Nb of parsed old records - Nb of parsed new records - Nb of parsed corrupted - Nb of parsed dropped
+# TotalVisits = Number of visits
+# TotalUnique = Number of unique visitors
+# MonthHostsKnown   = Number of hosts known
+# MonthHostsUnKnown = Number of hosts unknown
+BEGIN_GENERAL 8
+LastLine 20231016140104 685 140652 15190170637164
+FirstTime 20231015160546
+LastTime 20231016140104
+LastUpdate 20231016140203 685 0 680 4 1
+TotalVisits 23                  
+TotalUnique 20                  
+MonthHostsKnown 0                   
+MonthHostsUnknown 20                  
+END_GENERAL
+
+# Misc ID - Pages - Hits - Bandwidth
+BEGIN_MISC 10
+DirectorSupport 0 0 0
+FlashSupport 0 0 0
+JavaEnabled 0 0 0
+QuickTimeSupport 0 0 0
+TotalMisc 0 0 0
+AddToFavourites 0 1 0
+RealPlayerSupport 0 0 0
+WindowsMediaPlayerSupport 0 0 0
+PDFSupport 0 0 0
+JavascriptDisabled 0 0 0
+END_MISC
+
+# Hour - Pages - Hits - Bandwidth - Not viewed Pages - Not viewed Hits - Not viewed Bandwidth
+BEGIN_TIME 24
+0 2 2 151431 7 8 75343
+1 1 1 75782 2 4 75429
+2 1 1 75915 0 1 0
+3 0 0 0 0 0 0
+4 2 2 151362 1 1 16
+5 0 0 0 3 3 0
+6 0 0 0 1 1 0
+7 7 7 539924 3 8 152348
+8 7 7 539821 20 21 150863
+9 3 3 231780 3 6 164858
+10 1 1 83499 1 1 81975
+11 18 18 82432 7 17 2226202
+12 3 16 1347506 18 19 5837188
+13 33 202 5731072 3 14 1003643
+14 16 92 5498315 1 1 358
+15 0 0 0 46 50 31979
+16 4 4 157596 142 144 75919
+17 2 2 151620 1 1 0
+18 5 5 379241 2 2 75431
+19 1 1 965 3 4 226288
+20 0 0 0 0 1 0
+21 1 1 75805 5 7 228070
+22 0 0 0 0 0 0
+23 1 1 75867 0 0 0
+END_TIME
+
+# Host - Pages - Hits - Bandwidth - Last visit date - [Start date of last visit] - [Last page of last visit]
+# [Start date of last visit] and [Last page of last visit] are saved only if session is not finished
+# The 25 first Hits must be first (order not required for others)
+BEGIN_VISITOR 20
+31.130.181.110 69 238 7135190 20231016135813 20231016125436 /panel/users
+2.147.54.107 19 108 6845821 20231016140104 20231016135954 /panel/roles/create
+34.217.103.33 2 2 151717 20231015181105
+3.93.56.159 2 2 151652 20231015182629
+18.204.214.24 1 1 75867 20231015235135
+47.89.193.162 1 1 75782 20231016013906
+37.35.65.11 1 1 965 20231015165404
+35.160.143.243 1 1 965 20231015195824
+37.220.93.104 1 1 75805 20231015211021
+104.28.214.162 1 1 76827 20231016072614
+78.242.252.42 1 1 76014 20231015160757
+165.22.90.231 1 1 75677 20231016044947
+172.104.11.4 1 1 75685 20231016044142
+51.89.153.112 1 1 75789 20231016000150
+65.0.7.139 1 1 75845 20231015173228
+82.115.19.133 1 1 75872 20231015180458
+104.28.246.162 1 1 77128 20231016081959
+167.94.138.51 1 1 75642 20231016005128
+35.89.79.105 1 1 75915 20231016022242
+34.203.13.39 1 1 75775 20231015173824
+END_VISITOR
+
+# Date - Pages - Hits - Bandwidth - Visits
+BEGIN_DAY 2
+20231015 14 14 841094 11
+20231016 94 352 14508839 12
+END_DAY
+
+# Domain - Pages - Hits - Bandwidth
+# The 25 first Pages must be first (order not required for others)
+BEGIN_DOMAIN 5
+ir 89 347 14056883
+us 15 15 1064477
+gb 2 2 151594
+rs 1 1 965
+fr 1 1 76014
+END_DOMAIN
+
+# Cluster ID - Pages - Hits - Bandwidth
+BEGIN_CLUSTER 0
+END_CLUSTER
+
+# Login - Pages - Hits - Bandwidth - Last visit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_LOGIN 0
+END_LOGIN
+
+# Robot ID - Hits - Bandwidth - Last visit - Hits on robots.txt
+# The 25 first Hits must be first (order not required for others)
+BEGIN_ROBOT 6
+Googlebot/ 17 1402438 20231016135728 1
+no_user_agent 12 613746 20231016113703 0
+curl 8 21555 20231015155623 0
+bingbot/ 2 151774 20231015215448 0
+(firefox/)([0-9]\.|[0-1][0]\.) 1 75838 20231015211018 0
+MJ12bot/ 1 75991 20231016071618 0
+END_ROBOT
+
+# Worm ID - Hits - Bandwidth - Last visit
+# The 5 first Hits must be first (order not required for others)
+BEGIN_WORMS 0
+END_WORMS
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first Hits must be first (order not required for others)
+BEGIN_EMAILSENDER 0
+END_EMAILSENDER
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first hits must be first (order not required for others)
+BEGIN_EMAILRECEIVER 0
+END_EMAILRECEIVER
+
+# Session range - Number of visits
+BEGIN_SESSION 6
+0s-30s 16
+2mn-5mn 1
+30mn-1h 1
+5mn-15mn 1
+30s-2mn 1
+1h+ 1
+END_SESSION
+
+# URL - Pages - Bandwidth - Entry - Exit
+# The 25 first Pages must be first (order not required for others)
+BEGIN_SIDER 18
+/ 57 2776462 21 19
+/panel/roles 7 123783 0 0
+/assets/js/sweetalert2@11 6 209415 0 0
+/panel/users 5 85595 0 0
+/assets/fonts/farsi-fonts/iran-yekan-500.woff2 5 148032 0 0
+/assets/fonts/farsi-fonts/iran-yekan-700.woff2 4 144144 0 0
+/panel 4 73128 0 0
+/assets/fonts/farsi-fonts/iran-yekan-400.woff2 4 142848 0 0
+/assets/icons/themify/fonts/themify.woff 3 168324 0 0
+/assets/icons/font-awesome/fonts/fontawesome-webfont.woff2 3 231480 0 0
+/panel/users/create 2 33198 0 0
+/.env 2 1930 2 2
+/panel/printers 1 15605 0 0
+/panel/customers 1 15648 0 0
+/panel/roles/create 1 20475 0 0
+/test 1 0 0 0
+/panel/users/1/edit 1 16186 0 0
+/panel/products 1 15746 0 0
+END_SIDER
+
+# Files type - Hits - Bandwidth - Bandwidth without compression - Bandwidth after compression
+BEGIN_FILETYPES 9
+js 126 5772202 0 0
+html 57 2776462 0 0
+gif 2 8356 0 0
+woff 3 168324 0 0
+Unknown 30 608779 0 0
+env 2 1930 0 0
+css 100 3257015 0 0
+png 30 2090361 0 0
+woff2 16 666504 0 0
+END_FILETYPES
+
+# Downloads - Hits - Bandwidth
+BEGIN_DOWNLOADS 0
+END_DOWNLOADS
+
+# OS ID - Hits
+BEGIN_OS ID - Hits - Pages 14
+blackberry 1 1
+Unknown 2 2
+win10 241 72
+winxp 1 1
+android 109 20
+macosx14 1 1
+macosx13 1 1
+macosx15 2 2
+win8 1 1
+androidkitkat 2 2
+linux 2 2
+android10 1 1
+macosx 1 1
+bsdopenbsd 1 1
+END_OS
+
+# Browser ID - Hits - Pages
+BEGIN_BROWSER 20
+chrome76.0.3809.100 1 1
+safari6.0.0.141 1 1
+Unknown 1 1
+mozilla 1 1
+chrome103.0.5060.114 1 1
+android 1 1
+chrome97.0.4692.99 1 1
+firefox30.0 1 1
+chrome97.0.4692.71 1 1
+chrome44.0.2403.157 1 1
+chrome99.0.4844.74 1 1
+chrome67.0.3396.87 1 1
+safari15.0 1 1
+chrome55.0.3044.69 1 1
+chrome108.0.0.0 1 1
+chrome81.0.4044.129 1 1
+chrome96.0.4664.104 108 19
+msie6.0 1 1
+firefox118.0 240 71
+chrome100.0.4896.127 1 1
+END_BROWSER
+
+# Screen size - Hits
+BEGIN_SCREENSIZE 0
+END_SCREENSIZE
+
+# Unknown referer OS - Last visit date
+BEGIN_UNKNOWNREFERER 2
+Mozilla/5.0_(compatible;_CensysInspect/1.1;__https://about.censys.io/) 20231016005128
+Python/3.7_aiohttp/3.7.4.post0 20231015160757
+END_UNKNOWNREFERER
+
+# Unknown referer Browser - Last visit date
+BEGIN_UNKNOWNREFERERBROWSER 1
+Python/3.7_aiohttp/3.7.4.post0 20231015160757
+END_UNKNOWNREFERERBROWSER
+
+# Origin - Pages - Hits 
+BEGIN_ORIGIN 6
+From0 58 58
+From1 1 1
+From2 1 1
+From3 48 306
+From4 0 0
+From5 0 0
+END_ORIGIN
+
+# Search engine referers ID - Pages - Hits
+BEGIN_SEREFERRALS 1
+www_google_com 1 1
+END_SEREFERRALS
+
+# External page referers - Pages - Hits
+# The 25 first Pages must be first (order not required for others)
+BEGIN_PAGEREFS 14
+https://193.105.234.70/assets/css/font/primary-iran-yekan.css 11 11
+https://193.105.234.70/panel/users 9 9
+https://193.105.234.70/panel/roles 7 136
+https://193.105.234.70/panel 5 63
+https://193.105.234.70 3 21
+https://193.105.234.70/assets/icons/font-awesome/css/font-awesome.min.css 3 3
+https://193.105.234.70/assets/icons/themify/themify-icons.css 3 3
+https://193.105.234.70/panel/products 2 2
+https://193.105.234.70/assets/css/font/secondary-iran-yekan.css 2 2
+https://193.105.234.70/panel/printers 1 1
+https://193.105.234.70/panel/users/create 1 1
+https://193.105.234.70/panel/customers 1 1
+https://193.105.234.70/vendors/slick/slick-theme.css 0 2
+https://193.105.234.70/assets/css/app.css 0 51
+END_PAGEREFS
+
+# Search keyphrases - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_SEARCHWORDS 0
+END_SEARCHWORDS
+
+# Search keywords - Number of search
+# The 25 first number of search must be first (order not required for others)
+BEGIN_KEYWORDS 0
+END_KEYWORDS
+
+# Errors - Hits - Bandwidth
+BEGIN_ERRORS 5
+405 1 574548
+302 3 1098
+404 216 13298
+500 21 7475624
+403 13 0
+END_ERRORS
+
+# URL with 404 errors - Hits - Last URL referrer
+BEGIN_SIDER_404 95
+/.env.example 2 -
+/crm/.env 2 -
+/nmaplowercheck1697372996 1 -
+/.git/HEAD 1 -
+/static/admin/javascript/hetong.js 1 -
+/_ignition/execute-solution 24 -
+/src/.env 2 -
+/base.cgi 1 -
+/sites/all/libraries/mailchimp/.env 2 -
+/admin.jsa 1 -
+/login 1 -
+/Public/home/js/check.js 1 -
+/inicio.shtml 1 -
+/lib/.env 2 -
+/app/.env 2 -
+/readme.txt 1 -
+/storage/image/ZIVESTA-LOGO.svg 1 -
+/storage/image/ZR-FLAG-01.svg 1 -
+/docs/.env 2 -
+/indice.pl 1 -
+/version 1 -
+/vendor/.env 2 -
+/local/.env 2 -
+/new/.env 2 -
+/app/config/.env 2 -
+/download/.env 2 -
+/web/.env 2 -
+/scripts/WPnBr.dll 1 -
+/conf/.env 2 -
+/blogs/.env 2 -
+/wp-admin/.env 2 -
+/index.jsa 1 -
+/apps/.env 2 -
+/storage/.env 2 -
+/storage/image/zivesta-white.png 1 -
+/protected/.env 2 -
+/wp-login.php 1 http://www.google.com.hk
+/base.jsa 1 -
+/CSS/Miniweb.css 1 -
+/aws.env 2 -
+/wp-content/.env 2 -
+/robots.txt 7 -
+/old/.env 2 -
+/products/rira-vest 1 -
+/Portal0000.htm 1 -
+/admin.pl 1 -
+/indice.jsa 1 -
+/admin/.env 2 -
+/pools 1 -
+/sites/.env 2 -
+/__tests__/test-become/.env 2 -
+/backend/.env 2 -
+/start.cgi 1 -
+/sendgrid.env 2 -
+/default.aspx 1 -
+/sdk 1 -
+/main/.env 2 -
+/gists/cache 2 -
+/admin.shtml 1 -
+/docs/cplugError.html/ 1 -
+/database/.env 2 -
+/main.aspx 1 -
+/vendor/laravel/.env 2 -
+/.env.dev 2 -
+/library/.env 2 -
+/server-status 1 -
+/start.php 1 -
+/api/.env 3 -
+/NgST 1 -
+/base/.env 2 -
+/pools/default/buckets 1 -
+/redmine/.env 2 -
+/admin.php 1 -
+/autodiscover/autodiscover.json 1 -
+/admin.jsp 1 -
+/phpmyadmin/ 46 -
+/Portal/Portal.mwsl 1 -
+/newsite/.env 2 -
+/.env 2 -
+/shared/.env 2 -
+/client/.env 2 -
+/payment/index.php 1 -
+/www/.env 2 -
+/site/.env 2 -
+/base.cfm 1 -
+/__Additional 1 -
+/cgi-bin/.env 2 -
+/products/Hoodie%201112 1 -
+/index.cfm 1 -
+/storage/image/Set-Hoodi/gray-hoodi/photo5902230009504970455.jpg 1 -
+/inicio.cfm 1 -
+/index.jhtml 1 -
+/core/.env 2 -
+/laravel/.env 2 -
+/.env.php 2 -
+END_SIDER_404

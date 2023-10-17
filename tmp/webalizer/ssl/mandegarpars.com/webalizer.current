@@ -1,0 +1,628 @@
+# Webalizer V2.23-08 Incremental Data - 10/16/2023 14:01:04
+2023 10 16 14 1 4
+685 322 57 63 20 36 25755843 247 56 0
+35 93 216 15 16
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+225 33 1478781 25 105 21
+460 289 24277062 35 142 35
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+13 3 226774 10
+5 2 151211 2
+2 1 75915 1
+0 0 0 0
+3 2 151378 2
+3 0 0 3
+1 0 0 1
+15 9 692272 10
+28 9 690684 27
+9 5 396638 6
+2 2 165474 2
+35 19 2308634 24
+35 17 7184694 18
+216 128 6734715 29
+93 92 5498673 7
+51 11 31979 30
+149 5 233515 56
+3 2 151620 2
+7 6 454672 7
+5 4 227253 3
+1 0 0 0
+8 4 303875 6
+0 0 0 0
+1 1 75867 1
+0
+0
+0
+322
+0
+0
+0
+0
+0
+0
+0
+0
+3
+0
+86
+0
+0
+0
+0
+0
+14
+237
+1
+0
+0
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+21
+0
+0
+0
+0
+0
+# -urls- 
+/vendors/ckeditor/ckeditor.js
+0 6 27804288 1915314 0 0
+/vendors/slick/slick-theme.css
+0 6 27800672 11600 0 0
+/assets/js/examples/select2.js
+0 7 27802752 834 0 0
+/assets/media/image/image1.png
+0 1 27805920 593287 0 0
+/assets/js/examples/vmap.js
+0 7 27801984 4860 0 0
+/bootstrap/
+0 1 27760208 957 0 0
+/vendors/charts/peity/jquery.peity.min.js
+0 6 27800944 11145 0 0
+/assets/icons/font-awesome/fonts/fontawesome-webfont.woff2
+0 3 0 231480 0 0
+/panel/roles
+0 7 27804976 123783 1 0
+/vendors/slick/slick.min.js
+0 6 27801600 128589 0 0
+/assets/media/image/logo.png
+0 6 27804032 5154 0 0
+/assets/media/image/login.png
+0 3 27799568 541952 0 0
+/vendors/bundle.js
+0 9 27799696 2625545 0 0
+/vendors/datepicker/daterangepicker.js
+0 6 27802112 250218 0 0
+/panel/customers
+0 1 27804656 15648 0 0
+/assets/js/examples/ckeditor.js
+0 6 27802368 6444 0 0
+/assets/icons/weather/css/helper.css
+0 9 27799024 18405 0 0
+/assets/js/examples/datepicker.js
+0 6 27803184 16539 0 0
+/assets/fonts/farsi-fonts/iran-yekan-700.woff2
+0 4 27803584 144144 0 0
+/assets/js/sweetalert.min.js
+0 6 27801344 122424 0 0
+/assets/media/image/avatar.png
+0 6 27804160 943398 0 0
+/assets/js/app.js
+0 9 27798016 62955 0 0
+/assets/icons/themify/themify-icons.css
+0 9 27798736 147564 0 0
+/panel/users/create
+0 2 27805808 33198 0 0
+/vendors/slick/slick.css
+0 6 27800272 8880 0 0
+/favicon.ico
+0 1 27797760 0 0 0
+/vendors/select2/js/select2.min.js
+0 6 27802624 203820 0 0
+/vendors/vmap/maps/jquery.vmap.usa.js
+0 6 27801728 143136 0 0
+/.env
+0 2 27762720 1930 0 0
+/vendors/circle-progress/circle-progress.min.js
+0 6 27800800 11454 0 0
+/assets/media/image/favicon.png
+0 6 27799808 2562 0 0
+/assets/media/image/logo-sm.png
+0 8 27798352 4008 0 0
+/vendors/datepicker-jalali/bootstrap-datepicker.min.css
+0 6 27800528 13992 0 0
+/assets/css/font/secondary-iran-yekan.css
+0 9 27798656 15498 0 0
+/vendors/datepicker/daterangepicker.css
+0 6 27800048 32885 0 0
+/vendors/datepicker-jalali/bootstrap-datepicker.min.js
+0 6 27802880 131763 0 0
+/assets/fonts/farsi-fonts/iran-yekan-500.woff2
+0 5 27799152 148032 0 0
+/vendors/datepicker-jalali/bootstrap-datepicker.fa.min.js
+0 6 0 14568 0 0
+/vendors/vmap/jquery.vmap.min.js
+0 6 27801472 63450 0 0
+/assets/js/examples/dashboard.js
+0 6 27802240 111045 0 0
+/assets/icons/weather/css/pe-icon-7-weather.css
+0 9 27798944 59390 0 0
+/assets/js/sweetalert2@11
+0 6 27802496 209415 0 1
+/assets/js/examples/charts/peity.js
+0 6 27801088 12270 0 0
+/assets/css/app.css
+0 9 27798240 1706054 0 0
+/panel/roles/create
+0 1 27807280 20475 0 0
+/vendors/slick/ajax-loader.gif
+0 2 27804416 8356 0 0
+/panel
+0 4 27799936 73128 0 0
+/
+0 85 27759808 4112447 46 5
+/config/
+0 1 27760400 3278 0 0
+/vendors/bundle.css
+0 9 27798128 1379403 0 0
+/assets/icons/themify/fonts/themify.woff
+0 3 27803312 168324 0 0
+/assets/css/font/primary-iran-yekan.css
+0 9 27798480 15426 0 0
+/panel/products
+0 1 27805392 15746 0 0
+/panel/users
+0 5 27804768 85595 0 0
+/robots.txt
+0 1 27806160 24 0 0
+/vendors/select2/css/select2.min.css
+0 6 27800400 60720 0 0
+/panel/printers
+0 1 27805184 15605 0 0
+/vendors/vmap/jqvmap.min.css
+0 6 27801216 2452 0 0
+/assets/fonts/farsi-fonts/iran-yekan-400.woff2
+0 4 27799360 142848 0 0
+/test
+0 1 27806048 0 0 0
+/panel/users/1/edit
+0 1 27805600 16186 0 0
+/assets/icons/font-awesome/css/font-awesome.min.css
+0 9 27798864 248144 0 0
+/vendors/charts/chartjs/chart.min.js
+0 6 27801856 473529 0 0
+# End Of Table - urls
+# -sites- (monthly)
+crawl-66-249-66-4.googlebot.com
+0 5 3 78150 2 1697464639
+/
+ec2-65-0-7-139.ap-south-1.compute.amazonaws.com
+0 1 1 75845 1 1697391148
+/
+60.217.75.70
+0 1 0 0 1 1697404361
+/
+165.22.90.231
+0 1 1 75677 1 1697431787
+/
+104.28.214.162
+0 2 1 76827 1 1697441174
+/
+apzg-0720c-143.stretchoid.com
+0 1 0 0 1 1697440546
+/
+181.41.206.226
+0 1 1 0 1 1697456223
+/
+apzg-0720b-008.stretchoid.com
+0 1 0 0 0 0
+-
+82.115.19.133
+0 2 1 75872 1 1697393098
+/
+104.28.246.162
+0 2 1 77128 1 1697444399
+/
+bc9d60b8.catv.pool.telekom.hu
+0 1 1 75431 1 1697445675
+/
+o2v6ow.static.otenet.gr
+0 1 1 75432 1 1697446042
+/
+jersey.scan.bufferover.run
+0 1 1 75685 1 1697431302
+/
+ec2-18-204-214-24.compute-1.amazonaws.com
+0 1 1 75867 1 1697413895
+/
+ec2-34-217-103-33.us-west-2.compute.amazonaws.com
+0 2 2 151717 1 1697393465
+/
+crawl-66-249-66-6.googlebot.com
+0 1 1 81975 1 1697453838
+/
+catv-88-87-247-247.catv.fixed.vodafone.hu
+0 1 1 75428 1 1697398318
+/
+p5080f9a1.dip0.t-ipconnect.de
+0 1 1 75431 1 1697395382
+/
+ns3145504.ip-51-89-153.eu
+0 1 1 75789 1 1697414510
+/
+2.147.54.107
+0 109 108 6846179 1 1697464864
+/panel/roles/create
+ec2-35-160-143-243.us-west-2.compute.amazonaws.com
+0 1 1 965 0 0
+-
+31.130.181.110
+0 264 153 11847282 6 1697464693
+/panel/users
+ec2-35-89-79-105.us-west-2.compute.amazonaws.com
+0 1 1 75915 1 1697422962
+/
+ip10.50-31-21.static.steadfastdns.net
+0 11 0 2764272 2 1697460032
+-
+194.26.192.49.powered.by.rdp.sh
+0 2 0 581157 1 1697458771
+/
+crawl-66-249-66-3.googlebot.com
+0 4 2 526831 0 0
+-
+47.89.193.162
+0 1 1 75782 1 1697420346
+/
+petalbot-114-119-144-37.petalsearch.com
+0 1 0 0 0 0
+-
+ip-95-87-12-218.trakiacable.bg
+0 1 1 75429 1 1697418902
+/
+apzg-0720e-050.stretchoid.com
+0 1 0 0 1 1697387023
+-
+186.5.229.88
+0 1 1 75429 1 1697398643
+/
+crawl-xuxehn.mj12bot.com
+0 2 1 75991 1 1697440578
+/
+37.220.93.104.srvlist.ukfast.net
+0 2 2 151643 1 1697404221
+/
+msnbot-40-77-167-21.search.msn.com
+0 1 1 75887 1 1697386475
+/
+crawl-66-249-66-198.googlebot.com
+0 1 0 0 0 0
+-
+gie83-1_migr-78-242-252-42.fbx.proxad.net
+0 3 1 76014 1 1697386077
+/
+msnbot-52-167-144-16.search.msn.com
+0 1 1 75887 1 1697406888
+/
+catv-89-132-225-176.catv.fixed.vodafone.hu
+0 1 1 75431 1 1697397923
+/
+crawl-66-249-66-196.googlebot.com
+0 1 1 82455 1 1697448439
+/
+195.96.137.7
+0 51 11 31979 1 1697385398
+/
+crawl-66-249-66-197.googlebot.com
+0 2 0 0 1 1697406681
+-
+crawl-66-249-66-2.googlebot.com
+0 12 9 556670 1 1697450120
+/
+109.237.96.124
+0 6 0 0 1 1697417946
+-
+crawl-66-249-66-5.googlebot.com
+0 3 1 76357 2 1697440338
+/
+198.98.57.136
+0 1 0 16 0 0
+-
+170.64.134.89
+0 3 0 0 1 1697433393
+/
+47.88.86.63
+0 1 0 0 0 0
+-
+apzg-0720b-135.stretchoid.com
+0 1 0 0 1 1697449390
+-
+104.234.204.134
+0 1 0 0 0 0
+-
+scanner-07.ch1.censys-scanner.com
+0 3 2 150985 1 1697417488
+/
+ec2-3-93-56-159.compute-1.amazonaws.com
+0 2 2 151652 1 1697394389
+/
+ec2-34-203-13-39.compute-1.amazonaws.com
+0 1 1 75775 1 1697391504
+/
+37.35.65.11
+0 140 1 997 1 1697389186
+-
+apzg-0729a-038.stretchoid.com
+0 1 0 0 1 1697414510
+-
+47.251.11.3
+0 1 0 0 0 0
+-
+109.237.97.180
+0 2 0 6609 1 1697456511
+/
+109.237.96.251
+0 18 0 0 1 1697443351
+-
+# End Of Table - sites (monthly)
+# -sites- (daily)
+crawl-66-249-66-4.googlebot.com
+0 3 2 1805 1 1697464639
+/
+165.22.90.231
+0 1 1 75677 1 1697431787
+/
+104.28.214.162
+0 2 1 76827 1 1697441174
+/
+apzg-0720c-143.stretchoid.com
+0 1 0 0 1 1697440546
+/
+181.41.206.226
+0 1 1 0 1 1697456223
+/
+104.28.246.162
+0 2 1 77128 1 1697444399
+/
+bc9d60b8.catv.pool.telekom.hu
+0 1 1 75431 1 1697445675
+/
+o2v6ow.static.otenet.gr
+0 1 1 75432 1 1697446042
+/
+jersey.scan.bufferover.run
+0 1 1 75685 1 1697431302
+/
+crawl-66-249-66-6.googlebot.com
+0 1 1 81975 1 1697453838
+/
+ns3145504.ip-51-89-153.eu
+0 1 1 75789 1 1697414510
+/
+2.147.54.107
+0 109 108 6846179 1 1697464864
+/panel/roles/create
+31.130.181.110
+0 262 151 11766665 5 1697464693
+/panel/users
+ec2-35-89-79-105.us-west-2.compute.amazonaws.com
+0 1 1 75915 1 1697422962
+/
+ip10.50-31-21.static.steadfastdns.net
+0 11 0 2764272 2 1697460032
+-
+194.26.192.49.powered.by.rdp.sh
+0 2 0 581157 1 1697458771
+/
+crawl-66-249-66-3.googlebot.com
+0 4 2 526831 0 0
+-
+47.89.193.162
+0 1 1 75782 1 1697420346
+/
+ip-95-87-12-218.trakiacable.bg
+0 1 1 75429 1 1697418902
+/
+crawl-xuxehn.mj12bot.com
+0 2 1 75991 1 1697440578
+/
+crawl-66-249-66-198.googlebot.com
+0 1 0 0 0 0
+-
+crawl-66-249-66-196.googlebot.com
+0 1 1 82455 1 1697448439
+/
+crawl-66-249-66-2.googlebot.com
+0 9 9 556670 1 1697450120
+/
+109.237.96.124
+0 6 0 0 1 1697417946
+-
+crawl-66-249-66-5.googlebot.com
+0 3 1 76357 2 1697440338
+/
+198.98.57.136
+0 1 0 16 0 0
+-
+170.64.134.89
+0 3 0 0 1 1697433393
+/
+47.88.86.63
+0 1 0 0 0 0
+-
+apzg-0720b-135.stretchoid.com
+0 1 0 0 1 1697449390
+-
+104.234.204.134
+0 1 0 0 0 0
+-
+scanner-07.ch1.censys-scanner.com
+0 3 2 150985 1 1697417488
+/
+apzg-0729a-038.stretchoid.com
+0 1 0 0 1 1697414510
+-
+47.251.11.3
+0 1 0 0 0 0
+-
+109.237.97.180
+0 2 0 6609 1 1697456511
+/
+109.237.96.251
+0 18 0 0 1 1697443351
+-
+# End Of Table - sites (daily)
+# -referrers- 
+https://193.105.234.70/panel/users
+0 9
+android-app://com.google.android.googlequicksearchbox/
+0 1
+https://zivesta.com/
+0 4
+https://193.105.234.70/assets/icons/themify/themify-icons.css
+0 3
+https://193.105.234.70/panel/users/create
+0 2
+https://193.105.234.70/assets/css/font/primary-iran-yekan.css
+0 11
+https://zivesta.com/assets/css/app.css
+0 6
+https://193.105.234.70/
+0 42
+- (Direct Request)
+0 344
+https://193.105.234.70/assets/css/app.css
+0 51
+https://193.105.234.70/panel
+0 63
+https://193.105.234.70/assets/icons/font-awesome/css/font-awesome.min.css
+0 3
+https://193.105.234.70/vendors/slick/slick-theme.css
+0 2
+https://193.105.234.70/assets/css/font/secondary-iran-yekan.css
+0 2
+https://193.105.234.70/panel/printers
+0 1
+https://www.google.com
+0 1
+https://193.105.234.70/panel/customers
+0 1
+https://193.105.234.70/panel/roles
+0 136
+https://193.105.234.70/panel/products
+0 2
+http://www.google.com.hk
+0 1
+# End Of Table - referrers
+# -agents- 
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36
+0 1
+Mozilla/5.0 (compatible;PetalBot;+https://webmaster.petalsearch.com/site/petalbot)
+0 1
+Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36
+0 1
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36
+0 1
+Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36
+0 1
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Safari/605.1.15
+0 1
+Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+0 6
+Mozilla/5.0 (compatible; CensysInspect/1.1; +https://about.censys.io/)
+0 2
+curl/7.54.0
+0 43
+Mozilla/5.0 (Linux; U; Android 4.4.2; en-US; HM NOTE 1W Build/KOT49H) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 UCBr
+0 1
+Googlebot-Image/1.0
+0 6
+Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm) Chrome/103.0.50
+0 2
+Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36
+0 96
+Mozilla/5.0 zgrab/0.x
+0 4
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36
+0 1
+Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.5938.149 Mobile
+0 10
+Python/3.7 aiohttp/3.7.4.post0
+0 1
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36
+0 24
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:69.0) Gecko/20100101 Firefox/69.0
+0 7
+Mozilla/5.0 (X11; OpenBSD amd64; rv:30.0) Gecko/20100101 Firefox/30.0
+0 1
+Mozilla/5.0 (compatible; MJ12bot/v1.4.8; http://mj12bot.com/)
+0 2
+Mozilla/5.0 (Macintosh; Intel Mac OS X 13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36
+0 1
+Mozilla/5.0 (X11; U; Linux i686; fr; rv:1.8.1.8) Gecko/20071022 Ubuntu/7.10 (gutsy) Firefox/2.0.0.8
+0 1
+Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.5938.132 Mobile
+0 7
+Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Sa
+0 46
+Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/118.0
+0 268
+Mozilla/5.0 (Linux; Android 4.4.2; LGMS323 Build/KOT49I.MS32310b) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.103
+0 1
+Mozilla/5.0 (Linux; Android 10; M2003J15SC) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Mobile Safari/537.36
+0 1
+Mozilla/5.0 (Windows NT 6.2;en-US) AppleWebKit/537.32.36 (KHTML, live Gecko) Chrome/55.0.3044.69 Safari/537.32
+0 1
+Mozilla/5.0 (Linux; Android 4.4.2; LGUK410 Build/KOT49I.UK41010b) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 
+0 1
+Mozilla/5.0 (Linux; Android 5.0.1; Z00D Build/LRX22C) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Mobile Safar
+0 1
+Mozilla/5.0 (Linux; Android 11; M2004J15SC) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Mobile Safari/537.36
+0 3
+Mozilla/4.01 (compatible; MSIE 6.0; Windows NT 5.1)
+0 1
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36
+0 1
+Mozilla/5.0 (Linux; Android 12; SM-A137F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.104 Mobile Safari/537.36
+0 109
+Mozilla/5.0 (BlackBerry; U; BlackBerry 9800; en) AppleWebKit/534.1  (KHTML, Like Gecko) Version/6.0.0.141 Mobile Safari/534.1
+0 1
+# End Of Table - agents
+# -search strings- 
+# End Of Table - search strings
+# -usernames- 
+# End Of Table - usernames
