@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'فاکتور ها')
 @section('content')
     <div class="card">
@@ -19,7 +19,8 @@
             <form action="{{ route('factors.search') }}" method="get" id="search_form"></form>
             <div class="row mb-3">
                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                    <select name="customer_id" form="search_form" class="js-example-basic-single select2-hidden-accessible" data-select2-id="1">
+                    <select name="customer_id" form="search_form"
+                            class="js-example-basic-single select2-hidden-accessible" data-select2-id="1">
                         <option value="all">خریدار (همه)</option>
                         @foreach($customers as $customer)
                             <option value="{{ $customer->id }}" {{ request()->customer_id == $customer->id ? 'selected' : '' }}>{{ $customer->name }}</option>
@@ -27,7 +28,8 @@
                     </select>
                 </div>
                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                    <select name="province" form="search_form" class="js-example-basic-single select2-hidden-accessible" data-select2-id="2">
+                    <select name="province" form="search_form" class="js-example-basic-single select2-hidden-accessible"
+                            data-select2-id="2">
                         <option value="all">استان (همه)</option>
                         @foreach(\App\Models\Province::all('name') as $province)
                             <option value="{{ $province->name }}" {{ request()->province == $province->name ? 'selected' : '' }}>{{ $province->name }}</option>
@@ -35,16 +37,20 @@
                     </select>
                 </div>
                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                    <select name="status" form="search_form" class="js-example-basic-single select2-hidden-accessible" data-select2-id="3">
+                    <select name="status" form="search_form" class="js-example-basic-single select2-hidden-accessible"
+                            data-select2-id="3">
                         <option value="all">وضعیت (همه)</option>
-                        <option value="invoiced" {{ request()->status == 'invoiced' ? 'selected' : '' }}>فاکتور شده</option>
+                        <option value="invoiced" {{ request()->status == 'invoiced' ? 'selected' : '' }}>فاکتور شده
+                        </option>
                         <option value="paid" {{ request()->status == 'paid' ? 'selected' : '' }}>تسویه شده</option>
-                        <option value="canceled" {{ request()->status == 'canceled' ? 'selected' : '' }}>ابطال شده</option>
+                        <option value="canceled" {{ request()->status == 'canceled' ? 'selected' : '' }}>ابطال شده
+                        </option>
                     </select>
                 </div>
                 @can('accountant')
                     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                        <select name="user" form="search_form" class="js-example-basic-single select2-hidden-accessible" data-select2-id="4">
+                        <select name="user" form="search_form" class="js-example-basic-single select2-hidden-accessible"
+                                data-select2-id="4">
                             <option value="all">همکار (همه)</option>
                             @foreach(\App\Models\User::whereIn('role_id', $roles_id)->get() as $user)
                                 <option value="{{ $user->id }}" {{ request()->user == $user->id ? 'selected' : '' }}>{{ $user->fullName() }}</option>
@@ -53,7 +59,8 @@
                     </div>
                 @endcan
                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                    <input type="text" form="search_form" name="need_no" class="form-control" value="{{ request()->need_no ?? null }}" placeholder="شماره نیاز">
+                    <input type="text" form="search_form" name="need_no" class="form-control"
+                           value="{{ request()->need_no ?? null }}" placeholder="شماره نیاز">
                 </div>
                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
                     <button type="submit" class="btn btn-primary" form="search_form">جستجو</button>
@@ -96,11 +103,17 @@
                             <td>
                                 @can('accountant')
                                     @if($factor->status == 'paid')
-                                        <a href="{{ route('factors.changeStatus', $factor->id) }}" class="btn btn-success {{ $factor->invoice->created_in == 'website' ? 'disabled' : '' }}" style="display: block ruby">{{ \App\Models\Factor::STATUS[$factor->status] }}</a>
+                                        <a href="{{ route('factors.changeStatus', $factor->id) }}"
+                                           class="btn btn-success {{ $factor->invoice->created_in == 'website' ? 'disabled' : '' }}"
+                                           style="display: block ruby">{{ \App\Models\Factor::STATUS[$factor->status] }}</a>
                                     @elseif($factor->status == 'canceled')
-                                        <a href="{{ route('factors.changeStatus', $factor->id) }}" class="btn btn-danger disabled" style="display: block ruby">{{ \App\Models\Factor::STATUS[$factor->status] }}</a>
+                                        <a href="{{ route('factors.changeStatus', $factor->id) }}"
+                                           class="btn btn-danger disabled"
+                                           style="display: block ruby">{{ \App\Models\Factor::STATUS[$factor->status] }}</a>
                                     @else
-                                        <a href="{{ route('factors.changeStatus', $factor->id) }}" class="btn btn-warning {{ $factor->invoice->created_in == 'website' ? 'disabled' : '' }}" style="display: block ruby">{{ \App\Models\Factor::STATUS[$factor->status] }}</a>
+                                        <a href="{{ route('factors.changeStatus', $factor->id) }}"
+                                           class="btn btn-warning {{ $factor->invoice->created_in == 'website' ? 'disabled' : '' }}"
+                                           style="display: block ruby">{{ \App\Models\Factor::STATUS[$factor->status] }}</a>
                                     @endif
                                 @else
                                     @if($factor->status == 'paid')
@@ -115,13 +128,15 @@
                             @endcan
                             <td>{{ verta($factor->created_at)->format('H:i - Y/m/d') }}</td>
                             <td>
-                                <a class="text-primary" href="{{ route('invoices.show', [$factor->invoice->id, 'type' => 'factor']) }}">
+                                <a class="text-primary"
+                                   href="{{ route('invoices.show', [$factor->invoice->id, 'type' => 'factor']) }}">
                                     <u><strong>{{ $factor->id }}</strong></u>
                                 </a>
                             </td>
                             <td>
                                 @if($factor->invoice->created_in != 'website')
-                                    <a class="text-primary" href="{{ route('invoices.show', [$factor->invoice->id, 'type' => 'pishfactor']) }}">
+                                    <a class="text-primary"
+                                       href="{{ route('invoices.show', [$factor->invoice->id, 'type' => 'pishfactor']) }}">
                                         <u><strong>{{ $factor->invoice->id }}</strong></u>
                                     </a>
                                 @else
@@ -130,14 +145,17 @@
                             </td>
                             @can('invoices-edit')
                                 <td>
-                                    <a class="btn btn-warning btn-floating {{ $factor->invoice->created_in == 'website' ? 'disabled' : '' }}" href="{{ route('factors.edit', $factor->id) }}">
+                                    <a class="btn btn-warning btn-floating {{ $factor->invoice->created_in == 'website' ? 'disabled' : '' }}"
+                                       href="{{ route('factors.edit', $factor->id) }}">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 </td>
                             @endcan
                             @can('invoices-delete')
                                 <td>
-                                    <button class="btn btn-danger btn-floating trashRow" data-url="{{ route('factors.destroy',$factor->id) }}" data-id="{{ $factor->id }}" {{ $factor->invoice->created_in == 'website' || $factor->inventory_report != null ? 'disabled' : '' }}>
+                                    <button class="btn btn-danger btn-floating trashRow"
+                                            data-url="{{ route('factors.destroy',$factor->id) }}"
+                                            data-id="{{ $factor->id }}" {{ $factor->invoice->created_in == 'website' || $factor->inventory_report != null ? 'disabled' : '' }}>
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>

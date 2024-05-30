@@ -59,10 +59,26 @@
     .guide_box{
         text-align: center;
     }
+
+    *{
+        color: #000 !important;
+    }
+
+    .btn, .fa {
+        color: #fff !important
+    }
+
+    .table:not(.table-bordered) td {
+        line-height: 1;
+    }
+
+    .content-page {
+        height: 100% !important
+    }
 </style>
 @php
-    $sidebar = false;
-    $header = false;
+    $left_sidebar = false;
+    $topbar = false;
 
     $sum_total_price = 0;
     $sum_discount_amount = 0;
@@ -77,9 +93,7 @@
             <table>
                 <tr>
                     <td style="width: 700px">
-                        @if($invoice->type == 'official')
-                            <img src="{{ public_path('/assets/media/image/header-logo.png') }}" style="width: 15rem;">
-                        @endif
+                        <img src="{{ public_path('/assets/images/header-logo.png') }}" style="width: 15rem;">
                     </td>
                     <td>
                         <span style="font-size: 25px">سفارش مشتری</span>
@@ -101,54 +115,28 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @if($invoice->type == 'official')
                         <tr>
                             <td>
                                 <div>
-                                    <span>نام شخص حقیقی/حقوقی: شرکت صنایع ماشین های اداری ماندگار پارس</span>
+                                    <span>نام شخص حقیقی/حقوقی: بازرگانی پرسو تجارت ایرانیان</span>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <span>شماره اقتصادی: 14011383061</span>
+                                    <span>شماره اقتصادی: 10103472930</span>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <span>شماره ثبت/شماره ملی: 9931</span>
+                                    <span>شماره ثبت/شماره ملی: 309754</span>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <span>شناسه ملی: 14011383061</span>
+                                    <span>شناسه ملی: 10103472930</span>
                                 </div>
                                 <div style="height: 2rem">&nbsp;</div>
                                 <div>
-                                    <span>نشانی: تهران، شهرستان ملارد، شهرک صنعتی صفادشت، بلوار خرداد، بین خیابان پنجم و ششم غربی، پلاک 228</span>
+                                    <span>نشانی: خیابان کریمخان، خیابان ایرانشهر، پلاک 242، طبقه پنجم</span>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <span>کد پستی: 3164114855</span>
+                                    <span>کد پستی: 1584745337</span>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <span>شماره تلفن: 02165425053</span>
+                                    <span>شماره تلفن: 02188867100</span>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 </div>
                             </td>
                         </tr>
-                    @else
-                        <tr>
-                            <td class="text-center">
-                                <div class="mb-3">
-                                    <span>نام شخص حقیقی/حقوقی: {{ $invoice->seller->name }}</span>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <span>استان: {{ $invoice->seller->province }}</span>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <span>شهر: {{ $invoice->seller->city }}</span>
-                                </div>
-                                <div style="height: 2rem">&nbsp;</div>
-                                <div class="mb-3">
-                                    <span>نشانی: {{ $invoice->seller->address }}</span>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <span>شماره تماس: {{ $invoice->seller->phone }}</span>
-                                </div>
-                                <div style="height: 2rem">&nbsp;</div>
-                                <div class="mb-3">
-                                    <span>شماره کارت: {{ $invoice->seller->card_number }}</span>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <span>شماره شبا: {{ $invoice->seller->sheba_number }}</span>
-                                </div>
-                            </td>
-                        </tr>
-                    @endif
                     </tbody>
                 </table>
                 <table class="table table-bordered mb-5">
@@ -306,11 +294,9 @@
                                 <td colspan="10">{{ $invoice->description }}</td>
                                 {{--                                <td colspan="10">لطفا مبلغ فاکتور را به شماره شبا IR55 0110 0000 0010 3967 1380 01 نزد بانک صنعت و معدن شعبه مرکزی واریز فرمایید.</td>--}}
                             </tr>
-                            @if($invoice->type == 'official')
-                                <tr>
-                                    <td colspan="12"><strong>تمام اجناس ارائه شده دارای 18 ماه گارانتی از سوی شرکت صنایع ماشین های اداری ماندگار پارس می باشد</strong></td>
-                                </tr>
-                            @endif
+                            <tr>
+                                <td colspan="12"><strong>تمام اجناس ارائه شده دارای 18 ماه گارانتی از سوی شرکت صنایع ماشین های اداری ماندگار پارس می باشد</strong></td>
+                            </tr>
                             <tr>
                                 <td colspan="6">
                                     <small>مهر و امضای فروشنده</small>
@@ -326,9 +312,7 @@
                                 </td>
                                 <td>
                                     <img src="{{ $invoice->user->sign_image ? public_path($invoice->user->sign_image) : '' }}" style="width: 10rem">
-                                    @if($invoice->type == 'official')
-                                        <img src="{{ public_path('assets/media/image/stamp.png') }}" style="width: 13rem">
-                                    @endif
+                                    <img src="{{ public_path('assets/images/stamp.png') }}" style="width: 13rem">
                                 </td>
                                 <td></td>
                                 <td></td>

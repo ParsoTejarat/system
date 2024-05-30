@@ -1,8 +1,8 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'ایجاد گارانتی')
 @section('styles')
     <style>
-        .btn_remove{
+        .btn_remove {
             cursor: pointer;
         }
     </style>
@@ -18,9 +18,10 @@
                 <div class="form-row">
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="serial_number">شماره سریال<span class="text-danger">*</span></label>
-                        <input type="text" name="serial_number" class="form-control" id="serial_number" value="{{ $serial }}" readonly>
+                        <input type="text" name="serial_number" class="form-control" id="serial_number"
+                               value="{{ $serial }}" readonly>
                         @error('serial_number')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
@@ -31,7 +32,7 @@
                             @endforeach
                         </select>
                         @error('period')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
@@ -42,7 +43,7 @@
                             @endforeach
                         </select>
                         @error('status')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>

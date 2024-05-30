@@ -1,89 +1,38 @@
-<!-- Plugin scripts -->
-<script src="/vendors/bundle.js"></script>
+<!-- Vendor js -->
+<script src="/assets/js/vendor.min.js"></script>
 
-<!-- Chartjs -->
-<script src="/vendors/charts/chartjs/chart.min.js"></script>
+<!-- KNOB JS -->
+<script src="/assets/libs/jquery-knob/jquery.knob.min.js"></script>
+<!-- Apex js-->
+{{--<script src="/assets/libs/apexcharts/apexcharts.min.js"></script>--}}
 
-<!-- Circle progress -->
-<script src="/vendors/circle-progress/circle-progress.min.js"></script>
+<!-- Plugins js-->
+<script src="/assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="/assets/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
 
-<!-- Peity -->
-<script src="/vendors/charts/peity/jquery.peity.min.js"></script>
-<script src="/assets/js/examples/charts/peity.js"></script>
+<!-- Dashboard init-->
+{{--<script src="/assets/js/pages/dashboard-sales.init.js"></script>--}}
 
-<!-- Datepicker -->
-<script src="/vendors/datepicker/daterangepicker.js"></script>
+<script src="/assets/libs/select2/js/select2.min.js"></script>
 
-<!-- Slick -->
-<script src="/vendors/slick/slick.min.js"></script>
-
-<!-- Vamp -->
-<script src="/vendors/vmap/jquery.vmap.min.js"></script>
-<script src="/vendors/vmap/maps/jquery.vmap.iran.js"></script>
-<script src="/assets/js/examples/vmap.js"></script>
-
-<!-- CKEditor -->
-<script src="/vendors/ckeditor/ckeditor.js"></script>
-<script src="/assets/js/examples/ckeditor.js"></script>
-
-<!-- Dashboard scripts -->
-<script src="/assets/js/examples/dashboard.js"></script>
-<div class="colors">
-    <!-- To use theme colors with Javascript -->
-    <div class="bg-primary"></div>
-    <div class="bg-primary-bright"></div>
-    <div class="bg-secondary"></div>
-    <div class="bg-secondary-bright"></div>
-    <div class="bg-info"></div>
-    <div class="bg-info-bright"></div>
-    <div class="bg-success"></div>
-    <div class="bg-success-bright"></div>
-    <div class="bg-danger"></div>
-    <div class="bg-danger-bright"></div>
-    <div class="bg-warning"></div>
-    <div class="bg-warning-bright"></div>
-</div>
-
-<!-- App scripts -->
-<script src="/assets/js/app.js"></script>
-<script src="/assets/js/sweetalert2@11"></script>
-
-<!-- Select2 -->
-<script src="/vendors/select2/js/select2.min.js"></script>
-<script src="/assets/js/examples/select2.js"></script>
-
-<!-- Datepicker -->
-<script src="/vendors/datepicker-jalali/bootstrap-datepicker.min.js"></script>
-<script src="/vendors/datepicker-jalali/bootstrap-datepicker.fa.min.js"></script>
-<script src="/vendors/datepicker/daterangepicker.js"></script>
-<script src="/assets/js/examples/datepicker.js"></script>
-
-<!-- Clockpicker -->
-<script src="/vendors/clockpicker/bootstrap-clockpicker.min.js"></script>
-<script src="/assets/js/examples/clockpicker.js"></script>
-
-<!-- fontawesome -->
-<script src="/assets/js/fontawesome.min.js"></script>
-
-<!-- DataTable -->
-<script src="/vendors/dataTable/jquery.dataTables.min.js"></script>
-<script src="/vendors/dataTable/dataTables.bootstrap4.min.js"></script>
-<script src="/vendors/dataTable/dataTables.responsive.min.js"></script>
-<script src="/assets/js/examples/datatable.js"></script>
+<!-- App js -->
+<script src="/assets/js/app.min.js"></script>
 
 @yield('scripts')
+<script src="/assets/js/sweetalert2@11"></script>
 
 <script src="{{ asset('/js/app.js') }}"></script>
+
 <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
 
 <script>
 
     {{-- ajax setup --}}
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     {{-- end ajax setup --}}
 
     {{-- delete tables row --}}
@@ -170,25 +119,16 @@
     let userId = "{{ auth()->id() }}"
     Echo.channel('presence-notification.'+userId)
         .listen('SendMessage', (e) =>{
-            $('#notification_sec a').addClass('nav-link-notify')
+            $('#notif_count').removeClass('d-none')
             $('#notif_count').html(parseInt($('#notif_count').html()) + 1)
-            $(".timeline").prepend(`<div class="timeline-item">
-                                        <div>
-                                            <figure class="avatar avatar-state-danger avatar-sm m-r-15 bring-forward">
-												<span class="avatar-title bg-primary-bright text-primary rounded-circle">
-													<i class="fa fa-bell font-size-20"></i>
-												</span>
-                                            </figure>
-                                        </div>
-                                        <div>
-                                            <p class="m-b-5">
-                                                <a href="/panel/read-notifications/${e.data.id}">${e.data.message}</a>
-                                            </p>
-                                            <small class="text-muted">
-                                                <i class="fa fa-clock-o m-r-5"></i>الان
-                                                </small>
-                                            </div>
-                                        </div>`)
+            $("#notif_sec").prepend(`<a href="/panel/read-notifications/${e.data.id}" class="dropdown-item notify-item active">
+                                <div class="notify-icon bg-soft-primary text-primary">
+                                    <i class="mdi mdi-comment-account-outline"></i>
+                                </div>
+                                <p class="notify-details">${e.data.message}
+                                    <small class="text-muted">الان</small>
+                                </p>
+                            </a>`)
             audio.play();
         });
     // end realtime
@@ -246,3 +186,6 @@
         new Notification(noteTitle, noteOptions);
     });
 </script>
+
+</body>
+</html>

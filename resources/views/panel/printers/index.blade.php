@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'پرینتر ها')
 @section('content')
     {{--  cartridges Modal  --}}
@@ -35,10 +35,12 @@
             <form action="{{ route('printers.search') }}" method="get" id="search_form"></form>
             <div class="row mb-3">
                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                    <input type="text" name="name" form="search_form" class="form-control" placeholder="نام پرینتر" value="{{ request()->name ?? null }}">
+                    <input type="text" name="name" form="search_form" class="form-control" placeholder="نام پرینتر"
+                           value="{{ request()->name ?? null }}">
                 </div>
                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                    <select name="brand" form="search_form" class="js-example-basic-single select2-hidden-accessible" data-select2-id="1">
+                    <select name="brand" form="search_form" class="js-example-basic-single select2-hidden-accessible"
+                            data-select2-id="1">
                         <option value="all">برند (همه)</option>
                         @foreach(\App\Models\Printer::BRANDS as $value)
                             <option value="{{ $value }}" {{ request()->brand == $value ? 'selected' : '' }}>{{ $value }}</option>
@@ -74,20 +76,24 @@
                             <td>{{ $printer->brand }}</td>
                             <td>{{ verta($printer->created_at)->format('H:i - Y/m/d') }}</td>
                             <td>
-                                <button class="btn btn-info btn-floating btn_show" data-id="{{ $printer->id }}" data-toggle="modal" data-target="#cartridgesModal">
+                                <button class="btn btn-info btn-floating btn_show" data-id="{{ $printer->id }}"
+                                        data-toggle="modal" data-target="#cartridgesModal">
                                     <i class="fa fa-eye"></i>
                                 </button>
                             </td>
                             @can('printers-edit')
                                 <td>
-                                    <a class="btn btn-warning btn-floating" href="{{ route('printers.edit', $printer->id) }}">
+                                    <a class="btn btn-warning btn-floating"
+                                       href="{{ route('printers.edit', $printer->id) }}">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 </td>
                             @endcan
                             @can('printers-delete')
                                 <td>
-                                    <button class="btn btn-danger btn-floating trashRow" data-url="{{ route('printers.destroy',$printer->id) }}" data-id="{{ $printer->id }}">
+                                    <button class="btn btn-danger btn-floating trashRow"
+                                            data-url="{{ route('printers.destroy',$printer->id) }}"
+                                            data-id="{{ $printer->id }}">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>
@@ -118,7 +124,7 @@
                     success: function (res) {
                         $('#cartridgesModal .modal-body ul').html('')
 
-                        $.each(res, function (i, item){
+                        $.each(res, function (i, item) {
                             $('#cartridgesModal .modal-body ul').append(`<li>${item}</li>`);
                         })
                     }

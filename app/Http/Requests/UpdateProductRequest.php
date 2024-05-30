@@ -25,10 +25,8 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'code' => 'required',
-//            'slug' => 'required|unique:products,slug,'.$this->product->id,
+            'code' => 'required|unique:products,code,'.$this->product->id,
             'category' => 'required',
-            'image' => 'nullable|mimes:jpg,png,jpeg|max:5000',
             'system_price' => 'required',
             'partner_price_tehran' => 'required',
             'partner_price_other' => 'required',

@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'ثبت تیکت')
 @section('content')
     <div class="card">
@@ -37,30 +37,31 @@
                             @endcan
                         </select>
                         @error('receiver')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="title">عنوان تیکت<span class="text-danger">*</span></label>
                         <input type="text" name="title" class="form-control" id="title" value="{{ old('title') }}">
                         @error('title')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="file">فایل</label>
                         <input type="file" name="file" class="form-control" id="file">
                         @error('file')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                         <a href="" target="_blank" class="btn btn-link d-none" id="file_preview">پیش نمایش</a>
                     </div>
                     <div class="col-xl-2 col-lg-2 col-md-2"></div>
                     <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                         <label for="text">متن تیکت<span class="text-danger">*</span></label>
-                        <textarea type="text" name="text" class="form-control" id="text" rows="5">{{ old('text') }}</textarea>
+                        <textarea type="text" name="text" class="form-control" id="text"
+                                  rows="5">{{ old('text') }}</textarea>
                         @error('text')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
@@ -78,7 +79,7 @@
                 let file = this.files[0];
                 let url = URL.createObjectURL(file);
 
-                $('#file_preview').attr('href',url)
+                $('#file_preview').attr('href', url)
             })
         })
     </script>

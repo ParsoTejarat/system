@@ -1,0 +1,58 @@
+//
+// right-sidebar.scss
+//
+
+.right-bar {
+    width: $rightbar-width !important;
+
+    .rightbar-title {
+        background-color: $primary;
+        padding: 27px 25px;
+        color: $white;
+    }
+
+    .user-box {
+        padding: 25px;
+        text-align: center;
+
+        .user-img {
+            position: relative;
+            height: 64px;
+            width: 64px;
+            margin: 0 auto 15px auto;
+
+            .user-edit {
+                position: absolute;
+                right: -5px;
+                bottom: 0px;
+                height: 24px;
+                width: 24px;
+                background-color: $white;
+                line-height: 24px;
+                border-radius: 50%;
+                box-shadow: var(--#{$prefix}box-shadow-lg);
+            }
+        }
+
+        h5 {
+            margin-bottom: 2px;
+
+            a {
+                color: $dark;
+            }
+        }
+    }
+
+    .notification-item {
+
+        .d-flex{
+            padding: 0.75rem 1rem;
+
+            &:hover {
+                background-color: $dropdown-link-hover-bg;
+            }
+        }
+
+        
+    }
+}

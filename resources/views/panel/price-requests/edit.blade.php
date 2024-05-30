@@ -2,55 +2,72 @@
 @section('title', 'ثبت قیمت')
 @section('styles')
     <style>
-        table tbody tr td input{
+        table tbody tr td input {
             text-align: center;
             width: fit-content !important;
         }
     </style>
 @endsection
 @section('content')
-    <div class="card">
-        <div class="card-body">
-            <div class="card-title d-flex justify-content-between align-items-center mb-4">
-                <h6>ثبت قیمت</h6>
-            </div>
-            <form action="{{ route('price-requests.update', $priceRequest->id) }}" method="post">
-                @csrf
-                @method('put')
-                <div class="form-row">
-                    <div class="col-12 mb-3">
-                        <table class="table table-striped table-bordered text-center">
-                            <thead class="bg-primary">
-                            <tr>
-                                <th>عنوان کالا</th>
-                                <th>تعداد</th>
-                                <th>قیمت (تومان)</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach(json_decode($priceRequest->items) as $item)
-                                <tr>
-                                    <td>{{ $item->product }}</td>
-                                    <td>{{ $item->count }}</td>
-                                    <td class="d-flex justify-content-center"><input type="text" class="form-control" name="prices[]" value="{{ isset($item->price) ? number_format($item->price) : 0 }}" required></td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                            <tfoot>
-                            <tr></tr>
-                            </tfoot>
-                        </table>
+    <div class="content">
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">ثبت قیمت</h4>
                     </div>
                 </div>
-                <button class="btn btn-primary mt-5" type="submit">ثبت فرم</button>
-            </form>
+            </div>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <form action="{{ route('price-requests.update', $priceRequest->id) }}" method="post">
+                                @csrf
+                                @method('put')
+                                <div class="form-row">
+                                    <div class="col-12 mb-3">
+                                        <table class="table table-striped table-bordered text-center">
+                                            <thead class="table-primary">
+                                            <tr>
+                                                <th>عنوان کالا</th>
+                                                <th>تعداد</th>
+                                                <th>قیمت (تومان)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach(json_decode($priceRequest->items) as $item)
+                                                <tr>
+                                                    <td>{{ $item->product }}</td>
+                                                    <td>{{ $item->count }}</td>
+                                                    <td class="d-flex justify-content-center">
+                                                        <input type="text" class="form-control" name="prices[]" value="{{ isset($item->price) ? number_format($item->price) : 0 }}" required>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                            <tfoot>
+                                            <tr></tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary mt-5" type="submit">ثبت فرم</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
 @section('scripts')
     <script>
         // item changed
-        $(document).on('keyup','input[name="prices[]"]', function () {
+        $(document).on('keyup', 'input[name="prices[]"]', function () {
             $(this).val(addCommas($(this).val()))
         })
 
@@ -81,9 +98,12 @@
             }
 
             seperatedNumber = funcReverseString(tmpSeperatedNumber);
-            if(seperatedNumber[0] === ",") seperatedNumber = seperatedNumber.replace("," , "");
+            if (seperatedNumber[0] === ",") seperatedNumber = seperatedNumber.replace(",", "");
             return seperatedNumber;
         }
     </script>
 @endsection
+
+
+
 

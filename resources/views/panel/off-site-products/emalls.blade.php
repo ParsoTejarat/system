@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'وبسایت ایمالز')
 @section('content')
     <div class="card">
@@ -21,7 +21,7 @@
                         <tr>
                             <td>{{ ++$key }}</td>
                             <td>{{ $item->Shoptitle }}</td>
-                            <td>{{ number_format($item->Price) }} تومان </td>
+                            <td>{{ number_format($item->Price) }} تومان</td>
                             <td>{{ $item->lastupdate }}</td>
                         </tr>
                     @endforeach

@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'پیام های ارسال شده')
 @section('content')
     <div class="card">
@@ -39,7 +39,8 @@
                             </td>
                             <td>{{ verta($sms_history->created_at)->format('H:i - Y/m/d') }}</td>
                             <td>
-                                <a class="btn btn-info btn-floating" href="{{ route('sms-histories.show', $sms_history->id) }}">
+                                <a class="btn btn-info btn-floating"
+                                   href="{{ route('sms-histories.show', $sms_history->id) }}">
                                     <i class="fa fa-eye"></i>
                                 </a>
                             </td>

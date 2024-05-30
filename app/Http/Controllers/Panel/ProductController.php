@@ -34,27 +34,17 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         $this->authorize('products-create');
-        $image = upload_file($request->image, 'Products');
-
-        // product properties
-        $properties = $this->json_properties($request);
-        $total_count = array_sum($request->counts);
 
         // create product
         Product::create([
             'title' => $request->title,
-//            'slug' => make_slug($request->slug),
             'code' => $request->code,
-            'image' => $image,
             'category_id' => $request->category,
-            'properties' => $properties,
-            'description' => $request->description,
             'system_price' => $request->system_price,
             'partner_price_tehran' => $request->partner_price_tehran,
             'partner_price_other' => $request->partner_price_other,
             'single_price' => $request->single_price,
             'creator_id' => auth()->id(),
-            'total_count' => $total_count,
         ]);
 
         alert()->success('محصول مورد نظر با موفقیت ایجاد شد','ایجاد محصول');
@@ -76,33 +66,20 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, Product $product)
     {
         $this->authorize('products-edit');
-        if ($request->has('image'))
-        {
-            $image = upload_file($request->image, 'Products');
-        }
 
         // price history
         $this->priceHistory($product, $request);
 
-        // product properties
-        $properties = $this->json_properties($request);
-        $total_count = array_sum($request->counts);
-
         // create product
         $product->update([
             'title' => $request->title,
-//            'slug' => make_slug($request->slug),
             'code' => $request->code,
-            'image' => $image ?? $product->image,
             'category_id' => $request->category,
-            'properties' => $properties,
-            'description' => $request->description,
             'system_price' => $request->system_price,
             'partner_price_tehran' => $request->partner_price_tehran,
             'partner_price_other' => $request->partner_price_other,
             'single_price' => $request->single_price,
             'creator_id' => auth()->id(),
-            'total_count' => $total_count,
         ]);
 
         alert()->success('محصول مورد نظر با موفقیت ویرایش شد','ویرایش محصول');
@@ -153,18 +130,6 @@ class ProductController extends Controller
     public function excel()
     {
         return Excel::download(new \App\Exports\ProductsExport, 'products.xlsx');
-    }
-
-    private function json_properties($request){
-        $items = [];
-        foreach ($request->colors as $key => $color){
-            $items[] = [
-                'color' => $color,
-                'print_count' => $request->print_count[$key],
-                'counts' => $request->counts[$key],
-            ];
-        }
-        return json_encode($items);
     }
 
     private function priceHistory($product, $request)

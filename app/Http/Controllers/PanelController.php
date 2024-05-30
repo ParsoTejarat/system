@@ -14,8 +14,8 @@ class PanelController extends Controller
 {
     public function index(Request $request)
     {
-        $from_date = $request->from_date ? Verta::parse($request->from_date)->toCarbon()->toDateTimeString() : Invoice::orderBy('created_at')->first()->created_at;
-        $to_date = $request->to_date ? Verta::parse($request->to_date)->endDay()->toCarbon()->toDateTimeString() : Invoice::orderBy('created_at','desc')->first()->created_at;
+        $from_date = $request->from_date ? Verta::parse($request->from_date)->toCarbon()->toDateTimeString() : (Invoice::orderBy('created_at')->first() ? Invoice::orderBy('created_at')->first()->created_at : now()->toDateTimeString());
+        $to_date = $request->to_date ? Verta::parse($request->to_date)->endDay()->toCarbon()->toDateTimeString() : (Invoice::orderBy('created_at','desc')->first() ? Invoice::orderBy('created_at','desc')->first()->created_at : now()->toDateTimeString());
 
         // invoices
         $invoices1 = Invoice::whereBetween('invoices.created_at', [$from_date, $to_date])->whereHas('products', function ($query) {

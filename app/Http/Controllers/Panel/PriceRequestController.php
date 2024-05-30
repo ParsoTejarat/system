@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePriceRequestRequest;
 use App\Models\PriceRequest;
 use App\Models\User;
 use App\Notifications\SendMessage;
@@ -28,7 +29,7 @@ class PriceRequestController extends Controller
         return view('panel.price-requests.create');
     }
 
-    public function store(Request $request)
+    public function store(StorePriceRequestRequest $request)
     {
         $this->authorize('price-requests-create');
 

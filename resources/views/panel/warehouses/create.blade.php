@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'ایجاد انبار')
 @section('content')
     <div class="card">
@@ -13,7 +13,7 @@
                         <label for="name">نام انبار<span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control" id="name" value="{{ old('name') }}">
                         @error('name')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>

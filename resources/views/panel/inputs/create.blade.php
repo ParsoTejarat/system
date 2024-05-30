@@ -1,11 +1,13 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'ثبت ورودی')
 @section('content')
     <div class="card">
         <div class="card-body">
             <div class="card-title d-flex justify-content-between align-items-center">
                 <h6>ثبت ورودی</h6>
-                <button class="btn btn-outline-success" type="button" id="btn_add"><i class="fa fa-plus mr-2"></i> افزودن کالا</button>
+                <button class="btn btn-outline-success" type="button" id="btn_add"><i class="fa fa-plus mr-2"></i>
+                    افزودن کالا
+                </button>
             </div>
             <form action="{{ route('inventory-reports.store') }}" method="post">
                 @csrf
@@ -15,7 +17,8 @@
                     <div class="col-xl-3 col-lg-3 col-md-8 col-sm-12">
                         <div class="form-group">
                             <label for="person"> تحویل دهنده <span class="text-danger">*</span></label>
-                            <input type="text" name="person" class="form-control" id="person" value="{{ old('person') }}">
+                            <input type="text" name="person" class="form-control" id="person"
+                                   value="{{ old('person') }}">
                             @error('person')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
@@ -24,7 +27,8 @@
                     <div class="col-xl-3 col-lg-3 col-md-8 col-sm-12">
                         <div class="form-group">
                             <label for="input_date"> تاریخ ورود <span class="text-danger">*</span></label>
-                            <input type="text" name="input_date" class="form-control date-picker-shamsi-list" id="input_date" value="{{ old('input_date') ?? verta()->format('Y/m/d') }}">
+                            <input type="text" name="input_date" class="form-control date-picker-shamsi-list"
+                                   id="input_date" value="{{ old('input_date') ?? verta()->format('Y/m/d') }}">
                             @error('input_date')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
@@ -42,41 +46,47 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    @if($errors->any())
-                                        @foreach(old('inventory_id') as $key => $inventory_id)
-                                            <tr>
-                                                <td>
-                                                    <select class="js-example-basic-single select2-hidden-accessible" name="inventory_id[]">
-                                                        @foreach(\App\Models\Inventory::where('warehouse_id',$warehouse_id)->get(['id','title','type']) as $item)
-                                                            <option value="{{ $item->id }}" {{ $inventory_id == $item->id ? 'selected' : '' }}>{{ \App\Models\Inventory::TYPE[$item->type].' - '.$item->title }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="number" name="counts[]" class="form-control" min="1" value="{{ old('counts')[$key] }}" required>
-                                                </td>
-                                                <td>
-                                                    <button class="btn btn-danger btn-floating btn_remove" type="button"><i class="fa fa-trash"></i></button>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @else
+                                @if($errors->any())
+                                    @foreach(old('inventory_id') as $key => $inventory_id)
                                         <tr>
                                             <td>
-                                                <select class="js-example-basic-single select2-hidden-accessible" name="inventory_id[]">
+                                                <select class="js-example-basic-single select2-hidden-accessible"
+                                                        name="inventory_id[]">
                                                     @foreach(\App\Models\Inventory::where('warehouse_id',$warehouse_id)->get(['id','title','type']) as $item)
-                                                        <option value="{{ $item->id }}">{{ \App\Models\Inventory::TYPE[$item->type].' - '.$item->title }}</option>
+                                                        <option value="{{ $item->id }}" {{ $inventory_id == $item->id ? 'selected' : '' }}>{{ \App\Models\Inventory::TYPE[$item->type].' - '.$item->title }}</option>
                                                     @endforeach
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="number" name="counts[]" class="form-control" min="1" value="1" required>
+                                                <input type="number" name="counts[]" class="form-control" min="1"
+                                                       value="{{ old('counts')[$key] }}" required>
                                             </td>
                                             <td>
-                                                <button class="btn btn-danger btn-floating btn_remove" type="button"><i class="fa fa-trash"></i></button>
+                                                <button class="btn btn-danger btn-floating btn_remove" type="button"><i
+                                                            class="fa fa-trash"></i></button>
                                             </td>
                                         </tr>
-                                    @endif
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td>
+                                            <select class="js-example-basic-single select2-hidden-accessible"
+                                                    name="inventory_id[]">
+                                                @foreach(\App\Models\Inventory::where('warehouse_id',$warehouse_id)->get(['id','title','type']) as $item)
+                                                    <option value="{{ $item->id }}">{{ \App\Models\Inventory::TYPE[$item->type].' - '.$item->title }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="number" name="counts[]" class="form-control" min="1" value="1"
+                                                   required>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger btn-floating btn_remove" type="button"><i
+                                                        class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                @endif
                                 </tbody>
                             </table>
                         </div>
@@ -85,7 +95,8 @@
                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                         <div class="form-group">
                             <label for="description">توضیحات</label>
-                            <textarea name="description" class="form-control" id="description" rows="5">{{ old('description') }}</textarea>
+                            <textarea name="description" class="form-control" id="description"
+                                      rows="5">{{ old('description') }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -102,11 +113,11 @@
         var options_html;
 
         @foreach(\App\Models\Inventory::where('warehouse_id',$warehouse_id)->get(['id','title','type']) as $item)
-            inventory.push({
-                "id": "{{ $item->id }}",
-                "title": "{{ $item->title }}",
-                "type": "{{ \App\Models\Inventory::TYPE[$item->type] }}",
-            })
+        inventory.push({
+            "id": "{{ $item->id }}",
+            "title": "{{ $item->title }}",
+            "type": "{{ \App\Models\Inventory::TYPE[$item->type] }}",
+        })
         @endforeach
 
         $.each(inventory, function (i, item) {
@@ -131,7 +142,7 @@
             // end add property
 
             // remove property
-            $(document).on('click','.btn_remove', function () {
+            $(document).on('click', '.btn_remove', function () {
                 $(this).parent().parent().remove();
             })
             // end remove property

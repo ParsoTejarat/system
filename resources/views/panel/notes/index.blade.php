@@ -2,40 +2,95 @@
 @section('title', 'یادداشت ها')
 
 @section('styles')
-    <link rel="stylesheet" href="/assets/css/notes-styles.css">
+    <style>
+        .card .title{
+            background: transparent;
+            border: none;
+            width: 100%;
+            color: #fff;
+        }
+        .card .title:focus-visible{
+            outline: none !important;
+        }
+
+        .card .text{
+            background: transparent;
+            border: none;
+            resize: none;
+            width: 100%;
+            height: 180px;
+            text-align: justify;
+        }
+
+        .card .text:focus-visible{
+            outline: none;
+        }
+
+        .loading{
+            margin-right: 10px;
+            margin-bottom: 8px;
+        }
+
+        .btn-remove{
+            font-size: 1.5rem !important;
+        }
+    </style>
 @endsection
+
 @section('content')
-    <div class="card">
-        <div class="card-body">
-            <div class="card-title d-flex justify-content-between align-items-center">
-                <h6>یادداشت ها</h6>
-                @can('notes-create')
-                    <button class="btn btn-primary" id="btn_add">
-                        <i class="fa fa-plus mr-2"></i>
-                        ایجاد یادداشت
-                    </button>
-                @endcan
+    <div class="content">
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">یادداشت ها</h4>
+                    </div>
+                </div>
             </div>
-            <div class="row" id="list">
-                @foreach($notes as $note)
-                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mt-3">
-                        <div class="paper">
-                            <span class="btn-remove">&times;</span>
-                            <div class="lines">
-                                <input type="text" name="note-title" class="title" value="{{ $note->title }}" data-id="{{ $note->id }}" maxlength="30" placeholder="عنوان یادداشت">
-                                <textarea class="text" name="note-text" spellcheck="false" placeholder="متن یادداشت...">{{ $note->text }}</textarea>
-                                <div class="loading d-none">
-                                    درحال ذخیره سازی ...
-                                </div>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title d-flex justify-content-end">
+                                @can('notes-create')
+                                    <button class="btn btn-primary" id="btn_add">
+                                        <i class="fa fa-plus mr-2"></i>
+                                        ایجاد یادداشت
+                                    </button>
+                                @endcan
                             </div>
-                            <div class="holes hole-top"></div>
-                            <div class="holes hole-middle"></div>
-                            <div class="holes hole-bottom"></div>
+                            <div class="row" id="list">
+                                @foreach($notes as $note)
+                                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                                        <div class="card">
+                                            <div class="card-header bg-primary py-3 text-white">
+                                                <div class="card-widgets">
+                                                    <a href="javascript:void(0)" class="btn-remove">&times;</a>
+                                                </div>
+                                                <h5 class="card-title mb-0 text-white d-flex">
+                                                    <input type="text" name="note-title" class="title" value="{{ $note->title }}" data-id="{{ $note->id }}" maxlength="30" placeholder="عنوان یادداشت">
+                                                </h5>
+                                            </div>
+                                            <div id="cardCollpase4" class="collapse show">
+                                                <div class="card-body">
+                                                    <textarea class="text" name="note-text" spellcheck="false" placeholder="متن یادداشت...">{{ $note->text }}</textarea>
+                                                </div>
+                                                <div class="loading d-none">
+                                                    درحال ذخیره سازی ...
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <div class="d-flex justify-content-center">{{ $notes->appends(request()->all())->links() }}</div>
                         </div>
                     </div>
-                @endforeach
+                </div>
             </div>
-            <div class="d-flex justify-content-center mt-5">{{ $notes->links() }}</div>
         </div>
     </div>
 @endsection
@@ -44,21 +99,26 @@
         $(document).ready(function () {
             // add note card
             $(document).on('click', '#btn_add', function () {
-                $('#list').prepend(`<div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mt-3">
-                        <div class="paper">
-                            <span class="btn-remove">&times;</span>
-                            <div class="lines">
-                                <input type="text" name="note-title" class="title" data-id="" maxlength="30" placeholder="عنوان یادداشت">
-                                <textarea class="text" name="note-text" spellcheck="false" placeholder="متن یادداشت..."></textarea>
-                                <div class="loading d-none">
-                                    درحال ذخیره سازی ...
-                                </div>
-                            </div>
-                            <div class="holes hole-top"></div>
-                            <div class="holes hole-middle"></div>
-                            <div class="holes hole-bottom"></div>
-                        </div>
-                    </div>`)
+                $('#list').prepend(`<div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                                        <div class="card">
+                                            <div class="card-header bg-primary py-3 text-white">
+                                                <div class="card-widgets">
+                                                    <a href="javascript:void(0)" class="btn-remove">&times;</a>
+                                                </div>
+                                                <h5 class="card-title mb-0 text-white d-flex">
+                                                    <input type="text" name="note-title" class="title" maxlength="30" placeholder="عنوان یادداشت">
+                                                </h5>
+                                            </div>
+                                            <div id="cardCollpase4" class="collapse show">
+                                                <div class="card-body">
+                                                    <textarea class="text" name="note-text" spellcheck="false" placeholder="متن یادداشت..."></textarea>
+                                                </div>
+                                                <div class="loading d-none">
+                                                    درحال ذخیره سازی ...
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>`)
 
                 $(this).attr('disabled', 'disabled')
             })
@@ -68,13 +128,14 @@
             // save title and text
             $(document).on('keyup', 'input[name="note-title"]', function () {
                 let item = $(this);
-                item.siblings('.loading').removeClass('d-none')
+                let loading = item.parent().parent().siblings().first().children('.loading');
+                loading.removeClass('d-none')
 
                 clearTimeout(timeout)
 
                 timeout = setTimeout(function () {
                     let title = item.val()
-                    let text = item.siblings(':first').val()
+                    let text = item.parent().parent().siblings().first().children('.card-body').children('.text').first().val()
                     let note_id = item.data('id')
 
                     $.ajax({
@@ -87,7 +148,7 @@
                         },
                         success: function (res) {
                             item.data('id', res.id)
-                            item.siblings('.loading').addClass('d-none')
+                            loading.addClass('d-none')
                             $('#btn_add').removeAttr('disabled')
                         }
                     })
@@ -96,14 +157,16 @@
 
             $(document).on('keyup', 'textarea[name="note-text"]', function () {
                 let item = $(this);
-                item.siblings('.loading').removeClass('d-none')
+                let loading = item.parent().siblings().first();
+
+                loading.removeClass('d-none')
 
                 clearTimeout(timeout)
 
                 timeout = setTimeout(function () {
-                    let title = item.siblings(':first').val()
+                    let title = item.parent().parent().siblings('.card-header').find('.title').val()
                     let text = item.val()
-                    let note_id = item.siblings(':first').data('id')
+                    let note_id = item.parent().parent().siblings('.card-header').find('.title').data('id')
 
                     $.ajax({
                         url: "{{ route('notes.store') }}",
@@ -114,8 +177,8 @@
                             note_id
                         },
                         success: function (res) {
-                            item.siblings(':first').data('id', res.id)
-                            item.siblings('.loading').addClass('d-none')
+                            item.parent().parent().siblings('.card-header').find('.title').data('id', res.id)
+                            loading.addClass('d-none')
                             $('#btn_add').removeAttr('disabled')
                         }
                     })
@@ -127,24 +190,24 @@
             $(document).on('click', '.btn-remove', function () {
                 let self = $(this)
                 self.addClass('confirm-delete')
-                self.css('width','100%').css('border-radius','1px').css('transition','0.5s').text('حذف')
+                self.text('حذف')
 
                 setTimeout(function () {
-                    if(!self.hasClass('deleting')){
+                    if (!self.hasClass('deleting')) {
                         self.removeClass('confirm-delete')
-                        self.css('width','30px').css('border-radius','15px 0 0 15px').css('transition','0.5s').text('×')
+                        self.html('&times;')
                     }
-                },3000)
+                }, 3000)
             })
 
             $(document).on('click', '.confirm-delete', function () {
                 let self = $(this)
-                let note_id = self.siblings('.lines').children('.title').data('id')
+                let note_id = self.parent().siblings().find('.title').data('id')
 
                 self.addClass('deleting')
-                self.css('width','100%').css('border-radius','1px').css('transition','0.5s').css('pointer-events','none').text('درحال حذف...')
+                self.text('درحال حذف...')
 
-                if (note_id){
+                if (note_id) {
                     $.ajax({
                         url: "{{ route('notes.destroy') }}",
                         type: 'post',
@@ -152,11 +215,11 @@
                             note_id
                         },
                         success: function (res) {
-                            self.parent().parent().remove()
+                            self.parents('.card').first().parent().remove()
                         }
                     })
-                }else {
-                    self.parent().parent().remove()
+                } else {
+                    self.parents('.card').first().parent().remove()
                     $('#btn_add').removeAttr('disabled')
                 }
             })
@@ -164,3 +227,6 @@
         })
     </script>
 @endsection
+
+
+

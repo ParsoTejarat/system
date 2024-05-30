@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'ویرایش پرینتر')
 @section('styles')
     <!-- Tagsinput -->
@@ -23,7 +23,8 @@
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="brand">برند پرینتر <span class="text-danger">*</span></label>
-                        <select type="text" name="brand" class="js-example-basic-single select2-hidden-accessible" id="brand">
+                        <select type="text" name="brand" class="js-example-basic-single select2-hidden-accessible"
+                                id="brand">
                             @foreach(\App\Models\Printer::BRANDS as $brand)
                                 <option value="{{ $brand }}" {{ $brand == $printer->brand ? 'selected' : '' }}>{{ $brand }}</option>
                             @endforeach
@@ -34,9 +35,10 @@
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="cartridges">کارتریج های سازگار<span class="text-danger">*</span></label>
-                        <input type="text" name="cartridges" class="form-control tagsinput" id="cartridges" value="{{ $printer->cartridges }}">
+                        <input type="text" name="cartridges" class="form-control tagsinput" id="cartridges"
+                               value="{{ $printer->cartridges }}">
                         @error('cartridges')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>

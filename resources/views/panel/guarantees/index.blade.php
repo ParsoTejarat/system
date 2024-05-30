@@ -1,8 +1,8 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'گارانتی ها')
 @section('styles')
     <style>
-        .modal-body ol{
+        .modal-body ol {
             line-height: 2rem !important;
         }
     </style>
@@ -60,14 +60,17 @@
                             <td>{{ verta($guarantee->created_at)->format('H:i - Y/m/d') }}</td>
                             @can('guarantees-edit')
                                 <td>
-                                    <a class="btn btn-warning btn-floating" href="{{ route('guarantees.edit', $guarantee->id) }}">
+                                    <a class="btn btn-warning btn-floating"
+                                       href="{{ route('guarantees.edit', $guarantee->id) }}">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 </td>
                             @endcan
                             @can('guarantees-delete')
                                 <td>
-                                    <button class="btn btn-danger btn-floating trashRow" data-url="{{ route('guarantees.destroy',$guarantee->id) }}" data-id="{{ $guarantee->id }}">
+                                    <button class="btn btn-danger btn-floating trashRow"
+                                            data-url="{{ route('guarantees.destroy',$guarantee->id) }}"
+                                            data-id="{{ $guarantee->id }}">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>

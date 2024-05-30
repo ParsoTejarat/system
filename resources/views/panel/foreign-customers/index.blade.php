@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'مشتریان خارجی')
 @section('content')
     <div class="card">
@@ -26,7 +26,8 @@
             <form action="{{ route('foreign-customers.search') }}" method="get" id="search_form"></form>
             <div class="row mb-3">
                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                    <select name="country" form="search_form" class="js-example-basic-single select2-hidden-accessible" data-select2-id="1">
+                    <select name="country" form="search_form" class="js-example-basic-single select2-hidden-accessible"
+                            data-select2-id="1">
                         <option value="all">کشور (همه)</option>
                         @foreach(\App\Models\Country::pluck('fa_name') as $country)
                             <option value="{{ $country }}" {{ request()->country == $country ? 'selected' : '' }}>{{ $country }}</option>
@@ -34,7 +35,8 @@
                     </select>
                 </div>
                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                    <select name="status" form="search_form" class="js-example-basic-single select2-hidden-accessible" data-select2-id="2">
+                    <select name="status" form="search_form" class="js-example-basic-single select2-hidden-accessible"
+                            data-select2-id="2">
                         <option value="all">وضعیت (همه)</option>
                         @foreach(\App\Models\ForeignCustomer::STATUS as $key => $value)
                             <option value="{{ $key }}" {{ request()->status == $key ? 'selected' : '' }}>{{ $value }}</option>
@@ -71,21 +73,24 @@
                             <td>{{ ++$key }}</td>
                             <td>
                                 @if($customer->website)
-                                    <a href="{{ $customer->website }}" class="btn btn-link" target="_blank">{{ $customer->website }}</a>
+                                    <a href="{{ $customer->website }}" class="btn btn-link"
+                                       target="_blank">{{ $customer->website }}</a>
                                 @else
                                     ---
                                 @endif
                             </td>
                             <td>
                                 @if($customer->phone)
-                                    <a href="https://wa.me/{{ $customer->phone }}" class="btn btn-link" target="_blank">{{ $customer->phone }}</a>
+                                    <a href="https://wa.me/{{ $customer->phone }}" class="btn btn-link"
+                                       target="_blank">{{ $customer->phone }}</a>
                                 @else
                                     ---
                                 @endif
                             </td>
                             <td>
                                 @if($customer->email)
-                                    <a href="mailto:{{ $customer->email }}" class="btn btn-link">{{ $customer->email }}</a>
+                                    <a href="mailto:{{ $customer->email }}"
+                                       class="btn btn-link">{{ $customer->email }}</a>
                                 @else
                                     ---
                                 @endif
@@ -104,14 +109,17 @@
                             <td>{{ verta($customer->created_at)->format('H:i - Y/m/d') }}</td>
                             @can('foreign-customers-edit')
                                 <td>
-                                    <a class="btn btn-warning btn-floating" href="{{ route('foreign-customers.edit', ['foreign_customer' => $customer->id, 'page' => request()->page]) }}">
+                                    <a class="btn btn-warning btn-floating"
+                                       href="{{ route('foreign-customers.edit', ['foreign_customer' => $customer->id, 'page' => request()->page]) }}">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 </td>
                             @endcan
                             @can('foreign-customers-delete')
                                 <td>
-                                    <button class="btn btn-danger btn-floating trashRow" data-url="{{ route('foreign-customers.destroy',$customer->id) }}" data-id="{{ $customer->id }}">
+                                    <button class="btn btn-danger btn-floating trashRow"
+                                            data-url="{{ route('foreign-customers.destroy',$customer->id) }}"
+                                            data-id="{{ $customer->id }}">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>

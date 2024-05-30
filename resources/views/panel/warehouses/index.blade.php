@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'انبار')
 @section('content')
     <div class="card">
@@ -46,21 +46,25 @@
                             <td>{{ verta($item->created_at)->format('H:i - Y/m/d') }}</td>
                             @can('inventory-list')
                                 <td>
-                                    <a class="btn btn-info btn-floating" href="{{ route('inventory.index', ['warehouse_id' => $item->id]) }}">
+                                    <a class="btn btn-info btn-floating"
+                                       href="{{ route('inventory.index', ['warehouse_id' => $item->id]) }}">
                                         <i class="fa fa-eye"></i>
                                     </a>
                                 </td>
                             @endcan
                             @can('warehouses-edit')
                                 <td>
-                                    <a class="btn btn-warning btn-floating" href="{{ route('warehouses.edit', $item->id) }}">
+                                    <a class="btn btn-warning btn-floating"
+                                       href="{{ route('warehouses.edit', $item->id) }}">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 </td>
                             @endcan
                             @can('warehouses-delete')
                                 <td>
-                                    <button class="btn btn-danger btn-floating trashRow" data-url="{{ route('warehouses.destroy',$item->id) }}" data-id="{{ $item->id }}">
+                                    <button class="btn btn-danger btn-floating trashRow"
+                                            data-url="{{ route('warehouses.destroy',$item->id) }}"
+                                            data-id="{{ $item->id }}">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>

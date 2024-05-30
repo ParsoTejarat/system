@@ -1,11 +1,11 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'مشاهده تیکت')
 @section('styles')
     <!-- lightbox -->
     <link rel="stylesheet" href="/vendors/lightbox/magnific-popup.css" type="text/css">
 
     <style>
-        .fa-check-double, .fa-check{
+        .fa-check-double, .fa-check {
             color: green !important;
         }
     </style>
@@ -31,7 +31,7 @@
                                 {{ $ticket->sender->fullName() }}
                             @endif
                         </h6>
-{{--                        <span class="small text-success">در حال نوشتن ...</span>--}}
+                        {{--                        <span class="small text-success">در حال نوشتن ...</span>--}}
                     </div>
                     <div class="ml-auto d-flex">
                         <div class="mr-4">
@@ -50,9 +50,12 @@
                                     <ul>
                                         <li>
                                             @if($ticket->status == 'closed')
-                                                <a class="dropdown-item" href="{{ route('ticket.changeStatus', $ticket->id) }}">درحال بررسی</a>
+                                                <a class="dropdown-item"
+                                                   href="{{ route('ticket.changeStatus', $ticket->id) }}">درحال
+                                                    بررسی</a>
                                             @else
-                                                <a class="dropdown-item" href="{{ route('ticket.changeStatus', $ticket->id) }}">بسته شده</a>
+                                                <a class="dropdown-item"
+                                                   href="{{ route('ticket.changeStatus', $ticket->id) }}">بسته شده</a>
                                             @endif
                                         </li>
                                     </ul>
@@ -119,7 +122,8 @@
                     </div>
                 </div>
                 <div class="chat-body-footer">
-                    <form action="{{ route('tickets.update', $ticket->id) }}" method="post" class="d-flex align-items-center" enctype="multipart/form-data">
+                    <form action="{{ route('tickets.update', $ticket->id) }}" method="post"
+                          class="d-flex align-items-center" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <input type="text" name="text" class="form-control" placeholder="پیام ..." required>

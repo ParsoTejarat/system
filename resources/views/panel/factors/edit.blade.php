@@ -1,19 +1,19 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'ویرایش فاکتور')
 @section('styles')
     <style>
-        #products_table input, #products_table select{
+        #products_table input, #products_table select {
             width: auto;
         }
 
-        #other_products_table input, #other_products_table select{
+        #other_products_table input, #other_products_table select {
             width: auto;
         }
 
         @if($factor->inventory_report)
-            table input, table select, table button{
-                pointer-events: none !important;
-            }
+            table input, table select, table button {
+            pointer-events: none !important;
+        }
         @endif
 
         @php
@@ -24,31 +24,32 @@
 @endsection
 @section('content')
     {{--  discount Modal  --}}
-        <div class="modal fade" id="discountModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="discountModalLabel">اعمال کد تخفیف</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="بستن">
-                            <i class="ti-close"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="code" class="col-form-label"> کد تخفیف:<span class="text-danger">*</span> </label>
-                                <input type="text" class="form-control" id="code">
-                                <div class="invalid-feedback d-flex" id="error_div"></div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
-                        <button type="button" class="btn btn-primary" id="btn_apply_discount">اعمال</button>
-                    </div>
+    <div class="modal fade" id="discountModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="discountModalLabel">اعمال کد تخفیف</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="بستن">
+                        <i class="ti-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="code" class="col-form-label"> کد تخفیف:<span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="code">
+                            <div class="invalid-feedback d-flex" id="error_div"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                    <button type="button" class="btn btn-primary" id="btn_apply_discount">اعمال</button>
                 </div>
             </div>
         </div>
+    </div>
     {{--  end discount Modal  --}}
 
     <div class="card">
@@ -56,20 +57,24 @@
             <div class="card-title">
                 <div class="row d-flex justify-content-between align-items-center">
                     <h6>ویرایش فاکتور</h6>
-                    <a href="{{ route('invoices.show', [$factor->invoice->id, 'type' => 'factor']) }}" class="btn btn-outline-info"><i class="fa fa-print mr-2"></i>نسخه چاپی </a>
+                    <a href="{{ route('invoices.show', [$factor->invoice->id, 'type' => 'factor']) }}"
+                       class="btn btn-outline-info"><i class="fa fa-print mr-2"></i>نسخه چاپی </a>
                 </div>
                 <div class="row">
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="type1" name="type" class="custom-control-input" value="official" form="invoice_form" {{ $factor->invoice->type == 'official' || old('type') == 'official' ? 'checked' : '' }}>
+                        <input type="radio" id="type1" name="type" class="custom-control-input" value="official"
+                               form="invoice_form" {{ $factor->invoice->type == 'official' || old('type') == 'official' ? 'checked' : '' }}>
                         <label class="custom-control-label" for="type1">رسمی</label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="type2" name="type" class="custom-control-input" value="unofficial" form="invoice_form" {{ $factor->invoice->type == 'unofficial' || old('type') == 'unofficial' ? 'checked' : '' }}>
+                        <input type="radio" id="type2" name="type" class="custom-control-input" value="unofficial"
+                               form="invoice_form" {{ $factor->invoice->type == 'unofficial' || old('type') == 'unofficial' ? 'checked' : '' }}>
                         <label class="custom-control-label" for="type2">غیر رسمی</label>
                     </div>
                 </div>
             </div>
-            <form action="{{ route('factors.update', $factor->id) }}" method="post" enctype="multipart/form-data" id="invoice_form">
+            <form action="{{ route('factors.update', $factor->id) }}" method="post" enctype="multipart/form-data"
+                  id="invoice_form">
                 @csrf
                 @method('PATCH')
                 <div class="form-row mb-4">
@@ -78,21 +83,25 @@
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 {{ $factor->invoice->type == 'unofficial' || old('type') == 'unofficial' ? '' : 'd-none' }} seller_sec mb-3">
                         <label for="seller_name">فروشنده <span class="text-danger">*</span></label>
-                        <input type="text" name="seller_name" class="form-control" id="seller_name" value="{{ $factor->invoice->seller ? $factor->invoice->seller->name : '' }}">
+                        <input type="text" name="seller_name" class="form-control" id="seller_name"
+                               value="{{ $factor->invoice->seller ? $factor->invoice->seller->name : '' }}">
                         @error('seller_name')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 {{ $factor->invoice->type == 'unofficial' || old('type') == 'unofficial' ? '' : 'd-none' }} seller_sec mb-3">
                         <label for="seller_phone">شماره تماس<span class="text-danger">*</span></label>
-                        <input type="text" name="seller_phone" class="form-control" id="seller_phone" value="{{ $factor->invoice->seller ? $factor->invoice->seller->phone : '' }}">
+                        <input type="text" name="seller_phone" class="form-control" id="seller_phone"
+                               value="{{ $factor->invoice->seller ? $factor->invoice->seller->phone : '' }}">
                         @error('seller_phone')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 {{ $factor->invoice->type == 'unofficial' || old('type') == 'unofficial' ? '' : 'd-none' }} seller_sec mb-3">
                         <label for="seller_province">استان <span class="text-danger">*</span></label>
-                        <select name="seller_province" id="seller_province" class="js-example-basic-single select2-hidden-accessible" data-select2-id="15" tabindex="-1" aria-hidden="true">
+                        <select name="seller_province" id="seller_province"
+                                class="js-example-basic-single select2-hidden-accessible" data-select2-id="15"
+                                tabindex="-1" aria-hidden="true">
                             @foreach(\App\Models\Province::all() as $province)
                                 <option value="{{ $province->name }}" {{ $factor->invoice->seller ? $factor->invoice->seller->province == $province->name ? 'selected' : '' : '' }}>{{ $province->name }}</option>
                             @endforeach
@@ -103,14 +112,16 @@
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 {{ $factor->invoice->type == 'unofficial' || old('type') == 'unofficial' ? '' : 'd-none' }} seller_sec mb-3">
                         <label for="seller_city">شهر<span class="text-danger">*</span></label>
-                        <input type="text" name="seller_city" class="form-control" id="seller_city" value="{{ $factor->invoice->seller ? $factor->invoice->seller->city : '' }}">
+                        <input type="text" name="seller_city" class="form-control" id="seller_city"
+                               value="{{ $factor->invoice->seller ? $factor->invoice->seller->city : '' }}">
                         @error('seller_city')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 {{ $factor->invoice->type == 'unofficial' || old('type') == 'unofficial' ? '' : 'd-none' }} seller_sec mb-3">
                         <label for="seller_address">نشانی<span class="text-danger">*</span></label>
-                        <textarea name="seller_address" id="seller_address" class="form-control">{{ $factor->invoice->seller ? $factor->invoice->seller->address : '' }}</textarea>
+                        <textarea name="seller_address" id="seller_address"
+                                  class="form-control">{{ $factor->invoice->seller ? $factor->invoice->seller->address : '' }}</textarea>
                         @error('seller_address')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -121,46 +132,55 @@
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="buyer_name">نام شخص حقیقی/حقوقی <span class="text-danger">*</span></label>
-                        <select name="buyer_name" id="buyer_name" class="js-example-basic-single select2-hidden-accessible" data-select2-id="6" tabindex="-3" aria-hidden="true" disabled>
+                        <select name="buyer_name" id="buyer_name"
+                                class="js-example-basic-single select2-hidden-accessible" data-select2-id="6"
+                                tabindex="-3" aria-hidden="true" disabled>
                             @foreach(\App\Models\Customer::all(['id','name']) as $customer)
                                 <option value="{{ $customer->id }}" {{ $factor->invoice->customer_id == $customer->id ? 'selected' : '' }}>{{ $customer->name }}</option>
                             @endforeach
                         </select>
                         @error('buyer_name')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
-                        <label for="economical_number">شماره اقتصادی@can('system-user')<span class="text-danger">*</span>@endcan</label>
-                        <input type="text" name="economical_number" class="form-control" id="economical_number" value="{{ $factor->invoice->economical_number }}">
+                        <label for="economical_number">شماره اقتصادی@can('system-user')
+                                <span class="text-danger">*</span>
+                            @endcan</label>
+                        <input type="text" name="economical_number" class="form-control" id="economical_number"
+                               value="{{ $factor->invoice->economical_number }}">
                         @error('economical_number')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="national_number">شماره ثبت/ملی<span class="text-danger">*</span></label>
-                        <input type="text" name="national_number" class="form-control" id="national_number" value="{{ $factor->invoice->national_number }}">
+                        <input type="text" name="national_number" class="form-control" id="national_number"
+                               value="{{ $factor->invoice->national_number }}">
                         @error('national_number')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="postal_code">کد پستی<span class="text-danger">*</span></label>
-                        <input type="text" name="postal_code" class="form-control" id="postal_code" value="{{ $factor->invoice->postal_code }}">
+                        <input type="text" name="postal_code" class="form-control" id="postal_code"
+                               value="{{ $factor->invoice->postal_code }}">
                         @error('postal_code')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="phone">شماره تماس<span class="text-danger">*</span></label>
-                        <input type="text" name="phone" class="form-control" id="phone" value="{{ $factor->invoice->phone }}">
+                        <input type="text" name="phone" class="form-control" id="phone"
+                               value="{{ $factor->invoice->phone }}">
                         @error('phone')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="province">استان <span class="text-danger">*</span></label>
-                        <select name="province" id="province" class="js-example-basic-single select2-hidden-accessible" data-select2-id="4" tabindex="-1" aria-hidden="true">
+                        <select name="province" id="province" class="js-example-basic-single select2-hidden-accessible"
+                                data-select2-id="4" tabindex="-1" aria-hidden="true">
                             @foreach(\App\Models\Province::all() as $province)
                                 <option value="{{ $province->name }}" {{ $factor->invoice->province == $province->name ? 'selected' : '' }}>{{ $province->name }}</option>
                             @endforeach
@@ -171,39 +191,44 @@
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="city">شهر<span class="text-danger">*</span></label>
-                        <input type="text" name="city" class="form-control" id="city" value="{{ $factor->invoice->city }}">
+                        <input type="text" name="city" class="form-control" id="city"
+                               value="{{ $factor->invoice->city }}">
                         @error('city')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="address">نشانی<span class="text-danger">*</span></label>
-                        <textarea name="address" id="address" class="form-control">{{ $factor->invoice->address }}</textarea>
+                        <textarea name="address" id="address"
+                                  class="form-control">{{ $factor->invoice->address }}</textarea>
                         @error('address')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="description">توضیحات</label>
-                        <textarea name="description" id="description" class="form-control">{{ $factor->invoice->description }}</textarea>
+                        <textarea name="description" id="description"
+                                  class="form-control">{{ $factor->invoice->description }}</textarea>
                         @error('description')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="status">وضعیت <span class="text-danger">*</span></label>
-                        <select name="status" id="status" class="js-example-basic-single select2-hidden-accessible" data-select2-id="5" tabindex="-2" aria-hidden="true">
+                        <select name="status" id="status" class="js-example-basic-single select2-hidden-accessible"
+                                data-select2-id="5" tabindex="-2" aria-hidden="true">
                             <option value="invoiced" {{ $factor->status == 'invoiced' ? 'selected' : '' }}>{{ \App\Models\Factor::STATUS['invoiced'] }}</option>
                             <option value="paid" {{ $factor->status == 'paid' ? 'selected' : '' }}>{{ \App\Models\Factor::STATUS['paid'] }}</option>
                             <option value="canceled" {{ $factor->status == 'canceled' ? 'selected' : '' }}>{{ \App\Models\Factor::STATUS['canceled'] }}</option>
                         </select>
                         @error('status')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="deposit_doc">رسید واریز</label>
-                        <input type="file" name="deposit_doc" class="form-control" id="deposit_doc" accept="application/pdf,image/png,image/jpg,image/jpeg">
+                        <input type="file" name="deposit_doc" class="form-control" id="deposit_doc"
+                               accept="application/pdf,image/png,image/jpg,image/jpeg">
                         @if($factor->deposit_doc)
                             <a href="{{ $factor->deposit_doc }}" target="_blank" class="btn-link">
                                 <i class="fa fa-eye"></i>
@@ -211,7 +236,7 @@
                             </a>
                         @endif
                         @error('deposit_doc')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-12 mb-4 mt-2 text-center">
@@ -224,7 +249,9 @@
                     <div class="col-12 mb-3">
                         @if(!$factor->inventory_report)
                             <div class="d-flex justify-content-between mb-3">
-                                <button class="btn btn-outline-success" type="button" id="btn_add"><i class="fa fa-plus mr-2"></i> افزودن کالا</button>
+                                <button class="btn btn-outline-success" type="button" id="btn_add"><i
+                                            class="fa fa-plus mr-2"></i> افزودن کالا
+                                </button>
                             </div>
                         @endif
                         <div class="overflow-auto">
@@ -279,7 +306,8 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="number" name="counts[]" class="form-control" min="1" value="{{ $item->pivot->count }}" {{ $readOnly }} required>
+                                                <input type="number" name="counts[]" class="form-control" min="1"
+                                                       value="{{ $item->pivot->count }}" {{ $readOnly }} required>
                                             </td>
                                             <td>
                                                 <select class="form-control" name="units[]" {{ $readOnly }}>
@@ -287,31 +315,45 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="number" name="prices[]" class="form-control" min="0" value="{{ $item->pivot->price }}" readonly>
+                                                <input type="number" name="prices[]" class="form-control" min="0"
+                                                       value="{{ $item->pivot->price }}" readonly>
                                             </td>
                                             <td>
-                                                <input type="number" name="total_prices[]" class="form-control" min="0" value="{{ $item->pivot->total_price }}" readonly>
+                                                <input type="number" name="total_prices[]" class="form-control" min="0"
+                                                       value="{{ $item->pivot->total_price }}" readonly>
                                             </td>
                                             <td>
-                                                <input type="number" name="discount_amounts[]" class="form-control" min="0" value="{{ $discount_amount }}" readonly>
+                                                <input type="number" name="discount_amounts[]" class="form-control"
+                                                       min="0" value="{{ $discount_amount }}" readonly>
                                             </td>
                                             <td>
-                                                <input type="number" name="extra_amounts[]" class="form-control" min="0" value="{{ $item->pivot->extra_amount }}" readonly>
+                                                <input type="number" name="extra_amounts[]" class="form-control" min="0"
+                                                       value="{{ $item->pivot->extra_amount }}" readonly>
                                             </td>
                                             <td>
-                                                <input type="number" name="total_prices_with_off[]" class="form-control" min="0" value="{{ $item->pivot->total_price - ($item->pivot->extra_amount + $discount_amount) }}" readonly>
+                                                <input type="number" name="total_prices_with_off[]" class="form-control"
+                                                       min="0"
+                                                       value="{{ $item->pivot->total_price - ($item->pivot->extra_amount + $discount_amount) }}"
+                                                       readonly>
                                             </td>
                                             <td>
-                                                <input type="number" name="taxes[]" class="form-control" min="0" value="{{ $item->pivot->tax }}" readonly>
+                                                <input type="number" name="taxes[]" class="form-control" min="0"
+                                                       value="{{ $item->pivot->tax }}" readonly>
                                             </td>
                                             <td>
-                                                <input type="number" name="invoice_nets[]" class="form-control" min="0" value="{{ $item->pivot->invoice_net }}" readonly>
+                                                <input type="number" name="invoice_nets[]" class="form-control" min="0"
+                                                       value="{{ $item->pivot->invoice_net }}" readonly>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-primary btn-floating btn_discount" data-toggle="modal" data-target="#discountModal" {{ $disabled }}><i class="fa fa-percent"></i></button>
+                                                <button type="button" class="btn btn-primary btn-floating btn_discount"
+                                                        data-toggle="modal"
+                                                        data-target="#discountModal" {{ $disabled }}><i
+                                                            class="fa fa-percent"></i></button>
                                             </td>
                                             <td>
-                                                <button class="btn btn-danger btn-floating btn_remove" type="button" {{ $disabled }}><i class="fa fa-trash"></i></button>
+                                                <button class="btn btn-danger btn-floating btn_remove"
+                                                        type="button" {{ $disabled }}><i class="fa fa-trash"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -326,7 +368,9 @@
                     <div class="col-12 mb-3">
                         @if(!$factor->inventory_report)
                             <div class="d-flex justify-content-between mb-3">
-                                <button class="btn btn-outline-success" type="button" id="btn_other_add"><i class="fa fa-plus mr-2"></i> افزودن کالا</button>
+                                <button class="btn btn-outline-success" type="button" id="btn_other_add"><i
+                                            class="fa fa-plus mr-2"></i> افزودن کالا
+                                </button>
                             </div>
                         @endif
                         <div class="overflow-auto">
@@ -352,13 +396,18 @@
                                     @foreach($factor->invoice->other_products as $product)
                                         <tr>
                                             <td>
-                                                <input type="text" name="other_products[]" class="form-control" value="{{ $product->title }}" {{ $readOnly }} placeholder="عنوان کالا" required>
+                                                <input type="text" name="other_products[]" class="form-control"
+                                                       value="{{ $product->title }}"
+                                                       {{ $readOnly }} placeholder="عنوان کالا" required>
                                             </td>
                                             <td>
-                                                <input type="text" name="other_colors[]" class="form-control" value="{{ $product->color }}" {{ $readOnly }} placeholder="نام رنگ" required>
+                                                <input type="text" name="other_colors[]" class="form-control"
+                                                       value="{{ $product->color }}"
+                                                       {{ $readOnly }} placeholder="نام رنگ" required>
                                             </td>
                                             <td>
-                                                <input type="number" name="other_counts[]" class="form-control" min="1" value="{{ $product->count }}" {{ $readOnly }} required>
+                                                <input type="number" name="other_counts[]" class="form-control" min="1"
+                                                       value="{{ $product->count }}" {{ $readOnly }} required>
                                             </td>
                                             <td>
                                                 <select class="form-control" name="other_units[]" {{ $readOnly }}>
@@ -366,30 +415,43 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="number" name="other_prices[]" class="form-control" min="0" value="{{ $product->price }}" {{ $readOnly }} required>
+                                                <input type="number" name="other_prices[]" class="form-control" min="0"
+                                                       value="{{ $product->price }}" {{ $readOnly }} required>
                                                 <span class="price_with_grouping text-primary"></span>
                                             </td>
                                             <td>
-                                                <input type="number" name="other_total_prices[]" class="form-control" min="0" value="{{ $product->total_price }}" {{ $readOnly }} readonly>
+                                                <input type="number" name="other_total_prices[]" class="form-control"
+                                                       min="0" value="{{ $product->total_price }}"
+                                                       {{ $readOnly }} readonly>
                                             </td>
                                             <td>
-                                                <input type="number" name="other_discount_amounts[]" class="form-control" min="0" value="{{ $product->discount_amount }}" {{ $readOnly }} required>
+                                                <input type="number" name="other_discount_amounts[]"
+                                                       class="form-control" min="0"
+                                                       value="{{ $product->discount_amount }}" {{ $readOnly }} required>
                                                 <span class="price_with_grouping text-primary"></span>
                                             </td>
                                             <td>
-                                                <input type="number" name="other_extra_amounts[]" class="form-control" min="0" value="{{ $product->extra_amount }}" readonly>
+                                                <input type="number" name="other_extra_amounts[]" class="form-control"
+                                                       min="0" value="{{ $product->extra_amount }}" readonly>
                                             </td>
                                             <td>
-                                                <input type="number" name="other_total_prices_with_off[]" class="form-control" min="0" value="{{ $product->total_price - ($product->extra_amount + $product->discount_amount) }}" readonly>
+                                                <input type="number" name="other_total_prices_with_off[]"
+                                                       class="form-control" min="0"
+                                                       value="{{ $product->total_price - ($product->extra_amount + $product->discount_amount) }}"
+                                                       readonly>
                                             </td>
                                             <td>
-                                                <input type="number" name="other_taxes[]" class="form-control" min="0" value="{{ $product->tax }}" readonly>
+                                                <input type="number" name="other_taxes[]" class="form-control" min="0"
+                                                       value="{{ $product->tax }}" readonly>
                                             </td>
                                             <td>
-                                                <input type="number" name="other_invoice_nets[]" class="form-control" min="0" value="{{ $product->invoice_net }}" readonly>
+                                                <input type="number" name="other_invoice_nets[]" class="form-control"
+                                                       min="0" value="{{ $product->invoice_net }}" readonly>
                                             </td>
                                             <td>
-                                                <button class="btn btn-danger btn-floating btn_remove" type="button" {{ $disabled }}><i class="fa fa-trash"></i></button>
+                                                <button class="btn btn-danger btn-floating btn_remove"
+                                                        type="button" {{ $disabled }}><i class="fa fa-trash"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -404,7 +466,8 @@
                     </div>
                     <div class="form-group">
                         <label for="final_discount">مبلغ تخفیف</label>
-                        <input type="text" class="form-control" name="final_discount" id="final_discount" value="{{ $factor->invoice->discount }}" {{ $readOnly }} required>
+                        <input type="text" class="form-control" name="final_discount" id="final_discount"
+                               value="{{ $factor->invoice->discount }}" {{ $readOnly }} required>
                     </div>
                 </div>
                 <button class="btn btn-primary" type="submit" id="btn_form">ثبت فرم</button>
@@ -421,7 +484,7 @@
         var invoice_id = "{{ $factor->invoice->id }}";
 
         var form = document.getElementById('invoice_form');
-        form.addEventListener('keypress', function(e) {
+        form.addEventListener('keypress', function (e) {
             if (e.keyCode === 13) {
                 e.preventDefault();
             }
@@ -559,7 +622,7 @@
             // end add other property
 
             // remove property
-            $(document).on('click','.btn_remove', function () {
+            $(document).on('click', '.btn_remove', function () {
                 $(this).parent().parent().remove();
             })
             // end remove property
@@ -599,14 +662,14 @@
 
             // apply discount on products
             var active_row_index;
-            $(document).on('click','.btn_discount', function () {
+            $(document).on('click', '.btn_discount', function () {
                 active_row_index = $(this).parent().parent().index();
             })
 
-            $(document).on('click','#btn_apply_discount', function () {
+            $(document).on('click', '#btn_apply_discount', function () {
                 let code = $('#code').val();
                 let product_id = $('#products_table select[name="products[]"]')[active_row_index].value;
-                let count =  $('#products_table input[name="counts[]"]')[active_row_index].value;
+                let count = $('#products_table input[name="counts[]"]')[active_row_index].value;
 
                 $.ajax({
                     url: "{{ route('invoices.applyDiscount') }}",
@@ -618,9 +681,9 @@
                         product_id,
                     },
                     success: function (res) {
-                        if(res.error){
+                        if (res.error) {
                             $('#error_div').text(res.message)
-                        }else{
+                        } else {
                             $('#products_table input[name="discount_amounts[]"]')[active_row_index].value = res.data.discount_amount;
                             $('#products_table input[name="total_prices_with_off[]"]')[active_row_index].value = res.data.total_price_with_off;
                             $('#products_table input[name="taxes[]"]')[active_row_index].value = res.data.tax;
@@ -654,9 +717,9 @@
                 let customer_id = this.value;
 
                 $.ajax({
-                    url: '/panel/get-customer-info/'+customer_id,
+                    url: '/panel/get-customer-info/' + customer_id,
                     type: 'post',
-                    success: function(res) {
+                    success: function (res) {
                         $('#economical_number').val(res.data.economical_number)
                         $('#national_number').val(res.data.national_number)
                         $('#postal_code').val(res.data.postal_code)
@@ -672,8 +735,8 @@
 
         function CalcProductInvoice(changeable) {
             var index = $(changeable).parent().parent().index()
-            let product_id =  $('#products_table select[name="products[]"]')[index].value;
-            let count =  $('#products_table input[name="counts[]"]')[index].value;
+            let product_id = $('#products_table select[name="products[]"]')[index].value;
+            let count = $('#products_table input[name="counts[]"]')[index].value;
 
             $.ajax({
                 url: "{{ route('calcProductsInvoice') }}",
@@ -702,7 +765,7 @@
 
         function CalcOtherProductInvoice(changeable) {
             var index = $(changeable).parent().parent().index()
-            let count =  $('#other_products_table input[name="other_counts[]"]')[index].value;
+            let count = $('#other_products_table input[name="other_counts[]"]')[index].value;
             let price = $('#other_products_table input[name="other_prices[]"]')[index].value;
             let discount_amount = $('#other_products_table input[name="other_discount_amounts[]"]')[index].value;
 
@@ -741,9 +804,9 @@
         })
 
         function changeType(type) {
-            if (type == 'official'){
+            if (type == 'official') {
                 $('.seller_sec').addClass('d-none')
-            }else{
+            } else {
                 $('.seller_sec').removeClass('d-none')
             }
         }

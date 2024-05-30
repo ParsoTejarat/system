@@ -24,11 +24,6 @@ class Invoice extends Model
         'app' => 'اپلیکیشن',
     ];
 
-    const TYPE = [
-        'official' => 'رسمی',
-        'unofficial' => 'غیر رسمی',
-    ];
-
     const REQ_FOR = [
         'pre-invoice' => 'پیش فاکتور',
         'invoice' => 'فاکتور',

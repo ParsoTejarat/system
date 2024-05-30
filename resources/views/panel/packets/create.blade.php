@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'ایجاد بسته ارسالی')
 @section('content')
     {{--  Send SMS Modal  --}}
@@ -54,7 +54,8 @@
                         <select class="js-example-basic-single select2-hidden-accessible" name="invoice" id="invoice">
                             @if($invoices->count())
                                 @foreach($invoices as $invoiceId => $customerName)
-                                    <option value="{{ $invoiceId }}" {{ old('invoice') == $invoiceId ? 'selected' : '' }}> {{ $invoiceId }} - {{ $customerName }}</option>
+                                    <option value="{{ $invoiceId }}" {{ old('invoice') == $invoiceId ? 'selected' : '' }}> {{ $invoiceId }}
+                                        - {{ $customerName }}</option>
                                 @endforeach
                             @else
                                 <option value="" disabled selected>فاکتوری موجود نیست!</option>
@@ -66,23 +67,26 @@
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="receiver">گیرنده <span class="text-danger">*</span></label>
-                        <input type="text" name="receiver" class="form-control" id="receiver" value="{{ old('receiver') }}">
+                        <input type="text" name="receiver" class="form-control" id="receiver"
+                               value="{{ old('receiver') }}">
                         @error('receiver')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="address">آدرس <span class="text-danger">*</span></label>
-                        <input type="text" name="address" class="form-control" id="address" value="{{ old('address') }}">
+                        <input type="text" name="address" class="form-control" id="address"
+                               value="{{ old('address') }}">
                         @error('address')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="sent_time">زمان ارسال <span class="text-danger">*</span></label>
-                        <input type="text" name="sent_time" class="form-control date-picker-shamsi-list" id="sent_time" value="{{ old('sent_time') }}">
+                        <input type="text" name="sent_time" class="form-control date-picker-shamsi-list" id="sent_time"
+                               value="{{ old('sent_time') }}">
                         @error('sent_time')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
@@ -93,21 +97,23 @@
                             @endforeach
                         </select>
                         @error('sent_type')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="send_tracking_code">کد رهگیری ارسالی</label>
-                        <input type="text" name="send_tracking_code" class="form-control" id="send_tracking_code" value="{{ old('send_tracking_code') }}">
+                        <input type="text" name="send_tracking_code" class="form-control" id="send_tracking_code"
+                               value="{{ old('send_tracking_code') }}">
                         @error('send_tracking_code')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="receive_tracking_code">کد رهگیری دریافتی </label>
-                        <input type="text" name="receive_tracking_code" class="form-control" id="receive_tracking_code" value="{{ old('receive_tracking_code') }}">
+                        <input type="text" name="receive_tracking_code" class="form-control" id="receive_tracking_code"
+                               value="{{ old('receive_tracking_code') }}">
                         @error('receive_tracking_code')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
@@ -118,7 +124,7 @@
                             @endforeach
                         </select>
                         @error('packet_status')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
@@ -129,20 +135,22 @@
                             @endforeach
                         </select>
                         @error('invoice_status')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="description">توضیحات</label>
-                        <textarea name="description" id="description" class="form-control">{{ old('description') }}</textarea>
+                        <textarea name="description" id="description"
+                                  class="form-control">{{ old('description') }}</textarea>
                         @error('description')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
                     <button class="btn btn-primary" type="submit">ثبت فرم</button>
-                    <button class="btn btn-github" type="button" data-toggle="modal" data-target="#smsModal" id="btn_sms">
+                    <button class="btn btn-github" type="button" data-toggle="modal" data-target="#smsModal"
+                            id="btn_sms">
                         <i class="fa fa-message mr-2"></i>
                         ارسال پیامک
                     </button>
@@ -160,7 +168,7 @@
             var args;
             var text_error;
 
-            $('#btn_sms').on('click', function (){
+            $('#btn_sms').on('click', function () {
                 code = $('#send_tracking_code').val().trim();
                 receiver = $('#receiver').val();
                 bodyId = $('#bodyId').val();
@@ -179,21 +187,21 @@
                 let phone = $('#phone').val().trim();
                 let text = $('#text').val()
 
-                if(phone === ''){
+                if (phone === '') {
                     $('#phone_error').text('شماره موبایل را وارد نمایید')
                     phone_error = true;
-                }else{
-                    if(phone.length !== 11){
+                } else {
+                    if (phone.length !== 11) {
                         $('#phone_error').text('شماره موبایل باید 11 رقم باشد')
                         phone_error = true;
-                    }else{
+                    } else {
                         $('#phone_error').text('')
                         phone_error = false;
                     }
                 }
 
-                if(!phone_error && !text_error){
-                    $('#btn_send_sms').attr('disabled','disabled')
+                if (!phone_error && !text_error) {
+                    $('#btn_send_sms').attr('disabled', 'disabled')
                     $('#btn_send_sms span').text('درحال ارسال...')
 
                     $.ajax({
@@ -206,7 +214,7 @@
                             args
                         },
                         success: function (res) {
-                            if(res.recId == undefined || res.recId == 11){
+                            if (res.recId == undefined || res.recId == 11) {
                                 Swal.fire({
                                     title: 'خطایی رخ داد',
                                     text: res.status,
@@ -223,7 +231,7 @@
                                         content: 'left-gap',
                                     }
                                 })
-                            }else{
+                            } else {
                                 Swal.fire({
                                     title: 'با موفقیت ارسال شد',
                                     icon: 'success',
@@ -248,14 +256,15 @@
                     })
                 }
             })
+
             // end btn send sms
 
             function changeBody(bodyId) {
-                if (bodyId == 177554){
-                    if(code == ''){
+                if (bodyId == 177554) {
+                    if (code == '') {
                         $('#text_error').text('ابتدا فیلد کد رهگیری را وارد نمایید')
                         text_error = true;
-                    }else{
+                    } else {
                         $('#text_error').text('')
                         text_error = false;
                     }
@@ -265,11 +274,11 @@
                     $('#text').html(`کد پیگیری مرسوله شما: ${code} \n\n` +
                         `شرکت صنایع ماشین های اداری ماندگار پارس\n` +
                         `Artintoner.com\n`)
-                }else if(bodyId == 185679){
-                    if(receiver == ''){
+                } else if (bodyId == 185679) {
+                    if (receiver == '') {
                         $('#text_error').text('ابتدا فیلد گیرنده را وارد نمایید')
                         text_error = true;
-                    }else {
+                    } else {
                         text_error = false;
                         $('#text_error').text('')
                     }
@@ -281,11 +290,11 @@
                         `Artintoner.com`)
 
                     args = [receiver];
-                } else{
-                    if(receiver == ''){
+                } else {
+                    if (receiver == '') {
                         $('#text_error').text('ابتدا فیلد گیرنده را وارد نمایید')
                         text_error = true;
-                    }else {
+                    } else {
                         text_error = false;
                         $('#text_error').text('')
                     }

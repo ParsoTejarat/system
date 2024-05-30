@@ -1,20 +1,20 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @switch(request()->website)
     @case('torob')
-            @php
-                $title = 'محصولات ترب';
-            @endphp
+        @php
+            $title = 'محصولات ترب';
+        @endphp
         @break
     @case('digikala')
-            @php
-                $title = 'محصولات دیجیکالا';
-            @endphp
+        @php
+            $title = 'محصولات دیجیکالا';
+        @endphp
         @break
     @case('emalls')
         @php
             $title = 'محصولات ایمالز';
         @endphp
-    @break
+        @break
 @endswitch
 
 @section('title', $title)
@@ -93,29 +93,35 @@
                             <td>{{ $item->title }}</td>
                             <td>{{ verta($item->created_at)->format('H:i - Y/m/d') }}</td>
                             <td>
-                                <a class="btn btn-info btn-floating" href="{{ route('off-site-products.show', $item->id) }}">
+                                <a class="btn btn-info btn-floating"
+                                   href="{{ route('off-site-products.show', $item->id) }}">
                                     <i class="fa fa-eye"></i>
                                 </a>
                             </td>
                             @if(request()->website == 'torob' || request()->website == 'emalls')
                                 <td>
-                                    <button class="btn btn-info btn-floating btn_avg_price" data-toggle="modal" data-target="#avgPriceModal" data-id="{{ $item->id }}">
+                                    <button class="btn btn-info btn-floating btn_avg_price" data-toggle="modal"
+                                            data-target="#avgPriceModal" data-id="{{ $item->id }}">
                                         <i class="fa fa-eye"></i>
                                     </button>
                                 </td>
                             @endif
                             <td>
-                                <button class="btn btn-info btn-floating btn_price_history" data-toggle="modal" data-target="#priceHistoryModal" data-id="{{ $item->id }}">
+                                <button class="btn btn-info btn-floating btn_price_history" data-toggle="modal"
+                                        data-target="#priceHistoryModal" data-id="{{ $item->id }}">
                                     <i class="fa fa-eye"></i>
                                 </button>
                             </td>
                             <td>
-                                <a class="btn btn-warning btn-floating" href="{{ route('off-site-products.edit', $item->id) }}">
+                                <a class="btn btn-warning btn-floating"
+                                   href="{{ route('off-site-products.edit', $item->id) }}">
                                     <i class="fa fa-edit"></i>
                                 </a>
                             </td>
                             <td>
-                                <button class="btn btn-danger btn-floating trashRow" data-url="{{ route('off-site-products.destroy',$item->id) }}" data-id="{{ $item->id }}">
+                                <button class="btn btn-danger btn-floating trashRow"
+                                        data-url="{{ route('off-site-products.destroy',$item->id) }}"
+                                        data-id="{{ $item->id }}">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </td>
@@ -148,8 +154,7 @@
 
                 $('#priceHistoryModal .modal-body').html(`<div class="spinner-grow text-primary"></div>`)
 
-                switch(website)
-                {
+                switch (website) {
                     case 'torob':
                         torobChart();
                         break;
@@ -230,8 +235,8 @@
                                             min: 0,
                                             fontSize: 15,
                                             fontColor: '#999',
-                                            callback: function(value, index, values) {
-                                                const options = { style: 'decimal', useGrouping: true };
+                                            callback: function (value, index, values) {
+                                                const options = {style: 'decimal', useGrouping: true};
                                                 const formattedNumber = value.toLocaleString('en-US', options);
                                                 return formattedNumber;
                                             }
@@ -243,7 +248,7 @@
                                 },
                                 tooltips: {
                                     callbacks: {
-                                        label: function(tooltipItem, data) {
+                                        label: function (tooltipItem, data) {
                                             var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
                                             var formattedValue = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                             return formattedValue + ' تومان ';
@@ -254,7 +259,7 @@
                                     intersect: false,
                                 },
                                 elements: {
-                                    point:{
+                                    point: {
                                         radius: 1
                                     }
                                 }
@@ -282,14 +287,14 @@
                             data: {
                                 labels: labels,
                                 datasets: [{
-                                        label: "کمترین قیمت",
-                                        backgroundColor: '#0091ea',
-                                        data: data1,
-                                        borderColor: '#0091ea',
-                                        fill: false,
-                                        cubicInterpolationMode: 'monotone',
-                                        tension: 0.4
-                                    }
+                                    label: "کمترین قیمت",
+                                    backgroundColor: '#0091ea',
+                                    data: data1,
+                                    borderColor: '#0091ea',
+                                    fill: false,
+                                    cubicInterpolationMode: 'monotone',
+                                    tension: 0.4
+                                }
                                 ]
                             },
 
@@ -312,8 +317,8 @@
                                             min: 0,
                                             fontSize: 15,
                                             fontColor: '#999',
-                                            callback: function(value, index, values) {
-                                                const options = { style: 'decimal', useGrouping: true };
+                                            callback: function (value, index, values) {
+                                                const options = {style: 'decimal', useGrouping: true};
                                                 const formattedNumber = (value * 0.1).toLocaleString('en-US', options);
                                                 return formattedNumber;
                                             }
@@ -325,7 +330,7 @@
                                 },
                                 tooltips: {
                                     callbacks: {
-                                        label: function(tooltipItem, data) {
+                                        label: function (tooltipItem, data) {
                                             var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
                                             var formattedValue = (value * 0.1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                             return formattedValue + ' تومان ';
@@ -336,7 +341,7 @@
                                     intersect: false,
                                 },
                                 elements: {
-                                    point:{
+                                    point: {
                                         radius: 1
                                     }
                                 }

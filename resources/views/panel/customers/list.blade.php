@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'مشتریان')
 @php
     $sidebar = false;
@@ -6,7 +6,7 @@
 @endphp
 @section('styles')
     <style>
-        main{
+        main {
             margin: 0 !important;
             padding: 0 !important;
         }

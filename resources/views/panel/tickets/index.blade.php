@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'تیکت ها')
 @section('content')
     <div class="card">
@@ -12,20 +12,20 @@
                     </a>
                 @endcan
             </div>
-{{--            <form action="{{ route('tickets.search') }}" method="post" id="search_form">--}}
-{{--                @csrf--}}
-{{--            </form>--}}
-{{--            <div class="row mb-3">--}}
-{{--                <div class="col-xl-2 xl-lg-2 col-md-3 col-sm-12">--}}
-{{--                    <input type="text" name="code" class="form-control" placeholder="کد محصول" value="{{ request()->code ?? null }}" form="search_form">--}}
-{{--                </div>--}}
-{{--                <div class="col-xl-3 xl-lg-3 col-md-4 col-sm-12">--}}
-{{--                    <input type="text" name="title" class="form-control" placeholder="عنوان محصول" value="{{ request()->title ?? null }}" form="search_form">--}}
-{{--                </div>--}}
-{{--                <div class="col-xl-2 xl-lg-2 col-md-3 col-sm-12">--}}
-{{--                    <button type="submit" class="btn btn-primary" form="search_form">جستجو</button>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+            {{--            <form action="{{ route('tickets.search') }}" method="post" id="search_form">--}}
+            {{--                @csrf--}}
+            {{--            </form>--}}
+            {{--            <div class="row mb-3">--}}
+            {{--                <div class="col-xl-2 xl-lg-2 col-md-3 col-sm-12">--}}
+            {{--                    <input type="text" name="code" class="form-control" placeholder="کد محصول" value="{{ request()->code ?? null }}" form="search_form">--}}
+            {{--                </div>--}}
+            {{--                <div class="col-xl-3 xl-lg-3 col-md-4 col-sm-12">--}}
+            {{--                    <input type="text" name="title" class="form-control" placeholder="عنوان محصول" value="{{ request()->title ?? null }}" form="search_form">--}}
+            {{--                </div>--}}
+            {{--                <div class="col-xl-2 xl-lg-2 col-md-3 col-sm-12">--}}
+            {{--                    <button type="submit" class="btn btn-primary" form="search_form">جستجو</button>--}}
+            {{--                </div>--}}
+            {{--            </div>--}}
             <div class="table-responsive">
                 <table class="table table-striped table-bordered dataTable dtr-inline text-center">
                     <thead>
@@ -63,14 +63,17 @@
                             <td>{{ verta($ticket->created_at)->format('H:i - Y/m/d') }}</td>
                             @can('tickets-create')
                                 <td>
-                                    <a class="btn btn-info btn-floating" href="{{ route('tickets.edit', $ticket->id) }}">
+                                    <a class="btn btn-info btn-floating"
+                                       href="{{ route('tickets.edit', $ticket->id) }}">
                                         <i class="fa fa-eye"></i>
                                     </a>
                                 </td>
                             @endcan
                             @can('tickets-delete')
                                 <td>
-                                    <button class="btn btn-danger btn-floating trashRow" data-url="{{ route('tickets.destroy',$ticket->id) }}" data-id="{{ $ticket->id }}">
+                                    <button class="btn btn-danger btn-floating trashRow"
+                                            data-url="{{ route('tickets.destroy',$ticket->id) }}"
+                                            data-id="{{ $ticket->id }}">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>

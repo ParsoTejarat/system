@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'ثبت خروجی')
 @section('styles')
     <style>
@@ -8,7 +8,8 @@
             border-top-right-radius: .25rem;
             border-bottom-right-radius: .25rem;
         }
-        .input-group > .input-group-append:last-child > .btn:not(:last-child):not(.dropdown-toggle), .input-group > .input-group-append:last-child > .input-group-text:not(:last-child), .input-group > .input-group-append:not(:last-child) > .btn, .input-group > .input-group-append:not(:last-child) > .input-group-text, .input-group > .input-group-prepend > .btn, .input-group > .input-group-prepend > .input-group-text{
+
+        .input-group > .input-group-append:last-child > .btn:not(:last-child):not(.dropdown-toggle), .input-group > .input-group-append:last-child > .input-group-text:not(:last-child), .input-group > .input-group-append:not(:last-child) > .btn, .input-group > .input-group-append:not(:last-child) > .input-group-text, .input-group > .input-group-prepend > .btn, .input-group > .input-group-prepend > .input-group-text {
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
             border-top-left-radius: .25rem;
@@ -21,7 +22,9 @@
         <div class="card-body">
             <div class="card-title d-flex justify-content-between align-items-center">
                 <h6>ثبت خروجی</h6>
-                <button class="btn btn-outline-success" type="button" id="btn_add"><i class="fa fa-plus mr-2"></i> افزودن کالا</button>
+                <button class="btn btn-outline-success" type="button" id="btn_add"><i class="fa fa-plus mr-2"></i>
+                    افزودن کالا
+                </button>
             </div>
             <form action="{{ route('inventory-reports.store') }}" method="post">
                 @csrf
@@ -30,11 +33,13 @@
                 <div class="row">
                     <div class="col-xl-3 col-lg-3 col-md-8 col-sm-12">
                         <label for="invoice_id">سفارش</label>
-                        <select class="js-example-basic-single select2-hidden-accessible" name="invoice_id" id="invoice_id">
+                        <select class="js-example-basic-single select2-hidden-accessible" name="invoice_id"
+                                id="invoice_id">
                             <option value="">انتخاب کنید...</option>
                             @if(\App\Models\Invoice::doesntHave('inventory_report')->count())
                                 @foreach(\App\Models\Invoice::doesntHave('inventory_report')->get() as $invoice)
-                                    <option value="{{ $invoice->id }}" {{ old('invoice_id') == $invoice->id ? 'selected' : '' }}> {{ $invoice->id }} - {{ $invoice->customer->name }}</option>
+                                    <option value="{{ $invoice->id }}" {{ old('invoice_id') == $invoice->id ? 'selected' : '' }}> {{ $invoice->id }}
+                                        - {{ $invoice->customer->name }}</option>
                                 @endforeach
                             @else
                                 <option value="" disabled selected>سفارشی موجود نیست!</option>
@@ -53,19 +58,21 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">MP</div>
                             </div>
-                            <input type="text" name="guarantee_serial" id="guarantee_serial" class="form-control" value="{{ old('guarantee_serial') }}" maxlength="8">
+                            <input type="text" name="guarantee_serial" id="guarantee_serial" class="form-control"
+                                   value="{{ old('guarantee_serial') }}" maxlength="8">
                         </div>
                         <div id="serial_status"></div>
 
                         @error('guarantee_serial')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-4"></div>
                     <div class="col-xl-3 col-lg-3 col-md-8 col-sm-12">
                         <div class="form-group">
                             <label for="person"> تحویل گیرنده <span class="text-danger">*</span></label>
-                            <input type="text" name="person" class="form-control" id="person" value="{{ old('person') }}">
+                            <input type="text" name="person" class="form-control" id="person"
+                                   value="{{ old('person') }}">
                             @error('person')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
@@ -74,7 +81,8 @@
                     <div class="col-xl-3 col-lg-3 col-md-8 col-sm-12">
                         <div class="form-group">
                             <label for="output_date"> تاریخ خروج <span class="text-danger">*</span></label>
-                            <input type="text" name="output_date" class="form-control date-picker-shamsi-list" id="output_date" value="{{ old('output_date') ?? verta()->format('Y/m/d') }}">
+                            <input type="text" name="output_date" class="form-control date-picker-shamsi-list"
+                                   id="output_date" value="{{ old('output_date') ?? verta()->format('Y/m/d') }}">
                             @error('output_date')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
@@ -92,42 +100,48 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    @if($errors->any())
-{{--                                        @dd($errors->all())--}}
-                                        @foreach(old('inventory_id') as $key => $inventory_id)
-                                            <tr>
-                                                <td>
-                                                    <select class="js-example-basic-single select2-hidden-accessible" name="inventory_id[]">
-                                                        @foreach(\App\Models\Inventory::where('warehouse_id', $warehouse_id)->get(['id','title','type']) as $item)
-                                                            <option value="{{ $item->id }}" {{ $inventory_id == $item->id ? 'selected' : '' }}>{{ \App\Models\Inventory::TYPE[$item->type].' - '.$item->title }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="number" name="counts[]" class="form-control" min="1" value="{{ old('counts')[$key] }}" required>
-                                                </td>
-                                                <td>
-                                                    <button class="btn btn-danger btn-floating btn_remove" type="button"><i class="fa fa-trash"></i></button>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @else
+                                @if($errors->any())
+                                    {{--                                        @dd($errors->all())--}}
+                                    @foreach(old('inventory_id') as $key => $inventory_id)
                                         <tr>
                                             <td>
-                                                <select class="js-example-basic-single select2-hidden-accessible" name="inventory_id[]">
+                                                <select class="js-example-basic-single select2-hidden-accessible"
+                                                        name="inventory_id[]">
                                                     @foreach(\App\Models\Inventory::where('warehouse_id', $warehouse_id)->get(['id','title','type']) as $item)
-                                                        <option value="{{ $item->id }}">{{ \App\Models\Inventory::TYPE[$item->type].' - '.$item->title }}</option>
+                                                        <option value="{{ $item->id }}" {{ $inventory_id == $item->id ? 'selected' : '' }}>{{ \App\Models\Inventory::TYPE[$item->type].' - '.$item->title }}</option>
                                                     @endforeach
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="number" name="counts[]" class="form-control" min="1" value="1" required>
+                                                <input type="number" name="counts[]" class="form-control" min="1"
+                                                       value="{{ old('counts')[$key] }}" required>
                                             </td>
                                             <td>
-                                                <button class="btn btn-danger btn-floating btn_remove" type="button"><i class="fa fa-trash"></i></button>
+                                                <button class="btn btn-danger btn-floating btn_remove" type="button"><i
+                                                            class="fa fa-trash"></i></button>
                                             </td>
                                         </tr>
-                                    @endif
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td>
+                                            <select class="js-example-basic-single select2-hidden-accessible"
+                                                    name="inventory_id[]">
+                                                @foreach(\App\Models\Inventory::where('warehouse_id', $warehouse_id)->get(['id','title','type']) as $item)
+                                                    <option value="{{ $item->id }}">{{ \App\Models\Inventory::TYPE[$item->type].' - '.$item->title }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="number" name="counts[]" class="form-control" min="1" value="1"
+                                                   required>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger btn-floating btn_remove" type="button"><i
+                                                        class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                @endif
                                 </tbody>
                             </table>
                             <div class="alert alert-warning d-none" id="alert_section">
@@ -155,14 +169,14 @@
                                 </div>
                             </div>
                             @error('inventory_count')
-                                <div class="alert alert-danger">
-                                    <p><strong>توجه!</strong> موجودی کالا در انبار جهت خروج کافی نمی باشد: </p>
-                                    <ul>
-                                        @foreach(session('error_data') as $item)
-                                            <li>{{ $item }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
+                            <div class="alert alert-danger">
+                                <p><strong>توجه!</strong> موجودی کالا در انبار جهت خروج کافی نمی باشد: </p>
+                                <ul>
+                                    @foreach(session('error_data') as $item)
+                                        <li>{{ $item }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
                             @enderror
                         </div>
                     </div>
@@ -170,7 +184,8 @@
                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                         <div class="form-group">
                             <label for="description">توضیحات</label>
-                            <textarea name="description" class="form-control" id="description" rows="5">{{ old('description') }}</textarea>
+                            <textarea name="description" class="form-control" id="description"
+                                      rows="5">{{ old('description') }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -187,12 +202,12 @@
         var options_html;
 
         @foreach(\App\Models\Inventory::where('warehouse_id', $warehouse_id)->get(['id','title','code','type']) as $item)
-            inventory.push({
-                "id": "{{ $item->id }}",
-                "code": "{{ $item->code }}",
-                "type": "{{ \App\Models\Inventory::TYPE[$item->type] }}",
-                "title": "{{ $item->title }}",
-            })
+        inventory.push({
+            "id": "{{ $item->id }}",
+            "code": "{{ $item->code }}",
+            "type": "{{ \App\Models\Inventory::TYPE[$item->type] }}",
+            "title": "{{ $item->title }}",
+        })
         @endforeach
 
         $.each(inventory, function (i, item) {
@@ -212,19 +227,18 @@
                 </tr>
             `);
 
-            $('.js-example-basic-single').select2()
+                $('.js-example-basic-single').select2()
             })
             // end add property
 
             // remove property
-            $(document).on('click','.btn_remove', function () {
+            $(document).on('click', '.btn_remove', function () {
                 $(this).parent().parent().remove();
             })
             // end remove property
 
-            $(document).on('change','#invoice_id', function (){
-                if (this.value !== '')
-                {
+            $(document).on('change', '#invoice_id', function () {
+                if (this.value !== '') {
                     let invoice_id = this.value;
                     $.ajax({
                         type: 'post',
@@ -236,16 +250,16 @@
                             let url = `/panel/invoices/${res.invoice_id}`
                             $('#factor_link a').attr('href', url)
 
-                            if (res.missed){
+                            if (res.missed) {
                                 $('#alert_section').removeClass('d-none')
                                 $('#alert_section #miss_products').removeClass('d-none')
                                 $('#alert_section #miss_products #codes').text(res.miss_products)
-                            }else{
+                            } else {
                                 $('#alert_section').addClass('d-none')
                                 $('#alert_section #miss_products').addClass('d-none')
                             }
 
-                            if (res.other_products.length){
+                            if (res.other_products.length) {
                                 $('#alert_section').removeClass('d-none')
                                 $('#alert_section #other_products').removeClass('d-none')
                                 $('#alert_section #other_products #items').html('')
@@ -253,7 +267,7 @@
                                 $.each(res.other_products, function (i, product) {
                                     $('#alert_section #other_products #items').append(`<li>${product.title}</li>`)
                                 })
-                            } else{
+                            } else {
                                 $('#alert_section').addClass('d-none')
                                 $('#alert_section #other_products').addClass('d-none')
                             }
@@ -292,9 +306,8 @@
                 serialCheck(this.value)
             })
 
-            function serialCheck(serial)
-            {
-                if (serial.length === 8 && last_value_length !== 8){
+            function serialCheck(serial) {
+                if (serial.length === 8 && last_value_length !== 8) {
                     $.ajax({
                         url: "{{ route('serial.check') }}",
                         type: 'post',
@@ -302,19 +315,19 @@
                             serial
                         },
                         success: function (res) {
-                            if(res.data.error){
+                            if (res.data.error) {
                                 $('#serial_status').html(`<small class="text-danger">${res.data.message}</small>`)
-                                $('#btn_submit').attr('disabled','disabled')
-                            }else{
+                                $('#btn_submit').attr('disabled', 'disabled')
+                            } else {
                                 $('#serial_status').html(`<small class="text-success">${res.data.message}</small>`)
                                 $('#btn_submit').removeAttr('disabled')
                             }
                         }
                     })
-                }else if(serial.length < 8 && serial.length !== 0){
+                } else if (serial.length < 8 && serial.length !== 0) {
                     $('#serial_status').html(`<small class="text-danger">سریال گارانتی معتبر نیست</small>`)
-                    $('#btn_submit').attr('disabled','disabled')
-                }else if(serial.length === 0){
+                    $('#btn_submit').attr('disabled', 'disabled')
+                } else if (serial.length === 0) {
                     $('#serial_status').html('')
                     $('#btn_submit').removeAttr('disabled')
                 }

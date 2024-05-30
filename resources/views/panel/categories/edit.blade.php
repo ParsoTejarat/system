@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'ویرایش دسته بندی')
 @section('content')
     <div class="card">
@@ -12,14 +12,16 @@
                 <div class="form-row">
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="name">نام دسته بندی<span class="text-danger">*</span></label>
-                        <input type="text" name="name" class="form-control" id="name" value="{{ $category->name }}" placeholder="نویسنده">
+                        <input type="text" name="name" class="form-control" id="name" value="{{ $category->name }}"
+                               placeholder="نویسنده">
                         @error('name')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="slug">اسلاگ<span class="text-danger">*</span></label>
-                        <input type="text" name="slug" class="form-control" id="slug" value="{{ $category->slug }}" placeholder="writer">
+                        <input type="text" name="slug" class="form-control" id="slug" value="{{ $category->slug }}"
+                               placeholder="writer">
                         @error('slug')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror

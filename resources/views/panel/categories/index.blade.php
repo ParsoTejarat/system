@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'دسته بندی ها')
 @section('content')
     <div class="card">
@@ -37,14 +37,17 @@
                             <td>{{ verta($category->created_at)->format('H:i - Y/m/d') }}</td>
                             @can('categories-edit')
                                 <td>
-                                    <a class="btn btn-warning btn-floating" href="{{ route('categories.edit', $category->id) }}">
+                                    <a class="btn btn-warning btn-floating"
+                                       href="{{ route('categories.edit', $category->id) }}">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 </td>
                             @endcan
                             @can('categories-delete')
                                 <td>
-                                    <button class="btn btn-danger btn-floating trashRow" data-url="{{ route('categories.destroy',$category->id) }}" data-id="{{ $category->id }}">
+                                    <button class="btn btn-danger btn-floating trashRow"
+                                            data-url="{{ route('categories.destroy',$category->id) }}"
+                                            data-id="{{ $category->id }}">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>

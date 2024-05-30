@@ -16,17 +16,12 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-//            $table->string('slug')->unique();
             $table->string('code')->unique();
             $table->unsignedBigInteger('system_price')->comment('قیمت سامانه');
             $table->unsignedBigInteger('partner_price_tehran')->comment('قیمت همکار (تهران)');
             $table->unsignedBigInteger('partner_price_other')->comment('قیمت همکار (شهرستان)');
             $table->unsignedBigInteger('single_price')->comment('قیمت تک فروشی');
-            $table->string('image');
-            $table->unsignedInteger('total_count');
             $table->unsignedBigInteger('category_id');
-            $table->json('properties')->nullable();
-            $table->longText('description')->nullable();
             $table->unsignedBigInteger('creator_id')->nullable();
             $table->timestamps();
 

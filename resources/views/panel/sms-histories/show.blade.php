@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'مشاهده پیام ارسال شده')
 @section('content')
     <div class="card">

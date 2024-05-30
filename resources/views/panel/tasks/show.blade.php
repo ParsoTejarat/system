@@ -8,96 +8,116 @@
             $task_done = $task_user->status == 'done' ? true : false;
         }
     @endphp
+
     {{--  description Modal  --}}
-    <div class="modal fade" id="descriptionModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade" id="descriptionModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="descriptionModalLabel">توضیحات</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="بستن">
-                        <i class="ti-close"></i>
-                    </button>
+                    <h5 class="modal-title">توضیحات</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
                 </div>
                 <div class="modal-body">
                     <p></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
                 </div>
             </div>
         </div>
     </div>
     {{--  end description Modal  --}}
 
-    <div class="card">
-        <div class="card-body">
-            <div class="card-title d-flex justify-content-between align-items-center">
-                <h6>مشاهده وظیفه "{{ $task->title }}"</h6>
-                @if(!$isCreator)
-                    <div class="custom-control custom-switch custom-control-inline {{ $isCreator ? 'd-none' : '' }}">
-                        <input type="checkbox" class="custom-control-input" id="btn_task" {{ $task_done ? 'checked' : '' }}>
-                        <label class="custom-control-label" for="btn_task" id="btn_task_lbl">{{ $task_done ? 'انجام شده' : 'انجام نشده' }}</label>
+
+    <div class="content">
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">مشاهده وظیفه "{{ $task->title }}"</h4>
                     </div>
-                @endif
+                </div>
             </div>
-            @if(!$isCreator)
-                <div class="row">
-                    <div class="col">
-                        <strong>توضیحات</strong>
-                        <p>{{ $task->description }}</p>
-                        <hr>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                        <div class="form-group">
-                            <textarea class="form-control" placeholder="درصورت نیاز توضیحات را وارد کنید..." id="description">{{ $task_user->description }}</textarea>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title d-flex justify-content-between align-items-center">
+                                @if(!$isCreator)
+                                    <div class="form-check {{ $isCreator ? 'd-none' : '' }}">
+                                        <input class="form-check-input" type="checkbox" id="btn_task" {{ $task_done ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="btn_task" id="btn_task_lbl">
+                                            {{ $task_done ? 'انجام شده' : 'انجام نشده' }}
+                                        </label>
+                                    </div>
+                                @endif
+                            </div>
+                            @if(!$isCreator)
+                                <div class="row">
+                                    <div class="col">
+                                        <strong>توضیحات</strong>
+                                        <p>{{ $task->description }}</p>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                                        <div class="form-group">
+                                            <textarea class="form-control" placeholder="درصورت نیاز توضیحات را وارد کنید..." id="description">{{ $task_user->description }}</textarea>
+                                        </div>
+                                        <button class="btn btn-primary mt-2" id="btn_add_desc">ثبت</button>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped text-center table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th>نام و نام خانوادگی</th>
+                                                    <th>وضعیت</th>
+                                                    <th>زمان انجام</th>
+                                                    <th>توضیحات</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($task->users as $user)
+                                                    <tr>
+                                                        <td>{{ $user->fullName() }}</td>
+                                                        <td>
+                                                            @if($user->pivot->status == 'done')
+                                                                <span class="badge bg-success">{{ \App\Models\Task::STATUS[$user->pivot->status] }}</span>
+                                                            @else
+                                                                <span class="badge bg-warning">{{ \App\Models\Task::STATUS[$user->pivot->status] }}</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $user->pivot->done_at ? verta($user->pivot->done_at)->format('H:i - Y/m/d') : '---' }}</td>
+                                                        <td>
+                                                            <button class="btn btn-primary btn-floating btn_show_desc" data-id="{{ $user->pivot->id }}" {{ $user->pivot->description ? '' : 'disabled' }}>
+                                                                <i class="fa fa-comment">
+{{--                                                                    <span class="badge bg-info">{{ $user->pivot->description ? 1 : '' }}</span>--}}
+                                                                </i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
-                        <button class="btn btn-primary" id="btn_add_desc">ثبت</button>
                     </div>
                 </div>
-            @else
-                <div class="row">
-                    <div class="col">
-                        <div class="table-responsive">
-                            <table class="table table-striped text-center table-bordered">
-                                <thead>
-                                <tr>
-                                    <th>نام و نام خانوادگی</th>
-                                    <th>وضعیت</th>
-                                    <th>زمان انجام</th>
-                                    <th>توضیحات</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($task->users as $user)
-                                    <tr>
-                                        <td>{{ $user->fullName() }}</td>
-                                        <td>
-                                            @if($user->pivot->status == 'done')
-                                                <span class="badge badge-success">{{ \App\Models\Task::STATUS[$user->pivot->status] }}</span>
-                                            @else
-                                                <span class="badge badge-warning">{{ \App\Models\Task::STATUS[$user->pivot->status] }}</span>
-                                            @endif
-                                        </td>
-                                        <td>{{ $user->pivot->done_at ? verta($user->pivot->done_at)->format('H:i - Y/m/d') : '---' }}</td>
-                                        <td>
-                                            <button class="btn btn-primary btn-floating btn_show_desc" data-id="{{ $user->pivot->id }}" {{ $user->pivot->description ? '' : 'disabled' }}>
-                                                <i class="fa fa-comment"><span class="badge badge-info">{{ $user->pivot->description ? 1 : '' }}</span></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            @endif
+            </div>
         </div>
     </div>
 @endsection
-
 @section('scripts')
     <script>
         var task_id = "{{ $task->id }}";
@@ -105,7 +125,7 @@
         $(document).ready(function () {
             // btn task status
             $(document).on('change', '#btn_task', function () {
-                $(this).attr('disabled','disabled')
+                $(this).attr('disabled', 'disabled')
 
                 $.ajax({
                     url: `/panel/task/change-status`,
@@ -123,7 +143,7 @@
 
             // btn add desc
             $(document).on('click', '#btn_add_desc', function () {
-                $(this).attr('disabled','disabled')
+                $(this).attr('disabled', 'disabled')
 
                 let description = $('#description').val();
                 $.ajax({
@@ -175,5 +195,4 @@
         })
     </script>
 @endsection
-
 

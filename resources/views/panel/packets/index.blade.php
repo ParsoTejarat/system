@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'بسته های ارسالی')
 @section('content')
     {{--  Post Status Modal  --}}
@@ -44,12 +44,13 @@
                 </div>
             </div>
             <form action="{{ route('packets.search') }}" method="get" id="search_form"></form>
-{{--            @if(request()->ip() == '51.68.208.135')--}}
-{{--                @dd($invoices)--}}
-{{--            @endif--}}
+            {{--            @if(request()->ip() == '51.68.208.135')--}}
+            {{--                @dd($invoices)--}}
+            {{--            @endif--}}
             <div class="row mb-3">
                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                    <select name="invoice_id" form="search_form" class="js-example-basic-single select2-hidden-accessible" data-select2-id="1">
+                    <select name="invoice_id" form="search_form"
+                            class="js-example-basic-single select2-hidden-accessible" data-select2-id="1">
                         <option value="all">سفارش (همه)</option>
                         @foreach($invoices as $invoice)
                             <option value="{{ $invoice->id }}" {{ request()->invoice_id == $invoice->id ? 'selected' : '' }}>{{ $invoice->id.' - '.$invoice->customer->name }}</option>
@@ -57,7 +58,8 @@
                     </select>
                 </div>
                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                    <select name="packet_status" form="search_form" class="js-example-basic-single select2-hidden-accessible" data-select2-id="2">
+                    <select name="packet_status" form="search_form"
+                            class="js-example-basic-single select2-hidden-accessible" data-select2-id="2">
                         <option value="all">وضعیت بسته (همه)</option>
                         @foreach(\App\Models\Packet::PACKET_STATUS as $key => $value)
                             <option value="{{ $key }}" {{ request()->packet_status == $key ? 'selected' : '' }}>{{ $value }}</option>
@@ -65,7 +67,8 @@
                     </select>
                 </div>
                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                    <select name="invoice_status" form="search_form" class="js-example-basic-single select2-hidden-accessible" data-select2-id="3">
+                    <select name="invoice_status" form="search_form"
+                            class="js-example-basic-single select2-hidden-accessible" data-select2-id="3">
                         <option value="all">وضعیت فاکتور (همه)</option>
                         @foreach(\App\Models\Packet::INVOICE_STATUS as $key => $value)
                             <option value="{{ $key }}" {{ request()->invoice_status == $key ? 'selected' : '' }}>{{ $value }}</option>
@@ -105,7 +108,9 @@
                             <td>{{ $packet->receiver }}</td>
                             <td>{{ $packet->address }}</td>
                             <td>
-                                <strong><u><a href="{{ route('invoices.show', [$packet->invoice_id, 'type' => 'pishfactor']) }}" class="text-primary" target="_blank">{{ $packet->invoice_id }}</a></u></strong>
+                                <strong><u><a href="{{ route('invoices.show', [$packet->invoice_id, 'type' => 'pishfactor']) }}"
+                                              class="text-primary"
+                                              target="_blank">{{ $packet->invoice_id }}</a></u></strong>
                             </td>
                             <td>{{ \App\Models\Packet::SENT_TYPE[$packet->sent_type] }}</td>
                             <td>
@@ -125,20 +130,25 @@
                             <td>{{ verta($packet->sent_time)->format('Y/m/d') }}</td>
                             <td>{{ verta($packet->created_at)->format('H:i - Y/m/d') }}</td>
                             <td>
-                                <button class="btn btn-primary btn-floating btn_post_status" type="button" data-toggle="modal" data-target="#postStatusModal" data-code="{{ $packet->send_tracking_code }}" {{ $packet->send_tracking_code != null && $packet->sent_type == 'post' ? '' : 'disabled' }}>
+                                <button class="btn btn-primary btn-floating btn_post_status" type="button"
+                                        data-toggle="modal" data-target="#postStatusModal"
+                                        data-code="{{ $packet->send_tracking_code }}" {{ $packet->send_tracking_code != null && $packet->sent_type == 'post' ? '' : 'disabled' }}>
                                     <i class="fa fa-truck"></i>
                                 </button>
                             </td>
                             @can('packets-edit')
                                 <td>
-                                    <a class="btn btn-warning btn-floating" href="{{ route('packets.edit', ['packet' => $packet->id, 'url' => request()->getRequestUri()]) }}">
+                                    <a class="btn btn-warning btn-floating"
+                                       href="{{ route('packets.edit', ['packet' => $packet->id, 'url' => request()->getRequestUri()]) }}">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 </td>
                             @endcan
                             @can('packets-delete')
                                 <td>
-                                    <button class="btn btn-danger btn-floating trashRow" data-url="{{ route('packets.destroy',$packet->id) }}" data-id="{{ $packet->id }}">
+                                    <button class="btn btn-danger btn-floating trashRow"
+                                            data-url="{{ route('packets.destroy',$packet->id) }}"
+                                            data-id="{{ $packet->id }}">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>
@@ -174,7 +184,7 @@
                     $('#postStatusModal .modal-body').html('')
 
                     $.each(res.data, function (i, item) {
-                        if(item.is_header){
+                        if (item.is_header) {
                             $('#postStatusModal .modal-body').append(`
                                     <table class="table table-bordered table-striped text-center">
                                         <thead class="bg-primary">
@@ -188,7 +198,7 @@
                                         </tbody>
                                     </table>
                                 `)
-                        }else{
+                        } else {
                             $('#postStatusModal .modal-body table:last tbody').append(`
                                         <tr>
                                             <td>${item.row}</td>

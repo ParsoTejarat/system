@@ -1,8 +1,8 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'تغییرات نرم افزار')
 @section('styles')
     <style>
-        .modal-body ol{
+        .modal-body ol {
             line-height: 2rem !important;
         }
     </style>
@@ -44,14 +44,17 @@
                             <td>{{ verta($update->created_at)->format('H:i - Y/m/d') }}</td>
                             @can('software-updates-edit')
                                 <td>
-                                    <a class="btn btn-warning btn-floating" href="{{ route('software-updates.edit', $update->id) }}">
+                                    <a class="btn btn-warning btn-floating"
+                                       href="{{ route('software-updates.edit', $update->id) }}">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 </td>
                             @endcan
                             @can('software-updates-delete')
                                 <td>
-                                    <button class="btn btn-danger btn-floating trashRow" data-url="{{ route('software-updates.destroy',$update->id) }}" data-id="{{ $update->id }}">
+                                    <button class="btn btn-danger btn-floating trashRow"
+                                            data-url="{{ route('software-updates.destroy',$update->id) }}"
+                                            data-id="{{ $update->id }}">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>

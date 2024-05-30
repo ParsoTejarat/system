@@ -16,148 +16,148 @@ class PermissionSeeder extends Seeder
     public function run()
     {
         $items = [
-//            'users-list' => 'لیست کاربران',
-//            'users-create' => 'ایجاد کاربر',
-//            'users-edit' => 'ویرایش کاربر',
-//            'users-delete' => 'حذف کاربر',
-//
-//            'roles-list' => 'لیست نقش ها',
-//            'roles-create' => 'ایجاد نقش',
-//            'roles-edit' => 'ویرایش نقش',
-//            'roles-delete' => 'حذف نقش',
-//
-//            'categories-list' => 'لیست دسته بندی ها',
-//            'categories-create' => 'ایجاد دسته بندی',
-//            'categories-edit' => 'ویرایش دسته بندی',
-//            'categories-delete' => 'حذف دسته بندی',
-//
-//            'products-list' => 'لیست محصولات',
-//            'products-create' => 'ایجاد محصول',
-//            'products-edit' => 'ویرایش محصول',
-//            'products-delete' => 'حذف محصول',
-//
-//            'printers-list' => 'لیست پرینتر ها',
-//            'printers-create' => 'ایجاد پرینتر',
-//            'printers-edit' => 'ویرایش پرینتر',
-//            'printers-delete' => 'حذف پرینتر',
-//
-//            'invoices-list' => 'لیست سفارشات فروش',
-//            'invoices-create' => 'ایجاد سفارش فروش',
-//            'invoices-edit' => 'ویرایش سفارش فروش',
-//            'invoices-delete' => 'حذف سفارش فروش',
-//
-//            'system-user' => 'سامانه',
-//            'partner-tehran-user' => 'همکار تهران',
-//            'partner-other-user' => 'همکار شهرستان',
-//            'single-price-user' => 'تک فروشی',
-//
-//            'coupons-list' => 'لیست کد تخفیف',
-//            'coupons-create' => 'ایجاد کد تخفیف',
-//            'coupons-edit' => 'ویرایش کد تخفیف',
-//            'coupons-delete' => 'حذف کد تخفیف',
-//
-//            'packets-list' => 'لیست بسته های ارسالی',
-//            'packets-create' => 'ایجاد بسته ارسالی',
-//            'packets-edit' => 'ویرایش بسته ارسالی ',
-//            'packets-delete' => 'حذف بسته ارسالی',
+            'users-list' => 'لیست کاربران',
+            'users-create' => 'ایجاد کاربر',
+            'users-edit' => 'ویرایش کاربر',
+            'users-delete' => 'حذف کاربر',
 
-//            'customers-list' => 'لیست مشتریان',
-//            'customers-create' => 'ایجاد مشتری',
-//            'customers-edit' => 'ویرایش مشتری ',
-//            'customers-delete' => 'حذف مشتری',
+            'roles-list' => 'لیست نقش ها',
+            'roles-create' => 'ایجاد نقش',
+            'roles-edit' => 'ویرایش نقش',
+            'roles-delete' => 'حذف نقش',
 
-//            'tasks-list' => 'لیست وظایف',
-//            'tasks-create' => 'ایجاد وظیفه',
-//            'tasks-edit' => 'ویرایش وظیفه ',
-//            'tasks-delete' => 'حذف وظیفه',
+            'categories-list' => 'لیست دسته بندی ها',
+            'categories-create' => 'ایجاد دسته بندی',
+            'categories-edit' => 'ویرایش دسته بندی',
+            'categories-delete' => 'حذف دسته بندی',
 
-//            'notes-list' => 'لیست یادداشت ها',
-//            'notes-create' => 'ایجاد یادداشت',
-//            'notes-edit' => 'ویرایش یادداشت ',
-//            'notes-delete' => 'حذف یادداشت',
+            'products-list' => 'لیست محصولات',
+            'products-create' => 'ایجاد محصول',
+            'products-edit' => 'ویرایش محصول',
+            'products-delete' => 'حذف محصول',
 
-//            'leaves-list' => 'لیست مرخصی',
-//            'leaves-create' => 'درخواست مرخصی',
-//            'leaves-delete' => 'حذف درخواست مرخصی',
+            'printers-list' => 'لیست پرینتر ها',
+            'printers-create' => 'ایجاد پرینتر',
+            'printers-edit' => 'ویرایش پرینتر',
+            'printers-delete' => 'حذف پرینتر',
 
-//            'ceo' => 'مدیرعامل',
-//            'prices-list' => 'لیست قیمت ها',
-//            'price-history' => 'تاریخچه قیمت ها',
-//            'shops' => 'فروشگاه ها',
-//            'accountant' => 'حسابدار',
+            'invoices-list' => 'لیست سفارشات فروش',
+            'invoices-create' => 'ایجاد سفارش فروش',
+            'invoices-edit' => 'ویرایش سفارش فروش',
+            'invoices-delete' => 'حذف سفارش فروش',
 
-//            'sale-reports-list' => 'لیست گزارشات فروش',
-//            'sale-reports-create' => 'ایجاد گزارش فروش',
-//            'sale-reports-edit' => 'ویرایش گزارش فروش ',
-//            'sale-reports-delete' => 'حذف گزارش فروش',
+            'system-user' => 'سامانه',
+            'partner-tehran-user' => 'همکار تهران',
+            'partner-other-user' => 'همکار شهرستان',
+            'single-price-user' => 'تک فروشی',
 
-        // inventory
-//           'warehouse-keeper' => 'انباردار',
+            'coupons-list' => 'لیست کد تخفیف',
+            'coupons-create' => 'ایجاد کد تخفیف',
+            'coupons-edit' => 'ویرایش کد تخفیف',
+            'coupons-delete' => 'حذف کد تخفیف',
 
-//           'warehouses-list' => 'لیست انبارها',
-//           'warehouses-create' => 'ایجاد انبار',
-//           'warehouses-edit' => 'ویرایش انبار',
-//           'warehouses-delete' => 'حذف انبار',
+            'packets-list' => 'لیست بسته های ارسالی',
+            'packets-create' => 'ایجاد بسته ارسالی',
+            'packets-edit' => 'ویرایش بسته ارسالی ',
+            'packets-delete' => 'حذف بسته ارسالی',
 
-//           'inventory-list' => 'انبار - لیست کالاها',
-//           'inventory-create' => 'انبار - ثبت کالا',
-//           'inventory-edit' => 'انبار - ویرایش کالا',
-//           'inventory-delete' => 'انبار - حذف کالا',
-//
-//            'input-reports-list' => 'انبار - لیست ورودی ها',
-//            'input-reports-create' => 'انبار - ثبت ورودی',
-//            'input-reports-edit' => 'انبار - ویرایش ورودی',
-//            'input-reports-delete' => 'انبار - حذف ورودی',
-//
-//            'output-reports-list' => 'انبار - لیست خروجی ها',
-//            'output-reports-create' => 'انبار - ثبت خروجی',
-//            'output-reports-edit' => 'انبار - ویرایش خروجی',
-//            'output-reports-delete' => 'انبار - حذف خروجی',
-        // end inventory
+            'customers-list' => 'لیست مشتریان',
+            'customers-create' => 'ایجاد مشتری',
+            'customers-edit' => 'ویرایش مشتری ',
+            'customers-delete' => 'حذف مشتری',
 
-//            'foreign-customers-list' => 'لیست مشتریان خارجی',
-//            'foreign-customers-create' => 'ثبت مشتری خارجی',
-//            'foreign-customers-edit' => 'ویرایش مشتری خارجی',
-//            'foreign-customers-delete' => 'حذف مشتری خارجی',
+            'tasks-list' => 'لیست وظایف',
+            'tasks-create' => 'ایجاد وظیفه',
+            'tasks-edit' => 'ویرایش وظیفه ',
+            'tasks-delete' => 'حذف وظیفه',
 
-//            'tickets-list' => 'لیست تیکت ها',
-//            'tickets-create' => 'ثبت تیکت',
-//            'tickets-delete' => 'حذف تیکت',
+            'notes-list' => 'لیست یادداشت ها',
+            'notes-create' => 'ایجاد یادداشت',
+            'notes-edit' => 'ویرایش یادداشت ',
+            'notes-delete' => 'حذف یادداشت',
 
-//            'sms-histories' => 'پیام های ارسال شده',
-//            'exit-door' => 'درب خروج'
+            'leaves-list' => 'لیست مرخصی',
+            'leaves-create' => 'درخواست مرخصی',
+            'leaves-delete' => 'حذف درخواست مرخصی',
 
-//            'bot-manager' => 'مدیریت ربات تلگرام'
+            'ceo' => 'مدیرعامل',
+            'prices-list' => 'لیست قیمت ها',
+            'price-history' => 'تاریخچه قیمت ها',
+            'shops' => 'فروشگاه ها',
+            'accountant' => 'حسابدار',
 
-//            'reports-list' => 'لیست گزارشات روزانه',
-//            'reports-create' => 'ثبت گزارش',
-//            'reports-edit' => 'ویرایش گزارش',
-//            'reports-delete' => 'حذف گزارش',
+            'sale-reports-list' => 'لیست گزارشات فروش',
+            'sale-reports-create' => 'ایجاد گزارش فروش',
+            'sale-reports-edit' => 'ویرایش گزارش فروش ',
+            'sale-reports-delete' => 'حذف گزارش فروش',
 
-//            'artin-products-list' => 'لیست محصولات آرتین',
-//            'artin-products-edit' => 'ویرایش محصول آرتین',
+//         inventory
+           'warehouse-keeper' => 'انباردار',
 
-//            'software-updates-list' => 'لیست تغییرات نرم افزار',
-//            'software-updates-create' => 'ثبت تغییرات نرم افزار',
-//            'software-updates-edit' => 'ویرایش تغییرات نرم افزار',
-//            'software-updates-delete' => 'حذف تغییرات نرم افزار',
+           'warehouses-list' => 'لیست انبارها',
+           'warehouses-create' => 'ایجاد انبار',
+           'warehouses-edit' => 'ویرایش انبار',
+           'warehouses-delete' => 'حذف انبار',
 
-//            'guarantees-list' => 'لیست گارانتی ها',
-//            'guarantees-create' => 'ثبت گارانتی',
-//            'guarantees-edit' => 'ویرایش گارانتی',
-//            'guarantees-delete' => 'حذف گارانتی',
+           'inventory-list' => 'انبار - لیست کالاها',
+           'inventory-create' => 'انبار - ثبت کالا',
+           'inventory-edit' => 'انبار - ویرایش کالا',
+           'inventory-delete' => 'انبار - حذف کالا',
 
-//            'sales-manager' => 'مدیر فروش'
-//            'unofficial-sales' => 'فروش غیر رسمی'
+            'input-reports-list' => 'انبار - لیست ورودی ها',
+            'input-reports-create' => 'انبار - ثبت ورودی',
+            'input-reports-edit' => 'انبار - ویرایش ورودی',
+            'input-reports-delete' => 'انبار - حذف ورودی',
 
-//            'price-requests-list' => 'لیست درخواست قیمت',
-//            'price-requests-create' => 'ثبت درخواست قیمت',
-//            'price-requests-delete' => 'حذف درخواست قیمت',
+            'output-reports-list' => 'انبار - لیست خروجی ها',
+            'output-reports-create' => 'انبار - ثبت خروجی',
+            'output-reports-edit' => 'انبار - ویرایش خروجی',
+            'output-reports-delete' => 'انبار - حذف خروجی',
+//         end inventory
 
-//            'buy-orders-list' => 'سفارشات خرید',
-//            'buy-orders-create' => 'ثبت سفارش خرید',
-//            'buy-orders-edit' => 'ویرایش سفارش خرید',
-//            'buy-orders-delete' => 'حذف سفارش خرید',
+            'foreign-customers-list' => 'لیست مشتریان خارجی',
+            'foreign-customers-create' => 'ثبت مشتری خارجی',
+            'foreign-customers-edit' => 'ویرایش مشتری خارجی',
+            'foreign-customers-delete' => 'حذف مشتری خارجی',
+
+            'tickets-list' => 'لیست تیکت ها',
+            'tickets-create' => 'ثبت تیکت',
+            'tickets-delete' => 'حذف تیکت',
+
+            'sms-histories' => 'پیام های ارسال شده',
+            'exit-door' => 'درب خروج',
+
+            'bot-manager' => 'مدیریت ربات تلگرام',
+
+            'reports-list' => 'لیست گزارشات روزانه',
+            'reports-create' => 'ثبت گزارش',
+            'reports-edit' => 'ویرایش گزارش',
+            'reports-delete' => 'حذف گزارش',
+
+            'artin-products-list' => 'لیست محصولات آرتین',
+            'artin-products-edit' => 'ویرایش محصول آرتین',
+
+            'software-updates-list' => 'لیست تغییرات نرم افزار',
+            'software-updates-create' => 'ثبت تغییرات نرم افزار',
+            'software-updates-edit' => 'ویرایش تغییرات نرم افزار',
+            'software-updates-delete' => 'حذف تغییرات نرم افزار',
+
+            'guarantees-list' => 'لیست گارانتی ها',
+            'guarantees-create' => 'ثبت گارانتی',
+            'guarantees-edit' => 'ویرایش گارانتی',
+            'guarantees-delete' => 'حذف گارانتی',
+
+            'sales-manager' => 'مدیر فروش',
+            'unofficial-sales' => 'فروش غیر رسمی',
+
+            'price-requests-list' => 'لیست درخواست قیمت',
+            'price-requests-create' => 'ثبت درخواست قیمت',
+            'price-requests-delete' => 'حذف درخواست قیمت',
+
+            'buy-orders-list' => 'سفارشات خرید',
+            'buy-orders-create' => 'ثبت سفارش خرید',
+            'buy-orders-edit' => 'ویرایش سفارش خرید',
+            'buy-orders-delete' => 'حذف سفارش خرید',
 
             'delivery-day' => 'انتخاب روزهای تحویل سفارش',
         ];

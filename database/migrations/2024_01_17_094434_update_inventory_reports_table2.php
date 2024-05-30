@@ -14,7 +14,7 @@ class UpdateInventoryReportsTable2 extends Migration
     public function up()
     {
         Schema::table('inventory_reports', function (Blueprint $table) {
-            $table->unsignedBigInteger('guarantee_id')->nullable()->after('factor_id');
+            $table->unsignedBigInteger('guarantee_id')->nullable()->after('invoice_id');
             $table->foreign('guarantee_id')->references('id')->on('guarantees')->onDelete(null);
         });
     }

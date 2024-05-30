@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'چاپ رسید انبار')
 @php
     $sidebar = false;
@@ -13,17 +13,19 @@
 @endphp
 @section('styles')
     <style>
-        #products_table input, #products_table select{
+        #products_table input, #products_table select {
             width: auto;
         }
-        .title-sec{
+
+        .title-sec {
             background: #ececec;
         }
-        .main-content{
+
+        .main-content {
             margin: 0 !important;
         }
 
-        .mr-100{
+        .mr-100 {
             margin-right: 100px !important;
         }
 
@@ -37,67 +39,67 @@
             }
         }
 
-        body{
+        body {
             padding: 0;
         }
 
-        main{
+        main {
             padding: 0 !important;
         }
 
-        table th, td{
+        table th, td {
             padding: 4px !important;
             border: 2px solid #000 !important;
             font-size: 16px !important;
         }
 
-        table th{
+        table th {
             font-weight: bold !important;
         }
 
-        table tr{
+        table tr {
             padding: 0 !important;
             border: 2px solid #000 !important;
         }
 
-        #printable_sec{
+        #printable_sec {
             padding: 0;
         }
 
-        .card{
+        .card {
             margin: 0;
         }
 
-        .guide_box{
+        .guide_box {
             text-align: center;
         }
 
-        #seller_sign_sec{
+        #seller_sign_sec {
             position: relative;
             height: 75px;
         }
 
-        #seller_sign_sec small{
+        #seller_sign_sec small {
             position: absolute;
             top: 15px;
             left: 45%;
         }
 
-        #seller_sign_sec .sign{
+        #seller_sign_sec .sign {
             position: absolute;
             top: 25px;
             left: 44%;
             width: 10rem;
         }
 
-        #seller_sign_sec .stamp{
+        #seller_sign_sec .stamp {
             position: absolute;
             top: 25px;
             left: 43%;
             width: 13rem;
         }
 
-        #person_sec small{
+        #person_sec small {
             font-weight: bold;
             font-size: 15px;
         }
@@ -144,21 +146,21 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($inventoryReport->in_outs as $key => $item)
-                                        <tr>
-                                            <td>{{ ++$key }}</td>
-                                            <td>{{ $item->inventory->code }}</td>
-                                            <td>{{ $item->inventory->title }}</td>
-                                            <td>{{ $item->count }}</td>
-                                            <td>عدد</td>
-                                        </tr>
-                                    @endforeach
-                                    @if($inventoryReport->description)
-                                        <tr style="line-height: 1">
-                                            <th>توضیحات</th>
-                                            <td colspan="4">{{ $inventoryReport->description }}</td>
-                                        </tr>
-                                    @endif
+                                @foreach($inventoryReport->in_outs as $key => $item)
+                                    <tr>
+                                        <td>{{ ++$key }}</td>
+                                        <td>{{ $item->inventory->code }}</td>
+                                        <td>{{ $item->inventory->title }}</td>
+                                        <td>{{ $item->count }}</td>
+                                        <td>عدد</td>
+                                    </tr>
+                                @endforeach
+                                @if($inventoryReport->description)
+                                    <tr style="line-height: 1">
+                                        <th>توضیحات</th>
+                                        <td colspan="4">{{ $inventoryReport->description }}</td>
+                                    </tr>
+                                @endif
                                 </tbody>
                             </table>
                         </div>

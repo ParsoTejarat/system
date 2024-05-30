@@ -1,11 +1,12 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'ویرایش مشتری')
 @section('styles')
     <style>
-        .social_sec{
+        .social_sec {
             font-size: large !important;
         }
-        .social_sec a{
+
+        .social_sec a {
             margin: 0 10px !important;
         }
     </style>
@@ -24,7 +25,8 @@
                     @can('sales-manager')
                         <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                             <label for="customer_code">کد مشتری <span class="text-danger">*</span></label>
-                            <input type="text" name="customer_code" class="form-control" id="customer_code" value="{{ $customer->code }}">
+                            <input type="text" name="customer_code" class="form-control" id="customer_code"
+                                   value="{{ $customer->code }}">
                             @error('customer_code')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
@@ -56,51 +58,56 @@
                             @endforeach
                         </select>
                         @error('customer_type')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="economical_number">شماره اقتصادی</label>
-                        <input type="text" name="economical_number" class="form-control" id="economical_number" value="{{ $customer->economical_number }}">
+                        <input type="text" name="economical_number" class="form-control" id="economical_number"
+                               value="{{ $customer->economical_number }}">
                         @error('economical_number')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="national_number">شماره ثبت/ملی<span class="text-danger">*</span></label>
-                        <input type="text" name="national_number" class="form-control" id="national_number" value="{{ $customer->national_number }}">
+                        <input type="text" name="national_number" class="form-control" id="national_number"
+                               value="{{ $customer->national_number }}">
                         @error('national_number')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="postal_code">کد پستی<span class="text-danger">*</span></label>
-                        <input type="text" name="postal_code" class="form-control" id="postal_code" value="{{ $customer->postal_code }}">
+                        <input type="text" name="postal_code" class="form-control" id="postal_code"
+                               value="{{ $customer->postal_code }}">
                         @error('postal_code')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="province">استان <span class="text-danger">*</span></label>
-                        <select name="province" id="province" class="js-example-basic-single select2-hidden-accessible" data-select2-id="4" tabindex="-1" aria-hidden="true">
+                        <select name="province" id="province" class="js-example-basic-single select2-hidden-accessible"
+                                data-select2-id="4" tabindex="-1" aria-hidden="true">
                             @foreach(\App\Models\Province::all() as $province)
                                 <option value="{{ $province->name }}" {{ $customer->province == $province->name ? 'selected' : '' }}>{{ $province->name }}</option>
                             @endforeach
                         </select>
                         @error('province')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="city">شهر<span class="text-danger">*</span></label>
                         <input type="text" name="city" class="form-control" id="city" value="{{ $customer->city }}">
                         @error('city')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="phone1">شماره تماس 1 <span class="text-danger">*</span></label>
-                        <input type="text" name="phone1" class="form-control" id="phone1" value="{{ $customer->phone1 }}">
+                        <input type="text" name="phone1" class="form-control" id="phone1"
+                               value="{{ $customer->phone1 }}">
                         <div class="social_sec">
                             <a href="https://t.me/+98{{ $customer->phone1 }}" target="_blank">
                                 <i class="fa-brands fa-telegram text-info"></i>
@@ -118,7 +125,8 @@
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="phone2">شماره تماس 2</label>
-                        <input type="text" name="phone2" class="form-control" id="phone2" value="{{ $customer->phone2 }}">
+                        <input type="text" name="phone2" class="form-control" id="phone2"
+                               value="{{ $customer->phone2 }}">
                         @if($customer->phone2)
                             <div class="social_sec">
                                 <a href="https://t.me/+98{{ $customer->phone2 }}" target="_blank">
@@ -138,7 +146,8 @@
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="phone3">شماره تماس 3</label>
-                        <input type="text" name="phone3" class="form-control" id="phone3" value="{{ $customer->phone3 }}">
+                        <input type="text" name="phone3" class="form-control" id="phone3"
+                               value="{{ $customer->phone3 }}">
                         @if($customer->phone3)
                             <div class="social_sec">
                                 <a href="https://t.me/+98{{ $customer->phone3 }}" target="_blank">
@@ -158,14 +167,16 @@
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="address1">آدرس 1 <span class="text-danger">*</span></label>
-                        <textarea name="address1" id="address1" class="form-control">{{ $customer->address1 }}</textarea>
+                        <textarea name="address1" id="address1"
+                                  class="form-control">{{ $customer->address1 }}</textarea>
                         @error('address1')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="address2">آدرس 2 </label>
-                        <textarea name="address2" id="address2" class="form-control">{{ $customer->address2 }}</textarea>
+                        <textarea name="address2" id="address2"
+                                  class="form-control">{{ $customer->address2 }}</textarea>
 
                         @error('address2')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -173,7 +184,8 @@
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                         <label for="description">توضیحات</label>
-                        <textarea name="description" id="description" class="form-control">{{ $customer->description }}</textarea>
+                        <textarea name="description" id="description"
+                                  class="form-control">{{ $customer->description }}</textarea>
                         @error('description')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror

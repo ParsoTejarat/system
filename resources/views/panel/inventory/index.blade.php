@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'انبار')
 @section('content')
     {{--  Move Modal  --}}
@@ -14,7 +14,8 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="new_warehouse_id">انتقال به انبار<span class="text-danger">*</span></label>
-                        <select class="form-control" name="new_warehouse_id" id="new_warehouse_id" required form="move_form">
+                        <select class="form-control" name="new_warehouse_id" id="new_warehouse_id" required
+                                form="move_form">
                             @foreach(\App\Models\Warehouse::where('id','!=',$warehouse_id)->get() as $warehouse)
                                 <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
                             @endforeach
@@ -22,7 +23,8 @@
                     </div>
                     <div class="form-group">
                         <label for="count">تعداد<span class="text-danger">*</span></label>
-                        <input type="number" class="form-control" name="count" id="count" min="1" value="1" required form="move_form">
+                        <input type="number" class="form-control" name="count" id="count" min="1" value="1" required
+                               form="move_form">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -52,7 +54,8 @@
                         دریافت اکسل
                     </button>
                     @can('inventory-create')
-                        <a href="{{ route('inventory.create', ['warehouse_id' => $warehouse_id]) }}" class="btn btn-primary">
+                        <a href="{{ route('inventory.create', ['warehouse_id' => $warehouse_id]) }}"
+                           class="btn btn-primary">
                             <i class="fa fa-plus mr-2"></i>
                             افزودن کالا
                         </a>
@@ -64,13 +67,16 @@
             </form>
             <div class="row mb-3">
                 <div class="col-xl-2 xl-lg-2 col-md-3 col-sm-12">
-                    <input type="text" name="code" class="form-control" placeholder="کد محصول" value="{{ request()->code ?? null }}" form="search_form">
+                    <input type="text" name="code" class="form-control" placeholder="کد محصول"
+                           value="{{ request()->code ?? null }}" form="search_form">
                 </div>
                 <div class="col-xl-3 xl-lg-3 col-md-4 col-sm-12">
-                    <input type="text" name="title" class="form-control" placeholder="عنوان محصول" value="{{ request()->title ?? null }}" form="search_form">
+                    <input type="text" name="title" class="form-control" placeholder="عنوان محصول"
+                           value="{{ request()->title ?? null }}" form="search_form">
                 </div>
                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                    <select name="type" form="search_form" class="js-example-basic-single select2-hidden-accessible" data-select2-id="1">
+                    <select name="type" form="search_form" class="js-example-basic-single select2-hidden-accessible"
+                            data-select2-id="1">
                         <option value="all">نوع (همه)</option>
                         @foreach(\App\Models\Inventory::TYPE as $key => $value)
                             <option value="{{ $key }}" {{ request()->type == $key ? 'selected' : '' }}>{{ $value }}</option>
@@ -117,19 +123,23 @@
                             <td>{{ verta($item->created_at)->format('H:i - Y/m/d') }}</td>
                             @can('inventory-edit')
                                 <td>
-                                    <a class="btn btn-primary btn-floating btn_move" href="#moveModal" data-toggle="modal" data-id="{{ $item->id }}">
+                                    <a class="btn btn-primary btn-floating btn_move" href="#moveModal"
+                                       data-toggle="modal" data-id="{{ $item->id }}">
                                         <i class="fa fa-arrow-right-arrow-left"></i>
                                     </a>
                                 </td>
                                 <td>
-                                    <a class="btn btn-warning btn-floating" href="{{ route('inventory.edit', $item->id) }}">
+                                    <a class="btn btn-warning btn-floating"
+                                       href="{{ route('inventory.edit', $item->id) }}">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 </td>
                             @endcan
                             @can('inventory-delete')
                                 <td>
-                                    <button class="btn btn-danger btn-floating trashRow" data-url="{{ route('inventory.destroy',$item->id) }}" data-id="{{ $item->id }}">
+                                    <button class="btn btn-danger btn-floating trashRow"
+                                            data-url="{{ route('inventory.destroy',$item->id) }}"
+                                            data-id="{{ $item->id }}">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>
@@ -149,7 +159,7 @@
 @endsection
 @section('scripts')
     <script>
-        $(document).ready(function (){
+        $(document).ready(function () {
             $('.btn_move').on('click', function () {
                 var inventory_id = $(this).data('id');
                 $('#inventory_id').val(inventory_id)

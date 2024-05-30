@@ -1,119 +1,103 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="rtl" data-topbar-color="brand">
+    <head>
+        <meta charset="utf-8" />
+        <title>پرسو تجارت | ورود</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>ماندگار پارس | ورود</title>
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="/assets/images/favicon.ico">
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="assets/media/image/favicon.png">
+		<!-- App css -->
+		<link href="/assets/css/bootstrap-rtl.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/app-rtl.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
 
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#5867dd">
+		<!-- icons -->
+		<link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
-    <!-- Plugin styles -->
-    <link rel="stylesheet" href="vendors/bundle.css" type="text/css">
+		<!-- Theme Config Js -->
+		<script src="/assets/js/config.js"></script>
 
-    <!-- App styles -->
-    <link rel="stylesheet" href="assets/css/app.css" type="text/css">
+        <style>
+            #captcha_sec img {
+                cursor: pointer;
+            }
 
-    <link rel="manifest" href="/manifest.json">
-    <!-- Najva Push Notification -->
-    <script type="text/javascript">
-        (function(){
-            var now = new Date();
-            var version = now.getFullYear().toString() + "0" + now.getMonth() + "0" + now.getDate() +
-                "0" + now.getHours();
-            var head = document.getElementsByTagName("head")[0];
-            var link = document.createElement("link");
-            link.rel = "stylesheet";
-            link.href = "https://van.najva.com/static/cdn/css/local-messaging.css" + "?v=" + version;
-            head.appendChild(link);
-            var script = document.createElement("script");
-            script.type = "text/javascript";
-            script.async = true;
-            script.src = "https://van.najva.com/static/js/scripts/new-website436970-website-54287-1faec3c1-6f27-4881-b219-5f5b5737f31b.js" + "?v=" + version;
-            head.appendChild(script);
-        })()
-    </script>
-    <!-- END NAJVA PUSH NOTIFICATION -->
-</head>
-<style>
-    #captcha_sec img{
-        cursor: pointer;
-    }
-    #captcha_sec input{
-        text-align: center !important;
-        letter-spacing: 1rem;
-    }
-</style>
-<body class="form-membership">
+            #captcha_sec input {
+                text-align: center !important;
+                letter-spacing: 1rem;
+            }
+        </style>
+    </head>
+    <body class="loading">
+        <div class="account-pages mt-5 mb-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-6 col-xl-4">
+                        <div class="card">
 
-<!-- begin::page loader-->
-@include('panel.layouts.loader')
-<!-- end::page loader -->
+                            <div class="card-body p-4">
 
-<div class="form-wrapper">
+                                <div class="text-center w-75 m-auto">
+                                    <div class="auth-logo">
+                                        <a href="javascript:void(0)" class="logo logo-dark text-center">
+                                            <span class="logo-lg">
+                                                <img src="/assets/images/logo-dark.png" alt="" height="60">
+                                            </span>
+                                        </a>
 
-    <!-- logo -->
-    <div class="logo">
-        <img src="assets/media/image/logo-sm.png" alt="image">
-    </div>
-    <!-- ./ logo -->
+                                        <a href="javascript:void(0)" class="logo logo-light text-center">
+                                            <span class="logo-lg">
+                                                <img src="/assets/images/logo-light.png" alt="" height="60">
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
 
-    <h5>ورود</h5>
-
-    <!-- form -->
-    <form action="{{ route('login') }}" method="post">
-        @csrf
-        <div class="form-group">
-            <input type="text" name="phone" class="form-control text-left" placeholder="شماره موبایل" dir="ltr" required autofocus>
+                                <form action="{{ route('login') }}" method="post">
+                                    @csrf
+                                    <div class="mb-2">
+                                        <label for="phone" class="form-label">شماره موبایل</label>
+                                        <input class="form-control" type="text" name="phone" id="phone" required>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="password" class="form-label">رمز عبور</label>
+                                        <input type="password" id="password" name="password" class="form-control">
+                                    </div>
+                                    <div class="form-group text-center mt-3 mb-4" id="captcha_sec">
+                                        {!! captcha_img() !!}
+                                        <input type="text" name="captcha_code" class="form-control text-left mt-2 mb-0" placeholder="کد امنیتی" dir="ltr" required autofocus autocomplete="off">
+                                        @error('captcha_code')
+                                            <span class="invalid-feedback text-danger d-block" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="d-grid mb-0 text-center">
+                                        <button class="btn btn-primary" type="submit"> ورود </button>
+                                    </div>
+                                    @error('phone')
+                                        <span class="invalid-feedback text-danger text-center d-block" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </form>
+                            </div> <!-- end card-body -->
+                        </div>
+                        <!-- end card -->
+                    </div> <!-- end col -->
+                </div>
+                <!-- end row -->
+            </div>
+            <!-- end container -->
         </div>
-        <div class="form-group">
-            <input type="password" name="password" class="form-control text-left" placeholder="رمز عبور" dir="ltr" required>
-        </div>
-        <div class="form-group" id="captcha_sec">
-            {!! captcha_img() !!}
-            <input type="text" name="captcha_code" class="form-control text-left mt-2 mb-0" placeholder="کد امنیتی" dir="ltr" required autofocus>
-            @error('captcha_code')
-                <span class="invalid-feedback d-block" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
-        <button class="btn btn-primary btn-block">ورود</button>
-        @error('phone')
-        <span class="invalid-feedback d-block" role="alert">
-            <strong>{{ $message }}</strong>
-        </span>
-        @enderror
-    </form>
-    <!-- ./ form -->
+        <!-- end page -->
 
-</div>
+        <!-- Vendor js -->
+        <script src="/assets/js/vendor.min.js"></script>
 
-<!-- Plugin scripts -->
-<script src="vendors/bundle.js"></script>
-
-<!-- App scripts -->
-<script src="assets/js/app.js"></script>
-
-<script>
-    $(document).ready(function () {
-        $(document).on('click', '#captcha_sec img', function (){
-            $.ajax({
-                type: 'get',
-                url: '/captcha/api',
-                success: function (res){
-                    $('#captcha_sec img').attr('src',res.img)
-                    // console.log($(this))
-                }
-            })
-        })
-    })
-</script>
-</body>
-
+        <!-- App js -->
+        <script src="/assets/js/app.min.js"></script>
+    </body>
 </html>

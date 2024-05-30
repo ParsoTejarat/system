@@ -44,7 +44,7 @@ class InvoiceController extends Controller
             $q->whereIn('permission_id', $permissionsId);
         })->pluck('id');
 
-        $customers = auth()->user()->isAdmin() || auth()->user()->isAccountant() || auth()->user()->isCEO() || auth()->user()->isWareHouseKeeper() || auth()->user()->isSalesManager() ? Customer::all(['id', 'name']) : Customer::where('user_id', auth()->id())->get(['id', 'name']);
+        $customers = Customer::all(['id', 'name']);
 
         return view('panel.invoices.index', compact('invoices','customers','roles_id'));
     }
@@ -53,22 +53,17 @@ class InvoiceController extends Controller
     {
         $this->authorize('invoices-create');
 
-        $seller = Seller::first();
-        return view('panel.invoices.create', compact('seller'));
+        return view('panel.invoices.create');
     }
 
     public function store(StoreInvoiceRequest $request)
     {
         $this->authorize('invoices-create');
 
-        $type = $request->type;
         $req_for = $request->req_for;
-
-        $seller = Seller::first();
 
         $invoice = Invoice::create([
             'user_id' => auth()->id(),
-            'seller_id' => $seller ? $seller->id : null,
             'customer_id' => $request->buyer_name,
             'economical_number' => $request->economical_number,
             'national_number' => $request->national_number,
@@ -79,9 +74,7 @@ class InvoiceController extends Controller
             'city' => $request->city,
             'address' => $request->address,
             'created_in' => 'automation',
-            'type' => $type,
             'req_for' => $req_for,
-//            'status' => $request->status,
             'discount' => $request->final_discount,
             'description' => $request->description,
         ]);
@@ -164,15 +157,10 @@ class InvoiceController extends Controller
             Notification::send($invoice->user, new SendMessage($message, $url));
         }
 
-        $type = $request->type;
         $req_for = $request->req_for;
-
-        $seller = Seller::first();
 
         $invoice->update([
             'customer_id' => $request->buyer_name,
-            'seller_id' => $seller ? $seller->id : null,
-            'type' => $type,
             'req_for' => $req_for,
             'economical_number' => $request->economical_number,
             'national_number' => $request->national_number,
@@ -267,7 +255,7 @@ class InvoiceController extends Controller
     public function search(Request $request)
     {
         $this->authorize('invoices-list');
-        $customers = auth()->user()->isAdmin() || auth()->user()->isWareHouseKeeper() || auth()->user()->isAccountant() || auth()->user()->isCEO() || auth()->user()->isSalesManager() ? Customer::all(['id', 'name']) : Customer::where('user_id', auth()->id())->get(['id', 'name']);
+        $customers = Customer::all(['id', 'name']);
 
         $permissionsId = Permission::whereIn('name', ['partner-tehran-user', 'partner-other-user', 'system-user', 'single-price-user'])->pluck('id');
         $roles_id = Role::whereHas('permissions', function ($q) use($permissionsId){
@@ -526,7 +514,8 @@ class InvoiceController extends Controller
                     'invoice_id' => $invoice->id
                 ], [
                     'status' => $status,
-                    'factor_file' => $file
+                    'factor_file' => $file,
+                    'sent_to_warehouse' => 1
                 ]);
 
                 $title = 'ثبت و ارسال فاکتور';
@@ -565,7 +554,15 @@ class InvoiceController extends Controller
     public function deleteFactorFile(InvoiceAction $invoiceAction)
     {
         unlink(public_path($invoiceAction->factor_file));
-        $invoiceAction->delete();
+
+        $invoiceAction->update([
+            'factor_file' => null,
+            'sent_to_warehouse' => 0
+        ]);
+
+        if ($invoiceAction->status == 'factor') {
+            $invoiceAction->delete();
+        }
 
         alert()->success('فایل فاکتور مورد نظر حذف شد','حذف فاکتور');
         return back();

@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+@extends('panel.layouts-copy.master')
 @section('title', 'ثبت خروج')
 @section('content')
     <div class="card">
@@ -11,11 +11,13 @@
                 <div class="row">
                     <div class="col-xl-3 col-lg-3 col-md-8 col-sm-12">
                         <label for="inventory_report_id">سفارش<span class="text-danger">*</span></label>
-                        <select class="js-example-basic-single select2-hidden-accessible" name="inventory_report_id" id="inventory_report_id">
+                        <select class="js-example-basic-single select2-hidden-accessible" name="inventory_report_id"
+                                id="inventory_report_id">
                             <option value="">انتخاب کنید...</option>
                             @if($inventory_reports->count())
                                 @foreach($inventory_reports as $inventory_report)
-                                    <option value="{{ $inventory_report->id }}" {{ old('inventory_report_id') == $inventory_report->id ? 'selected' : '' }}> {{ $inventory_report->invoice->id }} - {{ $inventory_report->invoice->customer->name }}</option>
+                                    <option value="{{ $inventory_report->id }}" {{ old('inventory_report_id') == $inventory_report->id ? 'selected' : '' }}> {{ $inventory_report->invoice->id }}
+                                        - {{ $inventory_report->invoice->customer->name }}</option>
                                 @endforeach
                             @else
                                 <option value="" disabled selected>سفارشی موجود نیست!</option>
@@ -58,7 +60,8 @@
                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                         <div class="form-group">
                             <label for="description">توضیحات</label>
-                            <textarea name="description" class="form-control" id="description" rows="5">{{ old('description') }}</textarea>
+                            <textarea name="description" class="form-control" id="description"
+                                      rows="5">{{ old('description') }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -76,9 +79,9 @@
                 $('#properties_table tbody').html('<tr><td colspan="2"><div class="spinner-grow text-info" role="status"></div></td></tr>')
 
                 $.ajax({
-                    url: '/panel/get-in-outs/'+inventory_report_id,
+                    url: '/panel/get-in-outs/' + inventory_report_id,
                     type: 'get',
-                    success: function (res){
+                    success: function (res) {
                         let url = `/panel/invoices/${res.data.invoice_id}`
                         $('#factor_link a').attr('href', url);
                         $('#properties_table tbody').html('')

@@ -14,7 +14,7 @@ class UpdateInvoicesTable8 extends Migration
     public function up()
     {
         Schema::table('invoices', function (Blueprint $table) {
-            $table->enum('req_for', ['pre-invoice','invoice'])->comment('درخواست برای (پیش فاکتور و فاکتور)')->after('type');
+            $table->enum('req_for', ['pre-invoice','invoice'])->comment('درخواست برای (پیش فاکتور و فاکتور)')->after('created_in');
         });
     }
 

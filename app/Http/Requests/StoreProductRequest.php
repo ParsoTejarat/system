@@ -25,14 +25,12 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'code' => 'required',
-//            'slug' => 'required|unique:products',
+            'code' => 'required|unique:products,code',
             'category' => 'required',
             'system_price' => 'required',
             'partner_price_tehran' => 'required',
             'partner_price_other' => 'required',
             'single_price' => 'required',
-            'image' => 'required|mimes:jpg,png,jpeg|max:5000',
         ];
     }
 }

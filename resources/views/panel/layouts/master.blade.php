@@ -1,17 +1,14 @@
 @include('panel.layouts.head')
 
-{{--@include('panel.layouts.loader')--}}
-@includeWhen(!isset($sidebar), 'panel.layouts.sidebar')
-@includeWhen(!isset($header), 'panel.layouts.header')
-@includeWhen(!isset($loader), 'panel.layouts.loader')
-@includeWhen(!isset($loader), 'panel.layouts.internal-tels')
-
-<!-- begin::main content -->
-<main class="main-content">
-    @include('sweet::alert')
-    @yield('content')
-</main>
-<!-- end::main content -->
+<div id="wrapper">
+    @includeWhen(!isset($topbar), 'panel.layouts.topbar')
+    @includeWhen(!isset($left_sidebar), 'panel.layouts.left-sidebar')
+    <div class="content-page">
+        @yield('content')
+        @includeWhen(!isset($footer), 'panel.layouts.footer')
+    </div>
+</div>
+{{--@includeWhen(!isset($right_sidebar), 'panel.layouts.right-sidebar')--}}
 
 @include('panel.layouts.scripts')
-@include('panel.layouts.footer')
+@include('sweet::alert')
