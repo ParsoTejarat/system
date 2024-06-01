@@ -6008,7 +6008,7 @@ div.hopscotch-bubble .hopscotch-content {
 .responsive-table-plugin .checkbox-row input[type=checkbox]:checked + label::after {
   color: #0096d6;
 }
-input[readonly], input[readonly]:focus {
+input[readonly], input[readonly]:focus, select[readonly] {
     background-color: #eee;
 }
 

@@ -261,17 +261,19 @@
 
                 {{-- Warehouse --}}
                 @canany(['guarantees-list','warehouses-list'])
-                    <li>
+                    @php $active_side = active_sidebar(['inventory','inventory/create','inventory/{inventory}/edit','search/inventory','inventory-reports','inventory-reports/create','inventory-reports/{inventory_report}/edit','warehouses','warehouses/create','warehouses/{warehouse}/edit','search/inventory-reports','guarantees','guarantees/create','guarantees/{guarantee}/edit']); @endphp
+                    <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#warehouse" data-bs-toggle="collapse" aria-expanded="false" aria-controls="warehouse">
                             <i class="ri-home-5-line"></i>
                             <span> انبار </span>
                             <span class="menu-arrow"></span>
                         </a>
-                        <div class="collapse" id="warehouse">
+                        <div class="collapse {{ $active_side ? 'show' : '' }}" id="warehouse">
                             <ul class="nav-second-level">
                                 @can('guarantees-list')
-                                    <li>
-                                        <a href="{{ route('guarantees.index') }}">گارانتی ها</a>
+                                    @php $active_item = active_sidebar(['guarantees','guarantees/create','guarantees/{guarantee}/edit']); @endphp
+                                    <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                        <a href="{{ route('guarantees.index') }}" {{ $active_item ? 'active' : '' }}>گارانتی ها</a>
                                     </li>
                                 @endcan
                                 @can('warehouses-list')
