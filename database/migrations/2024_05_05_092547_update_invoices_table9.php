@@ -15,6 +15,7 @@ class UpdateInvoicesTable9 extends Migration
     {
         Schema::table('invoices', function (Blueprint $table) {
             $table->text('order_status_desc')->nullable()->after('description');
+            $table->text('payment_doc')->nullable()->after('order_status_desc');
         });
     }
 

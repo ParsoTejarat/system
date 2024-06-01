@@ -1,22 +1,21 @@
-@extends('panel.layouts-copy.master')
+@extends('panel.layouts.master')
 @switch(request()->website)
     @case('torob')
         @php
-            $title = 'محصولات ترب';
+                $title = 'محصولات ترب';
         @endphp
         @break
     @case('digikala')
         @php
-            $title = 'محصولات دیجیکالا';
+                $title = 'محصولات دیجیکالا';
         @endphp
         @break
     @case('emalls')
         @php
-            $title = 'محصولات ایمالز';
+                $title = 'محصولات ایمالز';
         @endphp
         @break
 @endswitch
-
 @section('title', $title)
 @section('content')
     @if(request()->website != 'emalls')
@@ -26,14 +25,14 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="priceHistoryModalLabel">تاریخچه قیمت</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="بستن">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن">
                             <i class="ti-close"></i>
                         </button>
                     </div>
                     <div class="modal-body text-center">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
                     </div>
                 </div>
             </div>
@@ -47,99 +46,118 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="avgPriceModalLabel">میانگین قیمت(3 روز اخیر)</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="بستن">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن">
                             <i class="ti-close"></i>
                         </button>
                     </div>
                     <div class="modal-body text-center">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
                     </div>
                 </div>
             </div>
         </div>
         {{--  avg price Modal  --}}
     @endif
-    <div class="card">
-        <div class="card-body">
-            <div class="card-title d-flex justify-content-between align-items-center">
-                <h6>{{ $title }}</h6>
-                <a href="{{ route('off-site-products.create', request()->website) }}" class="btn btn-primary">
-                    <i class="fa fa-plus mr-2"></i>
-                    ایجاد محصول
-                </a>
+    <div class="content">
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">{{ $title }}</h4>
+                    </div>
+                </div>
             </div>
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered dataTable dtr-inline text-center">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>عنوان محصول</th>
-                        <th>تاریخ ایجاد</th>
-                        <th>مشاهده قیمت فروشندگان</th>
-                        @if(request()->website == 'torob' || request()->website == 'emalls')
-                            <th>میانگین قیمت</th>
-                        @endif
-                        <th>تاریخچه قیمت</th>
-                        <th>ویرایش</th>
-                        <th>حذف</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($data as $key => $item)
-                        <tr>
-                            <td>{{ ++$key }}</td>
-                            <td>{{ $item->title }}</td>
-                            <td>{{ verta($item->created_at)->format('H:i - Y/m/d') }}</td>
-                            <td>
-                                <a class="btn btn-info btn-floating"
-                                   href="{{ route('off-site-products.show', $item->id) }}">
-                                    <i class="fa fa-eye"></i>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title d-flex justify-content-end">
+                                <a href="{{ route('off-site-products.create', request()->website) }}" class="btn btn-primary">
+                                    <i class="fa fa-plus mr-2"></i>
+                                    ایجاد محصول
                                 </a>
-                            </td>
-                            @if(request()->website == 'torob' || request()->website == 'emalls')
-                                <td>
-                                    <button class="btn btn-info btn-floating btn_avg_price" data-toggle="modal"
-                                            data-target="#avgPriceModal" data-id="{{ $item->id }}">
-                                        <i class="fa fa-eye"></i>
-                                    </button>
-                                </td>
-                            @endif
-                            <td>
-                                <button class="btn btn-info btn-floating btn_price_history" data-toggle="modal"
-                                        data-target="#priceHistoryModal" data-id="{{ $item->id }}">
-                                    <i class="fa fa-eye"></i>
-                                </button>
-                            </td>
-                            <td>
-                                <a class="btn btn-warning btn-floating"
-                                   href="{{ route('off-site-products.edit', $item->id) }}">
-                                    <i class="fa fa-edit"></i>
-                                </a>
-                            </td>
-                            <td>
-                                <button class="btn btn-danger btn-floating trashRow"
-                                        data-url="{{ route('off-site-products.destroy',$item->id) }}"
-                                        data-id="{{ $item->id }}">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                    <tfoot>
-                    <tr>
-                    </tr>
-                    </tfoot>
-                </table>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered dataTable dtr-inline text-center">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>عنوان محصول</th>
+                                        <th>تاریخ ایجاد</th>
+                                        <th>مشاهده قیمت فروشندگان</th>
+                                        @if(request()->website == 'torob' || request()->website == 'emalls')
+                                            <th>میانگین قیمت</th>
+                                        @endif
+                                        <th>تاریخچه قیمت</th>
+                                        <th>ویرایش</th>
+                                        <th>حذف</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($data as $key => $item)
+                                        <tr>
+                                            <td>{{ ++$key }}</td>
+                                            <td>{{ $item->title }}</td>
+                                            <td>{{ verta($item->created_at)->format('H:i - Y/m/d') }}</td>
+                                            <td>
+                                                <a class="btn btn-info btn-floating"
+                                                   href="{{ route('off-site-products.show', $item->id) }}">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                            </td>
+                                            @if(request()->website == 'torob' || request()->website == 'emalls')
+                                                <td>
+                                                    <button class="btn btn-info btn-floating btn_avg_price" data-bs-toggle="modal"
+                                                            data-bs-target="#avgPriceModal" data-id="{{ $item->id }}">
+                                                        <i class="fa fa-eye"></i>
+                                                    </button>
+                                                </td>
+                                            @endif
+                                            <td>
+                                                <button class="btn btn-info btn-floating btn_price_history" data-bs-toggle="modal"
+                                                        data-bs-target="#priceHistoryModal" data-id="{{ $item->id }}">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-warning btn-floating"
+                                                   href="{{ route('off-site-products.edit', $item->id) }}">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-danger btn-floating trashRow"
+                                                        data-url="{{ route('off-site-products.destroy',$item->id) }}"
+                                                        data-id="{{ $item->id }}">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-center">{{ $data->appends(request()->all())->links() }}</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="d-flex justify-content-center">{{ $data->appends(request()->all())->links() }}</div>
         </div>
     </div>
 @endsection
-
 @section('scripts')
+    <!-- Chartjs -->
+    <script src="/vendors/charts/chartjs/chart.min.js"></script>
+
     <script>
         var website = '{{ request()->website }}';
         var data1;
@@ -147,6 +165,8 @@
 
         var labels;
         var id;
+
+        Chart.defaults.global.defaultFontFamily = 'primary-font';
 
         $(document).ready(function () {
             $('.btn_price_history').on('click', function () {
@@ -363,30 +383,4 @@
             }
         })
     </script>
-    @if (\Session::has('error'))
-        <script>
-            let timerInterval;
-            Swal.fire({
-                title: "{{Session::get('error')}}",
-                timer: 2000,
-                timerProgressBar: true,
-                didOpen: () => {
-                    Swal.showLoading();
-                    const timer = Swal.getPopup().querySelector("b");
-                    timerInterval = setInterval(() => {
-                        timer.textContent = `${Swal.getTimerLeft()}`;
-                    }, 100);
-                },
-                willClose: () => {
-                    clearInterval(timerInterval);
-                }
-            }).then((result) => {
-                /* Read more about handling dismissals below */
-                if (result.dismiss === Swal.DismissReason.timer) {
-                    console.log("I was closed by the timer");
-                }
-            });
-        </script>
-    @endif
-
 @endsection

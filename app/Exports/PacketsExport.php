@@ -81,7 +81,7 @@ class PacketsExport implements FromCollection, WithMapping, WithHeadings, WithSt
         $sheet->getStyle('A1:J1')->applyFromArray([
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
-                'startColor' => ['rgb' => '5d4a9c']
+                'startColor' => ['rgb' => '0096d6']
             ]
         ])->getFont()->setColor(Color::indexedColor(2));
 

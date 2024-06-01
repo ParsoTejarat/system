@@ -195,16 +195,18 @@
 
                 {{-- Packets --}}
                 @can('packets-list')
-                    <li>
+                    @php $active_side = active_sidebar(['packets','packets/create','packets/{packet}/edit','search/packets']); @endphp
+                    <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#packets" data-bs-toggle="collapse" aria-expanded="false" aria-controls="packets">
                             <i class="ri-truck-line"></i>
                             <span> بسته های ارسالی </span>
                             <span class="menu-arrow"></span>
                         </a>
-                        <div class="collapse" id="packets">
+                        <div class="collapse {{ $active_side ? 'show' : '' }}" id="packets">
                             <ul class="nav-second-level">
-                                <li>
-                                    <a href="{{ route('packets.index') }}">لیست بسته ها</a>
+                                @php $active_item = active_sidebar(['packets','packets/create','packets/{packet}/edit','search/packets']); @endphp
+                                <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                    <a href="{{ route('packets.index') }}" {{ $active_item ? 'active' : '' }}>لیست بسته ها</a>
                                 </li>
                             </ul>
                         </div>
@@ -213,16 +215,18 @@
 
                 {{-- Customers --}}
                 @can('customers-list')
-                    <li>
+                    @php $active_side = active_sidebar(['customers','customers/create','customers/{customer}/edit','search/customers']); @endphp
+                    <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#customers" data-bs-toggle="collapse" aria-expanded="false" aria-controls="customers">
                             <i class="ri-group-line"></i>
                             <span> مشتریان </span>
                             <span class="menu-arrow"></span>
                         </a>
-                        <div class="collapse" id="customers">
+                        <div class="collapse {{ $active_side ? 'show' : '' }}" id="customers">
                             <ul class="nav-second-level">
-                                <li>
-                                    <a href="{{ route('customers.index') }}">لیست مشتریان</a>
+                                @php $active_item = active_sidebar(['customers','customers/create','customers/{customer}/edit','search/customers']); @endphp
+                                <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                    <a href="{{ route('customers.index') }}" {{ $active_item ? 'active' : '' }}>لیست مشتریان</a>
                                 </li>
                             </ul>
                         </div>
@@ -231,22 +235,24 @@
 
                 {{-- Shops --}}
                 @can('shops')
-                    <li>
+                    @php $active_side = active_sidebar(['off-site-products/{website}','off-site-product/{off_site_product}','off-site-product-create/{website}','off-site-products/{off_site_product}/edit']); @endphp
+                    <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#shops" data-bs-toggle="collapse" aria-expanded="false" aria-controls="shops">
                             <i class="ri-store-3-line"></i>
                             <span> فروشگاه ها </span>
                             <span class="menu-arrow"></span>
                         </a>
-                        <div class="collapse" id="shops">
+                        <div class="collapse {{ $active_side ? 'show' : '' }}" id="shops">
+                            @php $active_item = active_sidebar(['off-site-products/{website}','off-site-product/{off_site_product}','off-site-product-create/{website}','off-site-products/{off_site_product}/edit']); @endphp
                             <ul class="nav-second-level">
-                                <li>
-                                    <a href="{{ route('off-site-products.index', 'torob') }}">ترب</a>
+                                <li class="{{ $active_item && request()->website == 'torob' ? 'menuitem-active' : '' }}">
+                                    <a href="{{ route('off-site-products.index', 'torob') }}" {{ $active_item && request()->website == 'torob' ? 'active' : '' }}>ترب</a>
                                 </li>
-                                <li>
-                                    <a href="{{ route('off-site-products.index', 'emalls') }}">ایمالز</a>
+                                <li class="{{ $active_item && request()->website == 'emalls' ? 'menuitem-active' : '' }}">
+                                    <a href="{{ route('off-site-products.index', 'emalls') }}" {{ $active_item && request()->website == 'emalls' ? 'active' : '' }}>ایمالز</a>
                                 </li>
-                                <li>
-                                    <a href="{{ route('off-site-products.index', 'digikala') }}">دیجیکالا</a>
+                                <li class="{{ $active_item && request()->website == 'digikala' ? 'menuitem-active' : '' }}">
+                                    <a href="{{ route('off-site-products.index', 'digikala') }}" {{ $active_item && request()->website == 'digikala' ? 'active' : '' }}>دیجیکالا</a>
                                 </li>
                             </ul>
                         </div>

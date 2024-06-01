@@ -60,7 +60,7 @@ if (!function_exists('formatBytes')) {
 if (!function_exists('sendSMS')) {
     function sendSMS(int $bodyId, string $to, array $args, array $options = [])
     {
-        $url = 'https://console.melipayamak.com/api/send/shared/9ac659ce20e74c2288f0b58cb9c4e710';
+        $url = 'https://console.melipayamak.com/api/send/shared/d131cf0fe6ef4a6cb983308e46836678';
         $data = array('bodyId' => $bodyId, 'to' => $to, 'args' => $args);
         $data_string = json_encode($data);
         $ch = curl_init($url);
@@ -68,7 +68,7 @@ if (!function_exists('sendSMS')) {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
 
         // Next line makes the request absolute insecure
-        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER,
@@ -86,25 +86,5 @@ if (!function_exists('sendSMS')) {
         ]);
 
         return $result;
-
-// --------------------------------------------------- //
-//        try{
-//            $sms = Melipayamak\Laravel\Facade::sms();
-//            $from = '50004000425053';
-//            $response = $sms->send($to,$from,$text);
-//            $json = json_decode($response);
-//
-//            \App\Models\SmsHistory::create([
-//                'user_id' => auth()->id(),
-//                'phone' => $to,
-//                'text' => $text,
-//                'status' => $json->Value != 11 ? 'sent' : 'failed',
-//            ]);
-//
-//            return $json->Value; //RecId or Error Number
-//        }catch(Exception $e){
-//            return $e->getMessage();
-//        }
-// --------------------------------------------------- //
     }
 }

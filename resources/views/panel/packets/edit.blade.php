@@ -1,5 +1,18 @@
-@extends('panel.layouts-copy.master')
+@extends('panel.layouts.master')
 @section('title', 'ویرایش بسته ارسالی')
+@section('styles')
+    <!-- Clockpicker -->
+    <link rel="stylesheet" href="/vendors/clockpicker/bootstrap-clockpicker.min.css" type="text/css">
+    <!-- Datepicker -->
+    <link rel="stylesheet" href="/vendors/datepicker/daterangepicker.css">
+    <link rel="stylesheet" href="/vendors/datepicker-jalali/bootstrap-datepicker.min.css">
+
+    <style>
+        .select2-dropdown.select2-dropdown--below {
+            z-index: 1000000 !important;
+        }
+    </style>
+@endsection
 @section('content')
     {{--  Send SMS Modal  --}}
     <div class="modal fade" id="smsModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -7,33 +20,33 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="smsModalLabel">ارسال پیامک</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="بستن">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن">
                         <i class="ti-close"></i>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="phone">شماره موبایل<span class="text-danger">*</span></label>
+                        <label class="form-label" for="phone">شماره موبایل<span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="phone" maxlength="11" minlength="11">
-                        <div class="invalid-feedback d-block" id="phone_error"></div>
+                        <div class="invalid-feedback text-danger d-block" id="phone_error"></div>
                     </div>
-                    <div class="form-group">
-                        <label for="bodyId">پیامک<span class="text-danger">*</span></label>
-                        <select class="form-control" id="bodyId">
-                            <option value="177554">کد رهگیری مرسوله</option>
-                            <option value="178278">عودت فاکتور</option>
-                            <option value="185679">یادآوری پرداخت فاکتور</option>
+                    <div class="form-group mb-2">
+                        <label class="form-label" for="bodyId">پیامک<span class="text-danger">*</span></label>
+                        <select class="form-control" id="bodyId" data-toggle="select2">
+                            <option value="221288">کد رهگیری مرسوله</option>
+                            <option value="221292">عودت فاکتور</option>
+                            <option value="221289">یادآوری پرداخت پیش فاکتور</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="text">متن پیامک<span class="text-danger">*</span></label>
+                        <label class="form-label" for="text">متن پیامک<span class="text-danger">*</span></label>
                         <textarea class="form-control" id="text" rows="5" readonly></textarea>
-                        <div class="invalid-feedback d-block" id="text_error"></div>
+                        <div class="invalid-feedback text-danger d-block" id="text_error"></div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="btn_send_sms">
-                        <i class="fa fa-paper-plane mr-2"></i>
+                        <i class="fa fa-paper-plane me-2"></i>
                         <span>ارسال</span>
                     </button>
                 </div>
@@ -41,132 +54,158 @@
         </div>
     </div>
     {{--  End Send SMS Modal  --}}
-    <div class="card">
-        <div class="card-body">
-            <div class="card-title d-flex justify-content-between align-items-center">
-                <h6>ویرایش بسته ارسالی</h6>
+
+    <div class="content">
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">ویرایش بسته ارسالی</h4>
+                    </div>
+                </div>
             </div>
-            <form action="{{ route('packets.update', $packet->id) }}" method="post">
-                @csrf
-                @method('PATCH')
-                <input type="hidden" name="url" value="{{ $url }}">
-                <div class="form-row">
-                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
-                        <label for="invoice">سفارش<span class="text-danger">*</span></label>
-                        <select class="form-control" name="invoice" id="invoice">
-                            @if($invoices->count())
-                                <option value="{{ $packet->invoice_id }}" selected> {{ $packet->invoice_id }}
-                                    - {{ $packet->invoice->customer->name }}</option>
-                                @foreach($invoices as $invoiceId => $customerName)
-                                    <option value="{{ $invoiceId }}" {{ $packet->invoice_id == $invoiceId ? 'selected' : '' }}> {{ $invoiceId }}
-                                        - {{ $customerName }}</option>
-                                @endforeach
-                            @else
-                                <option value="{{ $packet->invoice_id }}" selected> {{ $packet->invoice_id }}
-                                    - {{ $packet->invoice->customer->name }}</option>
-                            @endif
-                        </select>
-                        @error('invoice')
-                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
-                        <label for="receiver">گیرنده <span class="text-danger">*</span></label>
-                        <input type="text" name="receiver" class="form-control" id="receiver"
-                               value="{{ $packet->receiver }}">
-                        @error('receiver')
-                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
-                        <label for="address">آدرس <span class="text-danger">*</span></label>
-                        <input type="text" name="address" class="form-control" id="address"
-                               value="{{ $packet->address }}">
-                        @error('address')
-                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
-                        <label for="sent_time">زمان ارسال <span class="text-danger">*</span></label>
-                        <input type="text" name="sent_time" class="form-control date-picker-shamsi-list" id="sent_time"
-                               value="{{ verta($packet->sent_time)->format('Y/m/d') }}">
-                        @error('sent_time')
-                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
-                        <label for="sent_type">نوع ارسال <span class="text-danger">*</span></label>
-                        <select class="form-control" name="sent_type" id="sent_type">
-                            @foreach(\App\Models\Packet::SENT_TYPE as $key => $value)
-                                <option value="{{ $key }}" {{ $packet->sent_type == $key ? 'selected' : '' }}>{{ $value }}</option>
-                            @endforeach
-                        </select>
-                        @error('sent_type')
-                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
-                        <label for="send_tracking_code">کد رهگیری ارسالی</label>
-                        <input type="text" name="send_tracking_code" class="form-control" id="send_tracking_code"
-                               value="{{ $packet->send_tracking_code }}">
-                        @error('send_tracking_code')
-                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
-                        <label for="receive_tracking_code">کد رهگیری دریافتی </label>
-                        <input type="text" name="receive_tracking_code" class="form-control" id="receive_tracking_code"
-                               value="{{ $packet->receive_tracking_code }}">
-                        @error('receive_tracking_code')
-                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
-                        <label for="packet_status">وضعیت بسته <span class="text-danger">*</span></label>
-                        <select class="form-control" name="packet_status" id="packet_status">
-                            @foreach(\App\Models\Packet::PACKET_STATUS as $key => $value)
-                                <option value="{{ $key }}" {{ $packet->packet_status == $key ? 'selected' : '' }}>{{ $value }}</option>
-                            @endforeach
-                        </select>
-                        @error('packet_status')
-                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
-                        <label for="invoice_status">وضعیت فاکتور <span class="text-danger">*</span></label>
-                        <select class="form-control" name="invoice_status" id="invoice_status">
-                            @foreach(\App\Models\Packet::INVOICE_STATUS as $key => $value)
-                                <option value="{{ $key }}" {{ $packet->invoice_status == $key ? 'selected' : '' }}>{{ $value }}</option>
-                            @endforeach
-                        </select>
-                        @error('invoice_status')
-                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
-                        <label for="description">توضیحات</label>
-                        <textarea name="description" id="description"
-                                  class="form-control">{{ $packet->description }}</textarea>
-                        @error('description')
-                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <form action="{{ route('packets.update', $packet->id) }}" method="post">
+                                @csrf
+                                @method('PATCH')
+                                <input type="hidden" name="url" value="{{ $url }}">
+                                <div class="row">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                                        <label class="form-label" for="invoice">سفارش<span class="text-danger">*</span></label>
+                                        <select class="form-control" name="invoice" id="invoice" data-toggle="select2">
+                                            @if($invoices->count())
+{{--                                                <option value="{{ $packet->invoice_id }}" selected> {{ $packet->invoice_id }}- {{ $packet->invoice->customer->name }}</option>--}}
+                                                @foreach($invoices as $invoiceId => $customerName)
+                                                    <option value="{{ $invoiceId }}" {{ $packet->invoice_id == $invoiceId ? 'selected' : '' }}> {{ $invoiceId }}- {{ $customerName }}</option>
+                                                @endforeach
+                                            @else
+                                                <option value="{{ $packet->invoice_id }}" selected> {{ $packet->invoice_id }}
+                                                    - {{ $packet->invoice->customer->name }}</option>
+                                            @endif
+                                        </select>
+                                        @error('invoice')
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                                        <label class="form-label" for="receiver">گیرنده <span class="text-danger">*</span></label>
+                                        <input type="text" name="receiver" class="form-control" id="receiver"
+                                               value="{{ $packet->receiver }}">
+                                        @error('receiver')
+                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                                        <label class="form-label" for="address">آدرس <span class="text-danger">*</span></label>
+                                        <input type="text" name="address" class="form-control" id="address"
+                                               value="{{ $packet->address }}">
+                                        @error('address')
+                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                                        <label class="form-label" for="sent_time">زمان ارسال <span class="text-danger">*</span></label>
+                                        <input type="text" name="sent_time" class="form-control date-picker-shamsi-list" id="sent_time"
+                                               value="{{ verta($packet->sent_time)->format('Y/m/d') }}">
+                                        @error('sent_time')
+                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                                        <label class="form-label" for="sent_type">نوع ارسال <span class="text-danger">*</span></label>
+                                        <select class="form-control" name="sent_type" id="sent_type" data-toggle="select2">
+                                            @foreach(\App\Models\Packet::SENT_TYPE as $key => $value)
+                                                <option value="{{ $key }}" {{ $packet->sent_type == $key ? 'selected' : '' }}>{{ $value }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('sent_type')
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                                        <label class="form-label" for="send_tracking_code">کد رهگیری ارسالی</label>
+                                        <input type="text" name="send_tracking_code" class="form-control" id="send_tracking_code" value="{{ $packet->send_tracking_code }}">
+                                        @error('send_tracking_code')
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                                        <label class="form-label" for="receive_tracking_code">کد رهگیری دریافتی </label>
+                                        <input type="text" name="receive_tracking_code" class="form-control" id="receive_tracking_code"
+                                               value="{{ $packet->receive_tracking_code }}">
+                                        @error('receive_tracking_code')
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                                        <label class="form-label" for="invoice_link">لینک پیش فاکتور </label>
+                                        <input type="text" name="invoice_link" class="form-control" id="invoice_link" value="{{ $packet->invoice_link }}">
+                                        @error('invoice_link')
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                                        <label class="form-label" for="packet_status">وضعیت بسته <span class="text-danger">*</span></label>
+                                        <select class="form-control" name="packet_status" id="packet_status" data-toggle="select2">
+                                            @foreach(\App\Models\Packet::PACKET_STATUS as $key => $value)
+                                                <option value="{{ $key }}" {{ $packet->packet_status == $key ? 'selected' : '' }}>{{ $value }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('packet_status')
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                                        <label class="form-label" for="invoice_status">وضعیت فاکتور <span class="text-danger">*</span></label>
+                                        <select class="form-control" name="invoice_status" id="invoice_status" data-toggle="select2">
+                                            @foreach(\App\Models\Packet::INVOICE_STATUS as $key => $value)
+                                                <option value="{{ $key }}" {{ $packet->invoice_status == $key ? 'selected' : '' }}>{{ $value }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('invoice_status')
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                                        <label class="form-label" for="description">توضیحات</label>
+                                        <textarea name="description" id="description"
+                                                  class="form-control">{{ $packet->description }}</textarea>
+                                        @error('description')
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <button class="btn btn-primary" type="submit">ثبت فرم</button>
+                                    <div>
+                                        <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#smsModal" id="btn_sms">
+                                            <i class="fa fa-sms me-2"></i>
+                                            ارسال پیامک
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-between">
-                    <button class="btn btn-primary" type="submit">ثبت فرم</button>
-                    <div>
-                        <button class="btn btn-github" type="button" data-toggle="modal" data-target="#smsModal"
-                                id="btn_sms">
-                            <i class="fa fa-message mr-2"></i>
-                            ارسال پیامک
-                        </button>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 @endsection
 @section('scripts')
+    <script src="/vendors/datepicker-jalali/bootstrap-datepicker.min.js"></script>
+    <script src="/vendors/datepicker-jalali/bootstrap-datepicker.fa.min.js"></script>
+    <script src="/vendors/datepicker/daterangepicker.js"></script>
+    <script src="/assets/js/examples/datepicker.js"></script>
+    <script src="/vendors/clockpicker/bootstrap-clockpicker.min.js"></script>
+    <script src="/assets/js/examples/clockpicker.js"></script>
+
     <script>
         $(document).ready(function () {
             var code;
@@ -174,11 +213,13 @@
             var receiver;
             var args;
             var text_error;
+            var file_link = '';
 
             $('#btn_sms').on('click', function () {
                 code = $('#send_tracking_code').val().trim();
                 receiver = $('#receiver').val();
                 bodyId = $('#bodyId').val();
+                file_link = $('#invoice_link').val();
                 changeBody(bodyId);
             })
 
@@ -267,7 +308,7 @@
             // end btn send sms
 
             function changeBody(bodyId) {
-                if (bodyId == 177554) {
+                if (bodyId == 221288) {
                     if (code == '') {
                         $('#text_error').text('ابتدا فیلد کد رهگیری را وارد نمایید')
                         text_error = true;
@@ -279,11 +320,14 @@
                     args = [code];
 
                     $('#text').html(`کد پیگیری مرسوله شما: ${code} \n\n` +
-                        `شرکت صنایع ماشین های اداری ماندگار پارس\n` +
-                        `Artintoner.com\n`)
-                } else if (bodyId == 185679) {
+                        `پرسو تجارت ایرانیان\n` +
+                        `Parsotejarat.com\n`)
+                } else if (bodyId == 221289) {
                     if (receiver == '') {
                         $('#text_error').text('ابتدا فیلد گیرنده را وارد نمایید')
+                        text_error = true;
+                    }else if (file_link == '') {
+                        $('#text_error').text('فیلد لینک پیش فاکتور را وارد نمایید')
                         text_error = true;
                     } else {
                         text_error = false;
@@ -291,10 +335,12 @@
                     }
 
                     $('#text').html(`مشتری گرامی ${receiver} \n` +
-                        `لطفا جهت پرداخت فاکتور خود اقدام نمایید. \n` +
+                        `لطفا جهت پرداخت پیش فاکتور خود تا پایان امروز اقدام نمایید. \n` +
+                        `لینک دانلود: \n` +
+                        `${file_link} \n` +
                         ` با تشکر\n` +
-                        `شرکت صنایع ماشین های اداری ماندگار پارس \n` +
-                        `Artintoner.com`)
+                        `پرسو تجارت ایرانیان \n` +
+                        `Parsotejarat.com`)
 
                     args = [receiver];
                 } else {
@@ -308,10 +354,10 @@
 
                     $('#text').html(`مشتری گرامی ${receiver} \n` +
                         `لطفا پس از دریافت مرسوله خود، دو نسخه از فاکتورها را مهر و امضا و به آدرس زیر ارسال کنید. با تشکر \n` +
-                        `آدرس: تهران، شهرستان ملارد، شهرک صنعتی صفادشت، بلوار خرداد، بین خیابان پنجم و ششم غربی، پلاک 228\n` +
-                        `کد پستی: 3164114855 \n` +
-                        `شرکت صنایع ماشین های اداری ماندگار پارس \n` +
-                        `Artintoner.com`)
+                        `آدرس: تهران، خیابان کریمخان، خیابان ایرانشهر، پلاک 242، طبقه پنجم\n` +
+                        `کد پستی: 1584745337 \n` +
+                        `پرسو تجارت ایرانیان \n` +
+                        `Parsotejarat.com`)
 
                     args = [receiver];
                 }

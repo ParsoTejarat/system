@@ -159,6 +159,16 @@ class InvoiceController extends Controller
 
         $req_for = $request->req_for;
 
+        if ($request->payment_doc){
+            if ($invoice->payment_doc){
+                unlink(public_path($invoice->payment_doc));
+            }
+
+            $payment_doc = upload_file($request->payment_doc,'PaymentDocs');
+        }else{
+            $payment_doc = $invoice->payment_doc;
+        }
+
         $invoice->update([
             'customer_id' => $request->buyer_name,
             'req_for' => $req_for,
@@ -173,6 +183,7 @@ class InvoiceController extends Controller
             'status' => $request->status,
             'discount' => $request->final_discount ?? $invoice->discount,
             'description' => $request->description,
+            'payment_doc' => $payment_doc,
         ]);
 
         alert()->success('سفارش مورد نظر با موفقیت ویرایش شد','ویرایش سفارش');

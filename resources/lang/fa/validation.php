@@ -213,7 +213,9 @@ return [
         'customer_code' => 'کد مشتری',
         'invoice_file' => 'فایل پیش فاکتور',
         'factor_file' => 'فایل فاکتور',
-        'customer_id' => 'مشتری'
+        'customer_id' => 'مشتری',
+        'invoice_link' => 'لینک پیش فاکتور',
+        'payment_doc' => 'رسید پرداخت',
     ],
 
 ];

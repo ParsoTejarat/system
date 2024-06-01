@@ -58,10 +58,10 @@
                         <div class="card-body">
                             <div class="card-title d-flex justify-content-between align-items-center mb-5">
                                 <div class="w-100">
-                                    <div class="col-12 mb-4 text-center mt-5">
-                                        <h4>درخواست برای</h4>
-                                    </div>
                                     @if($invoice->status != 'invoiced')
+                                        <div class="col-12 mb-4 text-center mt-5">
+                                            <h4>درخواست برای</h4>
+                                        </div>
                                         <div class="btn-group w-100" role="group">
                                             <input type="radio" id="req_for1" name="req_for" class="btn-check" value="pre-invoice" form="invoice_form" {{ $invoice->req_for == 'pre-invoice' && old('req_for') == null || old('req_for') == 'pre-invoice' ? 'checked' : '' }}>
                                             <label class="btn btn-outline-primary justify-content-center" for="req_for1">پیش فاکتور</label>
@@ -78,7 +78,7 @@
                                     <input type="hidden" name="type" value="official" form="invoice_form">
                                 </div>
                             </div>
-                            <form action="{{ route('invoices.update', $invoice->id) }}" method="post" id="invoice_form">
+                            <form action="{{ route('invoices.update', $invoice->id) }}" method="post" id="invoice_form" enctype="multipart/form-data">
                                 @csrf
                                 @method('PATCH')
                                 <div class="row mb-4">
@@ -165,7 +165,17 @@
                                         <label class="form-label" for="description">توضیحات</label>
                                         <textarea name="description" id="description" class="form-control">{{ $invoice->description }}</textarea>
                                         @error('description')
-                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                                        <label class="form-label" for="payment_doc">رسید پرداخت</label>
+                                        <input type="file" name="payment_doc" id="payment_doc" class="form-control" accept="application/pdf,image/png,image/jpg,image/jpeg">
+                                        @if($invoice->payment_doc)
+                                            <a href="{{ $invoice->payment_doc }}" target="_blank">دانلود پیش فاکتور</a>
+                                        @endif
+                                        @error('payment_doc')
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     @can('accountant')

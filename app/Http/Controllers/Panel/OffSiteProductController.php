@@ -130,7 +130,7 @@ class OffSiteProductController extends Controller
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://api.torob.com/v4/base-product/sellers/?prk=$id");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 
         $response = curl_exec($ch);
@@ -162,7 +162,7 @@ class OffSiteProductController extends Controller
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
         curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
-//        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         $headers = [];
         $headers[] = "Referer: $offSiteProduct->url";
@@ -191,7 +191,7 @@ class OffSiteProductController extends Controller
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://api.torob.com/v4/base-product/sellers/?prk=$id");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 
         $response = curl_exec($ch);
@@ -200,7 +200,7 @@ class OffSiteProductController extends Controller
             return redirect()->back()->with('error','قیمتی برای محصول یافت نشد');
         }
         $data = collect(json_decode($response)->results);
-
+        $data = $data->where('price','!=',0)->all();
 
         return view('panel.off-site-products.torob', compact('data'));
     }
@@ -210,6 +210,7 @@ class OffSiteProductController extends Controller
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 
         $response = curl_exec($ch);
@@ -235,6 +236,7 @@ class OffSiteProductController extends Controller
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
         curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         $headers = [];
         $headers[] = "Referer: $url";
@@ -356,6 +358,7 @@ class OffSiteProductController extends Controller
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $endpoint);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 
         $response = curl_exec($ch);
@@ -373,13 +376,24 @@ class OffSiteProductController extends Controller
         $endpoint = "https://api.digikala.com/v1/product/$product_id/price-chart/";
 
         $ch = curl_init();
+
         curl_setopt($ch, CURLOPT_URL, $endpoint);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 
-        $response = curl_exec($ch);
-        curl_close($ch);
+        curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
 
+        $headers = array();
+        $headers[] = 'Referer: https://www.digikala.com/';
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        $response = curl_exec($ch);
+        if (curl_errno($ch)) {
+            echo 'Error:' . curl_error($ch);
+        }
+
+        curl_close($ch);
         $res = json_decode($response);
 
         return response()->json(['data' => $res]);

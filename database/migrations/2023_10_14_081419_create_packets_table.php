@@ -18,7 +18,8 @@ class CreatePacketsTable extends Migration
             $table->unsignedBigInteger('invoice_id');
             $table->string('receiver');
             $table->text('address');
-            $table->string('send_tracking_code')->unique()->comment('کد رهگیری ارسالی');
+            $table->string('send_tracking_code')->unique()->nullable()->comment('کد رهگیری ارسالی');
+            $table->string('invoice_link')->nullable()->comment('لینک پیش فاکتور');
             $table->enum('sent_type', ['post','tipax','delivery']);
             $table->enum('packet_status', ['delivered','sending']);
             $table->enum('invoice_status', ['delivered','unknown']);

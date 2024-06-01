@@ -43,7 +43,7 @@
                 </li>
             @endcanany
             @canany(['shops'])
-                <li class="{{ active_sidebar(['off-site-products/{website}','off-site-product/{off_site_product}','off-site-product-create/{website}','off-site-products/{off_site_product}/edit',]) ? 'active' : '' }}" data-toggle="tooltip" title="فروشگاه ها">
+                <li class="{{ active_sidebar(['off-site-products/{website}','off-site-product/{off_site_product}','off-site-product-create/{website}','off-site-products/{off_site_product}/edit']) ? 'active' : '' }}" data-toggle="tooltip" title="فروشگاه ها">
                     <a href="#navigationShops" title="فروشگاه ها">
                         <i class="icon ti-new-window"></i>
                     </a>
