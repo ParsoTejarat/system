@@ -114,7 +114,7 @@ class InventoryReportController extends Controller
             // end send notification
         }
 
-        $serial = 'MP'.$request->guarantee_serial;
+        $serial = 'PT'.$request->guarantee_serial;
         $guarantee_id = $request->guarantee_serial ? Guarantee::where('serial', $serial)->first()->id : null;
 
         // create report
@@ -202,7 +202,7 @@ class InventoryReportController extends Controller
             $this->updateCheckInventoryCount($inventoryReport ,$request);
         }
 
-        $serial = 'MP'.$request->guarantee_serial;
+        $serial = 'PT'.$request->guarantee_serial;
         $guarantee_id = $request->guarantee_serial ? Guarantee::where('serial', $serial)->first()->id : null;
 
         // create input report

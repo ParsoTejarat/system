@@ -277,24 +277,28 @@
                                     </li>
                                 @endcan
                                 @can('warehouses-list')
-                                    <li>
-                                        <a href="{{ route('warehouses.index') }}">انبار ها</a>
+                                    @php $active_item = active_sidebar(['warehouses','warehouses/create','warehouses/{warehouse}/edit']); @endphp
+                                    <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                        <a href="{{ route('warehouses.index') }}" {{ $active_item ? 'active' : '' }}>انبار ها</a>
                                     </li>
                                 @endcan
                                 @if(request()->warehouse_id)
                                     @can('inventory-list')
-                                        <li>
-                                            <a href="{{ route('inventory.index', ['warehouse_id' => request()->warehouse_id]) }}">کالاها</a>
+                                        @php $active_item = active_sidebar(['inventory','inventory/create','inventory/{inventory}/edit','search/inventory']); @endphp
+                                        <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                            <a href="{{ route('inventory.index', ['warehouse_id' => request()->warehouse_id]) }}" {{ $active_item ? 'active' : '' }}>کالاها</a>
                                         </li>
                                     @endcan
                                     @can('input-reports-list')
-                                        <li>
-                                            <a href="{{ route('inventory-reports.index', ['type' => 'input', 'warehouse_id' => request()->warehouse_id]) }}">ورود</a>
+                                        @php $active_item = active_sidebar(['inventory-reports','inventory-reports/create','inventory-reports/{inventory_report}/edit','search/inventory-reports']) && request()->type == 'input'; @endphp
+                                        <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                            <a href="{{ route('inventory-reports.index', ['type' => 'input', 'warehouse_id' => request()->warehouse_id]) }}" {{ $active_item ? 'active' : '' }}>ورود</a>
                                         </li>
                                     @endcan
                                     @can('output-reports-list')
-                                        <li>
-                                            <a href="{{ route('inventory-reports.index', ['type' => 'output', 'warehouse_id' => request()->warehouse_id]) }}">خروج</a>
+                                        @php $active_item = active_sidebar(['inventory-reports','inventory-reports/create','inventory-reports/{inventory_report}/edit','search/inventory-reports']) && request()->type == 'output'; @endphp
+                                        <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                            <a href="{{ route('inventory-reports.index', ['type' => 'output', 'warehouse_id' => request()->warehouse_id]) }}" {{ $active_item ? 'active' : '' }}>خروج</a>
                                         </li>
                                     @endcan
                                 @endif

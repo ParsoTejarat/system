@@ -25,7 +25,7 @@ class GuaranteeController extends Controller
     {
         $this->authorize('guarantees-create');
 
-        $serial = 'MP'.random_int(10000000, 99999999);
+        $serial = 'PT'.random_int(10000000, 99999999);
         return view('panel.guarantees.create', compact('serial'));
     }
 
@@ -83,7 +83,7 @@ class GuaranteeController extends Controller
 
     public function serialCheck(Request $request)
     {
-        $serial = 'MP'.$request->serial;
+        $serial = 'PT'.$request->serial;
 
         $guarantee = Guarantee::where('serial', $serial)->whereIn('status', ['active', 'inactive'])->first();
 

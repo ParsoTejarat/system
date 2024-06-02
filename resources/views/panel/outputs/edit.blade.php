@@ -1,6 +1,12 @@
-@extends('panel.layouts-copy.master')
+@extends('panel.layouts.master')
 @section('title', 'ویرایش خروجی')
 @section('styles')
+    <!-- Clockpicker -->
+    <link rel="stylesheet" href="/vendors/clockpicker/bootstrap-clockpicker.min.css" type="text/css">
+    <!-- Datepicker -->
+    <link rel="stylesheet" href="/vendors/datepicker/daterangepicker.css">
+    <link rel="stylesheet" href="/vendors/datepicker-jalali/bootstrap-datepicker.min.css">
+
     <style>
         .input-group > .custom-select:not(:first-child), .input-group > .form-control:not(:first-child) {
             border-top-left-radius: 0;
@@ -18,165 +24,181 @@
     </style>
 @endsection
 @section('content')
-    <div class="card">
-        <div class="card-body">
-            <div class="card-title d-flex justify-content-between align-items-center">
-                <h6>ویرایش خروجی</h6>
-                <button class="btn btn-outline-success" type="button" id="btn_add"><i class="fa fa-plus mr-2"></i>
-                    افزودن کالا
-                </button>
+    <div class="content">
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">ویرایش خروجی</h4>
+                    </div>
+                </div>
             </div>
-            <form action="{{ route('inventory-reports.update', $inventoryReport->id) }}" method="post">
-                @csrf
-                @method('PUT')
-                <input type="hidden" name="type" value="{{ $inventoryReport->type }}">
-                <div class="row">
-                    <div class="col-xl-3 col-lg-3 col-md-8 col-sm-12">
-                        <label for="invoice_id">سفارش<span class="text-danger">*</span></label>
-                        <select class="form-control" name="invoice_id" id="invoice_id" readonly
-                                style="pointer-events: none">
-                            <option value="">انتخاب کنید...</option>
-                            @if(\App\Models\Invoice::count())
-                                @foreach(\App\Models\Invoice::all() as $invoice)
-                                    <option value="{{ $invoice->id }}" {{ $inventoryReport->invoice_id == $invoice->id ? 'selected' : '' }}> {{ $invoice->id }}
-                                        - {{ $invoice->customer->name }}</option>
-                                @endforeach
-                            @else
-                                <option value="" disabled selected>سفارشی موجود نیست!</option>
-                            @endif
-                        </select>
-                        <span id="factor_link">
-                            <a href="/panel/invoices/{{ $inventoryReport->invoice ? $inventoryReport->invoice_id : '' }}"
-                               class="btn-link" target="_blank">نمایش سفارش</a>
-                        </span>
-                        @error('invoice_id')
-                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-8 col-sm-12">
-                        <label for="guarantee_serial">سریال گارانتی</label>
-                        <div class="input-group mb-2" style="direction: ltr">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">MP</div>
-                            </div>
-                            <input type="text" name="guarantee_serial" id="guarantee_serial" class="form-control"
-                                   value="{{ $inventoryReport->guarantee ? substr($inventoryReport->guarantee->serial, 2) : null }}"
-                                   maxlength="8">
-                        </div>
-                        <div id="serial_status"></div>
+            <!-- end page title -->
 
-                        @error('guarantee_serial')
-                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-4"></div>
-                    <div class="col-xl-3 col-lg-3 col-md-8 col-sm-12">
-                        <div class="form-group">
-                            <label for="person"> تحویل گیرنده <span class="text-danger">*</span></label>
-                            <input type="text" name="person" class="form-control" id="person"
-                                   value="{{ $inventoryReport->person }}">
-                            @error('person')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-8 col-sm-12">
-                        <div class="form-group">
-                            <label for="output_date"> تاریخ خروج <span class="text-danger">*</span></label>
-                            <input type="text" name="output_date" class="form-control date-picker-shamsi-list"
-                                   id="output_date" value="{{ old('output_date') ?? verta()->format('Y/m/d') }}">
-                            @error('output_date')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-4"></div>
-                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                        <div class="table-responsive mt-3">
-                            <table class="table table-bordered table-striped text-center" id="properties_table">
-                                <thead>
-                                <tr>
-                                    <th>کالا</th>
-                                    <th>تعداد</th>
-                                    <th>حذف</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($inventoryReport->in_outs as $item)
-                                    <tr>
-                                        <td>
-                                            <select class="js-example-basic-single select2-hidden-accessible"
-                                                    name="inventory_id[]">
-                                                @foreach(\App\Models\Inventory::where('warehouse_id', $warehouse_id)->get(['id','title','type']) as $inventory)
-                                                    <option value="{{ $inventory->id }}" {{ $inventory->id == $item->inventory_id ? 'selected' : '' }}>{{ \App\Models\Inventory::TYPE[$inventory->type].' - '.$inventory->title }}</option>
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title d-flex justify-content-end">
+                                <button class="btn btn-outline-success" type="button" id="btn_add"><i class="fa fa-plus me-2"></i>
+                                    افزودن کالا
+                                </button>
+                            </div>
+                            <form action="{{ route('inventory-reports.update', $inventoryReport->id) }}" method="post">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="type" value="{{ $inventoryReport->type }}">
+                                <div class="row">
+                                    <div class="col-xl-3 col-lg-3 col-md-8 col-sm-12">
+                                        <label class="form-label" for="invoice_id">سفارش<span class="text-danger">*</span></label>
+                                        <select class="form-control" name="invoice_id" id="invoice_id" readonly style="pointer-events: none">
+                                            <option value="">انتخاب کنید...</option>
+                                            @if(\App\Models\Invoice::count())
+                                                @foreach(\App\Models\Invoice::all() as $invoice)
+                                                    <option value="{{ $invoice->id }}" {{ $inventoryReport->invoice_id == $invoice->id ? 'selected' : '' }}> {{ $invoice->id }}
+                                                        - {{ $invoice->customer->name }}</option>
                                                 @endforeach
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <input type="number" name="counts[]" class="form-control" min="1"
-                                                   value="{{ $item->count }}" required>
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-danger btn-floating btn_remove" type="button"><i
-                                                        class="fa fa-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                            <div class="alert alert-warning d-none" id="alert_section">
-                                <div>
-                                    <div id="miss_products" class="d-none">
-                                        <div>
-                                            <strong><i class="fa fa-circle"></i></strong>
-                                            <strong>توجه!</strong> برخی کالاهای سفارش در انبار تعریف نشده اند
-                                        </div>
-                                        <small>ابتدا آنها را در انبار تعریف کنید</small>
-                                        <br>
-                                        <small>
-                                            <span>کد کالاها:</span>
-                                            <span id="codes"></span>
-                                        </small>
+                                            @else
+                                                <option value="" disabled selected>سفارشی موجود نیست!</option>
+                                            @endif
+                                        </select>
+                                        <span id="factor_link">
+                                            <a href="/panel/invoices/{{ $inventoryReport->invoice ? $inventoryReport->invoice_id : '' }}" class="btn-link" target="_blank">نمایش سفارش</a>
+                                        </span>
+                                        @error('invoice_id')
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
                                     </div>
-                                    <div id="other_products" class="d-none">
-                                        <div>
-                                            <strong><i class="fa fa-circle"></i></strong>
-                                            <strong>توجه!</strong> محصولات دیگر در سفارش باید بصورت دستی وارد شوند
-                                            <ul id="items">
-                                            </ul>
+                                    <div class="col-xl-3 col-lg-3 col-md-8 col-sm-12">
+                                        <label class="form-label" for="guarantee_serial">سریال گارانتی</label>
+                                        <div class="input-group mb-2" style="direction: ltr">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">PT</div>
+                                            </div>
+                                            <input type="text" name="guarantee_serial" id="guarantee_serial" class="form-control"
+                                                   value="{{ $inventoryReport->guarantee ? substr($inventoryReport->guarantee->serial, 2) : null }}"
+                                                   maxlength="8">
+                                        </div>
+                                        <div id="serial_status"></div>
+
+                                        @error('guarantee_serial')
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-4"></div>
+                                    <div class="col-xl-3 col-lg-3 col-md-8 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="form-label" for="person"> تحویل گیرنده <span class="text-danger">*</span></label>
+                                            <input type="text" name="person" class="form-control" id="person" value="{{ $inventoryReport->person }}">
+                                            @error('person')
+                                                <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-8 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="form-label" for="output_date"> تاریخ خروج <span class="text-danger">*</span></label>
+                                            <input type="text" name="output_date" class="form-control date-picker-shamsi-list"
+                                                   id="output_date" value="{{ old('output_date') ?? verta()->format('Y/m/d') }}">
+                                            @error('output_date')
+                                                <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-4"></div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                                        <div class="table-responsive mt-3">
+                                            <table class="table table-bordered table-striped text-center" id="properties_table">
+                                                <thead>
+                                                <tr>
+                                                    <th>کالا</th>
+                                                    <th>تعداد</th>
+                                                    <th>حذف</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($inventoryReport->in_outs as $item)
+                                                    <tr>
+                                                        <td>
+                                                            <select class="form-control" name="inventory_id[]" data-toggle="select2">
+                                                                @foreach(\App\Models\Inventory::where('warehouse_id', $warehouse_id)->get(['id','title','type']) as $inventory)
+                                                                    <option value="{{ $inventory->id }}" {{ $inventory->id == $item->inventory_id ? 'selected' : '' }}>{{ \App\Models\Inventory::TYPE[$inventory->type].' - '.$inventory->title }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" name="counts[]" class="form-control" min="1"
+                                                                   value="{{ $item->count }}" required>
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-danger btn-floating btn_remove" type="button"><i
+                                                                    class="fa fa-trash"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                            <div class="alert alert-warning d-none" id="alert_section">
+                                                <div>
+                                                    <div id="miss_products" class="d-none">
+                                                        <div>
+                                                            <strong><i class="fa fa-circle"></i></strong>
+                                                            <strong>توجه!</strong> برخی کالاهای سفارش در انبار تعریف نشده اند
+                                                        </div>
+                                                        <small>ابتدا آنها را در انبار تعریف کنید</small>
+                                                        <br>
+                                                        <small>
+                                                            <span>کد کالاها:</span>
+                                                            <span id="codes"></span>
+                                                        </small>
+                                                    </div>
+                                                    <div id="other_products" class="d-none">
+                                                        <div>
+                                                            <strong><i class="fa fa-circle"></i></strong>
+                                                            <strong>توجه!</strong> محصولات دیگر در سفارش باید بصورت دستی وارد شوند
+                                                            <ul id="items">
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            @error('inventory_count')
+                                            <div class="alert alert-danger">
+                                                <p><strong>توجه!</strong> موجودی کالا در انبار جهت خروج کافی نمی باشد: </p>
+                                                <ul>
+                                                    @foreach(session('error_data') as $item)
+                                                        <li>{{ $item }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-12"></div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="form-label" for="description">توضیحات</label>
+                                            <textarea name="description" class="form-control" id="description"
+                                                      rows="5">{{ $inventoryReport->description }}</textarea>
                                         </div>
                                     </div>
                                 </div>
-
-                            </div>
-                            @error('inventory_count')
-                            <div class="alert alert-danger">
-                                <p><strong>توجه!</strong> موجودی کالا در انبار جهت خروج کافی نمی باشد: </p>
-                                <ul>
-                                    @foreach(session('error_data') as $item)
-                                        <li>{{ $item }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-12"></div>
-                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                        <div class="form-group">
-                            <label for="description">توضیحات</label>
-                            <textarea name="description" class="form-control" id="description"
-                                      rows="5">{{ $inventoryReport->description }}</textarea>
+                                <button class="btn btn-primary mt-2" type="submit" id="btn_submit">ثبت فرم</button>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-primary" type="submit" id="btn_submit">ثبت فرم</button>
-            </form>
+            </div>
         </div>
     </div>
 @endsection
-
 @section('scripts')
+    <script src="/vendors/datepicker-jalali/bootstrap-datepicker.min.js"></script>
+    <script src="/vendors/datepicker-jalali/bootstrap-datepicker.fa.min.js"></script>
+    <script src="/vendors/datepicker/daterangepicker.js"></script>
+    <script src="/assets/js/examples/datepicker.js"></script>
     <script>
         var inventory_report_id = {{ $inventoryReport->id }};
         var inventory = [];
@@ -202,14 +224,14 @@
                 $('#properties_table tbody').append(`
                 <tr>
                     <td>
-                        <select class="js-example-basic-single select2-hidden-accessible" name="inventory_id[]">${options_html}</select>
+                        <select class="form-control" name="inventory_id[]" data-toggle="select2">${options_html}</select>
                     </td>
                     <td><input type="number" name="counts[]" class="form-control" min="1" value="1" required></td>
                     <td><button class="btn btn-danger btn-floating btn_remove" type="button"><i class="fa fa-trash"></i></button></td>
                 </tr>
             `);
 
-                $('.js-example-basic-single').select2()
+                $('[data-toggle="select2"]').select2();
             })
             // end add property
 
@@ -266,7 +288,7 @@
                                 $('#properties_table tbody').append(`
                                     <tr>
                                         <td>
-                                            <select class="js-example-basic-single select2-hidden-accessible" name="inventory_id[]">${options_html2}</select>
+                                            <select class="form-control" name="inventory_id[]" data-toggle="select2">${options_html2}</select>
                                         </td>
                                         <td><input type="number" name="counts[]" class="form-control" min="1" value="${product.pivot.count}" required></td>
                                         <td><button class="btn btn-danger btn-floating btn_remove" type="button"><i class="fa fa-trash"></i></button></td>
@@ -274,7 +296,7 @@
                                 `)
                             })
 
-                            $('.js-example-basic-single').select2()
+                            $('[data-toggle="select2"]').select2();
                         }
                     })
                 }
@@ -320,4 +342,5 @@
         })
     </script>
 @endsection
+
 

@@ -1,8 +1,8 @@
-@extends('panel.layouts-copy.master')
+@extends('panel.layouts.master')
 @section('title', 'چاپ خروج انبار')
 @php
-    $sidebar = false;
-    $header = false;
+    $left_sidebar = false;
+    $topbar = false;
 
     $sum_total_price = 0;
     $sum_discount_amount = 0;
@@ -94,7 +94,7 @@
 
         #seller_sign_sec .stamp {
             position: absolute;
-            top: 25px;
+            top: -5px;
             left: 43%;
             width: 13rem;
         }
@@ -104,7 +104,28 @@
             font-size: 15px;
         }
 
+        .content-page {
+            margin-right: 0 !important;
+            overflow: unset !important;
+            padding: 0 !important;
+            min-height: 0 !important;
+        }
 
+        *{
+            color: #000 !important;
+        }
+
+        .btn, .fa {
+            color: #fff !important
+        }
+
+        .table:not(.table-bordered) td {
+            line-height: 1;
+        }
+
+        .content-page {
+            height: 100% !important
+        }
     </style>
 
 @endsection
@@ -114,10 +135,10 @@
             <div class="card-title">
                 <div class="row">
                     <div class="col-4">
-                        <img src="/assets/media/image/header-logo.png" style="width: 15rem;">
+                        <img src="/assets/images/header-logo.png" style="width: 15rem;">
                     </div>
                     <div class="col-3 text-right text-center" id="person_sec">
-                        <h3>شرکت صنایع ماشین های اداری ماندگار پارس</h3>
+                        <h3>بازرگانی پرسو تجارت ایرانیان</h3>
                         <small>مجوز خروج انبار (فروش)</small>
                         <br>
                         <small>تحویل گیرنده: {{ $inventoryReport->person }}</small>
@@ -166,7 +187,7 @@
                         </div>
                         <div id="seller_sign_sec">
                             <img src="{{ auth()->user()->sign_image ?? '' }}" class="sign">
-                            <img src="{{ asset('/assets/media/image/stamp.png') }}" class="stamp">
+                            <img src="{{ asset('/assets/images/stamp.png') }}" class="stamp">
                             <small>مهر و امضای انباردار</small>
                         </div>
                     </div>
@@ -174,8 +195,8 @@
             </form>
         </div>
         <div class="pb-2 d-flex justify-content-between px-3" id="print_sec">
-            <a href="{{ url()->previous() }}" class="btn btn-primary"><i class="fa fa-chevron-right mr-2"></i>برگشت</a>
-            <button class="btn btn-info" id="btn_print"><i class="fa fa-print mr-2"></i>چاپ</button>
+            <a href="{{ url()->previous() }}" class="btn btn-primary"><i class="fa fa-chevron-right me-2"></i>برگشت</a>
+            <button class="btn btn-info" id="btn_print"><i class="fa fa-print me-2"></i>چاپ</button>
         </div>
     </div>
 @endsection

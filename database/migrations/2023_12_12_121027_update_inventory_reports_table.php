@@ -14,7 +14,7 @@ class UpdateInventoryReportsTable extends Migration
     public function up()
     {
         Schema::table('inventory_reports', function (Blueprint $table) {
-            $table->timestamp('date')->comment('تاریخ ورود/خروج')->after('description');
+            $table->timestamp('date')->useCurrentOnUpdate()->comment('تاریخ ورود/خروج')->after('description');
         });
     }
 
