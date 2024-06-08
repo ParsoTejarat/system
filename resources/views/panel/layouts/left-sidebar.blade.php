@@ -309,22 +309,25 @@
 
                 {{-- Tickets & Supports --}}
                 @canany(['tickets-list','sms-histories'])
-                    <li>
+                    @php $active_side = active_sidebar(['tickets','tickets/create','tickets/{ticket}/edit','search/tickets','sms-histories','sms-histories/{sms_history}']); @endphp
+                    <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#tickets" data-bs-toggle="collapse" aria-expanded="false" aria-controls="tickets">
                             <i class="ri-message-2-line"></i>
                             <span> پشتیبانی و تیکت </span>
                             <span class="menu-arrow"></span>
                         </a>
-                        <div class="collapse" id="tickets">
+                        <div class="collapse {{ $active_side ? 'show' : '' }}" id="tickets">
                             <ul class="nav-second-level">
                                 @can('tickets-list')
-                                    <li>
-                                        <a href="{{ route('tickets.index') }}">تیکت ها</a>
+                                    @php $active_item = active_sidebar(['tickets','tickets/create','tickets/{ticket}/edit','search/tickets']); @endphp
+                                    <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                        <a href="{{ route('tickets.index') }}" {{ $active_item ? 'active' : '' }}>تیکت ها</a>
                                     </li>
                                 @endcan
                                 @can('sms-histories')
-                                    <li>
-                                        <a href="{{ route('sms-histories.index') }}">پیام های ارسال شده</a>
+                                    @php $active_item = active_sidebar(['sms-histories','sms-histories/{sms_history}']); @endphp
+                                    <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                        <a href="{{ route('sms-histories.index') }}" {{ $active_item ? 'active' : '' }}>پیام های ارسال شده</a>
                                     </li>
                                 @endcan
                             </ul>

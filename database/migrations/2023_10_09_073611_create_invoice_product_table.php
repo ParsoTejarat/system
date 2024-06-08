@@ -18,6 +18,7 @@ class CreateInvoiceProductTable extends Migration
             $table->unsignedBigInteger('invoice_id');
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('count');
+            $table->string('color');
             $table->enum('unit', ['number'])->default('number');
             $table->unsignedBigInteger('price');
             $table->unsignedBigInteger('total_price');

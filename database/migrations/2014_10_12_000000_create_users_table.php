@@ -20,6 +20,8 @@ class CreateUsersTable extends Migration
             $table->string('phone')->unique();
             $table->unsignedBigInteger('role_id');
             $table->string('password');
+            $table->string('sign_image')->nullable();
+            $table->string('fcm_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
 

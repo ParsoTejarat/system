@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fa" data-topbar-color="brand">
+<html lang="en" data-topbar-color="brand">
     <head>
         <meta charset="utf-8" />
-        <title>پیدا نشد! | 404</title>
+        <title>خطای سرور! | 500</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
@@ -32,13 +32,26 @@
 
                             <div class="card-body p-4">
 
-                                <div class="error-ghost text-center">
-                                    <img src="/assets/images/error.svg" width="200" alt="error-image"/>
+                                <div class="text-center w-75 m-auto">
+                                    <div class="auth-logo">
+                                        <a href="/" class="logo logo-dark text-center">
+                                            <span class="logo-lg">
+                                                <img src="/assets/images/logo-dark.png" alt="" height="22">
+                                            </span>
+                                        </a>
+
+                                        <a href="index.html" class="logo logo-light text-center">
+                                            <span class="logo-lg">
+                                                <img src="/assets/images/logo-light.png" alt="" height="22">
+                                            </span>
+                                        </a>
+                                    </div>
                                 </div>
 
-                                <div class="text-center">
-                                    <h3 class="mt-4 text-uppercase fw-bold">صفحه مورد نظر پیدا نشد </h3>
-                                    <a class="btn btn-primary mt-3" href="/"><i class="mdi mdi-reply me-1"></i> برگشت به خانه</a>
+                                <div class="text-center mt-4">
+                                    <h1 class="text-error">500</h1>
+                                    <h3 class="mt-3 mb-2">خطای داخلی سرور</h3>
+                                    <a href="/" class="btn btn-success waves-effect waves-light">برگشت به خانه</a>
                                 </div>
 
                             </div> <!-- end card-body -->
@@ -49,12 +62,11 @@
                 </div>
                 <!-- end row -->
             </div>
-            <!-- end container -->
         </div>
-        <!-- end page -->
+
 
 {{--        <footer class="footer footer-alt">--}}
-{{--            <script>document.write(new Date().getFullYear())</script> &copy; Minton theme by <a href="">Coderthemes</a>--}}
+{{--            <script>document.write(new Date().getFullYear())</script> &copy; Minton theme by <a href="">Coderthemes</a> --}}
 {{--        </footer>--}}
 
         <!-- Vendor js -->

@@ -36,11 +36,6 @@ class PermissionSeeder extends Seeder
             'products-edit' => 'ویرایش محصول',
             'products-delete' => 'حذف محصول',
 
-            'printers-list' => 'لیست پرینتر ها',
-            'printers-create' => 'ایجاد پرینتر',
-            'printers-edit' => 'ویرایش پرینتر',
-            'printers-delete' => 'حذف پرینتر',
-
             'invoices-list' => 'لیست سفارشات فروش',
             'invoices-create' => 'ایجاد سفارش فروش',
             'invoices-edit' => 'ویرایش سفارش فروش',
@@ -115,32 +110,16 @@ class PermissionSeeder extends Seeder
             'output-reports-delete' => 'انبار - حذف خروجی',
 //         end inventory
 
-            'foreign-customers-list' => 'لیست مشتریان خارجی',
-            'foreign-customers-create' => 'ثبت مشتری خارجی',
-            'foreign-customers-edit' => 'ویرایش مشتری خارجی',
-            'foreign-customers-delete' => 'حذف مشتری خارجی',
-
             'tickets-list' => 'لیست تیکت ها',
             'tickets-create' => 'ثبت تیکت',
             'tickets-delete' => 'حذف تیکت',
 
             'sms-histories' => 'پیام های ارسال شده',
-            'exit-door' => 'درب خروج',
-
-            'bot-manager' => 'مدیریت ربات تلگرام',
 
             'reports-list' => 'لیست گزارشات روزانه',
             'reports-create' => 'ثبت گزارش',
             'reports-edit' => 'ویرایش گزارش',
             'reports-delete' => 'حذف گزارش',
-
-            'artin-products-list' => 'لیست محصولات آرتین',
-            'artin-products-edit' => 'ویرایش محصول آرتین',
-
-            'software-updates-list' => 'لیست تغییرات نرم افزار',
-            'software-updates-create' => 'ثبت تغییرات نرم افزار',
-            'software-updates-edit' => 'ویرایش تغییرات نرم افزار',
-            'software-updates-delete' => 'حذف تغییرات نرم افزار',
 
             'guarantees-list' => 'لیست گارانتی ها',
             'guarantees-create' => 'ثبت گارانتی',
@@ -148,7 +127,6 @@ class PermissionSeeder extends Seeder
             'guarantees-delete' => 'حذف گارانتی',
 
             'sales-manager' => 'مدیر فروش',
-            'unofficial-sales' => 'فروش غیر رسمی',
 
             'price-requests-list' => 'لیست درخواست قیمت',
             'price-requests-create' => 'ثبت درخواست قیمت',
@@ -158,8 +136,6 @@ class PermissionSeeder extends Seeder
             'buy-orders-create' => 'ثبت سفارش خرید',
             'buy-orders-edit' => 'ویرایش سفارش خرید',
             'buy-orders-delete' => 'حذف سفارش خرید',
-
-            'delivery-day' => 'انتخاب روزهای تحویل سفارش',
         ];
 
         foreach ($items as $key => $item)

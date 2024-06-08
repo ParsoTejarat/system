@@ -1,23 +1,26 @@
-@php
-    $file = json_decode($message->file);
-@endphp
-@if(in_array($file->type, ['jpg','jpeg','png','webp','svg','gif']))
-    <ul>
-        <li>
-            <a href="{{ $file->path }}">
-                <img src="{{ $file->path }}" alt="image">
-                <span>{{ $file->name }}</span>
-            </a>
-        </li>
-    </ul>
-@else
-    <div class="m-b-0 text-muted text-left media-file">
-        <a href="{{ $file->path }}" class="btn btn-outline-light text-left align-items-center justify-content-center" download="{{ $file->path }}">
-            <i class="fa fa-download font-size-18 m-r-10"></i>
-            <div class="small">
-                <div class="mb-2">{{ $file->name }}</div>
-                <div class="font-size-13" dir="ltr">{{ formatBytes($file->size) }}</div>
+
+<div class="card mt-2 mb-1 shadow-none border text-start" style="width: fit-content">
+    <div class="p-2">
+        <div class="row align-items-center">
+            <div class="col-auto">
+                <div class="avatar-sm">
+                <span class="avatar-title bg-primary rounded">
+                    {{ $file->type }}
+                </span>
+                </div>
             </div>
-        </a>
+            <div class="col ps-0" dir="ltr">
+                <a href="javascript:void(0);" class="text-muted fw-medium">{{ $file->name }}</a>
+                <p class="mb-0">{{ formatBytes($file->size) }}</p>
+            </div>
+            <div class="col-auto">
+                <!-- Button -->
+                <a href="{{ $file->path }}" download="{{ $file->path }}"
+                   class="btn btn-link btn-lg text-muted">
+                    <i class="ri-download-fill"></i>
+                </a>
+            </div>
+        </div>
     </div>
-@endif
+</div>
+

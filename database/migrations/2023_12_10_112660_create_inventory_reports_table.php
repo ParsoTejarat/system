@@ -19,11 +19,14 @@ class CreateInventoryReportsTable extends Migration
             $table->enum('type', ['input','output']);
             $table->string('person')->comment('طرف حساب');
             $table->unsignedBigInteger('invoice_id')->nullable();
+            $table->unsignedBigInteger('guarantee_id')->nullable();
             $table->longText('description')->nullable();
+            $table->timestamp('date')->useCurrentOnUpdate()->comment('تاریخ ورود/خروج');
             $table->timestamps();
 
             $table->foreign('warehouse_id')->references('id')->on('warehouses');
             $table->foreign('invoice_id')->references('id')->on('invoices');
+            $table->foreign('guarantee_id')->references('id')->on('guarantees')->onDelete(null);
         });
     }
 

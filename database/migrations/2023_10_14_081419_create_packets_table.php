@@ -16,6 +16,7 @@ class CreatePacketsTable extends Migration
         Schema::create('packets', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('invoice_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('receiver');
             $table->text('address');
             $table->string('send_tracking_code')->unique()->nullable()->comment('کد رهگیری ارسالی');
@@ -30,6 +31,7 @@ class CreatePacketsTable extends Migration
             $table->timestamps();
 
             $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
