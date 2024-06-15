@@ -26,6 +26,7 @@ class StoreProductRequest extends FormRequest
         return [
             'title' => 'required',
             'code' => 'required|unique:products,code',
+            'sku' => 'required|unique:products,sku',
             'category' => 'required',
             'system_price' => 'required',
             'partner_price_tehran' => 'required',

@@ -26,6 +26,7 @@ class UpdateProductRequest extends FormRequest
         return [
             'title' => 'required',
             'code' => 'required|unique:products,code,'.$this->product->id,
+            'sku' => 'required|unique:products,sku,'.$this->product->id,
             'category' => 'required',
             'system_price' => 'required',
             'partner_price_tehran' => 'required',

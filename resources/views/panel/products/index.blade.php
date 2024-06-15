@@ -56,6 +56,7 @@
                                         <th>#</th>
                                         <th>عنوان محصول</th>
                                         <th>کد محصول</th>
+                                        <th>کد حسابداری</th>
                                         <th>دسته بندی</th>
                                         <th>قیمت تک فروشی</th>
                                         <th>تاریخ ایجاد</th>
@@ -72,6 +73,7 @@
                                         <tr>
                                             <td>{{ ++$key }}</td>
                                             <td>{{ $product->title }}</td>
+                                            <td>{{ $product->sku }}</td>
                                             <td>{{ $product->code }}</td>
                                             <td>{{ $product->category->name }}</td>
                                             <td>{{ number_format($product->single_price / 10) }} تومان </td>

@@ -136,6 +136,8 @@ class PermissionSeeder extends Seeder
             'buy-orders-create' => 'ثبت سفارش خرید',
             'buy-orders-edit' => 'ویرایش سفارش خرید',
             'buy-orders-delete' => 'حذف سفارش خرید',
+
+            'parso-products' => 'محصولات سایت پرسو تجارت'
         ];
 
         foreach ($items as $key => $item)

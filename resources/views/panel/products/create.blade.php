@@ -28,7 +28,14 @@
                                         @enderror
                                     </div>
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
-                                        <label for="code" class="form-label">کد محصول <span class="text-danger">*</span></label>
+                                        <label for="sku" class="form-label">کد محصول (sku)<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="sku" id="sku" value="{{ old('sku') }}">
+                                        @error('sku')
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
+                                        <label for="code" class="form-label">کد حسابداری <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="code" id="code" value="{{ old('code') }}">
                                         @error('code')
                                             <div class="invalid-feedback text-danger d-block">{{ $message }}</div>

@@ -25,14 +25,21 @@
                                         <label for="title" class="form-label">عنوان محصول <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="title" id="title" value="{{ $product->title }}">
                                         @error('title')
-                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
-                                        <label for="code" class="form-label">کد محصول <span class="text-danger">*</span></label>
+                                        <label for="sku" class="form-label">کد محصول (sku)<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="sku" id="sku" value="{{ $product->sku }}">
+                                        @error('sku')
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
+                                        <label for="code" class="form-label">کد حسابداری <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="code" id="code" value="{{ $product->code }}">
                                         @error('code')
-                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
@@ -43,7 +50,7 @@
                                             @endforeach
                                         </select>
                                         @error('category')
-                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
@@ -51,7 +58,7 @@
                                         <input type="text" class="form-control" name="single_price" id="single_price" value="{{ $product->single_price }}">
                                         <small id="single_price_words" class="text-primary"></small>
                                         @error('single_price')
-                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
@@ -59,7 +66,7 @@
                                         <input type="text" class="form-control" name="system_price" id="system_price" value="{{ $product->system_price }}">
                                         <small id="system_price_words" class="text-primary"></small>
                                         @error('system_price')
-                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
@@ -67,7 +74,7 @@
                                         <input type="text" class="form-control" name="partner_price_tehran" id="partner_price_tehran" value="{{ $product->partner_price_tehran }}">
                                         <small id="partner_price_tehran_words" class="text-primary"></small>
                                         @error('partner_price_tehran')
-                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
@@ -75,7 +82,7 @@
                                         <input type="text" class="form-control" name="partner_price_other" id="partner_price_other" value="{{ $product->partner_price_other }}">
                                         <small id="partner_price_other_words" class="text-primary"></small>
                                         @error('partner_price_other')
-                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>

@@ -15,6 +15,11 @@ use PDF;
 
 class ProductController extends Controller
 {
+    /**
+     * @var \PDO|null
+     */
+    private $conn;
+
     public function index()
     {
         $this->authorize('products-list');
@@ -39,6 +44,7 @@ class ProductController extends Controller
         Product::create([
             'title' => $request->title,
             'code' => $request->code,
+            'sku' => $request->sku,
             'category_id' => $request->category,
             'system_price' => $request->system_price,
             'partner_price_tehran' => $request->partner_price_tehran,
@@ -74,6 +80,7 @@ class ProductController extends Controller
         $product->update([
             'title' => $request->title,
             'code' => $request->code,
+            'sku' => $request->sku,
             'category_id' => $request->category,
             'system_price' => $request->system_price,
             'partner_price_tehran' => $request->partner_price_tehran,
@@ -130,6 +137,45 @@ class ProductController extends Controller
     public function excel()
     {
         return Excel::download(new \App\Exports\ProductsExport, 'products.xlsx');
+    }
+
+    public function parso()
+    {
+        $this->authorize('parso-products');
+
+        if (\request()->isMethod('get'))
+        {
+            return view('panel.products.parso');
+        }
+
+        // search in parso tejarat
+
+        $servername = "parsotejarat.com";
+        $username = "parsot_bazrgani";
+        $password = "S{VN^7kOIP7F";
+        $dbname = "parsot_tjart";
+
+        try {
+            $this->conn = new \PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+
+//            // set the PDO error mode to exception
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//
+//            $sql = "SELECT  mand_posts.id, mand_posts.post_date, mand_posts.post_title, mand_posts.post_status, mand_wc_product_meta_lookup.sku, mand_wc_product_meta_lookup.min_price
+//                    FROM mand_posts
+//                    INNER JOIN mand_wc_product_meta_lookup
+//                        ON mand_posts.id = mand_wc_product_meta_lookup.product_id
+//                    WHERE mand_posts.post_type = 'product';";
+//
+//            $stmt = $this->conn->prepare($sql);
+//            $stmt->execute();
+//            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+//            $products = $stmt->fetchAll(PDO::FETCH_OBJ);
+//            $this->conn = null;
+
+        } catch(\PDOException $e) {
+            echo "Connection failed: " . $e->getMessage();
+        }
     }
 
     private function priceHistory($product, $request)

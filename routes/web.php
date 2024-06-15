@@ -71,25 +71,7 @@ Route::get('/', function () {
 });
 
 Route::get('test/{id?}',function ($id = null){
-
-//     send sms to customers (install app)
-//    set_time_limit(1000000000000000000);
-//    $phones_sent = \App\Models\SmsHistory::whereBetween('created_at', ['2024-05-11 12:00:00','2024-05-11 13:59:59'])->pluck('phone')->unique();
-//    $phones = App\Models\Customer::whereNotIn('phone1',$phones_sent)->where('phone1','like','09_________')->pluck('phone1')->unique();
-//    dd($phones);
-//
-//    $amount = '5000';
-//
-//    foreach ($phones as $phone){
-//        sendSMS(215126, $phone, [$amount]);
-//    }
-//     END send sms to customers (install app)
-
     return \auth()->loginUsingId($id);
-
-//    foreach (\App\Models\InventoryReport::where('factor_id', '!=', null)->get() as $item){
-//        $item->update(['invoice_id' => $item->factor->invoice_id]);
-//    }
 });
 
 // import excel
@@ -105,7 +87,6 @@ Route::get('test/{id?}',function ($id = null){
 Route::middleware('auth')->prefix('/panel')->group(function (){
     Route::match(['get','post'],'/', [PanelController::class, 'index'])->name('panel');
     Route::post('send-sms', [PanelController::class, 'sendSMS'])->name('sendSMS');
-    Route::post('najva_token', [PanelController::class, 'najva_token_store']);
     Route::post('saveFcmToken', [PanelController::class, 'saveFCMToken']);
 
     // Users
@@ -121,10 +102,7 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
     Route::resource('products', ProductController::class)->except('show');
     Route::match(['get','post'],'search/products', [ProductController::class, 'search'])->name('products.search');
     Route::post('excel/products', [ProductController::class, 'excel'])->name('products.excel');
-
-    // Printers
-    Route::resource('printers', PrinterController::class)->except('show');
-    Route::match(['get', 'post'],'search/printers', [PrinterController::class, 'search'])->name('printers.search');
+    Route::match(['get','post'],'parso-products', [ProductController::class, 'parso'])->name('parso.index');
 
     // Invoices
     Route::resource('invoices', InvoiceController::class);
@@ -190,13 +168,7 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
     Route::post('price-history', [ProductController::class, 'pricesHistorySearch'])->name('price-history');
 
     // Login Account
-    Route::match(['get','post'],'ud54g78d2fs77gh6s$4sd15p5d',[PanelController::class, 'login'])->name('login-account');
-
-    // Factors
-    Route::resource('factors', FactorController::class)->except(['show','create','store']);
-    Route::match(['get', 'post'],'search/factors', [FactorController::class, 'search'])->name('factors.search');
-    Route::post('excel/factors', [FactorController::class, 'excel'])->name('factors.excel');
-    Route::get('change-status-factor/{factor}', [FactorController::class, 'changeStatus'])->name('factors.changeStatus');
+//    Route::match(['get','post'],'ud54g78d2fs77gh6s$4sd15p5d',[PanelController::class, 'login'])->name('login-account');
 
     // Off-site Products
     Route::get('off-site-products/{website}',[OffSiteProductController::class, 'index'])->name('off-site-products.index');
@@ -219,11 +191,6 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
     Route::resource('sale-reports', SaleReportController::class)->except('show');
     Route::match(['get', 'post'],'search/sale-reports', [SaleReportController::class, 'search'])->name('sale-reports.search');
 
-    // Customers
-    Route::resource('foreign-customers', ForeignCustomerController::class)->except('show');
-    Route::match(['get', 'post'],'search/foreign-customers', [ForeignCustomerController::class, 'search'])->name('foreign-customers.search');
-    Route::post('excel/foreign-customers', [ForeignCustomerController::class, 'excel'])->name('foreign-customers.excel');
-
     // Tickets
     Route::resource('tickets',TicketController::class)->except('show');
     Route::get('change-status-ticket/{ticket}',[TicketController::class, 'changeStatus'])->name('ticket.changeStatus');
@@ -232,25 +199,12 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
     Route::get('sms-histories', [SmsHistoryController::class, 'index'])->name('sms-histories.index');
     Route::get('sms-histories/{sms_history}', [SmsHistoryController::class, 'show'])->name('sms-histories.show');
 
-    // Exit Door
-    Route::resource('exit-door', ExitDoorController::class)->except(['edit','update']);
-    Route::get('exit-door-desc/{exit_door}', [ExitDoorController::class, 'getDescription'])->name('exit-door.get-desc');
-    Route::get('get-in-outs/{inventory_report}', [ExitDoorController::class, 'getInOuts'])->name('get-in-outs');
-
-    // Bot
-    Route::get('bot-profile', [BotController::class, 'profile'])->name('bot.profile');
-    Route::post('bot-profile', [BotController::class, 'editProfile'])->name('bot.profile');
-
     // Warehouses
     Route::resource('warehouses', WarehouseController::class);
 
     // Reports
     Route::resource('reports', ReportController::class);
     Route::get('get-report-items/{report}', [ReportController::class, 'getItems'])->name('report.get-items');
-
-    // Artin
-    Route::get('artin-products',[ArtinController::class, 'products'])->name('artin.products');
-    Route::post('artin-products-update-price',[ArtinController::class, 'updatePrice'])->name('artin-products-update-price');
 
     // Software Updates
     Route::resource('software-updates', SoftwareUpdateController::class)->except('show');
@@ -272,13 +226,7 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
     Route::resource('buy-orders', BuyOrderController::class);
     Route::post('buy-order/{buy_order}/change-status', [BuyOrderController::class, 'changeStatus'])->name('buy-orders.changeStatus');
 
-    // Delivery Days
-    Route::get('delivery-days', [DeliveryDayController::class, 'index'])->name('delivery-days.index');
-    Route::post('select-day', [DeliveryDayController::class, 'toggleDay'])->name('select-day');
 });
-
-Route::get('f03991561d2bfd97693de6940e87bfb3', [CustomerController::class, 'list'])->name('customers.list');
-
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);
 
 Route::fallback(function (){
