@@ -10,6 +10,7 @@ use App\Http\Controllers\Panel\CustomerController;
 use App\Http\Controllers\Panel\DeliveryDayController;
 use App\Http\Controllers\Panel\ExitDoorController;
 use App\Http\Controllers\Panel\FactorController;
+use App\Http\Controllers\Panel\FileManagerController;
 use App\Http\Controllers\Panel\ForeignCustomerController;
 use App\Http\Controllers\Panel\GuaranteeController;
 use App\Http\Controllers\Panel\InputController;
@@ -226,6 +227,11 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
     Route::resource('buy-orders', BuyOrderController::class);
     Route::post('buy-order/{buy_order}/change-status', [BuyOrderController::class, 'changeStatus'])->name('buy-orders.changeStatus');
 
+    // File Manager
+    Route::get('file-manager', [FileManagerController::class, 'index'])->name('file-manager.index');
+    Route::post('upload-file', [FileManagerController::class, 'uploadFile'])->name('file-manager.upload');
+    Route::post('create-folder', [FileManagerController::class, 'createFolder'])->name('file-manager.create-folder');
+    Route::post('file-manager-delete', [FileManagerController::class, 'delete'])->name('file-manager.delete');
 });
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);
 

@@ -117,6 +117,11 @@ class User extends Authenticatable
         return $this->hasMany(Leave::class);
     }
 
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
+
     public function leavesCount()
     {
         $this->leavesUpdate();
@@ -128,16 +133,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(Report::class);
     }
-
-    public function price_requests()
-    {
-        return $this->hasMany(PriceRequest::class);
-    }
-
-    public function buy_orders()
-    {
-        return $this->hasMany(BuyOrder::class);
-    }
+//
+//    public function price_requests()
+//    {
+//        return $this->hasMany(PriceRequest::class);
+//    }
+//
+//    public function buy_orders()
+//    {
+//        return $this->hasMany(BuyOrder::class);
+//    }
 
     private function leavesUpdate()
     {
