@@ -72,6 +72,85 @@ class FileManagerController extends Controller
         }
     }
 
+    public function delete(Request $request)
+    {
+        if ($files = File::whereIn('id', $request->checked_files)->where('is_folder', 0)->get()) {
+            foreach ($files as $file) {
+                unlink(public_path($file->path));
+            }
+        }
+        File::whereIn('id', $request->checked_files)->delete();
+
+        return back();
+    }
+
+    public function getFileName(Request $request)
+    {
+        $file = File::where('id', $request->file_id)->first();
+
+        if ($file->is_folder) {
+            $file_name = $file->name;
+            $file_type = null;
+        } else {
+            $file_name = pathinfo($file->name)['filename'];
+            $file_type = pathinfo($file->name)['extension'];
+        }
+
+        return response()->json(['name' => $file_name, 'type' => $file_type]);
+    }
+
+    public function editFileName(Request $request)
+    {
+        $file = File::where('id', $request->file_id)->first();
+
+        if ($file->is_folder) {
+            if (File::where('id','!=', $file->id)->where(['name' => $request->new_name, 'parent_id' => $request->sub_folder_id, 'is_folder' => 1])->first()) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'نام انتخابی موجود است'
+                ]);
+            }
+
+            File::where('id', $request->file_id)->update(['name' => $request->new_name]);
+        } else {
+            $new_name = $request->new_name.'.'.$request->file_type;
+
+            if (File::where('id','!=', $file->id)->where(['name' => $new_name, 'parent_id' => $request->sub_folder_id, 'type' => $request->file_type,'is_folder' => 0])->first()) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'نام انتخابی موجود است'
+                ]);
+            }
+
+            File::where('id', $request->file_id)->update(['name' => $new_name]);
+        }
+
+        return back();
+    }
+
+    public function moving(Request $request)
+    {
+        $files_id = $request->checked_files;
+        session()->put('moving', true);
+        session()->put('files_id', $files_id);
+    }
+
+    public function cancelMoving()
+    {
+        session()->forget(['moving','files_id']);
+    }
+
+    public function moveFiles(Request $request)
+    {
+        $files_id = session()->get('files_id');
+
+        File::whereIn('id', $files_id)->update(['parent_id' => $request->sub_folder_id]);
+
+        session()->forget(['moving','files_id']);
+
+        return back();
+    }
+
     private function createFile($file, $sub_folder_id)
     {
         File::create([
@@ -85,15 +164,4 @@ class FileManagerController extends Controller
         ]);
     }
 
-    public function delete(Request $request)
-    {
-        if ($files = File::whereIn('id', $request->checked_files)->where('is_folder', 0)->get()) {
-            foreach ($files as $file) {
-                unlink(public_path($file->path));
-            }
-        }
-        File::whereIn('id', $request->checked_files)->delete();
-
-        return back();
-    }
 }

@@ -232,6 +232,11 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
     Route::post('upload-file', [FileManagerController::class, 'uploadFile'])->name('file-manager.upload');
     Route::post('create-folder', [FileManagerController::class, 'createFolder'])->name('file-manager.create-folder');
     Route::post('file-manager-delete', [FileManagerController::class, 'delete'])->name('file-manager.delete');
+    Route::get('get-file-name', [FileManagerController::class, 'getFileName'])->name('file-manager.getFileName');
+    Route::post('edit-file-name', [FileManagerController::class, 'editFileName'])->name('file-manager.edit');
+    Route::post('moving', [FileManagerController::class, 'moving'])->name('file-manager.moving');
+    Route::post('cancel-moving', [FileManagerController::class, 'cancelMoving'])->name('file-manager.cancelMoving');
+    Route::post('move-files', [FileManagerController::class, 'moveFiles'])->name('file-manager.moveFiles');
 });
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);
 

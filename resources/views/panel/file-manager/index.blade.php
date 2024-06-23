@@ -97,6 +97,48 @@
     </div>
     {{--  end Delete Modal  --}}
 
+    {{--  Edit Name Modal  --}}
+    <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="EditNameModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ویرایش عنوان</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+                </div>
+                <div class="modal-body text-center text-danger">
+                    <input type="text" name="file_name" id="file_name" class="form-control" placeholder="عنوان جدید">
+                    <input type="hidden" name="file_type" id="file_type">
+                    <span class="text-center text-danger" id="file_edit_error"></span>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btn_edit_name">ویرایش</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{--  end Edit Name Modal  --}}
+
+    {{--  Move Modal  --}}
+    <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="MoveModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">انتقال فایل</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+                </div>
+                <div class="modal-body text-center text-danger">
+{{--                    <input type="text" name="file_name" id="file_name" class="form-control" placeholder="عنوان جدید">--}}
+{{--                    <input type="hidden" name="file_type" id="file_type">--}}
+{{--                    <span class="text-center text-danger" id="file_edit_error"></span>--}}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btn_move">انتقال</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{--  end Move Modal  --}}
+
     <div class="content">
         <div class="container-fluid">
             <!-- start page title -->
@@ -113,22 +155,29 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <div class="btn btn-primary waves-effect waves-light mb-3" data-bs-toggle="modal" data-bs-target="#CreateFolderModal">
+                            @php $moving = session()->get('moving') @endphp
+                            <div class="btn btn-primary waves-effect waves-light default_sec {{ $moving ? 'd-none' : '' }} mb-3" data-bs-toggle="modal" data-bs-target="#CreateFolderModal">
                                 <span><i class="mdi mdi-folder-plus me-1"></i> ایجاد پوشه</span>
                             </div>
                             <label for="new_files">
-                                <div class="btn btn-primary waves-effect waves-light mb-3" id="btn_upload">
-                                        <span><i class="mdi mdi-cloud-upload me-1"></i> بارگذاری فایل</span>
+                                <div class="btn btn-primary waves-effect waves-light default_sec {{ $moving ? 'd-none' : '' }} mb-3" id="btn_upload">
+                                    <span><i class="mdi mdi-cloud-upload me-1"></i> بارگذاری فایل</span>
                                     <input type="file" name="new_files[]" style="display: none" id="new_files" multiple>
                                 </div>
                             </label>
-                            <div class="btn btn-primary waves-effect waves-light mb-3">
-                                <span><i class="mdi mdi-cursor-move me-1"></i>انتقال</span>
+                            <div class="btn btn-primary waves-effect waves-light default_sec {{ $moving ? 'd-none' : '' }} disabled mb-3" id="btn_move_show">
+                                <span><i class="mdi mdi-cursor-move me-1" style="pointer-events: none"></i>انتقال</span>
                             </div>
-                            <div class="btn btn-primary waves-effect waves-light mb-3">
+                            <div class="btn btn-primary waves-effect waves-light {{ $moving ? '' : 'd-none' }} moving_sec mb-3" id="btn_move">
+                                <span><i class="mdi mdi-cursor-move me-1"></i>انتقال به اینجا</span>
+                            </div>
+                            <div class="btn btn-danger waves-effect waves-light {{ $moving ? '' : 'd-none' }} moving_sec mb-3" id="btn_cancel_move">
+                                <span><i class="mdi mdi-cursor-move me-1"></i>لغو انتقال</span>
+                            </div>
+                            <div class="btn btn-primary waves-effect waves-light default_sec {{ $moving ? 'd-none' : '' }} disabled mb-3" id="btn_edit_show">
                                 <span><i class="mdi mdi-pencil me-1"></i> ویرایش عنوان</span>
                             </div>
-                            <div class="btn btn-primary waves-effect waves-light disabled mb-3" data-bs-toggle="modal" data-bs-target="#DeleteModal" id="btn_delete_show">
+                            <div class="btn btn-primary waves-effect waves-light default_sec {{ $moving ? 'd-none' : '' }} disabled mb-3" data-bs-toggle="modal" data-bs-target="#DeleteModal" id="btn_delete_show">
                                 <span><i class="mdi mdi-delete me-1"></i> حذف</span>
                             </div>
                             <div class="table-responsive">
@@ -213,11 +262,14 @@
             $(document).on('change','#checkAll', function () {
                 $('.checkFile').prop('checked', this.checked);
                 toggleDeleteBtn();
+                toggleEditBtn();
+                toggleMoveBtn();
             })
 
             var fileData = new FormData();
             var duplicated_files_names = [];
             var sub_folder_id = "{{ $sub_folder_id }}";
+            var moving = "{{ session()->get('moving') }}";
 
             $(document).on('change','#new_files', function () {
                 var files = this.files;
@@ -398,8 +450,109 @@
                 });
             })
 
+            $(document).on('click','#btn_edit_show', function () {
+                let file_id = $('input[name="files[]"]:checked').map(function() {
+                    return $(this).val();
+                }).first()[0];
+
+                $.ajax({
+                    url: '/panel/get-file-name',
+                    type: "GET",
+                    data: {
+                        file_id
+                    },
+                    success: function(res) {
+                        $('#EditNameModal').modal('show');
+                        $('#EditNameModal .modal-body #file_name').val(res.name)
+                        $('#EditNameModal .modal-body #file_type').val(res.type)
+                    }
+                });
+            })
+
+            $(document).on('click','#btn_edit_name', function () {
+                let file_id = $('input[name="files[]"]:checked').map(function() {
+                    return $(this).val();
+                }).first()[0];
+
+                let new_name = $('#file_name').val();
+                let file_type = $('#file_type').val();
+
+                let self = $(this);
+
+                self.addClass('disabled').text('در حال ویرایش');
+
+                $.ajax({
+                    url: '/panel/edit-file-name',
+                    type: "POST",
+                    data: {
+                        file_id,
+                        new_name,
+                        file_type,
+                        sub_folder_id
+                    },
+                    success: function(res) {
+                        if (!res.error) {
+                            $('tbody').html($(res).find('tbody').html());
+                            $('#EditNameModal').modal('hide');
+                            $('#file_edit_error').text('');
+                        }else{
+                            $('#file_edit_error').text(res.message);
+                        }
+
+                        self.removeClass('disabled').text('ویرایش');
+                    }
+                });
+            })
+
+            $(document).on('click','#btn_move_show', function () {
+                $(this).addClass('disabled','disabled');
+
+                let checked_files = $('input[name="files[]"]:checked').map(function() {
+                    return $(this).val();
+                }).get();
+
+                $.ajax({
+                    url: '/panel/moving',
+                    type: "POST",
+                    data: {
+                        checked_files
+                    },
+                    success: function(res) {
+                        toggleSections();
+                        $(this).removeClass('disabled');
+                    }
+                });
+            })
+
+            $(document).on('click','#btn_cancel_move', function () {
+                $.ajax({
+                    url: '/panel/cancel-moving',
+                    type: "POST",
+                    success: function(res) {
+                        // console.log(res)
+                        toggleSections();
+                    }
+                });
+            })
+
+            $(document).on('click','#btn_move', function () {
+                $.ajax({
+                    url: '/panel/move-files',
+                    type: "POST",
+                    data: {
+                        sub_folder_id
+                    },
+                    success: function(res) {
+                        $('tbody').html($(res).find('tbody').html());
+                        toggleSections();
+                    }
+                });
+            })
+
             $(document).on('change', 'input[name="files[]"]', function () {
                 toggleDeleteBtn();
+                toggleEditBtn();
+                toggleMoveBtn();
             })
 
             function toggleDeleteBtn()
@@ -412,6 +565,45 @@
                     $('#btn_delete_show').removeClass('disabled');
                 } else {
                     $('#btn_delete_show').addClass('disabled');
+                }
+            }
+
+            function toggleEditBtn()
+            {
+                let checked_files = $('input[name="files[]"]:checked').map(function() {
+                    return $(this).val();
+                }).get();
+
+                if (checked_files.length == 0 || checked_files.length > 1){
+                    $('#btn_edit_show').addClass('disabled');
+                } else {
+                    $('#btn_edit_show').removeClass('disabled');
+                }
+            }
+
+            function toggleMoveBtn()
+            {
+                let checked_files = $('input[name="files[]"]:checked').map(function() {
+                    return $(this).val();
+                }).get();
+
+                if (checked_files.length > 0){
+                    $('#btn_move_show').removeClass('disabled');
+                } else {
+                    $('#btn_move_show').addClass('disabled');
+                }
+            }
+
+            function toggleSections()
+            {
+                if (moving == false) {
+                    moving = true;
+                    $('.default_sec').addClass('d-none');
+                    $('.moving_sec').removeClass('d-none');
+                } else {
+                    moving = false;
+                    $('.moving_sec').addClass('d-none');
+                    $('.default_sec').removeClass('d-none');
                 }
             }
         })
