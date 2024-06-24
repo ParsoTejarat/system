@@ -10,6 +10,8 @@ class FileManagerController extends Controller
 {
     public function index(Request $request)
     {
+        $this->authorize('file-manager');
+
         $sub_folder_id = $request->sub_folder_id;
 
         if ($sub_folder_id) {
@@ -23,6 +25,8 @@ class FileManagerController extends Controller
 
     public function createFolder(Request $request)
     {
+        $this->authorize('file-manager');
+
         if (File::where(['name' => $request->folder_name, 'parent_id' => $request->sub_folder_id, 'is_folder' => 1])->first()) {
             return response()->json([
                 'error' => true,
@@ -42,6 +46,8 @@ class FileManagerController extends Controller
 
     public function uploadFile(Request $request)
     {
+        $this->authorize('file-manager');
+
         if ($request->duplicated_files_action) {
             $duplicated_files_names = array_unique(explode(',', $request->duplicated_files_names));
 
@@ -74,6 +80,8 @@ class FileManagerController extends Controller
 
     public function delete(Request $request)
     {
+        $this->authorize('file-manager');
+
         if ($files = File::whereIn('id', $request->checked_files)->where('is_folder', 0)->get()) {
             foreach ($files as $file) {
                 unlink(public_path($file->path));
@@ -86,6 +94,8 @@ class FileManagerController extends Controller
 
     public function getFileName(Request $request)
     {
+        $this->authorize('file-manager');
+
         $file = File::where('id', $request->file_id)->first();
 
         if ($file->is_folder) {
@@ -101,6 +111,8 @@ class FileManagerController extends Controller
 
     public function editFileName(Request $request)
     {
+        $this->authorize('file-manager');
+
         $file = File::where('id', $request->file_id)->first();
 
         if ($file->is_folder) {
@@ -130,6 +142,8 @@ class FileManagerController extends Controller
 
     public function moving(Request $request)
     {
+        $this->authorize('file-manager');
+
         $files_id = $request->checked_files;
         session()->put('moving', true);
         session()->put('files_id', $files_id);
@@ -137,11 +151,15 @@ class FileManagerController extends Controller
 
     public function cancelMoving()
     {
+        $this->authorize('file-manager');
+
         session()->forget(['moving','files_id']);
     }
 
     public function moveFiles(Request $request)
     {
+        $this->authorize('file-manager');
+
         $files_id = session()->get('files_id');
 
         File::whereIn('id', $files_id)->update(['parent_id' => $request->sub_folder_id]);
@@ -153,6 +171,8 @@ class FileManagerController extends Controller
 
     private function createFile($file, $sub_folder_id)
     {
+        $this->authorize('file-manager');
+
         File::create([
             'user_id' => auth()->id(),
             'name' => $file->getClientOriginalName(),

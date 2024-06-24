@@ -67,8 +67,8 @@
             <ul id="side-menu">
                 <li class="menu-title">پنل مدیریت</li>
                 {{-- Dashboard --}}
-                @canany(['users-list','roles-list','tasks-list','notes-list','leaves-list','reports-list'])
-                    @php $active_side = active_sidebar(['panel','users','users/create','users/{user}/edit','roles','roles/create','roles/{role}/edit', 'tasks','tasks/create','tasks/{task}/edit', 'tasks/{task}', 'notes','notes/create','notes/{note}/edit','leaves','leaves/create','leaves/{leave}/edit','reports','reports/create','reports/{report}/edit']); @endphp
+                @canany(['users-list','roles-list','tasks-list','notes-list','leaves-list','reports-list','file-manager'])
+                    @php $active_side = active_sidebar(['panel','users','users/create','users/{user}/edit','roles','roles/create','roles/{role}/edit', 'tasks','tasks/create','tasks/{task}/edit', 'tasks/{task}', 'notes','notes/create','notes/{note}/edit','leaves','leaves/create','leaves/{leave}/edit','reports','reports/create','reports/{report}/edit','file-manager']); @endphp
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#dashboard" data-bs-toggle="collapse" aria-expanded="false" aria-controls="dashboard">
                             <i class="ri-dashboard-line"></i>
@@ -113,6 +113,12 @@
                                     @php $active_item = active_sidebar(['reports','reports/create','reports/{report}/edit']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
                                         <a href="{{ route('reports.index') }}" {{ $active_item ? 'active' : '' }}>گزارشات روزانه</a>
+                                    </li>
+                                @endcan
+                                @can('file-manager')
+                                    @php $active_item = active_sidebar(['file-manager']); @endphp
+                                    <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                        <a href="{{ route('file-manager.index') }}" {{ $active_item ? 'active' : '' }}>مدیریت فایل</a>
                                     </li>
                                 @endcan
                             </ul>
