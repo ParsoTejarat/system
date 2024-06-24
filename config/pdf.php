@@ -28,9 +28,14 @@ return [
     'custom_font_dir'          => base_path('/public/assets/fonts/farsi-fonts'),
     'custom_font_data'         => [
         'vazir' => [
-            'R'  => 'vazir-500.ttf',    // regular font
-            'useOTL' => 0xFF,    // required for complicated langs like Persian, Arabic and Chinese
-            'useKashida' => 75,  // required for complicated langs like Persian, Arabic and Chinese
+            'R'  => 'vazir-500.ttf',
+            'useOTL' => 0xFF,
+            'useKashida' => 75,
+        ],
+        'nazanin' => [
+            'R'  => 'nazanin.ttf',
+            'useOTL' => 0xFF,
+            'useKashida' => 75,
         ],
     ],
     'auto_language_detection'  => false,

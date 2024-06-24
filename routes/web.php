@@ -13,6 +13,7 @@ use App\Http\Controllers\Panel\FactorController;
 use App\Http\Controllers\Panel\FileManagerController;
 use App\Http\Controllers\Panel\ForeignCustomerController;
 use App\Http\Controllers\Panel\GuaranteeController;
+use App\Http\Controllers\Panel\IndicatorController;
 use App\Http\Controllers\Panel\InputController;
 use App\Http\Controllers\Panel\InventoryController;
 use App\Http\Controllers\Panel\InventoryReportController;
@@ -92,6 +93,10 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
 
     // Users
     Route::resource('users',UserController::class)->except('show');
+
+    //Indicators
+    Route::resource('indicator', IndicatorController::class);
+    Route::post('export-indicator-pdf', [IndicatorController::class, 'exportToPdf']);
 
     // Roles
     Route::resource('roles', RoleController::class)->except('show');
