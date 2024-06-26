@@ -6,17 +6,22 @@
 
         .div-indicator {
             position: absolute;
+            right: 1px;
             top: 18rem;
             padding: 2.3rem !important;
+            direction: rtl !important;
+
         }
-        .date{
+
+        .date {
             position: absolute;
             top: 8.9rem;
             left: 4rem;
             font-size: 1.4rem;
 
         }
-        .number{
+
+        .number {
             position: absolute;
             top: 11.8rem;
             left: 3rem;
@@ -24,7 +29,8 @@
             width: 8rem;
             text-align: center;
         }
-        .attachment{
+
+        .attachment {
             position: absolute;
             top: 14.5rem;
             left: 3rem;
@@ -37,19 +43,21 @@
 
 <body>
 
-    <div class="date">
-        {{englishToPersianNumbers($date)}}
-    </div>
-    <div class="number">
-        {{englishToPersianNumbers($number)}}
-    </div>
-    <div class="attachment">
-        {{englishToPersianNumbers($attachment)}}
-    </div>
+<div class="date">
+    {{englishToPersianNumbers($date)}}
+</div>
+<div class="number">
+    {{englishToPersianNumbers($number)}}
+</div>
+<div class="attachment">
+    {{englishToPersianNumbers($attachment)}}
+</div>
 
 
 <div class="div-indicator">
-    {!! $text !!}
+    <div>
+        {!! $text !!}
+    </div>
 </div>
 </body>
 </html>

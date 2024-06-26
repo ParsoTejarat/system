@@ -139,6 +139,7 @@ class PermissionSeeder extends Seeder
 //
 //            'parso-products' => 'محصولات سایت پرسو تجارت'
 //            'file-manager' => 'مدیریت فایل'
+//            'indicator' => 'نامه نگاری'
         ];
 
         foreach ($items as $key => $item)

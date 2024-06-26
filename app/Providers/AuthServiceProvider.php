@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\BuyOrder;
+use App\Models\Indicator;
 use App\Models\Invoice;
 use App\Models\Note;
 use App\Models\Packet;
@@ -83,6 +84,10 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('edit-buy-order', function ($user, BuyOrder $buyOrder){
             return $user->id == $buyOrder->user_id || $user->isSalesManager();
+        });
+
+        Gate::define('edit-indicator', function ($user, Indicator $indicator){
+            return $user->id == $indicator->user_id;
         });
     }
 }
