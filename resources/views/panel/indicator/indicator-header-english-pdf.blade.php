@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <style>
@@ -40,7 +40,7 @@
 <body>
 
     <div class="date">
-        {{$date}}
+        {{\Hekmatinasser\Verta\Verta::parse($date)->toCarbon()->format('Y-m-d')}}
     </div>
     <div class="number">
         {{$number}}

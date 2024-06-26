@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class IndicatorRequest extends FormRequest
+class StoreIndicatorRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class IndicatorRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,16 @@ class IndicatorRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required',
+            'text' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'title.required' => 'عنوان نامه را وارد کنید',
+            'text.required' => 'متن نامه را وارد کنید',
         ];
     }
 }

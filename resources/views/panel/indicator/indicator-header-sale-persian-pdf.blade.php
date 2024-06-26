@@ -7,7 +7,9 @@
         .div-indicator {
             position: absolute;
             top: 18rem;
+            right: 1px;
             padding: 2.3rem !important;
+            direction: rtl !important;
         }
         .date{
             position: absolute;
@@ -37,7 +39,7 @@
     </style>
 </head>
 
-<body>
+<body style="direction: rtl">
 
     <div class="date">
         {{englishToPersianNumbers($date)}}

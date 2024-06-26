@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
-                        <h4 class="page-title">نامه نگاری</h4>
+                        <h4 class="page-title">ویرایش نامه</h4>
                     </div>
                 </div>
             </div>
@@ -28,14 +28,15 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('indicator.store') }}" method="post">
+                            <form action="{{ route('indicator.update',$indicator->id) }}" method="post">
                                 @csrf
+                                @method('PATCH')
                                 <div class="row">
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
                                         <label for="title" class="form-label">عنوان <span
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="title" id="title"
-                                               value="{{ old('title') }}">
+                                               value="{{ old('title',$indicator->title) }}">
                                         @error('title')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
@@ -45,7 +46,7 @@
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
                                         <label for="to_date" class="form-label">تاریخ</label>
                                         <input type="text" name="date" class="form-control date-picker-shamsi-list"
-                                               id="date" value="{{ old('date') }}">
+                                               id="date" value="{{ old('date',$indicator->date) }}">
                                         @error('date')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
@@ -53,7 +54,7 @@
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
                                         <label for="number" class="form-label">شماره نامه</label>
                                         <input type="text" class="form-control" name="number" id="number"
-                                               value="{{ old('number') }}">
+                                               value="{{ old('number',$indicator->number) }}">
                                         @error('number')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
@@ -61,31 +62,27 @@
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
                                         <label for="attachment" class="form-label">پیوست</label>
                                         <input type="text" class="form-control" name="attachment" id="attachment"
-                                               value="{{ old('attachment') }}">
+                                               value="{{ old('attachment',$indicator->attachment) }}">
                                         @error('attachment')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
-
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
                                         <label for="attachment" class="form-label">سربرگ</label>
                                         <select name="header" class="form-control" id="header">
-                                            <option value="info">سربرگ فارسی پرسو تجارت (Info)</option>
-                                            <option value="sale">سربرگ فارسی پرسو تجارت (Sale)</option>
-                                            <option value="english">سربرگ انگلیسی پرسو تجارت</option>
+                                            <option value="info" {{$indicator=='info'?'selected':''}}>سربرگ فارسی پرسو تجارت
+                                                (Info)
+                                            </option>
+                                            <option value="sale" {{$indicator=='sale'?'selected':''}}>سربرگ فارسی پرسو تجارت
+                                                (Sale)
+                                            </option>
+                                            <option value="english" {{$indicator=='english'?'selected':''}}>سربرگ انگلیسی پرسو
+                                                تجارت
+                                            </option>
                                         </select>
                                         @error('header')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
-                                    </div>
-                                    <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
-                                        <label for="attachment" class="form-label">ارسال به</label>
-                                        <select name="receiver[]" class="form-control" id="receiver" data-toggle="select2" multiple>
-                                            @foreach($users as $user)
-                                                <option value="{{$user->id}}">{{$user->name.' '.$user->family}}</option>
-                                            @endforeach
-                                        </select>
-
                                     </div>
                                 </div>
                                 <div class="row">
@@ -93,14 +90,14 @@
                                         <label for="code" class="form-label">متن نامه<span
                                                 class="text-danger">*</span></label>
                                         <textarea type="text" class="form-control" name="text"
-                                                  id="text">{{ old('text') }}</textarea>
+                                                  id="text">{{ old('text',$indicator->text) }}</textarea>
                                         @error('text')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                         <div class="invalid-feedback text-danger d-block" id="error-text"></div>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-success mt-3">ثبت نامه</button>
+                                <button type="submit" class="btn btn-warning mt-3">ویرایش نامه</button>
                                 <button type="button" id="exportPdf" class="btn btn-danger mt-3"
                                         onsubmit="e.preventDefault()" disabled>
                                     خروجی PDF

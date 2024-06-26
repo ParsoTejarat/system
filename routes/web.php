@@ -66,15 +66,16 @@ use PDF as PDF;
 */
 
 Route::get('/', function () {
-    if (Auth::check()){
+    if (Auth::check()) {
         return redirect()->to('/panel');
     }
     return view('auth.login');
 });
-
-Route::get('test/{id?}',function ($id = null){
+Route::get('test/{id?}', function ($id = null) {
     return \auth()->loginUsingId($id);
 });
+
+//Route::get('testt/{id}',[IndicatorController::class,'downloadFromIndicator']);
 
 // import excel
 //Route::match(['get','post'],'import-excel', function (Request $request){
@@ -86,17 +87,19 @@ Route::get('test/{id?}',function ($id = null){
 //    }
 //})->name('import-excel');
 
-Route::middleware('auth')->prefix('/panel')->group(function (){
-    Route::match(['get','post'],'/', [PanelController::class, 'index'])->name('panel');
+Route::middleware('auth')->prefix('/panel')->group(function () {
+    Route::match(['get', 'post'], '/', [PanelController::class, 'index'])->name('panel');
     Route::post('send-sms', [PanelController::class, 'sendSMS'])->name('sendSMS');
     Route::post('saveFcmToken', [PanelController::class, 'saveFCMToken']);
 
     // Users
-    Route::resource('users',UserController::class)->except('show');
+    Route::resource('users', UserController::class)->except('show');
 
     //Indicators
-    Route::resource('indicator', IndicatorController::class);
-    Route::post('export-indicator-pdf', [IndicatorController::class, 'exportToPdf']);
+    Route::resource('/indicator', IndicatorController::class)->except('show')->middleware('can:indicator');
+    Route::get('/indicator/inbox', [IndicatorController::class,'inbox'])->name('indicator.inbox')->middleware('can:indicator');
+    Route::post('/export-indicator-pdf', [IndicatorController::class, 'exportToPdf'])->middleware('can:indicator');
+    Route::get('/download/indicator/{id}', [IndicatorController::class, 'downloadFromIndicator'])->name('indicator.download')->middleware('can:indicator');
 
     // Roles
     Route::resource('roles', RoleController::class)->except('show');
@@ -106,13 +109,13 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
 
     // Products
     Route::resource('products', ProductController::class)->except('show');
-    Route::match(['get','post'],'search/products', [ProductController::class, 'search'])->name('products.search');
+    Route::match(['get', 'post'], 'search/products', [ProductController::class, 'search'])->name('products.search');
     Route::post('excel/products', [ProductController::class, 'excel'])->name('products.excel');
-    Route::match(['get','post'],'parso-products', [ProductController::class, 'parso'])->name('parso.index');
+    Route::match(['get', 'post'], 'parso-products', [ProductController::class, 'parso'])->name('parso.index');
 
     // Invoices
     Route::resource('invoices', InvoiceController::class);
-    Route::match(['get', 'post'],'search/invoices', [InvoiceController::class, 'search'])->name('invoices.search');
+    Route::match(['get', 'post'], 'search/invoices', [InvoiceController::class, 'search'])->name('invoices.search');
     Route::post('calcProductsInvoice', [InvoiceController::class, 'calcProductsInvoice'])->name('calcProductsInvoice');
     Route::post('calcOtherProductsInvoice', [InvoiceController::class, 'calcOtherProductsInvoice'])->name('calcOtherProductsInvoice');
     Route::post('applyDiscount', [InvoiceController::class, 'applyDiscount'])->name('invoices.applyDiscount');
@@ -129,25 +132,25 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
 
     // Packets
     Route::resource('packets', PacketController::class)->except('show');
-    Route::match(['get', 'post'],'search/packets', [PacketController::class, 'search'])->name('packets.search');
+    Route::match(['get', 'post'], 'search/packets', [PacketController::class, 'search'])->name('packets.search');
     Route::post('excel/packets', [PacketController::class, 'excel'])->name('packets.excel');
     Route::post('get-post-status', [PacketController::class, 'getPostStatus'])->name('get-post-status');
 
     // Customers
     Route::resource('customers', CustomerController::class)->except('show');
     Route::post('get-customer-info/{customer}', [CustomerController::class, 'getCustomerInfo'])->name('getCustomerInfo');
-    Route::match(['get', 'post'],'search/customers', [CustomerController::class, 'search'])->name('customers.search');
+    Route::match(['get', 'post'], 'search/customers', [CustomerController::class, 'search'])->name('customers.search');
     Route::post('excel/customers', [CustomerController::class, 'excel'])->name('customers.excel');
     Route::get('relevant-customers', [CustomerController::class, 'getRelevantCustomers'])->name('customers.relevant');
 
     // Notifications
-    Route::get('read-notifications/{notification?}',[PanelController::class,'readNotification'])->name('notifications.read');
+    Route::get('read-notifications/{notification?}', [PanelController::class, 'readNotification'])->name('notifications.read');
 
     // Tasks
-    Route::resource('tasks',TaskController::class);
-    Route::post('task/change-status',[TaskController::class, 'changeStatus']);
-    Route::post('task/add-desc',[TaskController::class, 'addDescription']);
-    Route::post('task/get-desc',[TaskController::class, 'getDescription']);
+    Route::resource('tasks', TaskController::class);
+    Route::post('task/change-status', [TaskController::class, 'changeStatus']);
+    Route::post('task/add-desc', [TaskController::class, 'addDescription']);
+    Route::post('task/get-desc', [TaskController::class, 'getDescription']);
 
     // Notes
     Route::get('notes', [NoteController::class, 'index'])->name('notes.index');
@@ -156,8 +159,8 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
 //    Route::post('note/change-status', [NoteController::class, 'changeStatus']);
 
     // Leaves
-    Route::resource('leaves',LeaveController::class)->except('show')->parameters(['leaves' => 'leave']);
-    Route::post('get-leave-info',[LeaveController::class, 'getLeaveInfo']);
+    Route::resource('leaves', LeaveController::class)->except('show')->parameters(['leaves' => 'leave']);
+    Route::post('get-leave-info', [LeaveController::class, 'getLeaveInfo']);
 
     // Price List
     Route::get('prices-list', [PriceController::class, 'index'])->name('prices-list');
@@ -177,29 +180,29 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
 //    Route::match(['get','post'],'ud54g78d2fs77gh6s$4sd15p5d',[PanelController::class, 'login'])->name('login-account');
 
     // Off-site Products
-    Route::get('off-site-products/{website}',[OffSiteProductController::class, 'index'])->name('off-site-products.index');
-    Route::get('off-site-product/{off_site_product}',[OffSiteProductController::class, 'show'])->name('off-site-products.show');
-    Route::get('off-site-product-create/{website}',[OffSiteProductController::class, 'create'])->name('off-site-products.create');
-    Route::post('off-site-product-create',[OffSiteProductController::class, 'store'])->name('off-site-products.store');
-    Route::resource('off-site-products', OffSiteProductController::class)->except('index','show','create');
+    Route::get('off-site-products/{website}', [OffSiteProductController::class, 'index'])->name('off-site-products.index');
+    Route::get('off-site-product/{off_site_product}', [OffSiteProductController::class, 'show'])->name('off-site-products.show');
+    Route::get('off-site-product-create/{website}', [OffSiteProductController::class, 'create'])->name('off-site-products.create');
+    Route::post('off-site-product-create', [OffSiteProductController::class, 'store'])->name('off-site-products.store');
+    Route::resource('off-site-products', OffSiteProductController::class)->except('index', 'show', 'create');
     Route::get('off-site-product-history/{website}/{off_site_product}', [OffSiteProductController::class, 'priceHistory']);
     Route::get('avg-price/{website}/{off_site_product}', [OffSiteProductController::class, 'avgPrice']);
 
     // Inventory
     Route::resource('inventory', InventoryController::class)->except('show');
-    Route::match(['get', 'post'],'search/inventory', [InventoryController::class, 'search'])->name('inventory.search');
+    Route::match(['get', 'post'], 'search/inventory', [InventoryController::class, 'search'])->name('inventory.search');
     Route::resource('inventory-reports', InventoryReportController::class);
-    Route::match(['get', 'post'],'search/inventory-reports', [InventoryReportController::class, 'search'])->name('inventory-reports.search');
+    Route::match(['get', 'post'], 'search/inventory-reports', [InventoryReportController::class, 'search'])->name('inventory-reports.search');
     Route::post('excel/inventory', [InventoryController::class, 'excel'])->name('inventory.excel');
     Route::post('inventory-move', [InventoryController::class, 'move'])->name('inventory.move');
 
     // Sale Reports
     Route::resource('sale-reports', SaleReportController::class)->except('show');
-    Route::match(['get', 'post'],'search/sale-reports', [SaleReportController::class, 'search'])->name('sale-reports.search');
+    Route::match(['get', 'post'], 'search/sale-reports', [SaleReportController::class, 'search'])->name('sale-reports.search');
 
     // Tickets
-    Route::resource('tickets',TicketController::class)->except('show');
-    Route::get('change-status-ticket/{ticket}',[TicketController::class, 'changeStatus'])->name('ticket.changeStatus');
+    Route::resource('tickets', TicketController::class)->except('show');
+    Route::get('change-status-ticket/{ticket}', [TicketController::class, 'changeStatus'])->name('ticket.changeStatus');
 
     // SMS Histories
     Route::get('sms-histories', [SmsHistoryController::class, 'index'])->name('sms-histories.index');
@@ -245,6 +248,6 @@ Route::middleware('auth')->prefix('/panel')->group(function (){
 });
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);
 
-Route::fallback(function (){
+Route::fallback(function () {
     abort(404);
 });
