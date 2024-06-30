@@ -70,6 +70,7 @@
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
                                         <label for="attachment" class="form-label">سربرگ</label>
                                         <select name="header" class="form-control" id="header">
+<<<<<<< HEAD
                                             <option value="info" {{$indicator=='info'?'selected':''}}>سربرگ فارسی پرسو
                                                 تجارت
                                                 (Info)
@@ -80,6 +81,15 @@
                                             </option>
                                             <option value="english" {{$indicator=='english'?'selected':''}}>سربرگ
                                                 انگلیسی پرسو
+=======
+                                            <option value="info" {{$indicator=='info'?'selected':''}}>سربرگ فارسی پرسو تجارت
+                                                (Info)
+                                            </option>
+                                            <option value="sale" {{$indicator=='sale'?'selected':''}}>سربرگ فارسی پرسو تجارت
+                                                (Sale)
+                                            </option>
+                                            <option value="english" {{$indicator=='english'?'selected':''}}>سربرگ انگلیسی پرسو
+>>>>>>> 36ab2fe129df2e1b96aecf8142030683a6437d46
                                                 تجارت
                                             </option>
                                         </select>
@@ -87,6 +97,7 @@
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
+<<<<<<< HEAD
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
                                         <label for="attachment" class="form-label">ارسال به</label>
                                         <select name="receiver[]" class="form-control" id="receiver" data-toggle="select2"
@@ -99,6 +110,9 @@
                                     </div>
                                 </div>
 
+=======
+                                </div>
+>>>>>>> 36ab2fe129df2e1b96aecf8142030683a6437d46
                                 <div class="row">
                                     <div class="mb-2 col-xl-12 col-lg-12 col-md-12">
                                         <label for="code" class="form-label">متن نامه<span
@@ -111,7 +125,10 @@
                                         <div class="invalid-feedback text-danger d-block" id="error-text"></div>
                                     </div>
                                 </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 36ab2fe129df2e1b96aecf8142030683a6437d46
                                 <button type="submit" class="btn btn-warning mt-3">ویرایش نامه</button>
                                 <button type="button" id="exportPdf" class="btn btn-danger mt-3"
                                         onsubmit="e.preventDefault()" disabled>

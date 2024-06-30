@@ -79,7 +79,10 @@ class IndicatorController extends Controller
 
     public function destroy(Indicator $indicator)
     {
-//        if ($indicator->users()->exists()) {
+////        if ($indicator->users()->exists()) {
+//////            return response('این نامه به ',422);
+////        }
+//        if ($indicator->users()->exists()){
 ////            return response('این نامه به ',422);
 //        }
         $indicator->delete();
