@@ -47,7 +47,7 @@ class SaleReportController extends Controller
     {
         $this->authorize('sale-reports-create');
 
-        SaleReport::create([
+        $saleReport = SaleReport::create([
             'user_id' => auth()->id(),
             'invoice_id' => $request->invoice,
             'person_name' => $request->person_name,
@@ -55,6 +55,9 @@ class SaleReportController extends Controller
             'national_code' => $request->national_code,
             'payment_type' => $request->payment_type,
         ]);
+
+        // log
+        activity_log('create-sale-report', __METHOD__, [$request->all(), $saleReport]);
 
         alert()->success("گزارش فروش مورد نظر با موفقیت ایجاد شد","ایجاد گزارش فروش");
         return redirect()->route('sale-reports.index');
@@ -90,6 +93,9 @@ class SaleReportController extends Controller
             'payment_type' => $request->payment_type,
         ]);
 
+        // log
+        activity_log('edit-sale-report', __METHOD__, [$request->all(), $saleReport]);
+
         alert()->success("گزارش فروش مورد نظر با موفقیت ویرایش شد","ویرایش گزارش فروش");
         return redirect()->route('sale-reports.index');
     }
@@ -97,6 +103,10 @@ class SaleReportController extends Controller
     public function destroy(SaleReport $saleReport)
     {
         $this->authorize('sale-reports-delete');
+
+        // log
+        activity_log('delete-sale-report', __METHOD__, $saleReport);
+
         $saleReport->delete();
 
         return back();

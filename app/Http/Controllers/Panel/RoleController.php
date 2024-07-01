@@ -36,6 +36,9 @@ class RoleController extends Controller
             'label' => $request->label,
         ]);
 
+        // log
+        activity_log('create-role', __METHOD__, [$request->all(), $role]);
+
         $role->permissions()->sync($request->permissions);
 
         alert()->success('نقش مورد نظر با موفقیت ایجاد شد','ایجاد نقش');
@@ -59,6 +62,9 @@ class RoleController extends Controller
     {
         $this->authorize('roles-edit');
 
+        // log
+        activity_log('edit-role', __METHOD__, [$request->all(), $role]);
+
         $role->update([
             'name' => $request->name,
             'label' => $request->label,
@@ -73,6 +79,9 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         $this->authorize('roles-delete');
+
+        // log
+        activity_log('delete-role', __METHOD__, $role);
 
         if (!$role->users()->exists()){
             $role->permissions()->detach();

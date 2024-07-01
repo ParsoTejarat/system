@@ -88,6 +88,9 @@ class InvoiceController extends Controller
         // create order status
         $invoice->order_status()->create(['order' => 1, 'status' => 'register']);
 
+        // log
+        activity_log('create-invoice', __METHOD__, [$request->all(), $invoice]);
+
         alert()->success('سفارش مورد نظر با موفقیت ثبت شد','ثبت سفارش');
         return redirect()->route('invoices.edit', $invoice->id);
     }
@@ -169,6 +172,9 @@ class InvoiceController extends Controller
             $payment_doc = $invoice->payment_doc;
         }
 
+        // log
+        activity_log('edit-invoice', __METHOD__, [$request->all(), $invoice]);
+
         $invoice->update([
             'customer_id' => $request->buyer_name,
             'req_for' => $req_for,
@@ -193,6 +199,9 @@ class InvoiceController extends Controller
     public function destroy(Invoice $invoice)
     {
         $this->authorize('invoices-delete');
+
+        // log
+        activity_log('delete-invoice', __METHOD__, $invoice);
 
         $invoice->coupons()->detach();
         $invoice->delete();
@@ -549,12 +558,18 @@ class InvoiceController extends Controller
             $invoice->update(['status' => $status]);
         }
 
+        // log
+        activity_log('invoice-action', __METHOD__, [$request->all(), $invoice]);
+
         alert()->success($message, $title);
         return back();
     }
 
     public function deleteInvoiceFile(InvoiceAction $invoiceAction)
     {
+        // log
+        activity_log(' delete-invoice-file', __METHOD__, $invoiceAction);
+
         unlink(public_path($invoiceAction->invoice_file));
         $invoiceAction->delete();
 
@@ -564,6 +579,9 @@ class InvoiceController extends Controller
 
     public function deleteFactorFile(InvoiceAction $invoiceAction)
     {
+        // log
+        activity_log(' delete-factor-file', __METHOD__, $invoiceAction);
+
         unlink(public_path($invoiceAction->factor_file));
 
         $invoiceAction->update([

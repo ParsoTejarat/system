@@ -29,9 +29,12 @@ class WarehouseController extends Controller
 
         $request->validate(['name' => 'required']);
 
-        Warehouse::create([
+        $warehouse = Warehouse::create([
             'name' => $request->name
         ]);
+
+        // log
+        activity_log('create-warehouse', __METHOD__, [$request->all(), $warehouse]);
 
         alert()->success('انبار با موفقیت ایجاد شد','ایجاد انبار');
         return redirect()->route('warehouses.index');
@@ -55,6 +58,9 @@ class WarehouseController extends Controller
 
         $request->validate(['name' => 'required']);
 
+        // log
+        activity_log('edit-warehouse', __METHOD__, [$request->all(), $warehouse]);
+
         $warehouse->update([
             'name' => $request->name
         ]);
@@ -68,6 +74,9 @@ class WarehouseController extends Controller
         $this->authorize('warehouses-delete');
 
         if (!$warehouse->inventories()->exists()){
+            // log
+            activity_log('delete-warehouse', __METHOD__, $warehouse);
+
             $warehouse->delete();
             return back();
         }else{

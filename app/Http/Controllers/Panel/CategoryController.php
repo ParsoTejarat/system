@@ -29,10 +29,13 @@ class CategoryController extends Controller
     {
         $this->authorize('categories-create');
 
-        Category::create([
+        $category = Category::create([
             'name' => $request->name,
             'slug' => make_slug($request->slug),
         ]);
+
+        // log
+        activity_log('create-category', __METHOD__, [$request->all(), $category]);
 
         alert()->success('دسته بندی مورد نظر با موفقیت ایجاد شد','ایجاد دسته بندی');
         return redirect()->route('categories.index');
@@ -54,6 +57,9 @@ class CategoryController extends Controller
     {
         $this->authorize('categories-edit');
 
+        // log
+        activity_log('edit-category', __METHOD__, [$request->all(), $category]);
+
         $category->update([
             'name' => $request->name,
             'slug' => $request->slug,
@@ -68,6 +74,9 @@ class CategoryController extends Controller
         $this->authorize('categories-delete');
 
         if (!$category->products()->exists()){
+            // log
+            activity_log('delete-category', __METHOD__, $category);
+
             $category->delete();
             return back();
         }else{

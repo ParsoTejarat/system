@@ -33,7 +33,7 @@ class CustomerController extends Controller
     {
         $this->authorize('customers-create');
 
-        Customer::create([
+        $customer = Customer::create([
             'user_id' => auth()->id(),
             'name' => $request->name,
             'code' => $request->customer_code,
@@ -51,6 +51,9 @@ class CustomerController extends Controller
             'address2' => $request->address2,
             'description' => $request->description,
         ]);
+
+        // log
+        activity_log('create-customer', __METHOD__, [$request->all(), $customer]);
 
         alert()->success('مشتری مورد نظر با موفقیت ایجاد شد','ایجاد مشتری');
         return redirect()->route('customers.index');
@@ -73,6 +76,9 @@ class CustomerController extends Controller
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
         $this->authorize('customers-edit');
+
+        // log
+        activity_log('edit-customer', __METHOD__, [$request->all(), $customer]);
 
         $customer->update([
             'name' => $request->name,
@@ -105,6 +111,9 @@ class CustomerController extends Controller
         if ($customer->invoices()->exists()){
             return response('ابتدا سفارشات این مشتری را حذف کنید',500);
         }
+
+        // log
+        activity_log('delete-customer', __METHOD__, $customer);
 
         $customer->delete();
         return back();
