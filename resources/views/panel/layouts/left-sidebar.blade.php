@@ -89,7 +89,8 @@
                                 @can('roles-list')
                                     @php $active_item = active_sidebar(['roles','roles/create','roles/{role}/edit']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('roles.index') }}" {{ $active_item ? 'active' : '' }}>نقش ها</a>
+                                        <a href="{{ route('roles.index') }}" {{ $active_item ? 'active' : '' }}>نقش
+                                            ها</a>
                                     </li>
                                 @endcan
                                 @can('tasks-list')
@@ -106,19 +107,22 @@
                                 @can('leaves-list')
                                     @php $active_item = active_sidebar(['leaves','leaves/create','leaves/{leave}/edit']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('leaves.index') }}" {{ $active_item ? 'active' : '' }}>درخواست مرخصی</a>
+                                        <a href="{{ route('leaves.index') }}" {{ $active_item ? 'active' : '' }}>درخواست
+                                            مرخصی</a>
                                     </li>
                                 @endcan
                                 @can('reports-list')
                                     @php $active_item = active_sidebar(['reports','reports/create','reports/{report}/edit']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('reports.index') }}" {{ $active_item ? 'active' : '' }}>گزارشات روزانه</a>
+                                        <a href="{{ route('reports.index') }}" {{ $active_item ? 'active' : '' }}>گزارشات
+                                            روزانه</a>
                                     </li>
                                 @endcan
                                 @can('file-manager')
                                     @php $active_item = active_sidebar(['file-manager']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('file-manager.index') }}" {{ $active_item ? 'active' : '' }}>مدیریت فایل</a>
+                                        <a href="{{ route('file-manager.index') }}" {{ $active_item ? 'active' : '' }}>مدیریت
+                                            فایل</a>
                                     </li>
                                 @endcan
                             </ul>
@@ -140,7 +144,8 @@
                                 @can('products-list')
                                     @php $active_item = active_sidebar(['products','products/create','products/{product}/edit','search/products']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('products.index') }}" {{ $active_item ? 'active' : '' }}>لیست محصولات</a>
+                                        <a href="{{ route('products.index') }}" {{ $active_item ? 'active' : '' }}>لیست
+                                            محصولات</a>
                                     </li>
                                 @endcan
                                 @can('parso-products')
@@ -157,7 +162,8 @@
                                 @can('coupons-list')
                                     @php $active_item = active_sidebar(['coupons','coupons/create','coupons/{coupon}/edit']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('coupons.index') }}" {{ $active_item ? 'active' : '' }}>کد تخفیف</a>
+                                        <a href="{{ route('coupons.index') }}" {{ $active_item ? 'active' : '' }}>کد
+                                            تخفیف</a>
                                     </li>
                                 @endcan
                             </ul>
@@ -179,25 +185,29 @@
                                 @can('invoices-list')
                                     @php $active_item = active_sidebar(['invoices','invoices/create','invoices/{invoice}/edit','search/invoices','invoice-action/{invoice}','orders-status/{invoice}']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('invoices.index') }}" {{ $active_item ? 'active' : '' }}>سفارشات فروش</a>
+                                        <a href="{{ route('invoices.index') }}" {{ $active_item ? 'active' : '' }}>سفارشات
+                                            فروش</a>
                                     </li>
                                 @endcan
                                 @can('buy-orders-list')
                                     @php $active_item = active_sidebar(['buy-orders','buy-orders/create','buy-orders/{buy_order}/edit','buy-orders/{buy_order}','search/buy-orders']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('buy-orders.index') }}" {{ $active_item ? 'active' : '' }}>سفارشات خرید</a>
+                                        <a href="{{ route('buy-orders.index') }}" {{ $active_item ? 'active' : '' }}>سفارشات
+                                            خرید</a>
                                     </li>
                                 @endcan
                                 @can('sale-reports-list')
                                     @php $active_item = active_sidebar(['sale-reports','sale-reports/create','sale-reports/{sale_report}/edit','search/sale-reports']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('sale-reports.index') }}" {{ $active_item ? 'active' : '' }}>گزارشات فروش</a>
+                                        <a href="{{ route('sale-reports.index') }}" {{ $active_item ? 'active' : '' }}>گزارشات
+                                            فروش</a>
                                     </li>
                                 @endcan
                                 @can('price-requests-list')
                                     @php $active_item = active_sidebar(['price-requests','price-requests/create','price-requests/{price_request}/edit','price-requests/{price_request}']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('price-requests.index') }}" {{ $active_item ? 'active' : '' }}>درخواست قیمت</a>
+                                        <a href="{{ route('price-requests.index') }}" {{ $active_item ? 'active' : '' }}>درخواست
+                                            قیمت</a>
                                     </li>
                                 @endcan
                             </ul>
@@ -218,7 +228,8 @@
                             <ul class="nav-second-level">
                                 @php $active_item = active_sidebar(['packets','packets/create','packets/{packet}/edit','search/packets']); @endphp
                                 <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                    <a href="{{ route('packets.index') }}" {{ $active_item ? 'active' : '' }}>لیست بسته ها</a>
+                                    <a href="{{ route('packets.index') }}" {{ $active_item ? 'active' : '' }}>لیست بسته
+                                        ها</a>
                                 </li>
                             </ul>
                         </div>
@@ -238,7 +249,8 @@
                             <ul class="nav-second-level">
                                 @php $active_item = active_sidebar(['customers','customers/create','customers/{customer}/edit','search/customers']); @endphp
                                 <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                    <a href="{{ route('customers.index') }}" {{ $active_item ? 'active' : '' }}>لیست مشتریان</a>
+                                    <a href="{{ route('customers.index') }}" {{ $active_item ? 'active' : '' }}>لیست
+                                        مشتریان</a>
                                 </li>
                             </ul>
                         </div>
@@ -285,13 +297,15 @@
                                 @can('guarantees-list')
                                     @php $active_item = active_sidebar(['guarantees','guarantees/create','guarantees/{guarantee}/edit']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('guarantees.index') }}" {{ $active_item ? 'active' : '' }}>گارانتی ها</a>
+                                        <a href="{{ route('guarantees.index') }}" {{ $active_item ? 'active' : '' }}>گارانتی
+                                            ها</a>
                                     </li>
                                 @endcan
                                 @can('warehouses-list')
                                     @php $active_item = active_sidebar(['warehouses','warehouses/create','warehouses/{warehouse}/edit']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('warehouses.index') }}" {{ $active_item ? 'active' : '' }}>انبار ها</a>
+                                        <a href="{{ route('warehouses.index') }}" {{ $active_item ? 'active' : '' }}>انبار
+                                            ها</a>
                                     </li>
                                 @endcan
                                 @if(request()->warehouse_id)
@@ -333,13 +347,42 @@
                                 @can('tickets-list')
                                     @php $active_item = active_sidebar(['tickets','tickets/create','tickets/{ticket}/edit','search/tickets']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('tickets.index') }}" {{ $active_item ? 'active' : '' }}>تیکت ها</a>
+                                        <a href="{{ route('tickets.index') }}" {{ $active_item ? 'active' : '' }}>تیکت
+                                            ها</a>
                                     </li>
                                 @endcan
                                 @can('sms-histories')
                                     @php $active_item = active_sidebar(['sms-histories','sms-histories/{sms_history}']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('sms-histories.index') }}" {{ $active_item ? 'active' : '' }}>پیام های ارسال شده</a>
+                                        <a href="{{ route('sms-histories.index') }}" {{ $active_item ? 'active' : '' }}>پیام
+                                            های ارسال شده</a>
+                                    </li>
+                                @endcan
+                            </ul>
+                        </div>
+                    </li>
+                @endcanany
+                @canany(['indicator'])
+                    @php $active_side = active_sidebar(['indicator','indicator/create','indicator/{ticket}/edit']); @endphp
+                    <li class="{{ $active_side ? 'menuitem-active' : '' }}">
+                        <a href="#indicators" data-bs-toggle="collapse" aria-expanded="false" aria-controls="tickets">
+                            <i class="ri-message-2-line"></i>
+                            <span> نامه نگاری </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse {{ $active_side ? 'show' : '' }}" id="indicators">
+                            <ul class="nav-second-level">
+                                @can('indicator')
+                                    @php $active_item = active_sidebar(['/indicator/inbox']); @endphp
+                                    <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                        <a href="{{ route('indicator.inbox') }}" {{ $active_item ? 'active' : '' }}>
+                                            صندوق نامه ها</a>
+                                    </li>
+
+                                    @php $active_item = active_sidebar(['indicator','/indicator/{ticket}/edit']); @endphp
+                                    <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                        <a href="{{ route('indicator.index') }}" {{ $active_item ? 'active' : '' }}>نامه
+                                            های ایجاد شده</a>
                                     </li>
                                 @endcan
                             </ul>
@@ -348,10 +391,7 @@
                 @endcanany
             </ul>
         </div>
-        <!-- End Sidebar -->
 
         <div class="clearfix"></div>
     </div>
-    <!-- Sidebar -left -->
 </div>
-<!-- Left Sidebar End -->

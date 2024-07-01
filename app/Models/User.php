@@ -98,7 +98,7 @@ class User extends Authenticatable
     public function tasks()
     {
         return $this->belongsToMany(Task::class)
-            ->withPivot(['id','status','done_at','description'])
+            ->withPivot(['id', 'status', 'done_at', 'description'])
             ->withTimestamps();
     }
 
@@ -109,7 +109,7 @@ class User extends Authenticatable
 
     public function fullName()
     {
-        return $this->name.' '.$this->family;
+        return $this->name . ' ' . $this->family;
     }
 
     public function leaves()
@@ -150,14 +150,13 @@ class User extends Authenticatable
 
         $last_month_leaves = Leave::where(['user_id' => auth()->id(), 'type' => 'daily', 'status' => 'accept'])->get();
         $last_month_leaves_days = 0; // تعداد روز مرخصی های ماه قبل
-        foreach ($last_month_leaves as $leave)
-        {
+        foreach ($last_month_leaves as $leave) {
             $form_date = Carbon::parse($leave->from_date);
             $to_date = Carbon::parse($leave->to_date);
 
-            if ($form_date->diff($to_date)->days){
+            if ($form_date->diff($to_date)->days) {
                 $last_month_leaves_days += $form_date->diff($to_date)->days;
-            }else{
+            } else {
                 $last_month_leaves_days += 1;
             }
         }
@@ -165,13 +164,13 @@ class User extends Authenticatable
         // افزودن روزهای جدید به ماه بعد و بررسی اینکه چند روز از ماه قبل برایش باقی مانده
         $month_updated = $leave_info->first()->month_updated;
         $current_month = verta()->month;
-        if ($month_updated != $current_month){
+        if ($month_updated != $current_month) {
             $new_month_count = 2;
             $remain = 0;
 
-            if ($last_month_leaves_days >= 2){
+            if ($last_month_leaves_days >= 2) {
                 $remain = 0;
-            }else{
+            } else {
                 $remain = 1;
             }
 
@@ -181,4 +180,11 @@ class User extends Authenticatable
             ]);
         }
     }
+
+    public function indicators()
+    {
+        return $this->belongsToMany(Indicator::class);
+    }
+
+
 }

@@ -2,18 +2,19 @@
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
+use PDF as PDF;
 
-if (!function_exists('active_sidebar')){
-    function active_sidebar(array $items){
+if (!function_exists('active_sidebar')) {
+    function active_sidebar(array $items)
+    {
         $route = Route::current()->uri;
         $data = [];
 
         foreach ($items as $value) {
-            if ($value == 'panel')
-            {
+            if ($value == 'panel') {
                 $data[] = "panel";
-            } else{
-                $data[] = "panel/".$value;
+            } else {
+                $data[] = "panel/" . $value;
             }
         }
         if (in_array($route, $data)) {
@@ -24,7 +25,7 @@ if (!function_exists('active_sidebar')){
     }
 }
 
-if (!function_exists('make_slug')){
+if (!function_exists('make_slug')) {
     function make_slug(string $string)
     {
         $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $string)));
@@ -48,7 +49,8 @@ if (!function_exists('upload_file')) {
 }
 
 if (!function_exists('formatBytes')) {
-    function formatBytes($bytes, $precision = 2) {
+    function formatBytes($bytes, $precision = 2)
+    {
         $units = array('B', 'KB', 'MB', 'GB', 'TB');
 
         $bytes = max($bytes, 0);
@@ -56,10 +58,10 @@ if (!function_exists('formatBytes')) {
         $pow = min($pow, count($units) - 1);
 
         // Uncomment one of the following alternatives
-         $bytes /= pow(1024, $pow);
+        $bytes /= pow(1024, $pow);
 //         $bytes /= (1 << (10 * $pow));
 
-        return round($bytes, $precision) .' '.$units[$pow];
+        return round($bytes, $precision) . ' ' . $units[$pow];
     }
 }
 
@@ -74,7 +76,7 @@ if (!function_exists('sendSMS')) {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
 
         // Next line makes the request absolute insecure
-         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER,
@@ -95,8 +97,7 @@ if (!function_exists('sendSMS')) {
     }
 }
 
-if (!function_exists('activity_log'))
-{
+if (!function_exists('activity_log')) {
     function activity_log($activity_name, $method, $data = [])
     {
         \App\Models\ActivityLog::create([
@@ -107,4 +108,116 @@ if (!function_exists('activity_log'))
             'data' => json_encode($data),
         ]);
     }
+}
+function englishToPersianNumbers($input)
+{
+    $persianNumbers = [
+        '0' => '۰',
+        '1' => '۱',
+        '2' => '۲',
+        '3' => '۳',
+        '4' => '۴',
+        '5' => '۵',
+        '6' => '۶',
+        '7' => '۷',
+        '8' => '۸',
+        '9' => '۹',
+    ];
+
+    return strtr($input, $persianNumbers);
+}
+
+function exportPdfInfoPersian($title, $text, $date, $number, $attachment)
+{
+
+    $backgroundImage = public_path('/assets/images/persian-header-info.png');
+
+    $pdf = PDF::loadView('panel.indicator.indicator-header-info-persian-pdf', ['text' => $text, 'date' => $date, 'number' => $number, 'attachment' => $attachment], [], [
+        'format' => 'A4',
+        'orientation' => 'P',
+        'default_font_size' => '10',
+        'default_font' => extractName($text),
+        'display_mode' => 'fullpage',
+        'watermark_text_alpha' => 1,
+        'watermark_image_path' => $backgroundImage,
+        'watermark_image_alpha' => 1,
+        'watermark_image_size' => [210, 297],
+        'show_watermark_image' => true,
+        'watermarkImgBehind' => true,
+    ]);
+
+
+    return $pdf->stream($title . ".pdf");
+}
+
+function exportPdfSalePersian($title, $text, $date, $number, $attachment)
+{
+
+    $backgroundImage = public_path('/assets/images/persian-header-sale.png');
+
+    $pdf = PDF::loadView('panel.indicator.indicator-header-sale-persian-pdf', ['text' => $text, 'date' => $date, 'number' => $number, 'attachment' => $attachment], [], [
+        'format' => 'A4',
+        'orientation' => 'P',
+        'default_font_size' => '10',
+        'default_font' => extractName($text),
+        'display_mode' => 'fullpage',
+        'watermark_text_alpha' => 1,
+        'watermark_image_path' => $backgroundImage,
+        'watermark_image_alpha' => 1,
+        'watermark_image_size' => [210, 297],
+        'show_watermark_image' => true,
+        'watermarkImgBehind' => true,
+    ]);
+
+
+    return $pdf->stream($title . ".pdf");
+}
+
+function exportPdfEnglish($title, $text, $date, $number, $attachment)
+{
+
+    $backgroundImage = public_path('/assets/images/english-header.png');
+
+    $pdf = PDF::loadView('panel.indicator.indicator-header-english-pdf', ['text' => $text, 'date' => $date, 'number' => $number, 'attachment' => $attachment], [], [
+        'format' => 'A4',
+        'orientation' => 'P',
+        'default_font_size' => '10',
+        'default_font' => extractName($text),
+        'display_mode' => 'fullpage',
+        'watermark_text_alpha' => 1,
+        'watermark_image_path' => $backgroundImage,
+        'watermark_image_alpha' => 1,
+        'watermark_image_size' => [210, 297],
+        'show_watermark_image' => true,
+        'watermarkImgBehind' => true,
+    ]);
+
+
+    return $pdf->stream($title . ".pdf");
+}
+
+function extractName($text)
+{
+    $tempDiv = new \DOMDocument();
+    $tempDiv->loadHTML('<?xml encoding="utf-8" ?>' . $text);
+
+
+    $spanElements = $tempDiv->getElementsByTagName('span');
+    $fontFamily = null;
+
+    foreach ($spanElements as $span) {
+
+        $style = $span->getAttribute('style');
+
+
+        preg_match('/font-family\s*:\s*([^;]+)(;|$)/', $style, $matches);
+
+        if (isset($matches[1])) {
+            $fontFamily = trim($matches[1], " '\"");
+            break;
+        }
+    }
+
+
+    return $fontFamily ?? 'Nazanin';
 }
