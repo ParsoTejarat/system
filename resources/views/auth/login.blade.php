@@ -99,5 +99,20 @@
 
         <!-- App js -->
         <script src="/assets/js/app.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $(document).on('click', '#captcha_sec img', function (){
+                    $.ajax({
+                        type: 'get',
+                        url: '/captcha/api',
+                        success: function (res){
+                            $('#captcha_sec img').attr('src',res.img)
+                            // console.log($(this))
+                        }
+                    })
+                })
+            })
+        </script>
     </body>
 </html>
