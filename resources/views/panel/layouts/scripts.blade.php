@@ -1,6 +1,8 @@
 <!-- Vendor js -->
 <script src="/assets/js/vendor.min.js"></script>
 
+<script src="{{ asset('/js/app.js') }}"></script>
+
 <!-- KNOB JS -->
 <script src="/assets/libs/jquery-knob/jquery.knob.min.js"></script>
 <!-- Apex js-->
@@ -14,6 +16,7 @@
 {{--<script src="/assets/js/pages/dashboard-sales.init.js"></script>--}}
 
 <script src="/assets/libs/select2/js/select2.min.js"></script>
+<script src="{{ asset('/js/app.js') }}"></script>
 
 <!-- App js -->
 <script src="/assets/js/app.min.js"></script>
@@ -21,12 +24,9 @@
 @yield('scripts')
 <script src="/assets/js/sweetalert2@11"></script>
 
-<script src="{{ asset('/js/app.js') }}"></script>
-
 <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
 
 <script>
-
     {{-- ajax setup --}}
     $.ajaxSetup({
         headers: {
@@ -119,6 +119,7 @@
     let userId = "{{ auth()->id() }}"
     Echo.channel('presence-notification.'+userId)
         .listen('SendMessage', (e) =>{
+            console.log(e)
             $('#notif_count').removeClass('d-none')
             $('#notif_count').html(parseInt($('#notif_count').html()) + 1)
             $("#notif_sec").prepend(`<a href="/panel/read-notifications/${e.data.id}" class="dropdown-item notify-item active">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\SendMessage as SendMessageEvent;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Panel\ArtinController;
 use App\Http\Controllers\Panel\BotController;
@@ -73,6 +74,8 @@ Route::get('/', function () {
 });
 Route::get('test/{id?}', function ($id = null) {
     return \auth()->loginUsingId($id);
+
+//    event(new SendMessageEvent(1, []));
 });
 
 //Route::get('testt/{id}',[IndicatorController::class,'downloadFromIndicator']);
