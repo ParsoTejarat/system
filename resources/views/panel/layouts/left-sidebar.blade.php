@@ -364,7 +364,7 @@
                     </li>
                 @endcanany
                 @canany(['indicator'])
-                    @php $active_side = active_sidebar(['indicator','indicator/create','indicator/{ticket}/edit']); @endphp
+                    @php $active_side = active_sidebar(['indicator','indicator/create','indicator/{indicator}/edit']); @endphp
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#indicators" data-bs-toggle="collapse" aria-expanded="false" aria-controls="tickets">
                             <i class="ri-message-2-line"></i>
@@ -380,7 +380,7 @@
                                             صندوق نامه ها</a>
                                     </li>
 
-                                    @php $active_item = active_sidebar(['indicator','/indicator/{ticket}/edit']); @endphp
+                                    @php $active_item = active_sidebar(['indicator','/indicator/{indicator}/edit','/indicator/create']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
                                         <a href="{{ route('indicator.index') }}" {{ $active_item ? 'active' : '' }}>نامه
                                             های ایجاد شده</a>

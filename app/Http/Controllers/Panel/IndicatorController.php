@@ -102,22 +102,22 @@ class IndicatorController extends Controller
 
 
         if ($header == 'info') {
-            return exportPdfInfoPersian($title, $text, $date, $number, $attachment);
+            return $this->exportPdfInfoPersian($title, $text, $date, $number, $attachment);
         } elseif ($header == 'sale') {
-            return exportPdfSalePersian($title, $text, $date, $number, $attachment);
+            return $this->exportPdfSalePersian($title, $text, $date, $number, $attachment);
         }
-        return exportPdfEnglish($title, $text, $date, $number, $attachment);
+        return $this->exportPdfEnglish($title, $text, $date, $number, $attachment);
     }
 
     public function downloadFromIndicator($id)
     {
         $indicator = Indicator::whereId($id)->first();
         if ($indicator->header == 'info') {
-            return exportPdfInfoPersian($indicator->title, $indicator->text, $indicator->date, $indicator->number, $indicator->attachment);
+            return $this->exportPdfInfoPersian($indicator->title, $indicator->text, $indicator->date, $indicator->number, $indicator->attachment);
         } elseif ($indicator->header == 'sale') {
-            return exportPdfSalePersian($indicator->title, $indicator->text, $indicator->date, $indicator->number, $indicator->attachment);
+            return $this->exportPdfSalePersian($indicator->title, $indicator->text, $indicator->date, $indicator->number, $indicator->attachment);
         }
-        return exportPdfEnglish($indicator->title, $indicator->text, $indicator->date, $indicator->number, $indicator->attachment);
+        return $this->exportPdfEnglish($indicator->title, $indicator->text, $indicator->date, $indicator->number, $indicator->attachment);
     }
 
 
@@ -125,6 +125,102 @@ class IndicatorController extends Controller
     {
         $inbox = auth()->user()->indicators()->paginate(30);
         return view('panel.indicator.inbox', compact(['inbox']));
+    }
+
+
+    public function exportPdfInfoPersian($title, $text, $date, $number, $attachment)
+    {
+
+        $backgroundImage = public_path('/assets/images/persian-header-info.png');
+
+        $pdf = PDF::loadView('panel.indicator.indicator-header-info-persian-pdf', ['text' => $text, 'date' => $date, 'number' => $number, 'attachment' => $attachment], [], [
+            'format' => 'A4',
+            'orientation' => 'P',
+            'default_font_size' => '10',
+            'default_font' => $this->extractName($text),
+            'display_mode' => 'fullpage',
+            'watermark_text_alpha' => 1,
+            'watermark_image_path' => $backgroundImage,
+            'watermark_image_alpha' => 1,
+            'watermark_image_size' => [210, 297],
+            'show_watermark_image' => true,
+            'watermarkImgBehind' => true,
+        ]);
+
+
+        return $pdf->stream($title . ".pdf");
+    }
+
+
+    public function exportPdfSalePersian($title, $text, $date, $number, $attachment)
+    {
+
+        $backgroundImage = public_path('/assets/images/persian-header-sale.png');
+
+        $pdf = PDF::loadView('panel.indicator.indicator-header-sale-persian-pdf', ['text' => $text, 'date' => $date, 'number' => $number, 'attachment' => $attachment], [], [
+            'format' => 'A4',
+            'orientation' => 'P',
+            'default_font_size' => '10',
+            'default_font' => $this->extractName($text),
+            'display_mode' => 'fullpage',
+            'watermark_text_alpha' => 1,
+            'watermark_image_path' => $backgroundImage,
+            'watermark_image_alpha' => 1,
+            'watermark_image_size' => [210, 297],
+            'show_watermark_image' => true,
+            'watermarkImgBehind' => true,
+        ]);
+
+
+        return $pdf->stream($title . ".pdf");
+    }
+
+    public function exportPdfEnglish($title, $text, $date, $number, $attachment)
+    {
+
+        $backgroundImage = public_path('/assets/images/english-header.png');
+
+        $pdf = PDF::loadView('panel.indicator.indicator-header-english-pdf', ['text' => $text, 'date' => $date, 'number' => $number, 'attachment' => $attachment], [], [
+            'format' => 'A4',
+            'orientation' => 'P',
+            'default_font_size' => '10',
+            'default_font' => $this->extractName($text),
+            'display_mode' => 'fullpage',
+            'watermark_text_alpha' => 1,
+            'watermark_image_path' => $backgroundImage,
+            'watermark_image_alpha' => 1,
+            'watermark_image_size' => [210, 297],
+            'show_watermark_image' => true,
+            'watermarkImgBehind' => true,
+        ]);
+        return $pdf->stream($title . ".pdf");
+    }
+
+
+    public function extractName($text)
+    {
+        $tempDiv = new \DOMDocument();
+        $tempDiv->loadHTML('<?xml encoding="utf-8" ?>' . $text);
+
+
+        $spanElements = $tempDiv->getElementsByTagName('span');
+        $fontFamily = null;
+
+        foreach ($spanElements as $span) {
+
+            $style = $span->getAttribute('style');
+
+
+            preg_match('/font-family\s*:\s*([^;]+)(;|$)/', $style, $matches);
+
+            if (isset($matches[1])) {
+                $fontFamily = trim($matches[1], " '\"");
+                break;
+            }
+        }
+
+
+        return $fontFamily ?? 'Nazanin';
     }
 
 
