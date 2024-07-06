@@ -80,12 +80,6 @@ class IndicatorController extends Controller
 
     public function destroy(Indicator $indicator)
     {
-////        if ($indicator->users()->exists()) {
-//////            return response('این نامه به ',422);
-////        }
-//        if ($indicator->users()->exists()){
-////            return response('این نامه به ',422);
-//        }
         activity_log('delete-indicator', __METHOD__, $indicator);
         $indicator->delete();
         return back();
@@ -101,8 +95,6 @@ class IndicatorController extends Controller
         $number = $request->number ?? '';
         $header = $request->header ?? '';
         $attachment = $request->attachment ?? '';
-
-
         if ($header == 'info') {
             return $this->exportPdfInfoPersian($title, $text, $date, $number, $attachment);
         } elseif ($header == 'sale') {
