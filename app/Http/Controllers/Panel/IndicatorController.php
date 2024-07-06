@@ -148,15 +148,12 @@ class IndicatorController extends Controller
             'show_watermark_image' => true,
             'watermarkImgBehind' => true,
         ]);
-
-
         return $pdf->stream($title . ".pdf");
     }
 
 
     public function exportPdfSalePersian($title, $text, $date, $number, $attachment)
     {
-
         $backgroundImage = public_path('/assets/images/persian-header-sale.png');
         $pdf = PDF::loadView('panel.indicator.indicator-header-sale-persian-pdf', ['text' => $text, 'date' => $date, 'number' => $number, 'attachment' => $attachment], [], [
             'format' => 'A4',
@@ -176,7 +173,6 @@ class IndicatorController extends Controller
 
     public function exportPdfEnglish($title, $text, $date, $number, $attachment)
     {
-
         $backgroundImage = public_path('/assets/images/english-header.png');
         $pdf = PDF::loadView('panel.indicator.indicator-header-english-pdf', ['text' => $text, 'date' => $date, 'number' => $number, 'attachment' => $attachment], [], [
             'format' => 'A4',
@@ -212,6 +208,4 @@ class IndicatorController extends Controller
         }
         return $fontFamily ?? 'Nazanin';
     }
-
-
 }
