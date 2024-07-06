@@ -104,11 +104,8 @@ class SendMessage extends Notification
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "post");
-
-        $response = curl_exec($ch);
+        curl_exec($ch);
         curl_close($ch);
-
-        dd($response);
     }
 
     // the old method
