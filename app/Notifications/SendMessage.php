@@ -66,7 +66,7 @@ class SendMessage extends Notification
     }
 
     // the new method
-    private function send_firebase_notification($message, $firebaseToken)
+    private function send_firebase_notification($message, $url, $firebaseToken)
     {
         $credential = new ServiceAccountCredentials(
             "https://www.googleapis.com/auth/firebase.messaging",
@@ -82,27 +82,20 @@ class SendMessage extends Notification
             'Authorization: Bearer '.$token['access_token']
         ]);
 
-        $firebaseTokens = [$firebaseToken];
-
-        $data = [
-            'message' => [
-                'token' => $firebaseTokens,
-                'notification' => [
-                    'title' => '',
-                    'body' => $message,
-                ],
-                'webpush' => [
-                    'headers' => [
-                        "Urgency" => "high"
+        $payload = [
+            "message" => [
+                "token" => $firebaseToken,
+                "webpush" => [
+                    "notification" => [
+                        "title" => "",
+                        "body" => $message,
+                        "icon" => asset('assets/images/logo-sm.png')
                     ],
-                    'fcm_options' => [
-                        "link" => "https://google.com"
-                    ]
                 ]
-            ],
+            ]
         ];
 
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "post");
         curl_exec($ch);
         curl_close($ch);
