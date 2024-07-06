@@ -14,7 +14,7 @@ class DailyBackup extends Command
      *
      * @var string
      */
-    protected $signature = 'backup:daily';
+    protected $signature = 'backup:files';
 
     /**
      * The console command description.
