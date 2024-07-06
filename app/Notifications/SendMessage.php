@@ -66,14 +66,49 @@ class SendMessage extends Notification
     }
 
     // the new method
-    private function send_firebase_notification($message, $token)
+    private function send_firebase_notification($message, $firebaseToken)
     {
         $credential = new ServiceAccountCredentials(
             "https://www.googleapis.com/auth/firebase.messaging",
-            json_decode(file_get_contents("pvKey.json"), true)
+            json_decode(file_get_contents(public_path('firebase-private-key.json')), true)
         );
 
-        dd($credential);
+        $token = $credential->fetchAuthToken(\Google\Auth\HttpHandler\HttpHandlerFactory::build());
+
+        $ch = curl_init("https://fcm.googleapis.com/v1/projects/parso-462c2/messages:send");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Authorization: Bearer '.$token['access_token']
+        ]);
+
+        $firebaseTokens = [$firebaseToken];
+
+        $data = [
+            'message' => [
+                'token' => $firebaseTokens,
+                'notification' => [
+                    'title' => '',
+                    'body' => $message,
+                ],
+                'webpush' => [
+                    'headers' => [
+                        "Urgency" => "high"
+                    ],
+                    'fcm_options' => [
+                        "link" => "https://google.com"
+                    ]
+                ]
+            ],
+        ];
+
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "post");
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        dd($response);
     }
 
     // the old method
