@@ -34,12 +34,15 @@ class FileManagerController extends Controller
             ]);
         }
 
-        File::create([
+        $file = File::create([
             'user_id' => auth()->id(),
             'name' => $request->folder_name,
             'parent_id' => $request->sub_folder_id,
             'is_folder' => 1,
         ]);
+
+        // log
+        activity_log('create-folder', __METHOD__, [$request->all(), $file]);
 
         return back();
     }
@@ -89,6 +92,9 @@ class FileManagerController extends Controller
         }
         File::whereIn('id', $request->checked_files)->delete();
 
+        // log
+        activity_log('delete-file', __METHOD__, $request->all());
+
         return back();
     }
 
@@ -137,6 +143,9 @@ class FileManagerController extends Controller
             File::where('id', $request->file_id)->update(['name' => $new_name]);
         }
 
+        // log
+        activity_log('edit-file-name', __METHOD__, $request->all());
+
         return back();
     }
 
@@ -147,6 +156,9 @@ class FileManagerController extends Controller
         $files_id = $request->checked_files;
         session()->put('moving', true);
         session()->put('files_id', $files_id);
+
+        // log
+        activity_log('moving-file', __METHOD__, $request->all());
     }
 
     public function cancelMoving()
@@ -154,6 +166,9 @@ class FileManagerController extends Controller
         $this->authorize('file-manager');
 
         session()->forget(['moving','files_id']);
+
+        // log
+        activity_log('cancel-move-file', __METHOD__);
     }
 
     public function moveFiles(Request $request)
@@ -166,6 +181,9 @@ class FileManagerController extends Controller
 
         session()->forget(['moving','files_id']);
 
+        // log
+        activity_log('move-file', __METHOD__, $request->all());
+
         return back();
     }
 
@@ -173,7 +191,7 @@ class FileManagerController extends Controller
     {
         $this->authorize('file-manager');
 
-        File::create([
+        $file_uploaded = File::create([
             'user_id' => auth()->id(),
             'name' => $file->getClientOriginalName(),
             'type' => $file->getClientOriginalExtension(),
@@ -182,6 +200,9 @@ class FileManagerController extends Controller
             'parent_id' => $sub_folder_id,
             'path' => upload_file($file, 'FileManager/'.auth()->id()),
         ]);
+
+        // log
+        activity_log('create-file', __METHOD__, [$file, $file_uploaded, $sub_folder_id]);
     }
 
 }

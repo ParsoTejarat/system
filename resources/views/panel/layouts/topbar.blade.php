@@ -75,11 +75,11 @@
                 </div>
             </li>
 
-{{--            <li class="dropdown notification-list">--}}
-{{--                <a class="nav-link waves-effect waves-light" data-bs-toggle="offcanvas" href="#theme-settings-offcanvas" >--}}
-{{--                    <i class="fe-settings noti-icon"></i>--}}
-{{--                </a>--}}
-{{--            </li>--}}
+            {{--            <li class="dropdown notification-list">--}}
+            {{--                <a class="nav-link waves-effect waves-light" data-bs-toggle="offcanvas" href="#theme-settings-offcanvas" >--}}
+            {{--                    <i class="fe-settings noti-icon"></i>--}}
+            {{--                </a>--}}
+            {{--            </li>--}}
 
         </ul>
 

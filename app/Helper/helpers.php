@@ -97,6 +97,18 @@ if (!function_exists('sendSMS')) {
     }
 }
 
+if (!function_exists('activity_log')) {
+    function activity_log($activity_name, $method, $data = [])
+    {
+        \App\Models\ActivityLog::create([
+            'user_id' => auth()->id(),
+            'ip' => request()->ip(),
+            'activity_name' => $activity_name,
+            'method' => $method,
+            'data' => json_encode($data),
+        ]);
+    }
+}
 function englishToPersianNumbers($input)
 {
     $persianNumbers = [

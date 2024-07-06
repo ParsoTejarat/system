@@ -42,7 +42,7 @@ class InventoryController extends Controller
             return back()->withErrors(['code' => 'این کد در انبار موجود است'])->withInput();
         }
 
-        Inventory::create([
+        $inventory = Inventory::create([
             'warehouse_id' => $warehouse_id,
             'title' => $request->title,
             'code' => $request->code,
@@ -50,6 +50,9 @@ class InventoryController extends Controller
             'initial_count' => $request->count,
             'current_count' => $request->count,
         ]);
+
+        // log
+        activity_log('create-inventory', __METHOD__, [$request->all(), $inventory]);
 
         alert()->success('کالا مورد نظر با موفقیت ایجاد شد','ایجاد کالا');
         return redirect()->route('inventory.index', ['warehouse_id' => $warehouse_id]);
@@ -80,6 +83,9 @@ class InventoryController extends Controller
             }
         }
 
+        // log
+        activity_log('edit-inventory', __METHOD__, [$request->all(), $inventory]);
+
         $inventory->update([
             'warehouse_id' => $warehouse_id,
             'title' => $request->title,
@@ -96,6 +102,9 @@ class InventoryController extends Controller
     public function destroy(Inventory $inventory)
     {
         $this->authorize('inventory-delete');
+
+        // log
+        activity_log('delete-inventory', __METHOD__, $inventory);
 
         $inventory->delete();
         return back();
@@ -191,6 +200,9 @@ class InventoryController extends Controller
             'count' => $count,
         ]);
         // end create input report
+
+        // log
+        activity_log('move-inventory', __METHOD__, [$request->all(), $report]);
 
         alert()->success('کالا با موفقیت به انبار مورد نظر انتقال یافت','انتقال کالا');
         return back();

@@ -42,7 +42,7 @@ class PriceRequestController extends Controller
             ];
         }
 
-        PriceRequest::create([
+        $price_request = PriceRequest::create([
             'user_id' => auth()->id(),
             'max_send_time' => $request->max_send_time,
             'items' => json_encode($items)
@@ -59,6 +59,9 @@ class PriceRequestController extends Controller
         $url = route('price-requests.index');
         Notification::send($notifiables, new SendMessage($notif_message, $url));
         // end notification sent to ceo
+
+        // log
+        activity_log('create-price-request', __METHOD__, [$request->all(), $price_request]);
 
         alert()->success('درخواست قیمت با موفقیت ثبت شد','ثبت درخواست قیمت');
         return redirect()->route('price-requests.index');
@@ -91,6 +94,9 @@ class PriceRequestController extends Controller
             ];
         }
 
+        // log
+        activity_log('edit-price-request', __METHOD__, [$request->all(), $priceRequest]);
+
         $priceRequest->update([
             'items' => json_encode($items),
             'status' => 'sent',
@@ -116,6 +122,9 @@ class PriceRequestController extends Controller
     public function destroy(PriceRequest $priceRequest)
     {
         $this->authorize('price-requests-delete');
+
+        // log
+        activity_log('delete-price-request', __METHOD__, $priceRequest);
 
         $priceRequest->delete();
         return back();

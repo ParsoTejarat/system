@@ -88,6 +88,7 @@
                                             </option>
                                             <option value="english" {{$indicator=='english'?'selected':''}}>سربرگ انگلیسی پرسو
                                                 تجارت
+                                                انگلیسی پرسو تجارت
                                             </option>
                                         </select>
                                         @error('header')

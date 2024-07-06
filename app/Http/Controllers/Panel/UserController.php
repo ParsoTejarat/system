@@ -41,6 +41,9 @@ class UserController extends Controller
 
         $this->createLeaveInfo($user);
 
+        // log
+        activity_log('create-user', __METHOD__, $request->all());
+
         alert()->success('کاربر مورد نظر با موفقیت ایجاد شد','ایجاد کاربر');
         return redirect()->route('users.index');
     }
@@ -64,6 +67,9 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $this->authorize('users-edit');
+
+        // log
+        activity_log('edit-user', __METHOD__, [$request->all(), $user]);
 
         if (auth()->user()->isAdmin()){
             if ($request->sign_image){
@@ -101,6 +107,9 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $this->authorize('users-delete');
+
+        // log
+        activity_log('delete-user', __METHOD__, $user);
 
         $user->delete();
         return back();

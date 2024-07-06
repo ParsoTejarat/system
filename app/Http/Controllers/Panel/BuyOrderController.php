@@ -50,12 +50,15 @@ class BuyOrderController extends Controller
             ];
         }
 
-        BuyOrder::create([
+        $buy_order = BuyOrder::create([
             'user_id' => auth()->id(),
             'customer_id' => $request->customer_id,
             'description' => $request->description,
             'items' => json_encode($items),
         ]);
+
+        // log
+        activity_log('create-buy-order', __METHOD__, [$request->all(), $buy_order]);
 
         alert()->success('سفارش مورد نظر با موفقیت ثبت شد','ثبت سفارش خرید');
         return redirect()->route('buy-orders.index');
@@ -96,6 +99,9 @@ class BuyOrderController extends Controller
             ];
         }
 
+        // log
+        activity_log('edit-buy-order', __METHOD__, [$request->all(), $buyOrder]);
+
         $buyOrder->update([
             'customer_id' => $request->customer_id,
             'description' => $request->description,
@@ -114,6 +120,9 @@ class BuyOrderController extends Controller
             return back();
         }
 
+        // log
+        activity_log('delete-buy-order', __METHOD__, $buyOrder);
+
         $buyOrder->delete();
         return back();
     }
@@ -129,6 +138,9 @@ class BuyOrderController extends Controller
         }else{
             $buyOrder->update(['status' => 'bought']);
         }
+
+        // log
+        activity_log('buy-order-change-status', __METHOD__, $buyOrder);
 
         alert()->success('وضعیت سفارش با موفقیت تغییر کرد','تغییر وضعیت سفارش');
         return back();

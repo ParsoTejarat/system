@@ -29,11 +29,14 @@ class CouponController extends Controller
     {
         $this->authorize('coupons-create');
 
-        Coupon::create([
+        $coupon = Coupon::create([
             'title' => $request->title,
             'code' => $request->code,
             'amount_pc' => $request->amount_pc,
         ]);
+
+        // log
+        activity_log('create-coupon', __METHOD__, [$request->all(), $coupon]);
 
         alert()->success('کد تخفیف مورد نظر با موفقیت ایجاد شد','ایجاد کد تخفیف');
         return redirect()->route('coupons.index');
@@ -56,6 +59,9 @@ class CouponController extends Controller
     {
         $this->authorize('coupons-edit');
 
+        // log
+        activity_log('edit-coupon', __METHOD__, [$request->all(), $coupon]);
+
         $coupon->update([
             'title' => $request->title,
             'code' => $request->code,
@@ -69,6 +75,9 @@ class CouponController extends Controller
     public function destroy(Coupon $coupon)
     {
         $this->authorize('coupons-delete');
+
+        // log
+        activity_log('delete-coupon', __METHOD__, $coupon);
 
         $coupon->delete();
         return back();

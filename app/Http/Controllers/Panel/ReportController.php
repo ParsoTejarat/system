@@ -46,11 +46,14 @@ class ReportController extends Controller
 
         $items = explode(',', $request->items);
 
-        Report::create([
+        $report = Report::create([
             'user_id' => auth()->id(),
             'items' => json_encode($items),
             'date' => $date
         ]);
+
+        // log
+        activity_log('create-report', __METHOD__, [$request->all(), $report]);
 
         alert()->success('گزارش روزانه با موفقیت ثبت شد','ثبت گزارش');
         return redirect()->route('reports.index');
@@ -91,6 +94,9 @@ class ReportController extends Controller
 
         $items = explode(',', $request->items);
 
+        // log
+        activity_log('edit-report', __METHOD__, [$request->all(), $report]);
+
         $report->update([
             'items' => json_encode($items),
             'date' => $date
@@ -103,6 +109,9 @@ class ReportController extends Controller
     public function destroy(Report $report)
     {
         $this->authorize('reports-delete');
+
+        // log
+        activity_log('delete-report', __METHOD__, $report);
 
         $report->delete();
         return back();

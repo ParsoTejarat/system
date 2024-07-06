@@ -47,7 +47,7 @@ class LeaveController extends Controller
         }
         // end limit daily leave
 
-        Leave::create([
+        $leave = Leave::create([
             'user_id' => auth()->id(),
             'title' => $request->title,
             'desc' => $request->description,
@@ -70,6 +70,9 @@ class LeaveController extends Controller
 
         Notification::send($ceo_users, new SendMessage($message, $url));
         // end send notification to ceo`s
+
+        // log
+        activity_log('create-leave', __METHOD__, [$request->all(), $leave]);
 
         alert()->success('درخواست مرخصی شما با موفقیت ثبت شد','درخواست مرخصی');
         return redirect()->route('leaves.index');
@@ -121,6 +124,9 @@ class LeaveController extends Controller
             $leave->user->notify(new SendMessage($message, $url));
         }
 
+        // log
+        activity_log('edit-leave', __METHOD__, [$request->all(), $leave]);
+
         $leave->update([
             'acceptor_id' => auth()->id(),
             'answer' => $request->description,
@@ -135,6 +141,9 @@ class LeaveController extends Controller
     public function destroy(Leave $leave)
     {
         $this->authorize('leaves-delete');
+
+        // log
+        activity_log('delete-leave', __METHOD__, $leave);
 
         $leave->delete();
         return back();

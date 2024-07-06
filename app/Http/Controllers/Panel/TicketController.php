@@ -62,6 +62,9 @@ class TicketController extends Controller
             'file' => isset($file) ? json_encode($file_info) : null,
         ]);
 
+        // log
+        activity_log('create-ticket', __METHOD__, [$request->all(), $ticket]);
+
         $message = 'تیکتی با عنوان "'.$ticket->title.'" به شما ارسال شده است';
         $url = route('tickets.edit', $ticket->id);
 
@@ -118,6 +121,9 @@ class TicketController extends Controller
             'file' => isset($file) ? json_encode($file_info) : null,
         ]);
 
+        // log
+        activity_log('edit-ticket', __METHOD__, [$request->all(), $ticket]);
+
         return back();
     }
 
@@ -130,6 +136,9 @@ class TicketController extends Controller
                 unlink(public_path(json_decode($message->file)->path));
             }
         }
+
+        // log
+        activity_log('delete-ticket', __METHOD__, $ticket);
 
         $ticket->delete();
         return back();
@@ -151,6 +160,9 @@ class TicketController extends Controller
             $receiver = auth()->id() == $ticket->sender_id ? $ticket->receiver : $ticket->sender;
             Notification::send($receiver, new SendMessage($message, $url));
             // end send notif
+
+            // log
+            activity_log('ticket-change-status', __METHOD__, $ticket);
 
             alert()->success('وضعیت تیکت با موفقیت تغییر یافت','تغییر وضعیت');
             return back();

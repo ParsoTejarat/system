@@ -76,6 +76,8 @@ class InventoryReportController extends Controller
 
             $date = Verta::parseFormat('Y/m/d', $request->input_date)->toCarbon()->toDateTimeString();
 
+            // log
+            activity_log('create-inventory-input', __METHOD__, $request->all());
         }else{
             $this->authorize('output-reports-create');
 
@@ -102,16 +104,19 @@ class InventoryReportController extends Controller
             $this->storeCheckInventoryCount($request);
 
             // send notification
-            $notifiables = User::whereHas('role' , function ($role) {
-                $role->whereHas('permissions', function ($q) {
-                    $q->where('name', 'exit-door');
-                });
-            })->get();
-
-            $notif_message = 'یک خروج انبار توسط انباردار ثبت شد';
-            $url = route('exit-door.index');
-            Notification::send($notifiables, new SendMessage($notif_message, $url));
+//            $notifiables = User::whereHas('role' , function ($role) {
+//                $role->whereHas('permissions', function ($q) {
+//                    $q->where('name', 'exit-door');
+//                });
+//            })->get();
+//
+//            $notif_message = 'یک خروج انبار توسط انباردار ثبت شد';
+//            $url = route('exit-door.index');
+//            Notification::send($notifiables, new SendMessage($notif_message, $url));
             // end send notification
+
+            // log
+            activity_log('create-inventory-output', __METHOD__, $request->all());
         }
 
         $serial = 'PT'.$request->guarantee_serial;
@@ -184,6 +189,9 @@ class InventoryReportController extends Controller
             ]);
 
             $date = Verta::parseFormat('Y/m/d', $request->input_date)->toCarbon()->toDateTimeString();
+
+            // log
+            activity_log('edit-inventory-input', __METHOD__, [$request->all(), $inventoryReport]);
         }else{
             $this->authorize('output-reports-edit');
 
@@ -200,6 +208,9 @@ class InventoryReportController extends Controller
 
             // check inventory count is enough
             $this->updateCheckInventoryCount($inventoryReport ,$request);
+
+            // log
+            activity_log('edit-inventory-output', __METHOD__, [$request->all(), $inventoryReport]);
         }
 
         $serial = 'PT'.$request->guarantee_serial;
@@ -258,6 +269,9 @@ class InventoryReportController extends Controller
                 $inventory->current_count -= $item->count;
                 $inventory->save();
             });
+
+            // log
+            activity_log('delete-inventory-input', __METHOD__, $inventoryReport);
         }else{
             $this->authorize('output-reports-delete');
 
@@ -266,6 +280,9 @@ class InventoryReportController extends Controller
                 $inventory->current_count += $item->count;
                 $inventory->save();
             });
+
+            // log
+            activity_log('delete-inventory-output', __METHOD__, $inventoryReport);
         }
 
         $inventoryReport->delete();

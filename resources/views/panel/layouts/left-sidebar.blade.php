@@ -149,10 +149,9 @@
                                     </li>
                                 @endcan
                                 @can('parso-products')
-                                    @php $active_item = active_sidebar(['products','products/create','products/{product}/edit','search/products']); @endphp
+                                    @php $active_item = active_sidebar(['parso-products']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('products.index') }}" {{ $active_item ? 'active' : '' }}>محصولات
-                                            پرسو تجارت</a>
+                                        <a href="{{ route('parso.index') }}" {{ $active_item ? 'active' : '' }}>محصولات پرسو تجارت</a>
                                     </li>
                                 @endcan
                                 @can('price-history')

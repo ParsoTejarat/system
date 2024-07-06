@@ -41,7 +41,7 @@ class ProductController extends Controller
         $this->authorize('products-create');
 
         // create product
-        Product::create([
+        $product = Product::create([
             'title' => $request->title,
             'code' => $request->code,
             'sku' => $request->sku,
@@ -52,6 +52,9 @@ class ProductController extends Controller
             'single_price' => $request->single_price,
             'creator_id' => auth()->id(),
         ]);
+
+        // log
+        activity_log('create-product', __METHOD__, [$request->all(), $product]);
 
         alert()->success('محصول مورد نظر با موفقیت ایجاد شد','ایجاد محصول');
         return redirect()->route('products.index');
@@ -75,6 +78,9 @@ class ProductController extends Controller
 
         // price history
         $this->priceHistory($product, $request);
+
+        // log
+        activity_log('edit-product', __METHOD__, [$request->all(), $product]);
 
         // create product
         $product->update([
@@ -100,6 +106,9 @@ class ProductController extends Controller
         if ($product->invoices()->exists()){
             return response('این محصول در سفارشاتی موجود است',500);
         }
+
+        // log
+        activity_log('delete-product', __METHOD__, $product);
 
         $product->delete();
         return back();

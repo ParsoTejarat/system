@@ -44,7 +44,7 @@ class PacketController extends Controller
 
         $sent_time = Verta::parse($request->sent_time)->datetime();
 
-        Packet::create([
+        $packet = Packet::create([
             'user_id' => auth()->id(),
             'invoice_id' => $request->invoice,
             'receiver' => $request->receiver,
@@ -59,6 +59,9 @@ class PacketController extends Controller
             'sent_time' => $sent_time,
             'notif_time' => Carbon::parse($sent_time)->addDays(20),
         ]);
+
+        // log
+        activity_log('create-packet', __METHOD__, [$request->all(), $packet]);
 
         alert()->success('بسته مورد نظر با موفقیت ایجاد شد','ایجاد بسته');
         return redirect()->route('packets.index');
@@ -94,6 +97,9 @@ class PacketController extends Controller
 
         $sent_time = Verta::parse($request->sent_time)->datetime();
 
+        // log
+        activity_log('edit-packet', __METHOD__, [$request->all(), $packet]);
+
         $packet->update([
             'invoice_id' => $request->invoice,
             'receiver' => $request->receiver,
@@ -118,6 +124,9 @@ class PacketController extends Controller
     public function destroy(Packet $packet)
     {
         $this->authorize('packets-delete');
+
+        // log
+        activity_log('delete-packet', __METHOD__, $packet);
 
         $packet->delete();
         return back();

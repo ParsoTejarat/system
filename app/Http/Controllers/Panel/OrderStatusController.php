@@ -53,11 +53,17 @@ class OrderStatusController extends Controller
             'updated_at' => now()
         ]);
 
+        // log
+        activity_log('order-change-status', __METHOD__, $request->all());
+
         return back();
     }
 
     public function addDescription(Request $request)
     {
+        // log
+        activity_log('order-add-desc', __METHOD__, $request->all());
+
         Invoice::find($request->invoice_id)->update(['order_status_desc' => $request->description]);
     }
 }

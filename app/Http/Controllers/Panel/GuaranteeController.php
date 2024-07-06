@@ -33,13 +33,16 @@ class GuaranteeController extends Controller
     {
         $this->authorize('guarantees-create');
 
-        Guarantee::create([
+        $guarantee = Guarantee::create([
             'serial' => $request->serial_number,
             'period' => $request->period,
             'status' => $request->status,
             'activated_at' => $request->status == 'active' ? now() : null,
             'expired_at' => $request->status == 'active' ? now()->addMonths($request->period) : null,
         ]);
+
+        // log
+        activity_log('create-guarantee', __METHOD__, [$request->all(), $guarantee]);
 
         alert()->success('گارانتی جدید با موفقیت ایجاد شد','ایجاد گارانتی');
         return redirect()->route('guarantees.index');
@@ -61,6 +64,9 @@ class GuaranteeController extends Controller
     {
         $this->authorize('guarantees-edit');
 
+        // log
+        activity_log('edit-guarantee', __METHOD__, [$request->all(), $guarantee]);
+
         $guarantee->update([
             'serial' => $request->serial_number,
             'period' => $request->period,
@@ -76,6 +82,9 @@ class GuaranteeController extends Controller
     public function destroy(Guarantee $guarantee)
     {
         $this->authorize('guarantees-delete');
+
+        // log
+        activity_log('delete-guarantee', __METHOD__, $guarantee);
 
         $guarantee->delete();
         return back();

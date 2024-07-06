@@ -38,6 +38,9 @@ class NoteController extends Controller
             $note = Note::find($request->note_id);
         }
 
+        // log
+        activity_log('create-note', __METHOD__, [$request->all(), $note]);
+
         return response()->json(['data' => true, 'id' => $note->id]);
     }
 
@@ -46,6 +49,10 @@ class NoteController extends Controller
         $this->authorize('notes-delete');
 
         Note::find($request->note_id)->delete();
+
+        // log
+        activity_log('delete-note', __METHOD__, $request->all());
+
         return response()->json(['data' => true]);
     }
 }

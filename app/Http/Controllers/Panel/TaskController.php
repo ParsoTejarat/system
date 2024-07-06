@@ -46,6 +46,9 @@ class TaskController extends Controller
             'description' => $request->description,
         ]);
 
+        // log
+        activity_log('create-task', __METHOD__, [$request->all(), $task]);
+
         $this->assignTask($task, $request);
 
         alert()->success('وظیفه مورد نظر با موفقیت ایجاد شد','ایجاد وظیفه');
@@ -76,6 +79,9 @@ class TaskController extends Controller
         // edit own task
         $this->authorize('edit-task', $task);
 
+        // log
+        activity_log('edit-task', __METHOD__, [$request->all(), $task]);
+
         $task->update([
             'title' => $request->title,
             'description' => $request->description,
@@ -96,6 +102,9 @@ class TaskController extends Controller
         // delete own task
         $this->authorize('delete-task', $task);
 
+        // log
+        activity_log('delete-task', __METHOD__, $task);
+
         $task->delete();
         return back();
     }
@@ -114,6 +123,9 @@ class TaskController extends Controller
             $done_at = now();
         }
 
+        // log
+        activity_log('task-change-status', __METHOD__, [$request->all(), $task->first()]);
+
         $task->update(['status' => $task_status, 'done_at' => $done_at]);
 
         return response()->json(['task_status' => $task_status,'message' => $message]);
@@ -122,6 +134,10 @@ class TaskController extends Controller
     public function addDescription(Request $request)
     {
         $task = DB::table('task_user')->where(['task_id' => $request->task_id, 'user_id' => auth()->id()]);
+
+        // log
+        activity_log('task-add-desc', __METHOD__, [$request->all(), $task->first()]);
+
         $task->update(['description' => $request->description]);
     }
     public function getDescription(Request $request)

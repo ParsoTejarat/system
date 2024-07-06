@@ -42,6 +42,9 @@ class OffSiteProductController extends Controller
                 return back();
         }
 
+        // log
+        activity_log('create-offsite-product', __METHOD__, $request->all());
+
         alert()->success('محصول مورد نظر با موفقیت ایجاد شد', 'ایجاد محصول');
         return redirect()->route('off-site-products.index', $request->website);
     }
@@ -73,6 +76,9 @@ class OffSiteProductController extends Controller
     {
         $this->authorize('shops');
 
+        // log
+        activity_log('edit-offsite-product', __METHOD__, [$request->all(), $offSiteProduct]);
+
         switch ($offSiteProduct->website) {
             case 'emalls':
                 $this->publicUpdate($offSiteProduct, $request);
@@ -94,6 +100,9 @@ class OffSiteProductController extends Controller
     public function destroy(OffSiteProduct $offSiteProduct)
     {
         $this->authorize('shops');
+
+        // log
+        activity_log('delete-offsite-product', __METHOD__, $offSiteProduct);
 
         $offSiteProduct->delete();
         return back();
