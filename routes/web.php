@@ -45,6 +45,7 @@ use App\Models\Invoice;
 use App\Models\Packet;
 use App\Models\User;
 use App\Notifications\SendMessage;
+use Google\Auth\Credentials\ServiceAccountCredentials;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -73,8 +74,50 @@ Route::get('/', function () {
     return view('auth.login');
 });
 Route::get('test/{id?}', function ($id = null) {
-    return \auth()->loginUsingId($id);
+//    return \auth()->loginUsingId($id);
 
+    $credential = new ServiceAccountCredentials(
+        "https://www.googleapis.com/auth/firebase.messaging",
+        json_decode(file_get_contents(public_path('firebase-private-key.json')), true)
+    );
+
+    $token = $credential->fetchAuthToken(\Google\Auth\HttpHandler\HttpHandlerFactory::build());
+
+    $ch = curl_init("https://fcm.googleapis.com/v1/projects/parso-462c2/messages:send");
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        'Authorization: Bearer '.$token['access_token']
+    ]);
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+    curl_setopt($ch, CURLOPT_POSTFIELDS, '{
+    "message": {
+      "token": "c-kTE1IIu1aPxshEhWj5fP:APA91bFQqszmYRuVyNVYkjXhPwApm2znzara1tLf3mgcjFVKQHb8ekMZd41ieZ1OdTmmXMEaR4Gh3M-7ZK7BzwkrFrq9_nNWOU2HD5lkmjerC6v5JAhlGCLoJXe_1LQkv5W0vnkfFhEf",
+      "notification": {
+        "title": "Background Message Title",
+        "body": "Background message body",
+        "image": "https://cdn.shopify.com/s/files/1/1061/1924/files/Sunglasses_Emoji.png?2976903553660223024",
+      },
+      "webpush": {
+        "headers": {
+          "Urgency": "high"
+        },
+        "fcm_options": {
+          "link": "https://google.com"
+        }
+      },
+    }
+  }');
+
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "post");
+
+    $response = curl_exec($ch);
+
+    curl_close($ch);
+
+    dd($response);
 //    event(new SendMessageEvent(1, []));
 });
 
