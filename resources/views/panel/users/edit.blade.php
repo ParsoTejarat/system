@@ -54,7 +54,14 @@
                                             <label for="role">نقش <span class="text-danger">*</span></label>
                                             <select class="form-control" data-toggle="select2" name="role" id="role">
                                                 @foreach(\App\Models\Role::all() as $role)
-                                                    <option value="{{ $role->id }}" {{ $user->role_id == $role->id ? 'selected' : '' }}>{{ $role->label }}</option>
+                                                    @can('superuser')
+                                                        <option value="{{ $role->id }}"  {{ $user->role_id == $role->id ? 'selected' : '' }}>{{ $role->label }}</option>
+                                                    @else
+                                                        @if($role->name != 'admin')
+                                                            <option value="{{ $role->id }}"  {{ $user->role_id == $role->id ? 'selected' : '' }}>{{ $role->label }}</option>
+                                                        @endif
+                                                    @endcan
+
                                                 @endforeach
                                             </select>
                                         </div>

@@ -48,15 +48,24 @@
                                             <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
+
+
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
                                         <label for="role">نقش <span class="text-danger">*</span></label>
                                         <select class="form-control" data-toggle="select2" name="role" id="role">
                                             @foreach(\App\Models\Role::all() as $role)
-                                                <option value="{{ $role->id }}" {{ old('role') == $role->id ? 'selected' : '' }}>{{ $role->label }}</option>
+                                                @can('superuser')
+                                                    <option value="{{ $role->id }}" {{ old('role') == $role->id ? 'selected' : '' }}>{{ $role->label }}</option>
+                                                @else
+                                                    @if($role->name != 'admin')
+                                                        <option value="{{ $role->id }}" {{ old('role') == $role->id ? 'selected' : '' }}>{{ $role->label }}</option>
+                                                    @endif
+                                                @endcan
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
+
                                 <button type="submit" class="btn btn-primary mt-3">ثبت فرم</button>
                             </form>
                         </div>

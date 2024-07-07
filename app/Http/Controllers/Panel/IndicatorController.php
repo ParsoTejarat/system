@@ -105,7 +105,7 @@ class IndicatorController extends Controller
 
     public function downloadFromIndicator($id)
     {
-        $indicator = Indicator::whereId($id)->first();
+        $indicator = Indicator::whereId($id)->withTrashed()->first();
         if ($indicator->header == 'info') {
             return $this->exportPdfInfoPersian($indicator->title, $indicator->text, $indicator->date, $indicator->number, $indicator->attachment);
         } elseif ($indicator->header == 'sale') {
@@ -117,7 +117,7 @@ class IndicatorController extends Controller
 
     public function inbox()
     {
-        $inbox = auth()->user()->indicators()->paginate(30);
+        $inbox = auth()->user()->indicators()->withTrashed()->paginate(30);
         return view('panel.indicator.inbox', compact(['inbox']));
     }
 
