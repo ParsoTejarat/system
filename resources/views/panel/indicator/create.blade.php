@@ -173,6 +173,7 @@
                 $('#error-title').html('');
                 $('#error-title').html('');
                 $('#exportPdf').html('درحال پردازش...');
+                $('#exportPdf').prop('disabled', true);
                 var title = $('#title').val();
                 var textareaValue = $('#text').val();
                 var date = $('#date').val();
@@ -212,6 +213,7 @@
                     },
                     complete: function (xhr, status) {
                         $('#exportPdf').html(' خروجی PDF <i class="fas fa-file-pdf"></i>');
+                        $('#exportPdf').prop('disabled', false);
                     }
                 });
             });

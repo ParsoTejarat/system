@@ -66,6 +66,11 @@ class UserController extends Controller
                 abort(403);
             }
         }
+        if (auth()->user()->role->name == 'admin' && $user->role->name == 'admin') {
+            if (auth()->user()->cannot('superuser')) {
+                abort(403);
+            }
+        }
 
         return view('panel.users.edit', compact('user'));
     }
@@ -123,7 +128,6 @@ class UserController extends Controller
             return response('شما مجاز به حذف ادمین نیستید', 500);
         }
         // log
-
         activity_log('delete-user', __METHOD__, $user);
 //        dd($user->)
         $user->delete();

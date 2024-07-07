@@ -55,8 +55,8 @@
                                             <td>{{ verta($user->created_at)->format('H:i - Y/m/d') }}</td>
                                             @can('users-edit')
                                                 <td>
-                                                    <a class="btn btn-warning btn-floating "
-                                                       href="{{ route('users.edit', $user->id) }}">
+                                                    <a class="btn btn-warning btn-floating {{(!auth()->user()->isSuperuser() && $user->role->name =='admin')?'disabled':''}}"
+                                                       href="{{ route('users.edit', $user->id) }}" >
                                                         <i class="fa fa-edit"></i>
                                                     </a>
                                                 </td>
