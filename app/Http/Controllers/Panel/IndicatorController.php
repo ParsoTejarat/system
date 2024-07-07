@@ -29,7 +29,6 @@ class IndicatorController extends Controller
 
     public function store(StoreIndicatorRequest $request)
     {
-
         $Indicator = new Indicator();
         $Indicator->title = $request->title;
         $Indicator->date = $request->date;
@@ -40,6 +39,7 @@ class IndicatorController extends Controller
         $Indicator->user_id = auth()->id();
         $Indicator->save();
         $Indicator->users()->sync($request->receiver);
+        activity_log('create-indicator', __METHOD__, [$request->all(), $Indicator]);
         alert()->success('نامه مورد نظر با موفقیت ثبت شد', 'ثبت نامه');
         return redirect()->route('indicator.index');
     }
@@ -72,6 +72,7 @@ class IndicatorController extends Controller
         $indicator->text = $request->text;
         $indicator->save();
         $indicator->users()->sync($request->receiver);
+        activity_log('edit-indicator', __METHOD__, [$request->all(), $indicator]);
         alert()->success('نامه مورد نظر با موفقیت ویرایش شد', 'ویرایش نامه');
         return redirect()->route('indicator.index');
     }
@@ -79,12 +80,7 @@ class IndicatorController extends Controller
 
     public function destroy(Indicator $indicator)
     {
-////        if ($indicator->users()->exists()) {
-//////            return response('این نامه به ',422);
-////        }
-//        if ($indicator->users()->exists()){
-////            return response('این نامه به ',422);
-//        }
+        activity_log('delete-indicator', __METHOD__, $indicator);
         $indicator->delete();
         return back();
     }
@@ -99,8 +95,6 @@ class IndicatorController extends Controller
         $number = $request->number ?? '';
         $header = $request->header ?? '';
         $attachment = $request->attachment ?? '';
-
-
         if ($header == 'info') {
             return $this->exportPdfInfoPersian($title, $text, $date, $number, $attachment);
         } elseif ($header == 'sale') {
@@ -146,17 +140,13 @@ class IndicatorController extends Controller
             'show_watermark_image' => true,
             'watermarkImgBehind' => true,
         ]);
-
-
         return $pdf->stream($title . ".pdf");
     }
 
 
     public function exportPdfSalePersian($title, $text, $date, $number, $attachment)
     {
-
         $backgroundImage = public_path('/assets/images/persian-header-sale.png');
-
         $pdf = PDF::loadView('panel.indicator.indicator-header-sale-persian-pdf', ['text' => $text, 'date' => $date, 'number' => $number, 'attachment' => $attachment], [], [
             'format' => 'A4',
             'orientation' => 'P',
@@ -170,16 +160,12 @@ class IndicatorController extends Controller
             'show_watermark_image' => true,
             'watermarkImgBehind' => true,
         ]);
-
-
         return $pdf->stream($title . ".pdf");
     }
 
     public function exportPdfEnglish($title, $text, $date, $number, $attachment)
     {
-
         $backgroundImage = public_path('/assets/images/english-header.png');
-
         $pdf = PDF::loadView('panel.indicator.indicator-header-english-pdf', ['text' => $text, 'date' => $date, 'number' => $number, 'attachment' => $attachment], [], [
             'format' => 'A4',
             'orientation' => 'P',
@@ -201,16 +187,10 @@ class IndicatorController extends Controller
     {
         $tempDiv = new \DOMDocument();
         $tempDiv->loadHTML('<?xml encoding="utf-8" ?>' . $text);
-
-
         $spanElements = $tempDiv->getElementsByTagName('span');
         $fontFamily = null;
-
         foreach ($spanElements as $span) {
-
             $style = $span->getAttribute('style');
-
-
             preg_match('/font-family\s*:\s*([^;]+)(;|$)/', $style, $matches);
 
             if (isset($matches[1])) {
@@ -218,10 +198,6 @@ class IndicatorController extends Controller
                 break;
             }
         }
-
-
         return $fontFamily ?? 'Nazanin';
     }
-
-
 }

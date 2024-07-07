@@ -139,5 +139,9 @@ class ActivityLog extends Model
         'edit-ticket' => 'ارسال پیام',
         'delete-ticket' => 'حذف تیکت',
         'ticket-change-status' => 'تغییر وضعیت تیکت',
+        // tickets
+        'create-indicator' => 'ثبت نامه',
+        'edit-indicator' => 'ویرایش نامه',
+        'delete-indicator' => 'حذف نامه',
     ];
 }
