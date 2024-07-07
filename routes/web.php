@@ -148,6 +148,7 @@ Route::middleware('auth')->prefix('/panel')->group(function () {
 
     // Notifications
     Route::get('read-notifications/{notification?}', [PanelController::class, 'readNotification'])->name('notifications.read');
+    Route::post('check-user-has-notification', [PanelController::class, 'checkUserHasNotification'])->name('notifications.check');
 
     // Tasks
     Route::resource('tasks', TaskController::class);

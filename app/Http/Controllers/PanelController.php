@@ -5,22 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\Role;
 use App\Models\User;
+use App\Notifications\SendMessage;
 use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
+
 
 class PanelController extends Controller
 {
     public function index(Request $request)
     {
         $from_date = $request->from_date ? Verta::parse($request->from_date)->toCarbon()->toDateTimeString() : (Invoice::orderBy('created_at')->first() ? Invoice::orderBy('created_at')->first()->created_at : now()->toDateTimeString());
-        $to_date = $request->to_date ? Verta::parse($request->to_date)->endDay()->toCarbon()->toDateTimeString() : (Invoice::orderBy('created_at','desc')->first() ? Invoice::orderBy('created_at','desc')->first()->created_at : now()->toDateTimeString());
+        $to_date = $request->to_date ? Verta::parse($request->to_date)->endDay()->toCarbon()->toDateTimeString() : (Invoice::orderBy('created_at', 'desc')->first() ? Invoice::orderBy('created_at', 'desc')->first()->created_at : now()->toDateTimeString());
 
         // invoices
         $invoices1 = Invoice::whereBetween('invoices.created_at', [$from_date, $to_date])->whereHas('products', function ($query) {
             $query->select('products.id', 'invoice_product.invoice_net');
-        })->where('status','pending')
+        })->where('status', 'pending')
             ->join('invoice_product', 'invoices.id', '=', 'invoice_product.invoice_id')
             ->groupBy('province')
             ->select('province', DB::raw('SUM(invoice_product.invoice_net) as amount'))
@@ -29,7 +32,7 @@ class PanelController extends Controller
         // invoices
         $invoices2 = Invoice::whereBetween('invoices.created_at', [$from_date, $to_date])->whereHas('other_products', function ($query) {
             $query->select('other_products.invoice_net');
-        })->where('status','pending')
+        })->where('status', 'pending')
             ->join('other_products', 'invoices.id', '=', 'other_products.invoice_id')
             ->groupBy('province')
             ->select('province', DB::raw('SUM(other_products.invoice_net) as amount'))
@@ -50,13 +53,12 @@ class PanelController extends Controller
         });
 
         // final discount
-        $invoices_discounts = Invoice::whereBetween('invoices.created_at', [$from_date, $to_date])->where('status','pending')
+        $invoices_discounts = Invoice::whereBetween('invoices.created_at', [$from_date, $to_date])->where('status', 'pending')
             ->groupBy('province')
             ->select('province', DB::raw('SUM(invoices.discount) as discount'))
             ->get();
 
-        foreach ($invoices as $key => $invoice)
-        {
+        foreach ($invoices as $key => $invoice) {
             $invoices[$key]->amount -= $invoices_discounts->where('province', $invoice->province)->first()->discount;
         }
         // end merge same province invoices and sum it amounts
@@ -64,16 +66,16 @@ class PanelController extends Controller
         // factors
         $factors1 = Invoice::whereBetween('invoices.created_at', [$from_date, $to_date])->whereHas('products', function ($query) {
             $query->select('products.id', 'invoice_product.invoice_net');
-        })->where('status','invoiced')
+        })->where('status', 'invoiced')
             ->join('invoice_product', 'invoices.id', '=', 'invoice_product.invoice_id')
             ->groupBy('province')
             ->select('province', DB::raw('SUM(invoice_product.invoice_net) as amount'))
-            ->get(['province','amount']);
+            ->get(['province', 'amount']);
 
         // factors
         $factors2 = Invoice::whereBetween('invoices.created_at', [$from_date, $to_date])->whereHas('other_products', function ($query) {
             $query->select('other_products.invoice_net');
-        })->where('status','invoiced')
+        })->where('status', 'invoiced')
             ->join('other_products', 'invoices.id', '=', 'other_products.invoice_id')
             ->groupBy('province')
             ->select('province', DB::raw('SUM(other_products.invoice_net) as amount'))
@@ -94,31 +96,30 @@ class PanelController extends Controller
         });
 
         // final discount
-        $factors_discounts = Invoice::whereBetween('invoices.created_at', [$from_date, $to_date])->where('status','invoiced')
+        $factors_discounts = Invoice::whereBetween('invoices.created_at', [$from_date, $to_date])->where('status', 'invoiced')
             ->groupBy('province')
             ->select('province', DB::raw('SUM(invoices.discount) as discount'))
             ->get();
 
-        foreach ($factors as $key => $factor)
-        {
+        foreach ($factors as $key => $factor) {
             $factors[$key]->amount -= $factors_discounts->where('province', $factor->province)->first()->discount;
         }
         // end merge same province factors and sum it amounts
 
         $factors_monthly = $this->getFactorsMonthly();
 
-        return view('panel.index', compact('invoices','factors','factors_monthly'));
+        return view('panel.index', compact('invoices', 'factors', 'factors_monthly'));
     }
 
     public function readNotification($notification = null)
     {
-        if ($notification == null){
+        if ($notification == null) {
             auth()->user()->unreadNotifications->markAsRead();
             return back();
         }
 
         $notif = auth()->user()->unreadNotifications()->whereId($notification)->first();
-        if (!$notif){
+        if (!$notif) {
             return back();
         }
 
@@ -128,8 +129,8 @@ class PanelController extends Controller
 
     public function login(Request $request)
     {
-        if ($request->method() == 'GET'){
-            $users = User::where('id', '!=', auth()->id())->whereIn('id', [3, 4, 152])->get(['id','name','family']);
+        if ($request->method() == 'GET') {
+            $users = User::where('id', '!=', auth()->id())->whereIn('id', [3, 4, 152])->get(['id', 'name', 'family']);
 
             return view('panel.login', compact('users'));
         }
@@ -150,7 +151,7 @@ class PanelController extends Controller
             'najva_token' => $request->najva_user_token
         ]);
 
-        return response()->json(['data' => 'your token stored: '. $request->najva_user_token]);
+        return response()->json(['data' => 'your token stored: ' . $request->najva_user_token]);
     }
 
     public function saveFCMToken(Request $request)
@@ -176,15 +177,14 @@ class PanelController extends Controller
             'اسفند' => 0,
         ];
 
-        for ($i = 1; $i <= 12; $i++)
-        {
+        for ($i = 1; $i <= 12; $i++) {
             $from_date = \verta()->month($i)->startMonth()->toCarbon()->toDateTimeString();
             $to_date = \verta()->month($i)->endMonth()->toCarbon()->toDateTimeString();
 
             // factors
             $factors1 = Invoice::whereBetween('invoices.created_at', [$from_date, $to_date])->whereHas('products', function ($query) {
                 $query->select('products.id', 'invoice_product.invoice_net');
-            })->where('status','invoiced')
+            })->where('status', 'invoiced')
                 ->join('invoice_product', 'invoices.id', '=', 'invoice_product.invoice_id')
                 ->groupBy('province')
                 ->select('province', DB::raw('SUM(invoice_product.invoice_net) as amount'))
@@ -193,7 +193,7 @@ class PanelController extends Controller
             // factors
             $factors2 = Invoice::whereBetween('invoices.created_at', [$from_date, $to_date])->whereHas('other_products', function ($query) {
                 $query->select('other_products.invoice_net');
-            })->where('status','invoiced')
+            })->where('status', 'invoiced')
                 ->join('other_products', 'invoices.id', '=', 'other_products.invoice_id')
                 ->groupBy('province')
                 ->select('province', DB::raw('SUM(other_products.invoice_net) as amount'))
@@ -201,17 +201,30 @@ class PanelController extends Controller
 
             $month = \verta()->month($i)->format('%B');
 
-            foreach ($factors1 as $item){
+            foreach ($factors1 as $item) {
                 $factors[$month] += $item->amount;
             }
-            foreach ($factors2 as $item){
+            foreach ($factors2 as $item) {
                 $factors[$month] += $item->amount;
             }
 
-            $factors_discounts_amount = Invoice::whereBetween('invoices.created_at', [$from_date, $to_date])->where('status','invoiced')->sum('discount');
+            $factors_discounts_amount = Invoice::whereBetween('invoices.created_at', [$from_date, $to_date])->where('status', 'invoiced')->sum('discount');
             $factors[$month] -= $factors_discounts_amount;
         }
 
         return collect($factors);
+    }
+
+    public function checkUserHasNotification()
+    {
+        $flag = false;
+        $user = auth()->user();
+        if (!$user->unreadNotifications->isEmpty()) {
+            $flag = true;
+            $message = 'لطفا از اسناد خود نسخه پشتیبان تهیه کنید.';
+            $url = route('notifications.read');
+        }
+        return response()->json($flag);
+
     }
 }

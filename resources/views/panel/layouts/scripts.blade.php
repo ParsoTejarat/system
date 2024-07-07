@@ -36,7 +36,7 @@
     {{-- end ajax setup --}}
 
     {{-- delete tables row --}}
-    $(document).on('click','.trashRow', function() {
+    $(document).on('click', '.trashRow', function () {
         let self = $(this)
         Swal.fire({
             title: 'حذف شود؟',
@@ -54,7 +54,7 @@
                         id: self.data('id'),
                         _method: 'delete'
                     },
-                    success: function(res) {
+                    success: function (res) {
                         $('tbody:not(.internal_tels)').html($(res).find('tbody:not(.internal_tels)').html());
                         Swal.fire({
                             title: 'با موفقیت حذف شد',
@@ -117,8 +117,8 @@
     // realtime notification
     var audio = new Audio('/audio/notification.wav');
     let userId = "{{ auth()->id() }}"
-    Echo.channel('presence-notification.'+userId)
-        .listen('SendMessage', (e) =>{
+    Echo.channel('presence-notification.' + userId)
+        .listen('SendMessage', (e) => {
             console.log(e)
             $('#notif_count').removeClass('d-none')
             $('#notif_count').html(parseInt($('#notif_count').html()) + 1)
@@ -153,7 +153,7 @@
             .then(function () {
                 return messaging.getToken()
             })
-            .then(function(token) {
+            .then(function (token) {
                 // console.log(token);
 
                 $.ajax({
@@ -167,18 +167,18 @@
                         console.log('Token saved successfully.');
                     },
                     error: function (err) {
-                        console.log('User Chat Token Error'+ err);
+                        console.log('User Chat Token Error' + err);
                     },
                 });
 
             }).catch(function (err) {
-            console.log('User Chat Token Error'+ err);
+            console.log('User Chat Token Error' + err);
         });
     }
 
     initFirebaseMessagingRegistration();
 
-    messaging.onMessage(function(payload) {
+    messaging.onMessage(function (payload) {
         const noteTitle = payload.notification.title;
         const noteOptions = {
             body: payload.notification.body,
@@ -186,6 +186,30 @@
         };
         new Notification(noteTitle, noteOptions);
     });
+
+    function myFunction() {
+        console.log("این کد هر 60 ثانیه اجرا می‌شود");
+        $.ajax({
+            url: '{{route('notifications.check')}}',
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (response) {
+                if (response == true) {
+                    audio.play();
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('خطا در ارسال درخواست:', error);
+            }
+        });
+
+    }
+
+    myFunction();
+    setInterval(myFunction, 60000);
+
+
 </script>
 
 </body>
