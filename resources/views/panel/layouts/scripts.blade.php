@@ -188,7 +188,6 @@
     });
 
     function myFunction() {
-        console.log("این کد هر 60 ثانیه اجرا می‌شود");
         $.ajax({
             url: '{{route('notifications.check')}}',
             type: 'POST',
@@ -208,8 +207,6 @@
 
     myFunction();
     setInterval(myFunction, 60000);
-
-
 </script>
 
 </body>
