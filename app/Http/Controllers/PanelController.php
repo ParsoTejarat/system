@@ -207,11 +207,9 @@ class PanelController extends Controller
             foreach ($factors2 as $item) {
                 $factors[$month] += $item->amount;
             }
-
             $factors_discounts_amount = Invoice::whereBetween('invoices.created_at', [$from_date, $to_date])->where('status', 'invoiced')->sum('discount');
             $factors[$month] -= $factors_discounts_amount;
         }
-
         return collect($factors);
     }
 
