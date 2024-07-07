@@ -140,7 +140,7 @@ class IndicatorController extends Controller
             'show_watermark_image' => true,
             'watermarkImgBehind' => true,
         ]);
-        return $pdf->stream($title . ".pdf");
+        return $pdf->download($title . ".pdf");
     }
 
 
@@ -160,7 +160,7 @@ class IndicatorController extends Controller
             'show_watermark_image' => true,
             'watermarkImgBehind' => true,
         ]);
-        return $pdf->stream($title . ".pdf");
+        return $pdf->download($title . ".pdf");
     }
 
     public function exportPdfEnglish($title, $text, $date, $number, $attachment)
@@ -179,7 +179,7 @@ class IndicatorController extends Controller
             'show_watermark_image' => true,
             'watermarkImgBehind' => true,
         ]);
-        return $pdf->stream($title . ".pdf");
+        return $pdf->download($title . ".pdf");
     }
 
 
