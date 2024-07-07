@@ -204,11 +204,12 @@
                 console.error('خطا در ارسال درخواست:', error);
             }
         });
-
     }
 
-    myFunction();
-    setInterval(myFunction, 60000);
+    setTimeout(function () {
+        myFunction();
+        setInterval(myFunction, 60000);
+    }, 60000);
 </script>
 
 </body>
