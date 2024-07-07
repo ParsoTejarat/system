@@ -70,16 +70,6 @@
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
                                         <label for="attachment" class="form-label">سربرگ</label>
                                         <select name="header" class="form-control" id="header">
-                                            <option value="info" {{$indicator=='info'?'selected':''}}>سربرگ فارسی پرسو
-                                                تجارت
-                                                (Info)
-                                            </option>
-                                            <option value="sale" {{$indicator=='sale'?'selected':''}}>سربرگ فارسی پرسو
-                                                تجارت
-                                                (Sale)
-                                            </option>
-                                            <option value="english" {{$indicator=='english'?'selected':''}}>سربرگ
-                                                انگلیسی پرسو
                                             <option value="info" {{$indicator=='info'?'selected':''}}>سربرگ فارسی پرسو تجارت
                                                 (Info)
                                             </option>
