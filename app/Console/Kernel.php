@@ -29,9 +29,9 @@ class Kernel extends ConsoleKernel
 //        $schedule->command('backup:run --only-db');
 
         // test cron job
-        // $schedule->call(function(){
-        //     Notification::send(User::find(1), new SendMessage('test', 'test'));
-        // });
+//         $schedule->call(function(){
+//             Notification::send(User::find(1), new SendMessage('test', 'test'));
+//         });
     }
 
     /**
