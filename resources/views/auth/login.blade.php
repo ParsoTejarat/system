@@ -57,6 +57,7 @@
 
                                 <form action="{{ route('login') }}" method="post">
                                     @csrf
+                                    <input type="hidden" name="role" value="{{ request()->role }}">
                                     <div class="mb-2">
                                         <label for="phone" class="form-label">شماره موبایل</label>
                                         <input class="form-control" type="text" name="phone" id="phone" required>
@@ -78,6 +79,11 @@
                                         <button class="btn btn-primary" type="submit"> ورود </button>
                                     </div>
                                     @error('phone')
+                                        <span class="invalid-feedback text-danger text-center d-block" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                    @error('notAllow')
                                         <span class="invalid-feedback text-danger text-center d-block" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

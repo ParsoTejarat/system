@@ -54,4 +54,37 @@ class LoginController extends Controller
             'captcha_code.captcha' => 'کد امنیتی وارد شده صحیح نیست'
         ]);
     }
+
+    public function showLoginForm()
+    {
+        $role = \request()->role;
+        return view('auth.login', compact('role'));
+    }
+
+    protected function attemptLogin(Request $request)
+    {
+        $attemp = $this->guard()->attempt(
+            $this->credentials($request), $request->boolean('remember')
+        );
+
+        if ($attemp) {
+            $user = $this->guard()->user();
+
+            if ($user->role->name == $request->role || ($user->role->name == 'admin' && ($request->role == 'ceo' || $request->role == null))) {
+                return $attemp;
+            } else {
+                $this->guard()->logout();
+
+                $request->validate([
+                    'notAllow' => 'required'
+                ], [
+                    'notAllow.required' => 'شما به این بخش دسترسی ندارید!'
+                ]);
+
+                return false;
+            }
+        }
+
+        return $attemp;
+    }
 }
