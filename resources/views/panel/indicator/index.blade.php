@@ -31,8 +31,8 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>شماره نامه</th>
                                         <th>عنوان</th>
+                                        <th>شماره نامه</th>
                                         <th>تاریخ</th>
                                         {{--                                        @can('coupons-edit')--}}
                                         <th>دانلود</th>
@@ -45,8 +45,9 @@
                                     @foreach($indicators as $key => $indicator)
                                         <tr>
                                             <td>{{ ++$key }}</td>
-                                            <td>{{ $indicator->number?? '---' }}</td>
+
                                             <td>{{ $indicator->title }}</td>
+                                            <td>{{ $indicator->number?? '---' }}</td>
                                             <td>{{ verta($indicator->created_at)->format('H:i - Y/m/d') }}</td>
                                             {{--                                            @can('coupons-edit')--}}
                                             <td><a class="btn btn-info btn-floating"
