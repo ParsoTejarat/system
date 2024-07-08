@@ -125,9 +125,13 @@ class InvoiceController extends Controller
             }
         }
 
-        $seller = Seller::first();
+        if (auth()->user()->isAccountant()){
+            return back();
+        }
+        
+//        $seller = Seller::first();
 
-        return view('panel.invoices.edit', compact('invoice','seller'));
+        return view('panel.invoices.edit', compact('invoice'));
     }
 
     public function update(UpdateInvoiceRequest $request, Invoice $invoice)
