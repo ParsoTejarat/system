@@ -50,14 +50,14 @@
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
-                                        <label for="number" class="form-label">شماره نامه</label>
-                                        <input type="text" class="form-control" name="number" id="number"
-                                               value="{{ old('number') }}">
-                                        @error('number')
-                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+{{--                                    <div class="mb-2 col-xl-3 col-lg-3 col-md-3">--}}
+{{--                                        <label for="number" class="form-label">شماره نامه</label>--}}
+{{--                                        <input type="text" class="form-control" name="number" id="number"--}}
+{{--                                               value="{{ old('number') }}">--}}
+{{--                                        @error('number')--}}
+{{--                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>--}}
+{{--                                        @enderror--}}
+{{--                                    </div>--}}
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
                                         <label for="attachment" class="form-label">پیوست</label>
                                         <input type="text" class="form-control" name="attachment" id="attachment"
@@ -101,11 +101,6 @@
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-success mt-3">ثبت نامه</button>
-                                <button type="button" id="exportPdf" class="btn btn-danger mt-3"
-                                        onsubmit="e.preventDefault()" disabled>
-                                    خروجی PDF
-                                    <i class="fas fa-file-pdf"></i>
-                                </button>
                             </form>
                         </div>
                     </div>
@@ -169,60 +164,7 @@
             });
 
 
-            $('#exportPdf').click(function () {
-                $('#error-title').html('');
-                $('#error-title').html('');
-                $('#exportPdf').html('درحال پردازش...');
-                $('#exportPdf').prop('disabled', true);
-                var title = $('#title').val();
-                var textareaValue = $('#text').val();
-                var date = $('#date').val();
-                var number = $('#number').val();
-                var header = $('#header').val();
-                var attachment = $('#attachment').val();
 
-                $.ajax({
-                    url: '/panel/export-indicator-pdf',
-                    type: 'post',
-                    data: {
-                        title: title,
-                        text: textareaValue,
-                        date: date,
-                        number: number,
-                        attachment: attachment,
-                        header: header,
-                    },
-                    xhrFields: {
-                        responseType: 'blob'
-                    },
-                    success: function (response) {
-                        var link = document.createElement('a');
-                        link.href = window.URL.createObjectURL(response);
-                        link.download = title + ".pdf";
-                        link.click();
-                    },
-                    error: function (xhr, status, error) {
-                        if (xhr.status === 422) {
-                            let errors = xhr.responseJSON.errors;
-                            let errorMessages = '';
-
-                            $.each(errors, function (key, value) {
-                                if (key == 'title') {
-                                    $('#error-title').html(value[0]);
-                                }
-                                if (key == 'text') {
-                                    $('#error-text').html(value[0]);
-                                }
-                            });
-                            $('#errorMessages').html(errorMessages);
-                        }
-                    },
-                    complete: function (xhr, status) {
-                        $('#exportPdf').html(' خروجی PDF <i class="fas fa-file-pdf"></i>');
-                        $('#exportPdf').prop('disabled', false);
-                    }
-                });
-            });
 
 
             $(document).on('change', '.cke_combo__font', function () {

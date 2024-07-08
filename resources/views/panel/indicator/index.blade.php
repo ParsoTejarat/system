@@ -31,13 +31,13 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>عنوان</th>
                                         <th>شماره نامه</th>
+                                        <th>عنوان</th>
                                         <th>تاریخ</th>
                                         {{--                                        @can('coupons-edit')--}}
                                         <th>دانلود</th>
                                         <th>ویرایش</th>
-                                        <th>حذف</th>
+{{--                                        <th>حذف</th>--}}
                                         {{--                                        @endcan--}}
                                     </tr>
                                     </thead>
@@ -63,13 +63,13 @@
                                             {{--                                            @endcan--}}
                                             {{--                                            @can('coupons-delete')--}}
 
-                                            <td>
-                                                <button class="btn btn-danger btn-floating trashRow"
-                                                        data-url="{{ route('indicator.destroy',$indicator->id) }}"
-                                                        data-id="{{ $indicator->id }}">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </td>
+{{--                                            <td>--}}
+{{--                                                <button class="btn btn-danger btn-floating trashRow"--}}
+{{--                                                        data-url="{{ route('indicator.destroy',$indicator->id) }}"--}}
+{{--                                                        data-id="{{ $indicator->id }}">--}}
+{{--                                                    <i class="fa fa-trash"></i>--}}
+{{--                                                </button>--}}
+{{--                                            </td>--}}
                                             {{--                                            @endcan--}}
                                         </tr>
                                     @endforeach

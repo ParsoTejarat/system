@@ -191,6 +191,7 @@
     });
 
     function myFunction() {
+        console.log("ajax start")
         $.ajax({
             url: '{{route('notifications.check')}}',
             type: 'POST',
@@ -199,17 +200,20 @@
             success: function (response) {
                 if (response == true) {
                     audio.play();
+                    console.log("ding in ajax!")
                 }
             },
             error: function (xhr, status, error) {
                 console.error('خطا در ارسال درخواست:', error);
             }
         });
+        console.log("ajax end")
     }
 
     setTimeout(function () {
         myFunction();
         setInterval(myFunction, 60000);
+        console.log("ding!")
     }, 60000);
 </script>
 

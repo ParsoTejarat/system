@@ -28,9 +28,8 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('indicator.update',$indicator->id) }}" method="post">
+                            <form action="{{ route('indicator.store') }}" method="post">
                                 @csrf
-                                @method('PATCH')
                                 <div class="row">
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
                                         <label for="title" class="form-label">عنوان <span
@@ -51,14 +50,14 @@
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
-                                        <label for="number" class="form-label">شماره نامه</label>
-                                        <input type="text" class="form-control" name="number" id="number"
-                                               value="{{ old('number',$indicator->number) }}">
-                                        @error('number')
-                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+{{--                                    <div class="mb-2 col-xl-3 col-lg-3 col-md-3">--}}
+{{--                                        <label for="number" class="form-label">شماره نامه</label>--}}
+{{--                                        <input type="text" class="form-control" name="number" id="number"--}}
+{{--                                               value="{{ old('number',$indicator->number) }}">--}}
+{{--                                        @error('number')--}}
+{{--                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>--}}
+{{--                                        @enderror--}}
+{{--                                    </div>--}}
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
                                         <label for="attachment" class="form-label">پیوست</label>
                                         <input type="text" class="form-control" name="attachment" id="attachment"
@@ -103,34 +102,39 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="mb-2 col-xl-12 col-lg-12 col-md-12">
+                                        <label for="code" class="form-label">متن نامه<span
+                                                class="text-danger">*</span></label>
+                                        <textarea type="text" class="form-control" name="text"
+                                                  id="text">{{ old('text',$indicator->text) }}</textarea>
+                                        @error('text')
+                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                        <div class="invalid-feedback text-danger d-block" id="error-text"></div>
+                                    </div>
+                                </div>
 
+                                    <div>
+                                        <button type="submit" class="btn btn-warning mt-3">ویرایش نامه</button>
+                                    </div>
+
+
+
+                            </form>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="mb-2 col-xl-12 col-lg-12 col-md-12">
-                            <label for="code" class="form-label">متن نامه<span
-                                    class="text-danger">*</span></label>
-                            <textarea type="text" class="form-control" name="text"
-                                      id="text">{{ old('text',$indicator->text) }}</textarea>
-                            @error('text')
-                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
-                            @enderror
-                            <div class="invalid-feedback text-danger d-block" id="error-text"></div>
-                        </div>
-                    </div>
 
-                    <button type="submit" class="btn btn-warning mt-3">ویرایش نامه</button>
-                    <button type="button" id="exportPdf" class="btn btn-danger mt-3"
-                            onsubmit="e.preventDefault()" disabled>
-                        خروجی PDF
-                        <i class="fas fa-file-pdf"></i>
-                    </button>
-                    </form>
+
+
+                    {{--                    <button type="button" id="exportPdf" class="btn btn-danger mt-3"--}}
+                    {{--                            onsubmit="e.preventDefault()" disabled>--}}
+                    {{--                        خروجی PDF--}}
+                    {{--                        <i class="fas fa-file-pdf"></i>--}}
+                    {{--                    </button>--}}
                 </div>
             </div>
         </div>
-    </div>
-    </div>
     </div>
 @endsection
 @section('scripts')
@@ -188,58 +192,58 @@
             });
 
 
-            $('#exportPdf').click(function () {
-                $('#error-title').html('');
-                $('#error-title').html('');
-                $('#exportPdf').html('درحال پردازش...');
-                var title = $('#title').val();
-                var textareaValue = $('#text').val();
-                var date = $('#date').val();
-                var number = $('#number').val();
-                var header = $('#header').val();
-                var attachment = $('#attachment').val();
-
-                $.ajax({
-                    url: '/panel/export-indicator-pdf',
-                    type: 'post',
-                    data: {
-                        title: title,
-                        text: textareaValue,
-                        date: date,
-                        number: number,
-                        attachment: attachment,
-                        header: header,
-                    },
-                    xhrFields: {
-                        responseType: 'blob'
-                    },
-                    success: function (response) {
-                        var link = document.createElement('a');
-                        link.href = window.URL.createObjectURL(response);
-                        link.download = title + ".pdf";
-                        link.click();
-                    },
-                    error: function (xhr, status, error) {
-                        if (xhr.status === 422) {
-                            let errors = xhr.responseJSON.errors;
-                            let errorMessages = '';
-
-                            $.each(errors, function (key, value) {
-                                if (key == 'title') {
-                                    $('#error-title').html(value[0]);
-                                }
-                                if (key == 'text') {
-                                    $('#error-text').html(value[0]);
-                                }
-                            });
-                            $('#errorMessages').html(errorMessages);
-                        }
-                    },
-                    complete: function (xhr, status) {
-                        $('#exportPdf').html(' خروجی PDF <i class="fas fa-file-pdf"></i>');
-                    }
-                });
-            });
+            // $('#exportPdf').click(function () {
+            //     $('#error-title').html('');
+            //     $('#error-title').html('');
+            //     $('#exportPdf').html('درحال پردازش...');
+            //     var title = $('#title').val();
+            //     var textareaValue = $('#text').val();
+            //     var date = $('#date').val();
+            //     var number = $('#number').val();
+            //     var header = $('#header').val();
+            //     var attachment = $('#attachment').val();
+            //
+            //     $.ajax({
+            //         url: '/panel/export-indicator-pdf',
+            //         type: 'post',
+            //         data: {
+            //             title: title,
+            //             text: textareaValue,
+            //             date: date,
+            //             number: number,
+            //             attachment: attachment,
+            //             header: header,
+            //         },
+            //         xhrFields: {
+            //             responseType: 'blob'
+            //         },
+            //         success: function (response) {
+            //             var link = document.createElement('a');
+            //             link.href = window.URL.createObjectURL(response);
+            //             link.download = title + ".pdf";
+            //             link.click();
+            //         },
+            //         error: function (xhr, status, error) {
+            //             if (xhr.status === 422) {
+            //                 let errors = xhr.responseJSON.errors;
+            //                 let errorMessages = '';
+            //
+            //                 $.each(errors, function (key, value) {
+            //                     if (key == 'title') {
+            //                         $('#error-title').html(value[0]);
+            //                     }
+            //                     if (key == 'text') {
+            //                         $('#error-text').html(value[0]);
+            //                     }
+            //                 });
+            //                 $('#errorMessages').html(errorMessages);
+            //             }
+            //         },
+            //         complete: function (xhr, status) {
+            //             $('#exportPdf').html(' خروجی PDF <i class="fas fa-file-pdf"></i>');
+            //         }
+            //     });
+            // });
 
 
             $(document).on('change', '.cke_combo__font', function () {

@@ -10,6 +10,8 @@ class Indicator extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = ['number'];
+
     public function users()
     {
         return $this->belongsToMany(User::class);

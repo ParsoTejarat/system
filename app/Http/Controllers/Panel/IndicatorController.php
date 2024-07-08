@@ -7,6 +7,7 @@ use App\Http\Requests\StoreIndicatorRequest;
 use App\Models\Indicator;
 use App\Models\User;
 use App\Notifications\SendMessage;
+use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
@@ -18,6 +19,8 @@ class IndicatorController extends Controller
 
     public function index()
     {
+
+
         $indicators = Indicator::where('user_id', auth()->id())->latest()->paginate(30);
         return view('panel.indicator.index', compact(['indicators']));
     }
@@ -31,24 +34,22 @@ class IndicatorController extends Controller
 
     public function store(StoreIndicatorRequest $request)
     {
-
         $Indicator = new Indicator();
         $Indicator->title = $request->title;
         $Indicator->date = $request->date;
-        $Indicator->number = $request->number;
+        $Indicator->number = $this->generateUniqueCode();
         $Indicator->attachment = $request->attachment;
         $Indicator->header = $request->header;
         $Indicator->text = $request->text;
         $Indicator->user_id = auth()->id();
         $Indicator->save();
 
-        if (!is_null($request->receiver)){
+        if (!is_null($request->receiver)) {
             $Indicator->users()->sync($request->receiver);
             $users = User::whereIn('id', $request->receiver)->get();
             $message = 'یک نامه با عنوان ' . $Indicator->title . ' برای شما ارسال شده است';
-            Notification::send($users, new SendMessage($message,url('/panel/indicator/inbox')));
+            Notification::send($users, new SendMessage($message, url('/panel/indicator/inbox')));
         }
-
 
         activity_log('create-indicator', __METHOD__, [$request->all(), $Indicator]);
         alert()->success('نامه مورد نظر با موفقیت ثبت شد', 'ثبت نامه');
@@ -72,22 +73,23 @@ class IndicatorController extends Controller
     }
 
 
-    public function update(StoreIndicatorRequest $request, Indicator $indicator)
+    public function update(StoreIndicatorRequest $request, $id)
     {
+        $indicator = new Indicator();
         $this->authorize('edit-indicator', $indicator);
         $indicator->title = $request->title;
         $indicator->date = $request->date;
-        $indicator->number = $request->number;
+        $indicator->number = $this->generateUniqueCode();
         $indicator->attachment = $request->attachment;
         $indicator->header = $request->header;
         $indicator->text = $request->text;
         $indicator->save();
         $indicator->users()->sync($request->receiver);
-        if (!is_null($request->receiver)){
+        if (!is_null($request->receiver)) {
             $indicator->users()->sync($request->receiver);
             $users = User::whereIn('id', $request->receiver)->get();
             $message = 'یک نامه با عنوان ' . $indicator->title . ' برای شما ارسال شده است';
-            Notification::send($users, new SendMessage($message,url('/panel/indicator/inbox')));
+            Notification::send($users, new SendMessage($message, url('/panel/indicator/inbox')));
         }
         activity_log('edit-indicator', __METHOD__, [$request->all(), $indicator]);
         alert()->success('نامه مورد نظر با موفقیت ویرایش شد', 'ویرایش نامه');
@@ -95,30 +97,30 @@ class IndicatorController extends Controller
     }
 
 
-    public function destroy(Indicator $indicator)
-    {
-        activity_log('delete-indicator', __METHOD__, $indicator);
-        $indicator->delete();
-        return back();
-    }
+//    public function destroy(Indicator $indicator)
+//    {
+//        activity_log('delete-indicator', __METHOD__, $indicator);
+//        $indicator->delete();
+//        return back();
+//    }
 
 
     //export section
-    public function exportToPdf(StoreIndicatorRequest $request)
-    {
-        $title = $request->title;
-        $text = $request->text;
-        $date = $request->date ?? '';
-        $number = $request->number ?? '';
-        $header = $request->header ?? '';
-        $attachment = $request->attachment ?? '';
-        if ($header == 'info') {
-            return $this->exportPdfInfoPersian($title, $text, $date, $number, $attachment);
-        } elseif ($header == 'sale') {
-            return $this->exportPdfSalePersian($title, $text, $date, $number, $attachment);
-        }
-        return $this->exportPdfEnglish($title, $text, $date, $number, $attachment);
-    }
+//    public function exportToPdf(StoreIndicatorRequest $request)
+//    {
+//        $title = $request->title;
+//        $text = $request->text;
+//        $date = $request->date ?? '';
+//        $number = $request->number ?? '';
+//        $header = $request->header ?? '';
+//        $attachment = $request->attachment ?? '';
+//        if ($header == 'info') {
+//            return $this->exportPdfInfoPersian($title, $text, $date, $number, $attachment);
+//        } elseif ($header == 'sale') {
+//            return $this->exportPdfSalePersian($title, $text, $date, $number, $attachment);
+//        }
+//        return $this->exportPdfEnglish($title, $text, $date, $number, $attachment);
+//    }
 
     public function downloadFromIndicator($id)
     {
@@ -223,5 +225,30 @@ class IndicatorController extends Controller
             }
         }
         return $fontFamily ?? 'Nazanin';
+    }
+
+    public function generateUniqueCode()
+    {
+        // Get current Persian date
+        $v = Verta::now();
+        $year = $v->format('%y');
+        $month = str_pad($v->month, 2, '0', STR_PAD_LEFT);
+        $day = str_pad($v->day, 2, '0', STR_PAD_LEFT);
+
+        $dateString = $year . $month . $day;
+
+        do {
+            $lastIndicator = Indicator::where('number', 'like', $dateString . '%')->orderBy('number', 'desc')->first();
+            if ($lastIndicator) {
+                $lastCounter = (int) substr($lastIndicator->number, -3);
+                $counter = $lastCounter + 1;
+            } else {
+                $counter = 1;
+            }
+            $uniqueCode = $dateString . str_pad($counter, 3, '0', STR_PAD_LEFT);
+            $existingIndicator = Indicator::where('number', $uniqueCode)->first();
+        } while ($existingIndicator);
+
+        return $uniqueCode;
     }
 }

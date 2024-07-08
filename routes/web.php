@@ -100,9 +100,9 @@ Route::middleware('auth')->prefix('/panel')->group(function () {
     Route::resource('users', UserController::class)->except('show');
 
     //Indicators
-    Route::resource('/indicator', IndicatorController::class)->except('show')->middleware('can:indicator');
+    Route::resource('/indicator', IndicatorController::class)->except('show','destroy')->middleware('can:indicator');
     Route::get('/indicator/inbox', [IndicatorController::class,'inbox'])->name('indicator.inbox')->middleware('can:indicator');
-    Route::post('/export-indicator-pdf', [IndicatorController::class, 'exportToPdf'])->middleware('can:indicator');
+//    Route::post('/export-indicator-pdf', [IndicatorController::class, 'exportToPdf'])->middleware('can:indicator');
     Route::get('/download/indicator/{id}', [IndicatorController::class, 'downloadFromIndicator'])->name('indicator.download')->middleware('can:indicator');
 
     // Roles
