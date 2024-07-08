@@ -55,7 +55,7 @@
                                             <td>{{ verta($user->created_at)->format('H:i - Y/m/d') }}</td>
                                             @can('users-edit')
                                                 <td>
-                                                    <a class="btn btn-warning btn-floating {{(!auth()->user()->isSuperuser() && $user->role->name =='admin')?'disabled':''}}"
+                                                    <a class="btn btn-warning btn-floating {{ !auth()->user()->isSuperuser() && ($user->role->name == 'admin' && $user->id != auth()->id()) ? 'disabled' : ''}}"
                                                        href="{{ route('users.edit', $user->id) }}" >
                                                         <i class="fa fa-edit"></i>
                                                     </a>
@@ -65,7 +65,7 @@
                                                 <td>
                                                     <button class="btn btn-danger btn-floating trashRow"
                                                             data-url="{{ route('users.destroy',$user->id) }}"
-                                                            data-id="{{ $user->id }}" {{ (auth()->id() == $user->id)||(!auth()->user()->isSuperuser() && $user->role->name =='admin') ? 'disabled' : ''}}>
+                                                            data-id="{{ $user->id }}" {{ (auth()->id() == $user->id)|| !auth()->user()->isSuperuser() && ($user->role->name == 'admin' && $user->id != auth()->id()) ? 'disabled' : ''}}>
                                                         <i class="fa fa-trash"></i>
                                                     </button>
                                                 </td>
