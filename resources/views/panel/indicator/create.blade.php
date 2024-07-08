@@ -173,6 +173,7 @@
                 $('#error-title').html('');
                 $('#error-title').html('');
                 $('#exportPdf').html('درحال پردازش...');
+                $('#exportPdf').prop('disabled', true);
                 var title = $('#title').val();
                 var textareaValue = $('#text').val();
                 var date = $('#date').val();
@@ -191,8 +192,14 @@
                         attachment: attachment,
                         header: header,
                     },
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
                     success: function (response) {
-
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(response);
+                        link.download = title + ".pdf";
+                        link.click();
                     },
                     error: function (xhr, status, error) {
                         if (xhr.status === 422) {
@@ -212,6 +219,7 @@
                     },
                     complete: function (xhr, status) {
                         $('#exportPdf').html(' خروجی PDF <i class="fas fa-file-pdf"></i>');
+                        $('#exportPdf').prop('disabled', false);
                     }
                 });
             });

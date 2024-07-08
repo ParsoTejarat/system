@@ -70,23 +70,19 @@
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
                                         <label for="attachment" class="form-label">سربرگ</label>
                                         <select name="header" class="form-control" id="header">
-                                            <option value="info" {{$indicator=='info'?'selected':''}}>سربرگ فارسی پرسو
+                                            <option value="info" {{$indicator->header=='info'?'selected':''}}>سربرگ
+                                                فارسی پرسو
                                                 تجارت
                                                 (Info)
                                             </option>
-                                            <option value="sale" {{$indicator=='sale'?'selected':''}}>سربرگ فارسی پرسو
+                                            <option value="sale" {{$indicator->header=='sale'?'selected':''}}>سربرگ
+                                                فارسی پرسو
                                                 تجارت
                                                 (Sale)
                                             </option>
-                                            <option value="english" {{$indicator=='english'?'selected':''}}>سربرگ
+                                            <option value="english" {{$indicator->header=='english'?'selected':''}}>
+                                                سربرگ
                                                 انگلیسی پرسو
-                                            <option value="info" {{$indicator=='info'?'selected':''}}>سربرگ فارسی پرسو تجارت
-                                                (Info)
-                                            </option>
-                                            <option value="sale" {{$indicator=='sale'?'selected':''}}>سربرگ فارسی پرسو تجارت
-                                                (Sale)
-                                            </option>
-                                            <option value="english" {{$indicator=='english'?'selected':''}}>سربرگ انگلیسی پرسو
                                                 تجارت
                                                 انگلیسی پرسو تجارت
                                             </option>
@@ -97,7 +93,8 @@
                                     </div>
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
                                         <label for="attachment" class="form-label">ارسال به</label>
-                                        <select name="receiver[]" class="form-control" id="receiver" data-toggle="select2"
+                                        <select name="receiver[]" class="form-control" id="receiver"
+                                                data-toggle="select2"
                                                 multiple>
                                             @foreach($users as $user)
                                                 <option value="{{$user->id}}"
@@ -107,33 +104,33 @@
                                     </div>
                                 </div>
 
-                                </div>
-                    </div>
-                                <div class="row">
-                                    <div class="mb-2 col-xl-12 col-lg-12 col-md-12">
-                                        <label for="code" class="form-label">متن نامه<span
-                                                class="text-danger">*</span></label>
-                                        <textarea type="text" class="form-control" name="text"
-                                                  id="text">{{ old('text',$indicator->text) }}</textarea>
-                                        @error('text')
-                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
-                                        @enderror
-                                        <div class="invalid-feedback text-danger d-block" id="error-text"></div>
-                                    </div>
-                                </div>
-
-                                <button type="submit" class="btn btn-warning mt-3">ویرایش نامه</button>
-                                <button type="button" id="exportPdf" class="btn btn-danger mt-3"
-                                        onsubmit="e.preventDefault()" disabled>
-                                    خروجی PDF
-                                    <i class="fas fa-file-pdf"></i>
-                                </button>
-                            </form>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="mb-2 col-xl-12 col-lg-12 col-md-12">
+                            <label for="code" class="form-label">متن نامه<span
+                                    class="text-danger">*</span></label>
+                            <textarea type="text" class="form-control" name="text"
+                                      id="text">{{ old('text',$indicator->text) }}</textarea>
+                            @error('text')
+                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                            @enderror
+                            <div class="invalid-feedback text-danger d-block" id="error-text"></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-warning mt-3">ویرایش نامه</button>
+                    <button type="button" id="exportPdf" class="btn btn-danger mt-3"
+                            onsubmit="e.preventDefault()" disabled>
+                        خروجی PDF
+                        <i class="fas fa-file-pdf"></i>
+                    </button>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
+    </div>
     </div>
 @endsection
 @section('scripts')
@@ -213,8 +210,14 @@
                         attachment: attachment,
                         header: header,
                     },
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
                     success: function (response) {
-
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(response);
+                        link.download = title + ".pdf";
+                        link.click();
                     },
                     error: function (xhr, status, error) {
                         if (xhr.status === 422) {

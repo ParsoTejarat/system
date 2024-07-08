@@ -23,9 +23,10 @@
 
 @yield('scripts')
 <script src="/assets/js/sweetalert2@11"></script>
+<script src="/assets/js/sweetalert.min.js"></script>
+@include('sweet::alert')
 
 <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
-
 <script>
     {{-- ajax setup --}}
     $.ajaxSetup({
@@ -204,11 +205,12 @@
                 console.error('خطا در ارسال درخواست:', error);
             }
         });
-
     }
 
-    myFunction();
-    setInterval(myFunction, 60000);
+    setTimeout(function () {
+        myFunction();
+        setInterval(myFunction, 60000);
+    }, 60000);
 </script>
 
 </body>

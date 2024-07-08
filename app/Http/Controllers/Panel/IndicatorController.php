@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreIndicatorRequest;
 use App\Models\Indicator;
 use App\Models\User;
+use App\Notifications\SendMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use PDF as PDF;
 
 class IndicatorController extends Controller
@@ -29,6 +31,7 @@ class IndicatorController extends Controller
 
     public function store(StoreIndicatorRequest $request)
     {
+
         $Indicator = new Indicator();
         $Indicator->title = $request->title;
         $Indicator->date = $request->date;
@@ -38,7 +41,15 @@ class IndicatorController extends Controller
         $Indicator->text = $request->text;
         $Indicator->user_id = auth()->id();
         $Indicator->save();
-        $Indicator->users()->sync($request->receiver);
+
+        if (!is_null($request->receiver)){
+            $Indicator->users()->sync($request->receiver);
+            $users = User::whereIn('id', $request->receiver)->get();
+            $message = 'یک نامه با عنوان ' . $Indicator->title . ' برای شما ارسال شده است';
+            Notification::send($users, new SendMessage($message,url('/panel/indicator/inbox')));
+        }
+
+
         activity_log('create-indicator', __METHOD__, [$request->all(), $Indicator]);
         alert()->success('نامه مورد نظر با موفقیت ثبت شد', 'ثبت نامه');
         return redirect()->route('indicator.index');
@@ -72,6 +83,12 @@ class IndicatorController extends Controller
         $indicator->text = $request->text;
         $indicator->save();
         $indicator->users()->sync($request->receiver);
+        if (!is_null($request->receiver)){
+            $indicator->users()->sync($request->receiver);
+            $users = User::whereIn('id', $request->receiver)->get();
+            $message = 'یک نامه با عنوان ' . $indicator->title . ' برای شما ارسال شده است';
+            Notification::send($users, new SendMessage($message,url('/panel/indicator/inbox')));
+        }
         activity_log('edit-indicator', __METHOD__, [$request->all(), $indicator]);
         alert()->success('نامه مورد نظر با موفقیت ویرایش شد', 'ویرایش نامه');
         return redirect()->route('indicator.index');
@@ -105,7 +122,8 @@ class IndicatorController extends Controller
 
     public function downloadFromIndicator($id)
     {
-        $indicator = Indicator::whereId($id)->first();
+        $indicator = Indicator::whereId($id)->withTrashed()->first();
+//        dd($indicator);
         if ($indicator->header == 'info') {
             return $this->exportPdfInfoPersian($indicator->title, $indicator->text, $indicator->date, $indicator->number, $indicator->attachment);
         } elseif ($indicator->header == 'sale') {
@@ -117,7 +135,7 @@ class IndicatorController extends Controller
 
     public function inbox()
     {
-        $inbox = auth()->user()->indicators()->paginate(30);
+        $inbox = auth()->user()->indicators()->withTrashed()->latest()->paginate(30);
         return view('panel.indicator.inbox', compact(['inbox']));
     }
 
@@ -140,7 +158,9 @@ class IndicatorController extends Controller
             'show_watermark_image' => true,
             'watermarkImgBehind' => true,
         ]);
-        return $pdf->stream($title . ".pdf");
+        return response($pdf->output(), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="' . $title . '.pdf"');
     }
 
 
@@ -160,7 +180,9 @@ class IndicatorController extends Controller
             'show_watermark_image' => true,
             'watermarkImgBehind' => true,
         ]);
-        return $pdf->stream($title . ".pdf");
+        return response($pdf->output(), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="' . $title . '.pdf"');
     }
 
     public function exportPdfEnglish($title, $text, $date, $number, $attachment)
@@ -179,7 +201,9 @@ class IndicatorController extends Controller
             'show_watermark_image' => true,
             'watermarkImgBehind' => true,
         ]);
-        return $pdf->stream($title . ".pdf");
+        return response($pdf->output(), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="' . $title . '.pdf"');
     }
 
 
