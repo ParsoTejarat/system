@@ -258,6 +258,8 @@
 @endsection
 @section('scripts')
     <script>
+        var sub_folder_id = "{{ $sub_folder_id }}";
+
         $(document).ready(function () {
             $(document).on('change','#checkAll', function () {
                 $('.checkFile').prop('checked', this.checked);
@@ -268,7 +270,6 @@
 
             var fileData = new FormData();
             var duplicated_files_names = [];
-            var sub_folder_id = "{{ $sub_folder_id }}";
             var moving = "{{ session()->get('moving') }}";
 
             $(document).on('change','#new_files', function () {
@@ -330,15 +331,11 @@
                                               <div class="progress-bar progress-bar-striped" style="width: ${percentComplete}%">${percentComplete}%</div>
                                             </div>
                                         `)
-                                        if (percentComplete === 100) {
-                                            if (sub_folder_id){
-                                                window.location.replace(`{{ url()->current() }}?sub_folder_id=${sub_folder_id}`)
-                                            }else {
-                                                window.location.replace(`{{ url()->current() }}`)
-                                            }
-                                        } else {
-
-                                        }
+                                        // if (percentComplete === 100) {
+                                        //
+                                        // } else {
+                                        //
+                                        // }
                                     }
                                 }, false);
 
@@ -351,6 +348,11 @@
                             processData: false, // Not to process data
                             success: function(res) {
                                 // console.log(res);
+                                if (sub_folder_id){
+                                    window.location.replace(`{{ url()->current() }}?sub_folder_id=${sub_folder_id}`)
+                                }else {
+                                    window.location.replace(`{{ url()->current() }}`)
+                                }
                             }
                         });
                     }
@@ -364,8 +366,10 @@
                 $('#UploadingModal').modal('show');
 
                 let action = $(this).data('action');
+
                 fileData.append('duplicated_files_action', action);
                 fileData.append('duplicated_files_names', duplicated_files_names);
+                fileData.append('sub_folder_id', sub_folder_id);
 
                 $.ajax({
                     xhr: function() {
@@ -379,15 +383,11 @@
                                               <div class="progress-bar progress-bar-striped" style="width: ${percentComplete}%">${percentComplete}%</div>
                                             </div>
                                         `)
-                                if (percentComplete === 100) {
-                                    if (sub_folder_id){
-                                        window.location.replace(`{{ url()->current() }}?sub_folder_id=${sub_folder_id}`)
-                                    }else {
-                                        window.location.replace(`{{ url()->current() }}`)
-                                    }
-                                } else {
-
-                                }
+                                // if (percentComplete === 100) {
+                                //
+                                // } else {
+                                //
+                                // }
                             }
                         }, false);
 
@@ -400,6 +400,11 @@
                     processData: false, // Not to process data
                     success: function(res) {
                         duplicated_files_names = [];
+                        if (sub_folder_id){
+                            window.location.replace(`{{ url()->current() }}?sub_folder_id=${sub_folder_id}`)
+                        }else {
+                            window.location.replace(`{{ url()->current() }}`)
+                        }
                     }
                 });
             })

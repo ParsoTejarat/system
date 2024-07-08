@@ -27,7 +27,7 @@ class FileManagerController extends Controller
     {
         $this->authorize('file-manager');
 
-        if (File::where(['name' => $request->folder_name, 'parent_id' => $request->sub_folder_id, 'is_folder' => 1])->first()) {
+        if (auth()->user()->files()->where(['name' => $request->folder_name, 'parent_id' => $request->sub_folder_id, 'is_folder' => 1])->first()) {
             return response()->json([
                 'error' => true,
                 'message' => 'پوشه ای با همین نام موجود است'
