@@ -66,10 +66,9 @@ class UserController extends Controller
                 abort(403);
             }
         }
-        if (auth()->user()->role->name == 'admin' && $user->role->name == 'admin') {
-            if (auth()->user()->cannot('superuser')) {
-                abort(403);
-            }
+
+        if (!auth()->user()->isSuperuser() && ($user->role->name == 'admin' && $user->id != auth()->id())) {
+            abort(403);
         }
 
         return view('panel.users.edit', compact('user'));
