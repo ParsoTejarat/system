@@ -45,9 +45,8 @@
                                     @foreach($indicators as $key => $indicator)
                                         <tr>
                                             <td>{{ ++$key }}</td>
-                                            <td>{{ $indicator->title }}</td>
                                             <td>{{ $indicator->number?? '---' }}</td>
-
+                                            <td>{{ $indicator->title }}</td>
                                             <td>{{ verta($indicator->created_at)->format('H:i - Y/m/d') }}</td>
                                             {{--                                            @can('coupons-edit')--}}
                                             <td><a class="btn btn-info btn-floating"
