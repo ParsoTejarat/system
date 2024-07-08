@@ -192,8 +192,14 @@
                         attachment: attachment,
                         header: header,
                     },
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
                     success: function (response) {
-
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(response);
+                        link.download = title + ".pdf";
+                        link.click();
                     },
                     error: function (xhr, status, error) {
                         if (xhr.status === 422) {
