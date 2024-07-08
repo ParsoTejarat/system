@@ -360,6 +360,7 @@
 
             $(document).on('click','.btn_action', function () {
                 $('#WarningModal').modal('hide');
+                $('.modal-backdrop').remove();
                 $('#UploadingModal').modal('show');
 
                 let action = $(this).data('action');
@@ -426,6 +427,7 @@
                         } else {
                             $('tbody').html($(res).find('tbody').html());
                             $('#CreateFolderModal').modal('hide');
+                            $('.modal-backdrop').remove();
                         }
                         $('#btn_create_folder').removeAttr('disabled').text('ایجاد');
                     }
@@ -446,6 +448,7 @@
                     success: function(res) {
                         $('tbody').html($(res).find('tbody').html());
                         $('#DeleteModal').modal('hide');
+                        $('.modal-backdrop').remove();
                     }
                 });
             })
@@ -494,6 +497,7 @@
                         if (!res.error) {
                             $('tbody').html($(res).find('tbody').html());
                             $('#EditNameModal').modal('hide');
+                            $('.modal-backdrop').remove();
                             $('#file_edit_error').text('');
                         }else{
                             $('#file_edit_error').text(res.message);
