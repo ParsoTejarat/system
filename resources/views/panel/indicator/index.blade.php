@@ -35,9 +35,8 @@
                                         <th>شماره نامه</th>
                                         <th>تاریخ</th>
                                         {{--                                        @can('coupons-edit')--}}
+                                        <th>دانلود</th>
                                         <th>ویرایش</th>
-                                        {{--                                        @endcan--}}
-                                        {{--                                        @can('coupons-delete')--}}
                                         <th>حذف</th>
                                         {{--                                        @endcan--}}
                                     </tr>
@@ -51,6 +50,10 @@
 
                                             <td>{{ verta($indicator->created_at)->format('H:i - Y/m/d') }}</td>
                                             {{--                                            @can('coupons-edit')--}}
+                                            <td><a class="btn btn-info btn-floating"
+                                                   href="{{ route('indicator.download', $indicator->id) }}">
+                                                    <i class="fa fa-download"></i>
+                                                </a></td>
                                             <td>
                                                 <a class="btn btn-warning btn-floating"
                                                    href="{{ route('indicator.edit', $indicator->id) }}">
@@ -59,6 +62,7 @@
                                             </td>
                                             {{--                                            @endcan--}}
                                             {{--                                            @can('coupons-delete')--}}
+
                                             <td>
                                                 <button class="btn btn-danger btn-floating trashRow"
                                                         data-url="{{ route('indicator.destroy',$indicator->id) }}"

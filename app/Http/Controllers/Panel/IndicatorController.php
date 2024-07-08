@@ -106,6 +106,7 @@ class IndicatorController extends Controller
     public function downloadFromIndicator($id)
     {
         $indicator = Indicator::whereId($id)->withTrashed()->first();
+//        dd($indicator);
         if ($indicator->header == 'info') {
             return $this->exportPdfInfoPersian($indicator->title, $indicator->text, $indicator->date, $indicator->number, $indicator->attachment);
         } elseif ($indicator->header == 'sale') {
@@ -140,7 +141,9 @@ class IndicatorController extends Controller
             'show_watermark_image' => true,
             'watermarkImgBehind' => true,
         ]);
-        return $pdf->download($title . ".pdf");
+        return response($pdf->output(), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="' . $title . '.pdf"');
     }
 
 
@@ -160,7 +163,9 @@ class IndicatorController extends Controller
             'show_watermark_image' => true,
             'watermarkImgBehind' => true,
         ]);
-        return $pdf->download($title . ".pdf");
+        return response($pdf->output(), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="' . $title . '.pdf"');
     }
 
     public function exportPdfEnglish($title, $text, $date, $number, $attachment)
@@ -179,7 +184,9 @@ class IndicatorController extends Controller
             'show_watermark_image' => true,
             'watermarkImgBehind' => true,
         ]);
-        return $pdf->download($title . ".pdf");
+        return response($pdf->output(), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="' . $title . '.pdf"');
     }
 
 
