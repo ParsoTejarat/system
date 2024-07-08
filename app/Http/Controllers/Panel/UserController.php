@@ -66,10 +66,9 @@ class UserController extends Controller
                 abort(403);
             }
         }
-        if (auth()->user()->role->name == 'admin' && $user->role->name == 'admin') {
-            if (auth()->user()->cannot('superuser')) {
-                abort(403);
-            }
+
+        if (!auth()->user()->isSuperuser() && ($user->role->name == 'admin' && $user->id != auth()->id())) {
+            abort(403);
         }
 
         return view('panel.users.edit', compact('user'));
@@ -78,12 +77,12 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $this->authorize('users-edit');
-        $selectedRole = \App\Models\Role::find($request->role);
-        if (auth()->user()->cannot('superuser')) {
-            if ($selectedRole->name == 'admin') {
-                return redirect()->back()->withErrors(['role' => 'شما مجاز به انتخاب این نقش نیستید.']);
-            }
+
+        if (!auth()->user()->isSuperuser() && ($user->role->name == 'admin' && $user->id != auth()->id())){
+            alert()->error('شما مجاز به انتخاب این نقش نیستید.','عدم دسترسی');
+            return redirect()->back();
         }
+
         // log
         activity_log('edit-user', __METHOD__, [$request->all(), $user]);
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
@@ -53,5 +54,57 @@ class LoginController extends Controller
         ], [
             'captcha_code.captcha' => 'کد امنیتی وارد شده صحیح نیست'
         ]);
+    }
+
+    public function showLoginForm()
+    {
+        $role = \request()->role;
+        return view('auth.login', compact('role'));
+    }
+
+    protected function attemptLogin(Request $request)
+    {
+        $attemp = $this->guard()->attempt(
+            $this->credentials($request), $request->boolean('remember')
+        );
+
+        if ($attemp) {
+            $user = $this->guard()->user();
+
+            if ($user->role->name == $request->role || ($user->role->name == 'admin' && ($request->role == 'ceo' || $request->role == null))) {
+                return $attemp;
+            } else {
+                $this->guard()->logout();
+
+                $request->validate([
+                    'notAllow' => 'required'
+                ], [
+                    'notAllow.required' => 'شما به این بخش دسترسی ندارید!'
+                ]);
+
+                return false;
+            }
+        }
+
+        return $attemp;
+    }
+
+    public function logout(Request $request)
+    {
+        $role = $this->guard()->user()->role->name;
+
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        if ($response = $this->loggedOut($request)) {
+            return $response;
+        }
+
+        return $request->wantsJson()
+            ? new JsonResponse([], 204)
+            : redirect("/login?role=$role");
     }
 }
