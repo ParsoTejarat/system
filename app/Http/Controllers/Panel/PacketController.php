@@ -12,6 +12,7 @@ use DOMDocument;
 use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 class PacketController extends Controller
 {
@@ -239,5 +240,19 @@ class PacketController extends Controller
         }
 
         return response()->json(['data' => $data]);
+    }
+
+    public function downloadPDF(Packet $packet)
+    {
+        $pdf = PDF::loadView('panel.pdf.packet', ['packet' => $packet], [], [
+            'format' => 'A5',
+            'orientation' => 'L',
+            'margin_left' => 2,
+            'margin_right' => 2,
+            'margin_top' => 2,
+            'margin_bottom' => 0,
+        ]);
+
+        return $pdf->stream("مشخصات پستی.pdf");
     }
 }

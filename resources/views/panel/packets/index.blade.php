@@ -99,6 +99,7 @@
                                         <th>وضعیت فاکتور</th>
                                         <th>زمان ارسال</th>
                                         <th>تاریخ ایجاد</th>
+                                        <th>چاپ مشخصات پستی</th>
                                         <th>وضعیت مرسوله</th>
                                         @can('packets-edit')
                                             <th>ویرایش</th>
@@ -136,6 +137,11 @@
                                             </td>
                                             <td>{{ verta($packet->sent_time)->format('Y/m/d') }}</td>
                                             <td>{{ verta($packet->created_at)->format('H:i - Y/m/d') }}</td>
+                                            <td>
+                                                <a href="{{ route('packet.download', $packet) }}" class="btn btn-info btn-floating" target="_blank">
+                                                    <i class="fa fa-print"></i>
+                                                </a>
+                                            </td>
                                             <td>
                                                 <button class="btn btn-primary btn-floating btn_post_status" type="button"
                                                         data-bs-toggle="modal" data-bs-target="#postStatusModal"

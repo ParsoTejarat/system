@@ -75,7 +75,6 @@ Route::get('/', function () {
 });
 Route::get('test/{id?}', function ($id = null) {
     return \auth()->loginUsingId($id);
-
 //    event(new SendMessageEvent(1, []));
 });
 
@@ -139,6 +138,7 @@ Route::middleware('auth')->prefix('/panel')->group(function () {
     Route::match(['get', 'post'], 'search/packets', [PacketController::class, 'search'])->name('packets.search');
     Route::post('excel/packets', [PacketController::class, 'excel'])->name('packets.excel');
     Route::post('get-post-status', [PacketController::class, 'getPostStatus'])->name('get-post-status');
+    Route::get('packet-download-pdf/{packet}', [PacketController::class, 'downloadPDF'])->name('packet.download');
 
     // Customers
     Route::resource('customers', CustomerController::class)->except('show');
