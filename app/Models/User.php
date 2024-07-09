@@ -192,5 +192,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Indicator::class);
     }
 
+    public function paymentOrders()
+    {
+        return $this->hasMany(PaymentOrder::class);
+    }
+
 
 }
