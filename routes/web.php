@@ -108,6 +108,8 @@ Route::middleware('auth')->prefix('/panel')->group(function () {
 
 //PaymentsOrder
     Route::resource('/payments_order', PaymentOrderController::class);
+    Route::post('/status-order-payment', [PaymentOrderController::class, 'statusOrderPayment'])->name('payments_order_status');
+    Route::get('/download-order-payment/{id}', [PaymentOrderController::class, 'downloadOrderPaymentPdf'])->name('payments_order.download');
 
     // Roles
     Route::resource('roles', RoleController::class)->except('show');

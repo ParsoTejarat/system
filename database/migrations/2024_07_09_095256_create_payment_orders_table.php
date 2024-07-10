@@ -21,6 +21,7 @@ class CreatePaymentOrdersTable extends Migration
             $table->unsignedBigInteger('number')->unique();
             $table->enum('type', ['payments', 'receive']);
             $table->enum('status', ['approved', 'failed','pending'])->default('pending');
+            $table->longText('description')->nullable();
             $table->string('amount');
             $table->string('amount_words');
             $table->string('invoice_number')->default(0);
@@ -31,6 +32,7 @@ class CreatePaymentOrdersTable extends Migration
             $table->string('bank_number')->nullable();
             $table->boolean('is_online_payment')->default(false);
             $table->string('site_name')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -7,12 +7,14 @@ use App\Http\Requests\StoreIndicatorRequest;
 use App\Http\Requests\StorePaymentRequest;
 use App\Models\PaymentOrder;
 use Illuminate\Http\Request;
+use PDF as PDF;
 
 class PaymentOrderController extends Controller
 {
 
     public function index()
     {
+        $this->authorize('order-payment-list');
         $type = request()->type;
         if (!isset($type)) {
             return redirect(route('payments_order.index', ['type' => 'payments']));
@@ -24,6 +26,7 @@ class PaymentOrderController extends Controller
 
     public function create()
     {
+        $this->authorize('order-payment-create');
 
         $type = request()->type;
         if (!isset($type)) {
@@ -37,12 +40,13 @@ class PaymentOrderController extends Controller
     public function store(StorePaymentRequest $request)
     {
 //        dd($request->all(), $this->generateNumber());
+        $this->authorize('order-payment-create');
         $payment = new PaymentOrder();
         $payment->type = $request->type;
         $payment->amount = $request->amount;
         $payment->number = $this->generateNumber();
         $payment->amount_words = $request->amount_words;
-        $payment->invoice_number = $request->invoice_number??0;
+        $payment->invoice_number = $request->invoice_number ?? 0;
         $payment->for = $request->for;
         $payment->to = $request->to;
         $payment->from = $request->from;
@@ -60,33 +64,59 @@ class PaymentOrderController extends Controller
 
     public function show($id)
     {
-        //
+
     }
 
 
     public function edit($id)
     {
-        $type = request()->type;
+        $this->authorize('order-payment-edit');
+        $type = request('type');
         if (!isset($type)) {
             return redirect()->route('payments_order.edit', ['type' => 'payments', 'payments_order' => $id]);
         }
+        $order_payment = PaymentOrder::where(['id' => $id, 'status' => 'pending'])->firstOrFail();
+        return view('panel.payments_order.edit', compact(['order_payment', 'type']));
+
+
     }
 
 
-    public function update(Request $request, $id)
+    public function update(StorePaymentRequest $request, $id)
     {
-        //
+
+        $this->authorize('order-payment-edit');
+        $paymentOrder = PaymentOrder::where(['id' => $id, 'status' => 'pending'])->firstOrFail();
+        $paymentOrder->amount = $request->amount;
+        $paymentOrder->amount_words = $request->amount_words;
+        $paymentOrder->invoice_number = $request->invoice_number ?? 0;
+        $paymentOrder->for = $request->for;
+        $paymentOrder->to = $request->to;
+        $paymentOrder->from = $request->from;
+        $paymentOrder->bank_name = $request->bank_name;
+        $paymentOrder->site_name = $request->site_name;
+        $paymentOrder->bank_number = $request->bank_number;
+        $paymentOrder->is_online_payment = $request->is_online_payment === 'true' ? true : false;
+        $paymentOrder->save();
+        alert()->success('درخواست شما ویرایش و در انتظار تایید قرار گرفت.', 'موفقیت آمیز');
+        return redirect()->route('payments_order.index', ['type' => $paymentOrder->type]);
+
     }
 
 
     public function destroy($id)
     {
-        //
+        $this->authorize('order-payment-delete');
+        $type = request('type');
+        $order_payment = PaymentOrder::where(['id' => $id, 'status' => 'pending', 'type' => $type])->firstOrFail();
+        $order_payment->delete();
+        alert()->success('دستور با موفقیت حذف شد.', 'موفقیت آمیز');
+        return redirect()->route('payments_order.index', ['type' => $order_payment->type]);
     }
 
     public function generateNumber()
     {
-        $lastNumber = PaymentOrder::max('number');
+        $lastNumber = PaymentOrder::withTrashed()->max('number');
 
         if ($lastNumber === null) {
             return 1000;
@@ -94,5 +124,38 @@ class PaymentOrderController extends Controller
             return $lastNumber + 1;
         }
     }
+
+
+    public function statusOrderPayment(Request $request)
+    {
+        $this->authorize('ceo');
+        $oreder_payment_approved = PaymentOrder::where(['id' => $request->payment->id, 'status' => 'pending'])->firstOrFail();
+        $oreder_payment_approved->update([
+            'status' => $request->status,
+            'description' => $request->desc,
+        ]);
+        alert()->success('وضعیت تعیین شد.', 'موفقیت آمیز');
+        return redirect()->back();
+    }
+
+    public function downloadOrderPaymentPdf($id)
+    {
+        $orderPayment = PaymentOrder::whereId($id)->firstOrFail();
+        $date = verta($orderPayment->created_at)->year . '/' . verta($orderPayment->created_at)->month . '/' . verta($orderPayment->created_at)->day;
+
+        $pdf = PDF::loadView('panel.payments_order.pdf', ['orderPayment' => $orderPayment, 'date' => $date], [], [
+            'format' => 'A5',
+            'orientation' => 'P',
+            'default_font_size' => '10',
+            'default_font' => 'Nazanin',
+            'display_mode' => 'fullpage',
+        ]);
+
+//        return view('panel.payments_order.pdf', compact(['orderPayment','date']));
+        return response($pdf->output(), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="' . $orderPayment->number . '.pdf"');
+    }
+
 
 }

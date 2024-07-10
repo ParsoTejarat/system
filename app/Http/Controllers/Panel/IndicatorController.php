@@ -15,12 +15,8 @@ use PDF as PDF;
 
 class IndicatorController extends Controller
 {
-
-
     public function index()
     {
-
-
         $indicators = Indicator::where('user_id', auth()->id())->latest()->paginate(30);
         return view('panel.indicator.index', compact(['indicators']));
     }
