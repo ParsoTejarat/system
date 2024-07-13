@@ -430,7 +430,7 @@
                         if (res.error) {
                             $('#error_message').text(res.message);
                         } else {
-                            $('tbody').html($(res).find('tbody').html());
+                            $('.card-body').html($(res).find('.card-body').html());
                             $('#CreateFolderModal').modal('hide');
                             $('.modal-backdrop').remove();
                         }
@@ -451,7 +451,7 @@
                         checked_files
                     },
                     success: function(res) {
-                        $('tbody').html($(res).find('tbody').html());
+                        $('.card-body').html($(res).find('.card-body').html());
                         $('#DeleteModal').modal('hide');
                         $('.modal-backdrop').remove();
                     }
@@ -500,7 +500,7 @@
                     },
                     success: function(res) {
                         if (!res.error) {
-                            $('tbody').html($(res).find('tbody').html());
+                            $('.card-body').html($(res).find('.card-body').html());
                             $('#EditNameModal').modal('hide');
                             $('.modal-backdrop').remove();
                             $('#file_edit_error').text('');
@@ -552,7 +552,7 @@
                         sub_folder_id
                     },
                     success: function(res) {
-                        $('tbody').html($(res).find('tbody').html());
+                        $('.card-body').html($(res).find('.card-body').html());
                         toggleSections();
                     }
                 });
