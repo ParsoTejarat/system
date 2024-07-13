@@ -89,6 +89,7 @@
 
                                         </div>
                                     @endif
+                                        @if($type == 'payments')
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
                                         <label for="from" class="form-label">نام بانک</label>
                                         <input type="text" class="form-control" name="bank_name"
@@ -115,6 +116,7 @@
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                        @endif
                                 </div>
                                 @if($type == 'payments')
                                     <div class="row">

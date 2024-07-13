@@ -32,8 +32,6 @@
             width: 8rem;
             text-align: center;
         }
-
-
     </style>
 </head>
 

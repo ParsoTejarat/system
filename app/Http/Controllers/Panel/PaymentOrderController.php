@@ -129,7 +129,7 @@ class PaymentOrderController extends Controller
     public function statusOrderPayment(Request $request)
     {
         $this->authorize('ceo');
-        $oreder_payment_approved = PaymentOrder::where(['id' => $request->payment->id, 'status' => 'pending'])->firstOrFail();
+        $oreder_payment_approved = PaymentOrder::where(['id' => $request->payment_id, 'status' => 'pending'])->firstOrFail();
         $oreder_payment_approved->update([
             'status' => $request->status,
             'description' => $request->desc,
@@ -141,14 +141,57 @@ class PaymentOrderController extends Controller
     public function downloadOrderPaymentPdf($id)
     {
         $orderPayment = PaymentOrder::whereId($id)->firstOrFail();
+        if ($orderPayment->type == 'payments') {
+            return $this->generatePdfFilePardakht($orderPayment);
+        } else {
+            return $this->generatePdfFileDaryaft($orderPayment);
+        }
+    }
+
+    public function generatePdfFilePardakht($orderPayment)
+    {
         $date = verta($orderPayment->created_at)->year . '/' . verta($orderPayment->created_at)->month . '/' . verta($orderPayment->created_at)->day;
 
-        $pdf = PDF::loadView('panel.payments_order.pdf', ['orderPayment' => $orderPayment, 'date' => $date], [], [
+        $backgroundImage = public_path('/assets/images/pardakht.png');
+
+        $pdf = PDF::loadView('panel.payments_order.pdf_pardakht', ['orderPayment' => $orderPayment, 'date' => $date], [], [
             'format' => 'A5',
             'orientation' => 'P',
             'default_font_size' => '10',
-            'default_font' => 'Nazanin',
+            'default_font' => 'nazanin',
             'display_mode' => 'fullpage',
+            'watermark_text_alpha' => 1,
+            'watermark_image_path' => $backgroundImage,
+            'watermark_image_alpha' => 1,
+            'watermark_image_size' => [148, 210],
+            'show_watermark_image' => true,
+            'watermarkImgBehind' => true,
+        ]);
+
+//        return view('panel.payments_order.pdf', compact(['orderPayment','date']));
+        return response($pdf->output(), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="' . $orderPayment->number . '.pdf"');
+    }
+
+    public function generatePdfFileDaryaft($orderPayment)
+    {
+        $date = verta($orderPayment->created_at)->year . '/' . verta($orderPayment->created_at)->month . '/' . verta($orderPayment->created_at)->day;
+
+        $backgroundImage = public_path('/assets/images/daryaft.png');
+
+        $pdf = PDF::loadView('panel.payments_order.pdf_daryaft', ['orderPayment' => $orderPayment, 'date' => $date], [], [
+            'format' => 'A5',
+            'orientation' => 'P',
+            'default_font_size' => '10',
+            'default_font' => 'nazanin',
+            'display_mode' => 'fullpage',
+            'watermark_text_alpha' => 1,
+            'watermark_image_path' => $backgroundImage,
+            'watermark_image_alpha' => 1,
+            'watermark_image_size' => [148, 210],
+            'show_watermark_image' => true,
+            'watermarkImgBehind' => true,
         ]);
 
 //        return view('panel.payments_order.pdf', compact(['orderPayment','date']));

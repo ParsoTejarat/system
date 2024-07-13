@@ -17,13 +17,13 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="card-title d-flex justify-content-end">
-                                {{--                                @can('order-payment-create')--}}
-                                <a href="{{ route('payments_order.create',['type'=>$type]) }}"
-                                   class="btn btn-primary">
-                                    <i class="fa fa-plus mr-2"></i>
-                                    دستور {{$type =='payments'?'پرداخت':'دریافت'}}
-                                </a>
-                                {{--                                @endcan--}}
+                                @can('order-payment-create')
+                                    <a href="{{ route('payments_order.create',['type'=>$type]) }}"
+                                       class="btn btn-primary">
+                                        <i class="fa fa-plus mr-2"></i>
+                                        دستور {{$type =='payments'?'پرداخت':'دریافت'}}
+                                    </a>
+                                @endcan
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered dataTable dtr-inline text-center"
@@ -103,12 +103,18 @@
 
                                             </td>
                                             <td>
-                                                <form action="{{route('payments_order.destroy',['payments_order'=>$payment->id,'type'=>$type])}}" method="post">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <input type="hidden" name="type" value="{{$type}}">
-                                                    <button type="submit" class="btn btn-danger btn-floating " {{$payment->status !='pending'?'disabled':''}}"><i class="fa fa-edit"></i></button>
-                                                </form>
+                                                @can('order-payment-delete')
+                                                    <form
+                                                        action="{{route('payments_order.destroy',['payments_order'=>$payment->id,'type'=>$type])}}"
+                                                        method="post">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <input type="hidden" name="type" value="{{$type}}">
+                                                        <button type="submit"
+                                                                class="btn btn-danger btn-floating {{$payment->status !='pending'?'disabled':''}}">
+                                                            <i class="fa fa-edit"></i></button>
+                                                    </form>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach

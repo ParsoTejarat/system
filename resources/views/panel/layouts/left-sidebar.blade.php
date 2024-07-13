@@ -390,17 +390,18 @@
                         </div>
                     </li>
                 @endcanany
-                {{--                @canany(['indicator'])--}}
-                @php $active_side = active_sidebar(['payments_order','payments_order/create','payments_order/{payments_order}/edit']); @endphp
-                <li class="{{ $active_side ? 'menuitem-active' : '' }}">
-                    <a href="#payments_order" data-bs-toggle="collapse" aria-expanded="false" aria-controls="tickets">
-                        <i class="ri-calculator-line"></i>
-                        <span> امور مالی </span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <div class="collapse {{ $active_side ? 'show' : '' }}" id="payments_order">
-                        <ul class="nav-second-level">
-{{--                            @can('indicator')--}}
+                @canany(['order-payment-list'])
+                    @php $active_side = active_sidebar(['payments_order','payments_order/create','payments_order/{payments_order}/edit']); @endphp
+                    <li class="{{ $active_side ? 'menuitem-active' : '' }}">
+                        <a href="#payments_order" data-bs-toggle="collapse" aria-expanded="false"
+                           aria-controls="tickets">
+                            <i class="ri-calculator-line"></i>
+                            <span> امور مالی </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse {{ $active_side ? 'show' : '' }}" id="payments_order">
+                            <ul class="nav-second-level">
+                                {{--                            @can('indicator')--}}
                                 @php $active_item = active_sidebar(['payments_order','/payments_order/{payments_order}/edit','/payments_order/create']); @endphp
                                 <li class="{{ $active_item && request()->type=='payments' ? 'menuitem-active' : '' }}">
                                     <a href="{{ route('payments_order.index',['type'=>'payments']) }}" {{ $active_item  && request()->type=='payments' ? 'active' : '' }}>
@@ -412,11 +413,11 @@
                                         دستور دریافت
                                     </a>
                                 </li>
-{{--                            @endcan--}}
-                        </ul>
-                    </div>
-                </li>
-                {{--                @endcanany--}}
+                                {{--                            @endcan--}}
+                            </ul>
+                        </div>
+                    </li>
+                @endcanany
             </ul>
         </div>
 
