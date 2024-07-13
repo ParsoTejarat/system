@@ -216,6 +216,7 @@ return [
         'customer_id' => 'مشتری',
         'invoice_link' => 'لینک پیش فاکتور',
         'payment_doc' => 'رسید پرداخت',
+        'price' => 'قیمت',
     ],
 
 ];

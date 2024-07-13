@@ -115,6 +115,7 @@ Route::middleware('auth')->prefix('/panel')->group(function () {
     Route::match(['get', 'post'], 'search/products', [ProductController::class, 'search'])->name('products.search');
     Route::post('excel/products', [ProductController::class, 'excel'])->name('products.excel');
     Route::match(['get', 'post'], 'parso-products', [ProductController::class, 'parso'])->name('parso.index');
+    Route::post('parso-change-product-price', [ProductController::class, 'parsoUpdate'])->name('parso.update');
 
     // Invoices
     Route::resource('invoices', InvoiceController::class);

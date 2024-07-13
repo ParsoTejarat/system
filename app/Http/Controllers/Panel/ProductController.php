@@ -10,8 +10,10 @@ use App\Models\PriceHistory;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
+use PDO;
 
 class ProductController extends Controller
 {
@@ -152,39 +154,64 @@ class ProductController extends Controller
     {
         $this->authorize('parso-products');
 
-        if (\request()->isMethod('get'))
-        {
+        if (\request()->isMethod('get')) {
             return view('panel.products.parso');
         }
 
-        // search in parso tejarat
+        $sku = \request()->sku;
+        $title = \request()->title;
 
-        $servername = "parsotejarat.com";
-        $username = "parsot_bazrgani";
-        $password = "S{VN^7kOIP7F";
-        $dbname = "parsot_tjart";
+        if (!$sku && !$title) {
+            alert()->error('لطفا یکی از فیلد های عنوان و یا کد را وارد نمایید','خطا');
+            return back();
+        }
 
         try {
-            $this->conn = new \PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $this->connectToDB();
 
-//            // set the PDO error mode to exception
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-//
-//            $sql = "SELECT  mand_posts.id, mand_posts.post_date, mand_posts.post_title, mand_posts.post_status, mand_wc_product_meta_lookup.sku, mand_wc_product_meta_lookup.min_price
-//                    FROM mand_posts
-//                    INNER JOIN mand_wc_product_meta_lookup
-//                        ON mand_posts.id = mand_wc_product_meta_lookup.product_id
-//                    WHERE mand_posts.post_type = 'product';";
-//
-//            $stmt = $this->conn->prepare($sql);
-//            $stmt->execute();
-//            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-//            $products = $stmt->fetchAll(PDO::FETCH_OBJ);
-//            $this->conn = null;
+            $sql = "SELECT pt_posts.id, pt_posts.post_date, pt_posts.post_title, pt_posts.post_status, pt_wc_product_meta_lookup.sku, pt_wc_product_meta_lookup.min_price
+            FROM pt_posts
+            INNER JOIN pt_wc_product_meta_lookup
+                ON pt_posts.id = pt_wc_product_meta_lookup.product_id
+            WHERE pt_posts.post_type = 'product' AND pt_posts.post_title LIKE ?";
 
-        } catch(\PDOException $e) {
-            echo "Connection failed: " . $e->getMessage();
+            $params = ["%$title%"];
+
+            if ($sku) {
+                $sql .= " AND pt_wc_product_meta_lookup.sku = ?";
+                $params[] = $sku;
+            }
+
+            $stmt = $this->conn->prepare($sql);
+
+            foreach ($params as $index => $param) {
+                $stmt->bindValue($index + 1, $param);
+            }
+
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $product = $stmt->fetch(PDO::FETCH_OBJ);
+
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        } finally {
+            $this->conn = null;
         }
+
+        return view('panel.products.parso', compact('product'));
+    }
+
+    public function parsoUpdate(Request $request)
+    {
+        $validator = Validator::make($request->all(), ['price' => 'required|numeric']);
+
+        if ($validator->fails()){
+            $errors = $validator->errors();
+            $product = json_decode($request->product);
+            return view('panel.products.parso', compact('errors','product'));
+        }
+
+        dd($request->all());
     }
 
     private function priceHistory($product, $request)
@@ -216,6 +243,24 @@ class ProductController extends Controller
                 'price_amount_from' => $product->single_price,
                 'price_amount_to' => $request->single_price,
             ]);
+        }
+    }
+
+    private function connectToDB()
+    {
+        $servername = "localhost";
+        $username = "parso_tejarat";
+        $password = "wrc7QJ9Us";
+        $dbname = "parso_tejarat";
+
+        try {
+            $this->conn = new \PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username, $password);
+
+//            // set the PDO error mode to exception
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(\PDOException $e) {
+            $message = "Connection failed: " . $e->getMessage();
+            dd($message);
         }
     }
 }
