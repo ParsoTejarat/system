@@ -136,19 +136,20 @@ class PermissionSeeder extends Seeder
 //            'buy-orders-create' => 'ثبت سفارش خرید',
 //            'buy-orders-edit' => 'ویرایش سفارش خرید',
 //            'buy-orders-delete' => 'حذف سفارش خرید',
-//
 //            'parso-products' => 'محصولات سایت پرسو تجارت',
 //            'file-manager' => 'مدیریت فایل',
 //            'indicator' => 'نامه نگاری',
+            'order-payment-list' => 'لیست دستور پرداخت/دریافت',
+            'order-payment-create' => 'ثبت دستور پرداخت/دریافت',
+            'order-payment-edit' => 'ویرایش دستور پرداخت/دریافت',
+            'order-payment-delete' => 'حذف دستور پرداخت/دریافت',
         ];
 
-        foreach ($items as $key => $item)
-        {
+        foreach ($items as $key => $item) {
             $permission = Permission::create([
                 'name' => $key,
                 'label' => $item,
             ]);
-
             $role = Role::whereName('admin')->firstOrCreate([
                 'name' => 'admin',
                 'label' => 'ادمین',

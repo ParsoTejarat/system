@@ -151,7 +151,8 @@
                                 @can('parso-products')
                                     @php $active_item = active_sidebar(['parso-products']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('parso.index') }}" {{ $active_item ? 'active' : '' }}>محصولات پرسو تجارت</a>
+                                        <a href="{{ route('parso.index') }}" {{ $active_item ? 'active' : '' }}>محصولات
+                                            پرسو تجارت</a>
                                     </li>
                                 @endcan
                                 @can('price-history')
@@ -366,7 +367,7 @@
                     @php $active_side = active_sidebar(['indicator','indicator/create','indicator/{indicator}/edit']); @endphp
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#indicators" data-bs-toggle="collapse" aria-expanded="false" aria-controls="tickets">
-                            <i class="ri-message-2-line"></i>
+                            <i class="ri-mail-line"></i>
                             <span> نامه نگاری </span>
                             <span class="menu-arrow"></span>
                         </a>
@@ -385,6 +386,34 @@
                                             های ایجاد شده</a>
                                     </li>
                                 @endcan
+                            </ul>
+                        </div>
+                    </li>
+                @endcanany
+                @canany(['order-payment-list'])
+                    @php $active_side = active_sidebar(['payments_order','payments_order/create','payments_order/{payments_order}/edit']); @endphp
+                    <li class="{{ $active_side ? 'menuitem-active' : '' }}">
+                        <a href="#payments_order" data-bs-toggle="collapse" aria-expanded="false"
+                           aria-controls="tickets">
+                            <i class="ri-calculator-line"></i>
+                            <span> امور مالی </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse {{ $active_side ? 'show' : '' }}" id="payments_order">
+                            <ul class="nav-second-level">
+                                {{--                            @can('indicator')--}}
+                                @php $active_item = active_sidebar(['payments_order','/payments_order/{payments_order}/edit','/payments_order/create']); @endphp
+                                <li class="{{ $active_item && request()->type=='payments' ? 'menuitem-active' : '' }}">
+                                    <a href="{{ route('payments_order.index',['type'=>'payments']) }}" {{ $active_item  && request()->type=='payments' ? 'active' : '' }}>
+                                        دستور پرداخت
+                                    </a>
+                                </li>
+                                <li class="{{ $active_item && request()->type=='receive' ? 'menuitem-active' : '' }}">
+                                    <a href="{{ route('payments_order.index',['type'=>'receive']) }}" {{ $active_item && request()->type=='receive' ? 'active' : '' }}>
+                                        دستور دریافت
+                                    </a>
+                                </li>
+                                {{--                            @endcan--}}
                             </ul>
                         </div>
                     </li>
