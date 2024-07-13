@@ -402,7 +402,7 @@
                         <div class="collapse {{ $active_side ? 'show' : '' }}" id="payments_order">
                             <ul class="nav-second-level">
                                 {{--                            @can('indicator')--}}
-                                @php $active_item = active_sidebar(['payments_order','/payments_order/{payments_order}/edit','/payments_order/create']); @endphp
+                                @php $active_item = active_sidebar(['payments_order','payments_order/{payments_order}/edit','payments_order/create']); @endphp
                                 <li class="{{ $active_item && request()->type=='payments' ? 'menuitem-active' : '' }}">
                                     <a href="{{ route('payments_order.index',['type'=>'payments']) }}" {{ $active_item  && request()->type=='payments' ? 'active' : '' }}>
                                         دستور پرداخت
