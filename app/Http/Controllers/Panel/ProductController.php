@@ -211,7 +211,37 @@ class ProductController extends Controller
             return view('panel.products.parso', compact('errors','product'));
         }
 
-        dd($request->all());
+        $product_id = json_decode($request->product)->id;
+        $price = $request->price;
+
+        try {
+            $this->connectToDB();
+
+            // update in pt_wc_product_meta_lookup
+            $sql = "UPDATE pt_wc_product_meta_lookup SET min_price = ? , max_price = ? WHERE product_id = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindValue(1, $price);
+            $stmt->bindValue(2, $price);
+            $stmt->bindValue(3, $product_id);
+            $stmt->execute();
+
+            // update in pt_postmeta
+            $sql2 = "UPDATE pt_postmeta SET meta_value = ? WHERE post_id = ? AND meta_key = ?";
+            $stmt2 = $this->conn->prepare($sql2);
+            $stmt2->bindValue(1, $price);
+            $stmt2->bindValue(2, $product_id);
+            $stmt2->bindValue(3, '_regular_price');
+            $stmt2->execute();
+
+            alert()->success('قیمت محصول مورد نظر با موفقیت تغییر کرد','تغییر قیمت');
+            return redirect()->route('parso.index');
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        } finally {
+            $this->conn = null;
+        }
+
+        return view('panel.products.parso', compact('product'));
     }
 
     private function priceHistory($product, $request)
