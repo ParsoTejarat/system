@@ -26,7 +26,6 @@ class StorePaymentRequest extends FormRequest
         return [
             'type' => 'required',
             'amount' => 'required',
-            'amount_words' => 'required',
             'for' => 'required',
             'site_name' => 'required_if:is_online_payment,true',
             'to' => 'nullable',

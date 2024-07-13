@@ -32,8 +32,7 @@
                                         @enderror
                                     </div>
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
-                                        <label for="to_date" class="form-label">مبلغ به حروف (ریال)<span
-                                                class="text-danger">*</span></label>
+                                        <label for="to_date" class="form-label">مبلغ به حروف (ریال)</label>
                                         <input type="text" name="amount_words" class="form-control" id="amount_words"
                                                value="{{ old('amount_words') }}" readonly>
 
@@ -129,7 +128,7 @@
                                     </div>
                                 @endif
 
-                                <button type="submit" class="btn btn-success mt-3">ثبت</button>
+                                <button type="submit" class="btn btn-success mt-3">ثبت فرم</button>
                             </form>
                         </div>
                     </div>
