@@ -144,4 +144,9 @@ class ActivityLog extends Model
         'edit-indicator' => 'ویرایش نامه',
         'delete-indicator' => 'حذف نامه',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -197,5 +197,8 @@ class User extends Authenticatable
         return $this->hasMany(PaymentOrder::class);
     }
 
-
+    public function activity_logs()
+    {
+        return $this->hasMany(ActivityLog::class);
+    }
 }

@@ -3,7 +3,7 @@
 
 @section('styles')
     <style>
-        #stats i.fa, i.fab{
+        #stats i.fa, i.fab {
             font-size: 30px;
         }
     </style>
@@ -30,7 +30,8 @@
                                     <i class="fa fa-users text-primary"></i>
                                 </div>
                                 <div class="text-end">
-                                    <h3 class="mb-1 mt-0"> <span data-plugin="counterup">{{ \App\Models\User::count() }}</span> </h3>
+                                    <h3 class="mb-1 mt-0"><span
+                                            data-plugin="counterup">{{ \App\Models\User::count() }}</span></h3>
                                     <p class="text-muted mb-0">کاربران</p>
                                 </div>
                             </div>
@@ -45,7 +46,8 @@
                                     <i class="fa fa-users text-secondary"></i>
                                 </div>
                                 <div class="text-end">
-                                    <h3 class="mb-1 mt-0"> <span data-plugin="counterup">{{ \App\Models\Customer::count() }}</span> </h3>
+                                    <h3 class="mb-1 mt-0"><span
+                                            data-plugin="counterup">{{ \App\Models\Customer::count() }}</span></h3>
                                     <p class="text-muted mb-0">مشتریان</p>
                                 </div>
                             </div>
@@ -60,7 +62,8 @@
                                     <i class="fab fa-product-hunt text-info"></i>
                                 </div>
                                 <div class="text-end">
-                                    <h3 class="mb-1 mt-0"> <span data-plugin="counterup">{{ \App\Models\Product::count() }}</span> </h3>
+                                    <h3 class="mb-1 mt-0"><span
+                                            data-plugin="counterup">{{ \App\Models\Product::count() }}</span></h3>
                                     <p class="text-muted mb-0">محصولات</p>
                                 </div>
                             </div>
@@ -75,7 +78,8 @@
                                     <i class="fa fa-shopping-cart text-success"></i>
                                 </div>
                                 <div class="text-end">
-                                    <h3 class="mb-1 mt-0"> <span data-plugin="counterup">{{ \App\Models\Invoice::count() }}</span> </h3>
+                                    <h3 class="mb-1 mt-0"><span
+                                            data-plugin="counterup">{{ \App\Models\Invoice::count() }}</span></h3>
                                     <p class="text-muted mb-0">سفارشات</p>
                                 </div>
                             </div>
@@ -83,7 +87,34 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                @can('accountant-manager')
+                    @php
+                        $title = 'فعالیت های اخیر حسابداران (5 تای اخیر)';
+                        $activities = \App\Models\ActivityLog::whereHas('user.role', function ($q) {
+                            $q->whereHas('permissions', function ($q) {
+                                $q->where('name', 'accountant');
+                            })->where('name', '!=', 'admin');
+                        })->latest()->limit(5)->get();
+                    @endphp
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                        @include('panel.partials.panel.activity-limit', ['activities' => $activities, 'title' => $title, 'permission' => 'accountant-manager'])
+                    </div>
+                @endcan
+                @can('sales-manager')
+                    @php
+                        $title = 'فعالیت های اخیر کارمندان فروش (5 تای اخیر)';
+                        $activities = \App\Models\ActivityLog::whereHas('user.role', function ($q) {
+                            $q->whereHas('permissions', function ($q) {
+                                $q->whereIn('name', ['free-sales','system-user','partner-tehran-use','partner-other-user','single-price-user']);
+                            })->where('name', '!=', 'admin');
+                        })->latest()->limit(5)->get();
+                    @endphp
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                        @include('panel.partials.panel.activity-limit', ['activities' => $activities, 'title' => $title, 'permission' => 'sales-manager'])
+                    </div>
+                @endcan
+            </div>
         </div>
     </div>
 @endsection
-

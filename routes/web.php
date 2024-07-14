@@ -95,6 +95,7 @@ Route::middleware('auth')->prefix('/panel')->group(function () {
     Route::match(['get', 'post'], '/', [PanelController::class, 'index'])->name('panel');
     Route::post('send-sms', [PanelController::class, 'sendSMS'])->name('sendSMS');
     Route::post('saveFcmToken', [PanelController::class, 'saveFCMToken']);
+    Route::get('activities/{permission}', [PanelController::class,'activity'])->name('activities.index');
 
     // Users
     Route::resource('users', UserController::class)->except('show');

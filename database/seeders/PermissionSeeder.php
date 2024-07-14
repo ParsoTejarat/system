@@ -79,7 +79,6 @@ class PermissionSeeder extends Seeder
 //            'prices-list' => 'لیست قیمت ها',
 //            'price-history' => 'تاریخچه قیمت ها',
 //            'shops' => 'فروشگاه ها',
-//            'accountant-manager' => 'رئیس حسابداری',
 //            'accountant' => 'حسابدار',
 //
 //            'sale-reports-list' => 'لیست گزارشات فروش',
@@ -144,6 +143,9 @@ class PermissionSeeder extends Seeder
 //            'order-payment-create' => 'ثبت دستور پرداخت/دریافت',
 //            'order-payment-edit' => 'ویرایش دستور پرداخت/دریافت',
 //            'order-payment-delete' => 'حذف دستور پرداخت/دریافت',
+
+//            'accountant-manager' => 'رئیس حسابداری',
+//            'free-sales' => 'فروش آزاد',
         ];
 
         foreach ($items as $key => $item) {
