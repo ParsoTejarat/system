@@ -202,7 +202,7 @@ class FileManagerController extends Controller
         ]);
 
         // log
-        activity_log('create-file', __METHOD__, [$file, $file_uploaded, $sub_folder_id]);
+        activity_log('upload-file', __METHOD__, [$file, $file_uploaded, $sub_folder_id]);
     }
 
 }
