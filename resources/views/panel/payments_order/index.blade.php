@@ -74,9 +74,7 @@
                                                         <span class="badge bg-danger">رد شد</span>
                                                     @endif
                                                 @endcan
-
                                             </td>
-
                                             <td>{{ verta($payment->created_at)->format('H:i - Y/m/d') }}</td>
                                             <td>
                                                 <a class="btn btn-info btn-floating"
@@ -98,43 +96,22 @@
                                                 @endif
                                             </td>
                                             @cannot('ceo')
-                                            <td>
-                                                @can('order-payment-edit')
-                                                    <a class="btn btn-warning btn-floating {{$payment->status !='pending'?'disabled':''}}"
-                                                       href="{{ route('payments_order.edit', ['payments_order'=>$payment->id,'type'=>$type]) }}">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                @endcan
+                                                <td>
 
-                                            </td>
-                                            <td>
-                                                @can('order-payment-delete')
-
+                                                        <a class="btn btn-warning btn-floating {{($payment->status =='pending')&&(\Illuminate\Support\Facades\Gate::allows('order-payment-edit',$payment))?'':'disabled'}}"
+                                                           href="{{ route('payments_order.edit', ['payments_order'=>$payment->id,'type'=>$type]) }}">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                </td>
+                                                <td>
                                                     <button
-                                                        class="btn btn-danger btn-floating trashRow {{$payment->status !='pending'?'disabled':''}}"
-                                                        data-url="{{ route('payments_order.destroy',['payments_order'=>$payment->id,'type'=>$type]) }}"
-                                                        data-id="{{ $payment->id }}">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                @endcan
-                                                @endcannot
-
-                                                {{--                                                    <a class="btn btn-danger btn-floating {{$payment->status !='pending'?'disabled':''}}"--}}
-                                                {{--                                                       href="#delete-payment" data-bs-toggle="modal">--}}
-                                                {{--                                                        <i class="fa fa-trash"></i>--}}
-                                                {{--                                                    </a>--}}
-                                                {{--                                                    <form--}}
-                                                {{--                                                        action="{{route('payments_order.destroy',['payments_order'=>$payment->id,'type'=>$type])}}"--}}
-                                                {{--                                                        method="post">--}}
-                                                {{--                                                        @csrf--}}
-                                                {{--                                                        @method('DELETE')--}}
-                                                {{--                                                        <input type="hidden" name="type" value="{{$type}}">--}}
-                                                {{--                                                        <button type="submit"--}}
-                                                {{--                                                                class="btn btn-danger btn-floating {{$payment->status !='pending'?'disabled':''}}">--}}
-                                                {{--                                                            <i class="fa fa-trash"></i></button>--}}
-                                                {{--                                                    </form>--}}
-
-                                            </td>
+                                                            class="btn btn-danger btn-floating trashRow {{($payment->status =='pending')&&(\Illuminate\Support\Facades\Gate::allows('order-payment-delete',$payment))?'':'disabled'}}"
+                                                            data-url="{{ route('payments_order.destroy',['payments_order'=>$payment->id,'type'=>$type]) }}"
+                                                            data-id="{{ $payment->id }}">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    @endcannot
+                                                </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
@@ -152,8 +129,6 @@
             </div>
         </div>
     </div>
-
-
     <div class="modal fade" id="factorResetModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -212,9 +187,7 @@
                 var paymentId = $(this).data('id');
                 $('#value-form').val(paymentId)
             });
-
             $('.description-modal').on('click', function (event) {
-
                 var description = $(this).data('desc');
                 $('#desc-status').val(description);
                 var status = $(this).data('status');

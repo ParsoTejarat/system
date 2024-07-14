@@ -93,12 +93,11 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('edit-indicator', function ($user, Indicator $indicator) {
             return $user->id == $indicator->user_id;
         });
+
         Gate::define('order-payment-edit', function ($user, PaymentOrder $payment) {
             return $user->id == $payment->user_id;
         });
-        Gate::define('order-payment-edit', function ($user, PaymentOrder $payment) {
-            return $user->id == $payment->user_id;
-        });
+
         Gate::define('order-payment-delete', function ($user, PaymentOrder $payment) {
             return $user->id == $payment->user_id;
         });

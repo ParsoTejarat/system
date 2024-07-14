@@ -10,6 +10,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Notifications\SendMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Notification;
 
 use PDF as PDF;
@@ -29,7 +30,15 @@ class PaymentOrderController extends Controller
         if (!isset($type)) {
             return redirect(route('payments_order.index', ['type' => 'payments']));
         }
-        $payments_order = PaymentOrder::with('user')->where('type', $type)->latest()->paginate(30);
+        if (Gate::any(['accountant-manager', 'ceo', 'admin'])) {
+            $payments_order = PaymentOrder::with('user')->where('type', $type)->latest()->paginate(30);
+
+        }elseif(Gate::allows('accountant')){
+            $payments_order = PaymentOrder::with('user')->where(['type'=> $type,'user_id'=>auth()->id()])->latest()->paginate(30);
+
+        }else{
+            abort(403);
+        }
         return view('panel.payments_order.index', compact(['payments_order', 'type']));
     }
 
@@ -69,7 +78,7 @@ class PaymentOrderController extends Controller
         $users = User::whereHas('role.permissions', function ($q) {
             $q->where('name', 'ceo');
         })->get();
-        $message = "یک دستور به شماره $payment->number توسط ".$payment->user->family ." ایجاد شده است.";
+        $message = "یک دستور به شماره $payment->number توسط " . $payment->user->family . " ایجاد شده است.";
         Notification::send($users, new SendMessage($message, url('/panel/payments_order')));
         activity_log('order-payment-create', __METHOD__, [$request->all(), $payment]);
         alert()->success('درخواست شما ثبت شد و در انتظار تایید قرار گرفت.', 'موفقیت آمیز');
@@ -86,12 +95,13 @@ class PaymentOrderController extends Controller
 
     public function edit($id)
     {
-        $this->authorize('order-payment-edit');
+
         $type = request('type');
         if (!isset($type)) {
             return redirect()->route('payments_order.edit', ['type' => 'payments', 'payments_order' => $id]);
         }
         $order_payment = PaymentOrder::where(['id' => $id, 'status' => 'pending'])->firstOrFail();
+        $this->authorize('order-payment-edit',$order_payment);
         return view('panel.payments_order.edit', compact(['order_payment', 'type']));
 
 
@@ -101,8 +111,9 @@ class PaymentOrderController extends Controller
     public function update(StorePaymentRequest $request, $id)
     {
 
-        $this->authorize('order-payment-edit');
+
         $paymentOrder = PaymentOrder::where(['id' => $id, 'status' => 'pending'])->firstOrFail();
+        $this->authorize('order-payment-edit', $paymentOrder);
         $paymentOrder->amount = $request->amount;
         $paymentOrder->amount_words = $request->amount_words;
         $paymentOrder->invoice_number = $request->invoice_number ?? 0;
@@ -118,7 +129,7 @@ class PaymentOrderController extends Controller
         $users = User::whereHas('role.permissions', function ($q) {
             $q->where('name', 'ceo');
         })->get();
-        $message = "یک دستور به شماره $paymentOrder->number توسط ".$paymentOrder->user->family ." ویرایش شده است.";
+        $message = "یک دستور به شماره $paymentOrder->number توسط " . $paymentOrder->user->family . " ویرایش شده است.";
         alert()->success('درخواست شما ویرایش و در انتظار تایید قرار گرفت.', 'موفقیت آمیز');
         return redirect()->route('payments_order.index', ['type' => $paymentOrder->type]);
 
@@ -127,9 +138,10 @@ class PaymentOrderController extends Controller
 
     public function destroy($id)
     {
-        $this->authorize('order-payment-delete');
+
         $type = request('type');
         $order_payment = PaymentOrder::where(['id' => $id, 'status' => 'pending', 'type' => $type])->firstOrFail();
+        $this->authorize('order-payment-delete', $order_payment);
         $order_payment->delete();
         activity_log('order-payment-delete', __METHOD__, $order_payment);
         alert()->success('دستور با موفقیت حذف شد.', 'موفقیت آمیز');
