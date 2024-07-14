@@ -144,9 +144,9 @@ class ActivityLog extends Model
         'edit-indicator' => 'ویرایش نامه',
         'delete-indicator' => 'حذف نامه',
         //order_payment
-        'order-payment-create' => 'ثبت دستور پرداخت/دریافت',
-        'order-payment-edit' => 'ویرایش دستور پرداخت/دریافت',
-        'order-payment-delete' => 'حذف دستور پرداخت/دریافت',
+        'payment-create-create' => 'ثبت دستور پرداخت/دریافت',
+        'payment-edit-edit' => 'ویرایش دستور پرداخت/دریافت',
+        'payment-delete-delete' => 'حذف دستور پرداخت/دریافت',
     ];
 
     public function user()
