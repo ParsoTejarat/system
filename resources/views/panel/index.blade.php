@@ -91,7 +91,7 @@
                 @can('accountant-manager')
                     @php
                         $title = 'فعالیت های اخیر حسابداران (5 تای اخیر)';
-                        $activities = \App\Models\ActivityLog::whereHas('user.role', function ($q) {
+                        $activities = \App\Models\ActivityLog::where('user_id','!=',\auth()->id())->whereHas('user.role', function ($q) {
                             $q->whereHas('permissions', function ($q) {
                                 $q->where('name', 'accountant');
                             })->where('name', '!=', 'admin');
@@ -104,7 +104,7 @@
                 @can('sales-manager')
                     @php
                         $title = 'فعالیت های اخیر کارمندان فروش (5 تای اخیر)';
-                        $activities = \App\Models\ActivityLog::whereHas('user.role', function ($q) {
+                        $activities = \App\Models\ActivityLog::where('user_id','!=',\auth()->id())->whereHas('user.role', function ($q) {
                             $q->whereHas('permissions', function ($q) {
                                 $q->whereIn('name', ['free-sales','system-user','partner-tehran-use','partner-other-user','single-price-user']);
                             })->where('name', '!=', 'admin');

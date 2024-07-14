@@ -29,7 +29,7 @@ class PanelController extends Controller
             case 'accountant-manager':
                 if (Gate::allows('accountant-manager')) {
                     $title = 'فعالیت های اخیر حسابداران';
-                    $activities = \App\Models\ActivityLog::whereHas('user.role', function ($q) {
+                    $activities = \App\Models\ActivityLog::where('user_id','!=',\auth()->id())->whereHas('user.role', function ($q) {
                         $q->whereHas('permissions', function ($q) {
                             $q->where('name', 'accountant');
                         })->where('name', '!=', 'admin');
@@ -39,7 +39,7 @@ class PanelController extends Controller
             case 'sales-manager':
                 if (Gate::allows('sales-manager')) {
                     $title = 'فعالیت های اخیر کارمندان فروش';
-                    $activities = \App\Models\ActivityLog::whereHas('user.role', function ($q) {
+                    $activities = \App\Models\ActivityLog::where('user_id','!=',\auth()->id())->whereHas('user.role', function ($q) {
                         $q->whereHas('permissions', function ($q) {
                             $q->whereIn('name', ['free-sales','system-user','partner-tehran-use','partner-other-user','single-price-user']);
                         })->where('name', '!=', 'admin');
