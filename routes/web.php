@@ -107,7 +107,7 @@ Route::middleware('auth')->prefix('/panel')->group(function () {
     Route::get('/download/indicator/{id}', [IndicatorController::class, 'downloadFromIndicator'])->name('indicator.download')->middleware('can:indicator');
 
 //PaymentsOrder
-    Route::resource('/payments_order', PaymentOrderController::class);
+    Route::resource('/payments_order', PaymentOrderController::class)->except('show');
     Route::post('/status-order-payment', [PaymentOrderController::class, 'statusOrderPayment'])->name('payments_order_status');
     Route::get('/download-order-payment/{id}', [PaymentOrderController::class, 'downloadOrderPaymentPdf'])->name('payments_order.download');
 

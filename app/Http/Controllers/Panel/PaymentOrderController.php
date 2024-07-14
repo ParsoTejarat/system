@@ -86,13 +86,6 @@ class PaymentOrderController extends Controller
 
     }
 
-
-    public function show($id)
-    {
-
-    }
-
-
     public function edit($id)
     {
 
@@ -110,7 +103,6 @@ class PaymentOrderController extends Controller
 
     public function update(StorePaymentRequest $request, $id)
     {
-
 
         $paymentOrder = PaymentOrder::where(['id' => $id, 'status' => 'pending'])->firstOrFail();
         $this->authorize('order-payment-edit', $paymentOrder);
@@ -164,8 +156,6 @@ class PaymentOrderController extends Controller
     {
         $this->authorize('ceo');
         $order_payment_approved = PaymentOrder::where(['id' => $request->payment_id, 'status' => 'pending'])->firstOrFail();
-//        dd($order_payment_approved->number);
-
         $order_payment_approved->update([
             'status' => $request->status,
             'description' => $request->desc,
