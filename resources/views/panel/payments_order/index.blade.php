@@ -17,13 +17,15 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="card-title d-flex justify-content-end">
-                                @can('order-payment-create')
-                                    <a href="{{ route('payments_order.create',['type'=>$type]) }}"
-                                       class="btn btn-primary">
-                                        <i class="fa fa-plus mr-2"></i>
-                                        دستور {{$type =='payments'?'پرداخت':'دریافت'}}
-                                    </a>
-                                @endcan
+                                @cannot('ceo')
+                                    @can('order-payment-create')
+                                        <a href="{{ route('payments_order.create',['type'=>$type]) }}"
+                                           class="btn btn-primary">
+                                            <i class="fa fa-plus mr-2"></i>
+                                            دستور {{$type =='payments'?'پرداخت':'دریافت'}}
+                                        </a>
+                                    @endcan
+                                @endcannot
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered dataTable dtr-inline text-center"
@@ -37,8 +39,10 @@
                                         <th>تاریخ</th>
                                         <th>دانلود</th>
                                         <th>توضیحات</th>
-                                        <th>ویرایش</th>
-                                        <th>حذف</th>
+                                        @cannot('ceo')
+                                            <th>ویرایش</th>
+                                            <th>حذف</th>
+                                        @endcannot
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -70,9 +74,7 @@
                                                         <span class="badge bg-danger">رد شد</span>
                                                     @endif
                                                 @endcan
-
                                             </td>
-
                                             <td>{{ verta($payment->created_at)->format('H:i - Y/m/d') }}</td>
                                             <td>
                                                 <a class="btn btn-info btn-floating"
@@ -93,29 +95,23 @@
                                                     </a>
                                                 @endif
                                             </td>
-                                            <td>
-                                                @can('order-payment-edit')
-                                                    <a class="btn btn-warning btn-floating {{$payment->status !='pending'?'disabled':''}}"
-                                                       href="{{ route('payments_order.edit', ['payments_order'=>$payment->id,'type'=>$type]) }}">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                @endcan
+                                            @cannot('ceo')
+                                                <td>
 
-                                            </td>
-                                            <td>
-                                                @can('order-payment-delete')
-                                                    <form
-                                                        action="{{route('payments_order.destroy',['payments_order'=>$payment->id,'type'=>$type])}}"
-                                                        method="post">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <input type="hidden" name="type" value="{{$type}}">
-                                                        <button type="submit"
-                                                                class="btn btn-danger btn-floating {{$payment->status !='pending'?'disabled':''}}">
-                                                            <i class="fa fa-edit"></i></button>
-                                                    </form>
-                                                @endcan
-                                            </td>
+                                                        <a class="btn btn-warning btn-floating {{($payment->status =='pending')&&(\Illuminate\Support\Facades\Gate::allows('order-payment-edit',$payment))?'':'disabled'}}"
+                                                           href="{{ route('payments_order.edit', ['payments_order'=>$payment->id,'type'=>$type]) }}">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                </td>
+                                                <td>
+                                                    <button
+                                                            class="btn btn-danger btn-floating trashRow {{($payment->status =='pending')&&(\Illuminate\Support\Facades\Gate::allows('order-payment-delete',$payment))?'':'disabled'}}"
+                                                            data-url="{{ route('payments_order.destroy',['payments_order'=>$payment->id,'type'=>$type]) }}"
+                                                            data-id="{{ $payment->id }}">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    @endcannot
+                                                </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
@@ -133,8 +129,6 @@
             </div>
         </div>
     </div>
-
-
     <div class="modal fade" id="factorResetModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -182,8 +176,6 @@
             </div>
         </div>
     </div>
-
-
 @endsection
 @section('scripts')
     <script>
@@ -192,9 +184,7 @@
                 var paymentId = $(this).data('id');
                 $('#value-form').val(paymentId)
             });
-
             $('.description-modal').on('click', function (event) {
-
                 var description = $(this).data('desc');
                 $('#desc-status').val(description);
                 var status = $(this).data('status');

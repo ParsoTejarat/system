@@ -7,6 +7,7 @@ use App\Models\Indicator;
 use App\Models\Invoice;
 use App\Models\Note;
 use App\Models\Packet;
+use App\Models\PaymentOrder;
 use App\Models\Permission;
 use App\Models\Report;
 use App\Models\SmsHistory;
@@ -37,7 +38,7 @@ class AuthServiceProvider extends ServiceProvider
         $permissions = Permission::pluck('name');
 
         foreach ($permissions as $permission) {
-            Gate::define($permission, function ($user) use($permission){
+            Gate::define($permission, function ($user) use ($permission) {
                 return (bool)$user->role->permissions()->where('name', $permission)->first();
             });
         }
@@ -49,48 +50,56 @@ class AuthServiceProvider extends ServiceProvider
             return $user->isSuperuser();
         });
 
-        Gate::define('edit-profile', function ($user, $user_id){
+        Gate::define('edit-profile', function ($user, $user_id) {
             return $user->id == $user_id;
         });
 
-        Gate::define('edit-packet', function ($user, Packet $packet){
+        Gate::define('edit-packet', function ($user, Packet $packet) {
             return $user->id == $packet->user_id || $user->isAdmin();
         });
 
-        Gate::define('edit-invoice', function ($user, Invoice $invoice){
+        Gate::define('edit-invoice', function ($user, Invoice $invoice) {
             return $user->id == $invoice->user_id || $user->isAdmin() || $user->isAccountant() || $user->isCEO() || $user->isSalesManager();
         });
 
-        Gate::define('edit-factor', function ($user, Invoice $invoice){
+        Gate::define('edit-factor', function ($user, Invoice $invoice) {
             return $user->id == $invoice->user_id || $user->isAdmin() || $user->isAccountant() || $user->isCEO();
         });
 
-        Gate::define('edit-task', function ($user, Task $task){
+        Gate::define('edit-task', function ($user, Task $task) {
             return $user->id == $task->creator_id;
         });
 
-        Gate::define('delete-task', function ($user, Task $task){
+        Gate::define('delete-task', function ($user, Task $task) {
             return $user->id == $task->creator_id;
         });
 
-        Gate::define('edit-note', function ($user, Note $note){
+        Gate::define('edit-note', function ($user, Note $note) {
             return $user->id == $note->user_id;
         });
 
-        Gate::define('show-sms-history', function ($user, SmsHistory $smsHistory){
+        Gate::define('show-sms-history', function ($user, SmsHistory $smsHistory) {
             return $user->id == $smsHistory->user_id || $user->isAdmin() || $user->isCEO();
         });
 
-        Gate::define('edit-report', function ($user, Report $report){
+        Gate::define('edit-report', function ($user, Report $report) {
             return $user->id == $report->user_id || $user->isAdmin() || $user->isCEO();
         });
 
-        Gate::define('edit-buy-order', function ($user, BuyOrder $buyOrder){
+        Gate::define('edit-buy-order', function ($user, BuyOrder $buyOrder) {
             return $user->id == $buyOrder->user_id || $user->isSalesManager();
         });
 
-        Gate::define('edit-indicator', function ($user, Indicator $indicator){
+        Gate::define('edit-indicator', function ($user, Indicator $indicator) {
             return $user->id == $indicator->user_id;
+        });
+
+        Gate::define('order-payment-edit', function ($user, PaymentOrder $payment) {
+            return $user->id == $payment->user_id;
+        });
+
+        Gate::define('order-payment-delete', function ($user, PaymentOrder $payment) {
+            return $user->id == $payment->user_id;
         });
     }
 }

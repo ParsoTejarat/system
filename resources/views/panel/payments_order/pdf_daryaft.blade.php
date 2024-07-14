@@ -63,7 +63,7 @@
     .box8 {
         position: absolute;
         top: 6.2rem;
-        left: 3rem;
+        left: 2.7rem;
         font-size: 1.2rem;
     }
     .box9 {
@@ -75,12 +75,12 @@
 </style>
 <body>
 
-<div class="box9">{{$orderPayment->number}} </div>
-<div class="box8">{{$date}} </div>
-<div class="box1"> لطفا مبلغ :{{number_format($orderPayment->amount)}} ریال</div>
+<div class="box9">{{englishToPersianNumbers($orderPayment->number)}} </div>
+<div class="box8">{{englishToPersianNumbers($date)}} </div>
+<div class="box1"> لطفا مبلغ :{{englishToPersianNumbers(number_format($orderPayment->amount))}} ریال</div>
 <div class="box2"> به حروف :{{$orderPayment->amount_words}} ریال</div>
 <div class="box3"> بابت :{{$orderPayment->for}}</div>
 <div class="box4"> از شرکت / خانم / آقا:{{$orderPayment->from}}</div>
-<div class="box5"> طی فاکتور شماره :{{$orderPayment->invoice_number??0}} دریافت شد.</div>
+<div class="box5"> طی فاکتور شماره :{{englishToPersianNumbers($orderPayment->invoice_number??0)}} دریافت شد.</div>
 </body>
 </html>

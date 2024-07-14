@@ -143,7 +143,6 @@ class PermissionSeeder extends Seeder
 //            'order-payment-create' => 'ثبت دستور پرداخت/دریافت',
 //            'order-payment-edit' => 'ویرایش دستور پرداخت/دریافت',
 //            'order-payment-delete' => 'حذف دستور پرداخت/دریافت',
-
 //            'accountant-manager' => 'رئیس حسابداری',
 //            'free-sales' => 'فروش آزاد',
         ];

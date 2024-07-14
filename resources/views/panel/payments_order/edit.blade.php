@@ -33,8 +33,7 @@
                                         @enderror
                                     </div>
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
-                                        <label for="to_date" class="form-label">مبلغ به حروف (ریال)<span
-                                                class="text-danger">*</span></label>
+                                        <label for="to_date" class="form-label">مبلغ به حروف (ریال)</label>
                                         <input type="text" name="amount_words" class="form-control" id="amount_words"
                                                value="{{ old('amount_words',$order_payment->amount_words) }}" readonly>
 
@@ -124,13 +123,13 @@
                                         <label for="from" class="form-label" id="is_online_payment_section">
                                             <input type="checkbox" class="form-check-input" id="is_online_payment"
                                                    name="is_online_payment"
-                                                   value="true" {{ $order_payment->is_online_payment =='1' ? 'checked' : '' }}>
-
-                                            پرداخت آنلاین</label>
+                                                   value="true" {{ old('is_online_payment',$order_payment->is_online_payment) ? 'checked' : '' }}>
+                                            پرداخت آنلاین
+                                        </label>
                                     </div>
                                 @endif
 
-                                <button type="submit" class="btn btn-success mt-3">ویرایش</button>
+                                <button type="submit" class="btn btn-primary mt-3">ثبت فرم</button>
                             </form>
                         </div>
                     </div>
