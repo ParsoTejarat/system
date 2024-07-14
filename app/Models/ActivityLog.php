@@ -144,6 +144,10 @@ class ActivityLog extends Model
         'create-indicator' => 'ثبت نامه',
         'edit-indicator' => 'ویرایش نامه',
         'delete-indicator' => 'حذف نامه',
+        //order_payment
+        'payment-create-create' => 'ثبت دستور پرداخت/دریافت',
+        'payment-edit-edit' => 'ویرایش دستور پرداخت/دریافت',
+        'payment-delete-delete' => 'حذف دستور پرداخت/دریافت',
     ];
 
     public function user()
