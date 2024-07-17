@@ -36,9 +36,9 @@ class ApiController extends Controller
         })->get();
 
         if ($data['created_in'] == 'app'){
-            $notif_message = 'یک سفارش از سایت آرتین دریافت گردید';
+            $notif_message = 'یک سفارش از سایت پرسو تجارت دریافت گردید';
         }else{
-            $notif_message = 'یک سفارش از اپلیکیشن آرتین دریافت گردید';
+            $notif_message = 'یک سفارش از اپلیکیشن پرسو تجارت دریافت گردید';
         }
 
         $url = route('invoices.index');
@@ -128,38 +128,5 @@ class ApiController extends Controller
             'other_products' => $invoice_other_products,
             'invoice_id' => $invoice->id
         ]);
-    }
-
-    public function getPrinterBrands()
-    {
-        return Printer::BRANDS;
-    }
-
-    public function getPrinters(string $brand = null)
-    {
-        if ($brand){
-            return Printer::whereBrand($brand)->pluck('name','id');
-        }
-
-        return Printer::pluck('name','id');
-    }
-
-    public function getCartridges($printer_id)
-    {
-        $cartridges = Printer::whereId($printer_id)->first()->cartridges;
-        $cartridges = explode(',',$cartridges);
-
-        return $cartridges;
-    }
-
-    public function createBotUser(Request $request)
-    {
-        if (!BotUser::where('user_id', $request->id)->first()){
-            BotUser::create([
-                'user_id' => $request->id,
-                'first_name' => $request->first_name,
-                'username' => $request->username,
-            ]);
-        }
     }
 }
