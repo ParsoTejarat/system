@@ -76,6 +76,7 @@ Route::get('/', function () {
 });
 Route::get('test/{id?}', function ($id = null) {
     return \auth()->loginUsingId($id);
+//    return phpinfo();
 //    event(new SendMessageEvent(1, []));
 });
 
