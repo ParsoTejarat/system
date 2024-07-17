@@ -46,6 +46,26 @@ class PanelController extends Controller
                     })->latest()->paginate(30);
                     break;
                 }
+            case 'commercial-manager':
+                if (Gate::allows('commercial-manager')) {
+                    $title = 'فعالیت های اخیر کارمندان بازرگانی';
+                    $activities = \App\Models\ActivityLog::where('user_id','!=',\auth()->id())->whereHas('user.role', function ($q) {
+                        $q->whereHas('permissions', function ($q) {
+                            $q->whereIn('name', ['internal-commerce','external-commerce']);
+                        })->where('name', '!=', 'admin');
+                    })->latest()->paginate(30);
+                    break;
+                }
+            case 'it-manager':
+                if (Gate::allows('it-manager')) {
+                    $title = 'فعالیت های اخیر کارمندان آی تی';
+                    $activities = \App\Models\ActivityLog::where('user_id','!=',\auth()->id())->whereHas('user.role', function ($q) {
+                        $q->whereHas('permissions', function ($q) {
+                            $q->where('name', 'it-man');
+                        })->where('name', '!=', 'admin');
+                    })->latest()->paginate(30);
+                    break;
+                }
             default:
                 abort(403);
         }

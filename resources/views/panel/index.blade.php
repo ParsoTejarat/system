@@ -114,6 +114,32 @@
                         @include('panel.partials.panel.activity-limit', ['activities' => $activities, 'title' => $title, 'permission' => 'sales-manager'])
                     </div>
                 @endcan
+                @can('commercial-manager')
+                    @php
+                        $title = 'فعالیت های اخیر کارمندان بازرگانی (5 تای اخیر)';
+                        $activities = \App\Models\ActivityLog::where('user_id','!=',\auth()->id())->whereHas('user.role', function ($q) {
+                            $q->whereHas('permissions', function ($q) {
+                                $q->whereIn('name', ['internal-commerce','external-commerce']);
+                            })->where('name', '!=', 'admin');
+                        })->latest()->limit(5)->get();
+                    @endphp
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                        @include('panel.partials.panel.activity-limit', ['activities' => $activities, 'title' => $title, 'permission' => 'commercial-manager'])
+                    </div>
+                @endcan
+                @can('it-manager')
+                    @php
+                        $title = 'فعالیت های اخیر کارمندان آی تی (5 تای اخیر)';
+                        $activities = \App\Models\ActivityLog::where('user_id','!=',\auth()->id())->whereHas('user.role', function ($q) {
+                            $q->whereHas('permissions', function ($q) {
+                                $q->where('name', 'it-man');
+                            })->where('name', '!=', 'admin');
+                        })->latest()->limit(5)->get();
+                    @endphp
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                        @include('panel.partials.panel.activity-limit', ['activities' => $activities, 'title' => $title, 'permission' => 'it-manager'])
+                    </div>
+                @endcan
             </div>
         </div>
     </div>
