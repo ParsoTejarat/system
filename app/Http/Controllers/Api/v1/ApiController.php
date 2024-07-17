@@ -14,11 +14,29 @@ use App\Notifications\SendMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
 {
     public function createInvoice(Request $request)
     {
+        $validator = Validator::make($request->all(),[
+            'created_in' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'national_code' => 'required',
+            'province' => 'required',
+            'city' => 'required',
+            'address_1' => 'required',
+            'postal_code' => 'required',
+            'phone' => 'required',
+            'items' => 'required|json',
+        ]);
+
+        if ($validator->fails()){
+            return response()->json(['data' => $validator->errors()->messages()]);
+        }
+
         $data = $request->all();
 
         // users where has single-price-user permission
@@ -80,7 +98,7 @@ class ApiController extends Controller
         $tax = 0.1;
 
         // create product items
-        foreach ($request->items as $item){
+        foreach (json_decode($request->items, true) as $item){
             // for test
 //            $product = Product::first();
             // end for test
