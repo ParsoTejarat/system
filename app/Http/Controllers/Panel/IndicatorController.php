@@ -236,7 +236,7 @@ class IndicatorController extends Controller
         do {
             $lastIndicator = Indicator::where('number', 'like', $dateString . '%')->orderBy('number', 'desc')->first();
             if ($lastIndicator) {
-                $lastCounter = (int) substr($lastIndicator->number, -3);
+                $lastCounter = (int)substr($lastIndicator->number, -3);
                 $counter = $lastCounter + 1;
             } else {
                 $counter = 1;

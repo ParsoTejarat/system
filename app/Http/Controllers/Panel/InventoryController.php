@@ -203,8 +203,8 @@ class InventoryController extends Controller
 
         // log
         activity_log('move-inventory', __METHOD__, [$request->all(), $report]);
-
         alert()->success('کالا با موفقیت به انبار مورد نظر انتقال یافت','انتقال کالا');
         return back();
     }
+
 }

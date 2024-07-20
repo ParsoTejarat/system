@@ -201,4 +201,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(ActivityLog::class);
     }
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
+    }
 }
