@@ -30,7 +30,7 @@ class ApiController extends Controller
             'address_1' => 'required',
             'postal_code' => 'required',
             'phone' => 'required',
-            'items' => 'required|json',
+            'items' => 'required',
         ]);
 
         if ($validator->fails()){
@@ -54,9 +54,9 @@ class ApiController extends Controller
         })->get();
 
         if ($data['created_in'] == 'app'){
-            $notif_message = 'یک سفارش از سایت پرسو تجارت دریافت گردید';
-        }else{
             $notif_message = 'یک سفارش از اپلیکیشن پرسو تجارت دریافت گردید';
+        }else{
+            $notif_message = 'یک سفارش از سایت پرسو تجارت دریافت گردید';
         }
 
         $url = route('invoices.index');
@@ -98,12 +98,13 @@ class ApiController extends Controller
         $tax = 0.1;
 
         // create product items
-        foreach (json_decode($request->items, true) as $item){
+        foreach ($request->items as $item){
             // for test
 //            $product = Product::first();
             // end for test
 
-            $product = Product::where('code', $item['acc_code'])->first();
+//            $product = Product::where('code', $item['acc_code'])->first();
+            $product = Product::where('sku', $item['sku'])->first();
 
             $price = ($item['total'] / $item['quantity']) .'0';
             $total = $item['total'].'0';
@@ -119,7 +120,7 @@ class ApiController extends Controller
                 'invoice_net' => (int)$total + ($total * $tax),
             ]);
 
-            $invoice->factor()->updateOrCreate(['status' => 'paid']);
+//            $invoice->factor()->updateOrCreate(['status' => 'paid']);
         }
     }
 
