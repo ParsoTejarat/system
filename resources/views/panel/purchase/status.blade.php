@@ -17,15 +17,16 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('indicator.store') }}" method="post">
+                            <form action="{{ route('purchase.status.store') }}" method="post">
                                 @csrf
+                                <input type="hidden" name="purchase_id" value="{{$purchase->id}}">
                                 <div class="row">
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
                                         <label for="attachment" class="form-label">تعداد<span
                                                 class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" name="attachment" id="attachment"
-                                               value="{{ old('attachment') }}">
-                                        @error('attachment')
+                                        <input type="number" class="form-control" name="count" id="count"
+                                               value="{{ old('count') }}">
+                                        @error('count')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
@@ -47,9 +48,9 @@
                                 <div class="row">
                                     <div class="mb-2 col-xl-6 col-lg-6 col-md-6">
                                         <label for="code" class="form-label">توضیحات</label>
-                                        <textarea type="text" class="form-control" name="text"
-                                                  id="text" placeholder="اختیاری">{{ old('text') }}</textarea>
-                                        @error('text')
+                                        <textarea type="desc" class="form-control" name="desc"
+                                                  id="desc" placeholder="اختیاری">{{ old('desc') }}</textarea>
+                                        @error('desc')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                         <div class="invalid-feedback text-danger d-block" id="error-text"></div>

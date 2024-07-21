@@ -334,13 +334,12 @@ class InventoryReportController extends Controller
                 $inventory = Inventory::find($inventory_id);
                 $inventory->current_count -= $request->counts[$key];
                 $inventory->save();
-                $this->checkInventoryValue($inventory);
-
 
                 $report->in_outs()->create([
                     'inventory_id' => $inventory_id,
                     'count' => $request->counts[$key],
                 ]);
+                $this->checkInventoryValue($inventory);
             }
         }
     }
@@ -423,23 +422,19 @@ class InventoryReportController extends Controller
         }
     }
 
-    private function checkInventoryValue($inventory)
+        private function checkInventoryValue($inventory)
     {
         if ($inventory->current_count <= 10) {
-            $this->PurchaseEngineerProcess($inventory);
+            $purchase = new Purchase();
+            $purchase->user_id = auth()->id();
+            $purchase->inventory_id = $inventory->id;
+            $purchase->save();
+            $message = "کالای $inventory->title به لیست خرید اضافه گردید.";
+            $users = User::whereHas('role.permissions', function ($q) {
+                $q->where('name', 'purchase-engineering');
+            })->get();
+            Notification::send($users, new SendMessage($message, url('/panel')));
         }
     }
 
-    private function PurchaseEngineerProcess($inventory)
-    {
-        $purchase = new Purchase();
-        $purchase->user_id = auth()->id();
-        $purchase->inventory_id = $inventory->id;
-        $purchase->save();
-        $message = "کالای $inventory->title به لیست خرید اضافه گردید.";
-        $users = User::whereHas('role.permissions', function ($q) {
-            $q->where('name', 'purchase-engineering');
-        })->get();
-        Notification::send($users, new SendMessage($message, url('/panel')));
-    }
 }

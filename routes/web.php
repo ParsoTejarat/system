@@ -115,7 +115,7 @@ Route::middleware('auth')->prefix('/panel')->group(function () {
     //purchaseEngineer
     Route::get('purchases', [PurchaseController::class, 'index'])->name('purchase.index');
     Route::get('purchases/status/{id}', [PurchaseController::class, 'status'])->name('purchase.status');
-    Route::post('purchases/status/{id}', [PurchaseController::class, 'storePurchaseStatus'])->name('purchase.status');
+    Route::post('purchases/status/store', [PurchaseController::class, 'storePurchaseStatus'])->name('purchase.status.store');
 
     // Roles
     Route::resource('roles', RoleController::class)->except('show');
