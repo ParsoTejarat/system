@@ -38,6 +38,7 @@ class ReportReminderJob implements ShouldQueue
         })->pluck('id');
 
         $users = User::whereIn('role_id',$roles_id)->get();
+//        $users = User::find(1);
 
         $message = 'لطفا گزارش امروز خود را ثبت کنید';
         $url = route('reports.index');
