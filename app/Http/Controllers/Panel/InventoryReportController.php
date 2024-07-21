@@ -433,7 +433,7 @@ class InventoryReportController extends Controller
             $users = User::whereHas('role.permissions', function ($q) {
                 $q->where('name', 'purchase-engineering');
             })->get();
-            Notification::send($users, new SendMessage($message, url('/panel')));
+            Notification::send($users, new SendMessage($message, url('/panel/purchases')));
         }
     }
 
