@@ -36,7 +36,7 @@
                                         <select name="status" id="status" class="form-control" data-toggle="select2">
 
                                             @foreach (App\Models\Purchase::STATUS as $key => $value)
-                                                <option value="{{ $key }}" {{$key == 'pending_purchase'?'selected':''}}>{{ $value }}</option>
+                                                <option value="{{ $key }}" {{ old('status', 'pending_purchase') == $key ? 'selected' : '' }}>{{ $value }}</option>
                                             @endforeach
                                         </select>
                                         @error('status')
