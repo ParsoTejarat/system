@@ -422,7 +422,7 @@ class InventoryReportController extends Controller
         }
     }
 
-        private function checkInventoryValue($inventory)
+    private function checkInventoryValue($inventory)
     {
         if ($inventory->current_count <= 10) {
             $purchase = new Purchase();
@@ -433,7 +433,7 @@ class InventoryReportController extends Controller
             $users = User::whereHas('role.permissions', function ($q) {
                 $q->where('name', 'purchase-engineering');
             })->get();
-            Notification::send($users, new SendMessage($message, url('/panel')));
+            Notification::send($users, new SendMessage($message, url('/panel/purchases')));
         }
     }
 

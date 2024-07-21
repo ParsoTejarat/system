@@ -419,7 +419,7 @@
                     </li>
                 @endcanany
                 @canany(['purchase-engineering'])
-                    @php $active_side = active_sidebar(['purchase-engineering']); @endphp
+                    @php $active_side = active_sidebar(['purchase-engineering','purchases/status/{id}']); @endphp
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#purchases" data-bs-toggle="collapse" aria-expanded="false"
                            aria-controls="tickets">

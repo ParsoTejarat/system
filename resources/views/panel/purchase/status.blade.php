@@ -33,10 +33,10 @@
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
                                         <label for="attachment" class="form-label">وضعیت<span
                                                 class="text-danger">*</span></label>
-                                        <select name="status" id="status" class="form-control">
-                                            <option selected disabled>انتخاب کنید...</option>
+                                        <select name="status" id="status" class="form-control" data-toggle="select2">
+
                                             @foreach (App\Models\Purchase::STATUS as $key => $value)
-                                                <option value="{{ $key }}">{{ $value }}</option>
+                                                <option value="{{ $key }}" {{$key == 'pending_purchase'?'selected':''}}>{{ $value }}</option>
                                             @endforeach
                                         </select>
                                         @error('status')
