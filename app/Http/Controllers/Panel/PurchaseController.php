@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePurchaseRequest;
 use App\Models\Purchase;
 use App\Models\User;
 use App\Notifications\SendMessage;
@@ -26,17 +27,10 @@ class PurchaseController extends Controller
         return view('panel.purchase.status', compact(['purchase']));
     }
 
-    public function storePurchaseStatus(Request $request)
+    public function storePurchaseStatus(StorePurchaseRequest $request)
     {
         $this->authorize('purchase-engineering');
 
-        $data = $request->validate([
-            'count' => 'required',
-            'status' => 'required|in:pending_purchase,purchase_done',
-        ], [
-            'count.required' => 'تعداد را وارد کنید',
-            'status.required' => 'وضعیت را انتخاب کنید.',
-        ]);
         $purchase = Purchase::whereId($request->purchase_id)->firstOrFail();
         $purchase->update([
             'status' => $request->status,
@@ -49,7 +43,7 @@ class PurchaseController extends Controller
             $users = User::whereHas('role.permissions', function ($q) {
                 $q->where('name', 'warehouse-keeper');
             })->get();
-            Notification::send($users, new SendMessage($message, url('/panel')));
+            Notification::send($users, new SendMessage($message, url('/panel/purchases')));
         }
 
         return redirect()->route('purchase.index');
