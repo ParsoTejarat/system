@@ -43,4 +43,8 @@ class Inventory extends Model
         $inventory_report_id = InventoryReport::where('type','output')->pluck('id');
         return $this->in_outs()->whereIn('inventory_report_id', $inventory_report_id)->sum('count');
     }
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
+    }
 }

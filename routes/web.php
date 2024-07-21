@@ -1,5 +1,4 @@
 <?php
-
 use App\Events\SendMessage as SendMessageEvent;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Panel\ArtinController;
@@ -30,6 +29,7 @@ use App\Http\Controllers\Panel\PriceController;
 use App\Http\Controllers\Panel\PriceRequestController;
 use App\Http\Controllers\Panel\PrinterController;
 use App\Http\Controllers\Panel\ProductController;
+use App\Http\Controllers\Panel\PurchaseController;
 use App\Http\Controllers\Panel\ReportController;
 use App\Http\Controllers\Panel\RoleController;
 use App\Http\Controllers\Panel\SaleReportController;
@@ -96,27 +96,32 @@ Route::middleware('auth')->prefix('/panel')->group(function () {
     Route::match(['get', 'post'], '/', [PanelController::class, 'index'])->name('panel');
     Route::post('send-sms', [PanelController::class, 'sendSMS'])->name('sendSMS');
     Route::post('saveFcmToken', [PanelController::class, 'saveFCMToken']);
-    Route::get('activities/{permission}', [PanelController::class,'activity'])->name('activities.index');
+    Route::get('activities/{permission}', [PanelController::class, 'activity'])->name('activities.index');
 
     // Users
     Route::resource('users', UserController::class)->except('show');
 
     //Indicators
-    Route::resource('/indicator', IndicatorController::class)->except('show', 'destroy')->middleware('can:indicator');
-    Route::get('/indicator/inbox', [IndicatorController::class, 'inbox'])->name('indicator.inbox')->middleware('can:indicator');
-//    Route::post('/export-indicator-pdf', [IndicatorController::class, 'exportToPdf'])->middleware('can:indicator');
-    Route::get('/download/indicator/{id}', [IndicatorController::class, 'downloadFromIndicator'])->name('indicator.download')->middleware('can:indicator');
+    Route::resource('indicator', IndicatorController::class)->except('show', 'destroy')->middleware('can:indicator');
+    Route::get('indicator/inbox', [IndicatorController::class, 'inbox'])->name('indicator.inbox')->middleware('can:indicator');
+    //    Route::post('/export-indicator-pdf', [IndicatorController::class, 'exportToPdf'])->middleware('can:indicator');
+    Route::get('download/indicator/{id}', [IndicatorController::class, 'downloadFromIndicator'])->name('indicator.download')->middleware('can:indicator');
 
-//PaymentsOrder
-    Route::resource('/payments_order', PaymentOrderController::class)->except('show');
-    Route::post('/status-order-payment', [PaymentOrderController::class, 'statusOrderPayment'])->name('payments_order_status');
-    Route::get('/download-order-payment/{id}', [PaymentOrderController::class, 'downloadOrderPaymentPdf'])->name('payments_order.download');
+    //PaymentsOrder
+    Route::resource('payments_order', PaymentOrderController::class)->except('show');
+    Route::post('status-order-payment', [PaymentOrderController::class, 'statusOrderPayment'])->name('payments_order_status');
+    Route::get('download-order-payment/{id}', [PaymentOrderController::class, 'downloadOrderPaymentPdf'])->name('payments_order.download');
+
+    //purchaseEngineer
+    Route::get('purchases', [PurchaseController::class, 'index'])->name('purchase.index');
+    Route::get('purchases/status/{id}', [PurchaseController::class, 'status'])->name('purchase.status');
+    Route::post('purchases/status/store', [PurchaseController::class, 'storePurchaseStatus'])->name('purchase.status.store');
 
     // Roles
     Route::resource('roles', RoleController::class)->except('show');
 
     // Categories
-//    Route::resource('categories',CategoryController::class)->except('show');
+    //    Route::resource('categories',CategoryController::class)->except('show');
 
     // Products
     Route::resource('products', ProductController::class)->except('show');
