@@ -22,6 +22,7 @@ class PurchaseController extends Controller
     public function status($id)
     {
         $this->authorize('purchase-engineering');
+
         $purchase = Purchase::whereId($id)->firstOrFail();
         return view('panel.purchase.status', compact(['purchase']));
     }

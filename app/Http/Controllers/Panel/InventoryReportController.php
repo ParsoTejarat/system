@@ -422,7 +422,7 @@ class InventoryReportController extends Controller
         }
     }
 
-        private function checkInventoryValue($inventory)
+    private function checkInventoryValue($inventory)
     {
         if ($inventory->current_count <= 10) {
             $purchase = new Purchase();
