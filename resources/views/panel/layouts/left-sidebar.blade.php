@@ -418,9 +418,32 @@
                         </div>
                     </li>
                 @endcanany
+                @canany(['purchase-engineering'])
+                    @php $active_side = active_sidebar(['purchase-engineering']); @endphp
+                    <li class="{{ $active_side ? 'menuitem-active' : '' }}">
+                        <a href="#purchases" data-bs-toggle="collapse" aria-expanded="false"
+                           aria-controls="tickets">
+                            <i class="ri-shopping-cart-fill"></i>
+                            <span> مهندسی خرید </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse {{ $active_side ? 'show' : '' }}" id="purchases">
+                            <ul class="nav-second-level">
+                                {{--                            @can('indicator')--}}
+                                @php $active_item = active_sidebar(['purchases','purchases/status/{id}']); @endphp
+                                <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                    <a href="{{ route('purchase.index') }}" {{ $active_item  ? 'active' : '' }}>
+                                        لیست نیاز ها
+                                    </a>
+                                </li>
+
+                                {{--                            @endcan--}}
+                            </ul>
+                        </div>
+                    </li>
+                @endcanany
             </ul>
         </div>
-
         <div class="clearfix"></div>
     </div>
 </div>
