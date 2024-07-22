@@ -20,12 +20,12 @@ class PacketController extends Controller
     {
         $this->authorize('packets-list');
 
-        if (auth()->user()->isAdmin() || auth()->user()->isCEO() || auth()->user()->isAccountant()){
+        if (auth()->user()->isAdmin() || auth()->user()->isCEO() || auth()->user()->isAccountant()) {
             $packets = Packet::latest()->paginate(30);
-            $invoices = Invoice::with('customer')->latest()->get(['id','customer_id']);
-        }else{
+            $invoices = Invoice::with('customer')->latest()->get(['id', 'customer_id']);
+        } else {
             $packets = Packet::where('user_id', auth()->id())->latest()->paginate(30);
-            $invoices = Invoice::with('customer')->latest()->get(['id','customer_id']);
+            $invoices = Invoice::with('customer')->latest()->get(['id', 'customer_id']);
         }
 
         return view('panel.packets.index', compact('packets', 'invoices'));
@@ -35,7 +35,7 @@ class PacketController extends Controller
     {
         $this->authorize('packets-create');
 
-        $invoices = Invoice::with('customer')->latest()->get()->pluck('customer.name','id');
+        $invoices = Invoice::with('customer')->latest()->get()->pluck('customer.name', 'id');
         return view('panel.packets.create', compact('invoices'));
     }
 
@@ -49,6 +49,7 @@ class PacketController extends Controller
             'user_id' => auth()->id(),
             'invoice_id' => $request->invoice,
             'receiver' => $request->receiver,
+            'delivery_code' => $this->generateRandomCode(),
             'address' => $request->address,
             'sent_type' => $request->sent_type,
             'send_tracking_code' => $request->send_tracking_code,
@@ -60,11 +61,11 @@ class PacketController extends Controller
             'sent_time' => $sent_time,
             'notif_time' => Carbon::parse($sent_time)->addDays(20),
         ]);
-
+        sendSMS(234524, $packet->invoice->customer->phone1, [$packet->delivery_code]);
         // log
         activity_log('create-packet', __METHOD__, [$request->all(), $packet]);
 
-        alert()->success('بسته مورد نظر با موفقیت ایجاد شد','ایجاد بسته');
+        alert()->success('بسته مورد نظر با موفقیت ایجاد شد', 'ایجاد بسته');
         return redirect()->route('packets.index');
     }
 
@@ -81,7 +82,7 @@ class PacketController extends Controller
         // edit own packet OR is admin
         $this->authorize('edit-packet', $packet);
 
-        $invoices = Invoice::with('customer')->latest()->get()->pluck('customer.name','id');
+        $invoices = Invoice::with('customer')->latest()->get()->pluck('customer.name', 'id');
 
         $url = \request()->url;
 
@@ -118,7 +119,7 @@ class PacketController extends Controller
 
         $url = $request->url;
 
-        alert()->success('بسته مورد نظر با موفقیت ویرایش شد','ویرایش بسته');
+        alert()->success('بسته مورد نظر با موفقیت ویرایش شد', 'ویرایش بسته');
         return redirect($url);
     }
 
@@ -137,8 +138,8 @@ class PacketController extends Controller
     {
         $this->authorize('packets-list');
 
-        if (auth()->user()->isAdmin() || auth()->user()->isCEO() || auth()->user()->isAccountant()){
-            $invoices = Invoice::with('customer')->latest()->get(['id','customer_id']);
+        if (auth()->user()->isAdmin() || auth()->user()->isCEO() || auth()->user()->isAccountant()) {
+            $invoices = Invoice::with('customer')->latest()->get(['id', 'customer_id']);
             $invoice_id = $request->invoice_id == 'all' ? $invoices->pluck('id') : [$request->invoice_id];
             $packet_status = $request->packet_status == 'all' ? array_keys(Packet::PACKET_STATUS) : [$request->packet_status];
             $invoice_status = $request->invoice_status == 'all' ? array_keys(Packet::INVOICE_STATUS) : [$request->invoice_status];
@@ -147,8 +148,8 @@ class PacketController extends Controller
                 ->whereIn('packet_status', $packet_status)
                 ->whereIn('invoice_status', $invoice_status)
                 ->latest()->paginate(30);
-        }else{
-            $invoices = Invoice::with('customer')->where('user_id', auth()->id())->latest()->get(['id','customer_id']);
+        } else {
+            $invoices = Invoice::with('customer')->where('user_id', auth()->id())->latest()->get(['id', 'customer_id']);
             $invoice_id = $request->invoice_id == 'all' ? $invoices->pluck('id') : [$request->invoice_id];
             $packet_status = $request->packet_status == 'all' ? array_keys(Packet::PACKET_STATUS) : [$request->packet_status];
             $invoice_status = $request->invoice_status == 'all' ? array_keys(Packet::INVOICE_STATUS) : [$request->invoice_status];
@@ -214,17 +215,17 @@ class PacketController extends Controller
         $rows->item(0)->remove();
 
         $data = [];
-        foreach ($rows as $element){
-            if (str_contains($element->getAttribute('id'), 'showuser')){
+        foreach ($rows as $element) {
+            if (str_contains($element->getAttribute('id'), 'showuser')) {
                 continue;
             }
 
-            if ($element->getAttribute('class') == 'row'){
+            if ($element->getAttribute('class') == 'row') {
                 $data[] = [
                     'title' => $element->childNodes->item(0)->nodeValue ?? '',
                     'is_header' => true,
                 ];
-            }else{
+            } else {
                 $data[] = [
                     'row' => $element->childNodes->item(0)->nodeValue ?? '',
                     'last_status' => $element->childNodes->item(1)->nodeValue ?? '',
@@ -234,7 +235,7 @@ class PacketController extends Controller
                 ];
             }
 
-            if ($element->childNodes->item(0)->nodeValue == "1"){
+            if ($element->childNodes->item(0)->nodeValue == "1") {
                 break;
             }
         }
@@ -255,4 +256,37 @@ class PacketController extends Controller
 
         return $pdf->stream("مشخصات پستی.pdf");
     }
+
+    public function checkDeliveryCode(Request $request)
+    {
+
+        $request->validate([
+            'code' => 'required'
+        ], [
+            'code.required' => 'فیلد کد را وارد کنید.'
+        ]);
+
+        $packet = Packet::where(['id' => $request->id, 'delivery_code' => $request->code])->first();
+        if ($packet) {
+            $packet->update([
+                'delivery_at' => now()
+            ]);
+            return response()->json("تایید شد | بسته تحویل داده شد.", 201);
+
+        } else {
+            return response()->json("کد وارد شده معتبر نیست!", 422);
+        }
+
+    }
+
+    private function generateRandomCode()
+    {
+        $code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+
+        while (Packet::where('delivery_code', $code)->exists()) {
+            $code = $this->generateRandomCode();
+        }
+        return $code;
+    }
+
 }

@@ -191,7 +191,6 @@
     });
 
     function myFunction() {
-        console.log("ajax start")
         $.ajax({
             url: '{{route('notifications.check')}}',
             type: 'POST',

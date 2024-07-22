@@ -59,26 +59,32 @@
                             <form action="{{ route('packets.search') }}" method="get" id="search_form"></form>
                             <div class="row mb-3">
                                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                                    <select name="invoice_id" form="search_form" class="form-control" data-toggle="select2">
+                                    <select name="invoice_id" form="search_form" class="form-control"
+                                            data-toggle="select2">
                                         <option value="all">سفارش (همه)</option>
                                         @foreach($invoices as $invoice)
-                                            <option value="{{ $invoice->id }}" {{ request()->invoice_id == $invoice->id ? 'selected' : '' }}>{{ $invoice->id.' - '.$invoice->customer->name }}</option>
+                                            <option
+                                                value="{{ $invoice->id }}" {{ request()->invoice_id == $invoice->id ? 'selected' : '' }}>{{ $invoice->id.' - '.$invoice->customer->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                                    <select name="packet_status" form="search_form" class="form-control" data-toggle="select2">
+                                    <select name="packet_status" form="search_form" class="form-control"
+                                            data-toggle="select2">
                                         <option value="all">وضعیت بسته (همه)</option>
                                         @foreach(\App\Models\Packet::PACKET_STATUS as $key => $value)
-                                            <option value="{{ $key }}" {{ request()->packet_status == $key ? 'selected' : '' }}>{{ $value }}</option>
+                                            <option
+                                                value="{{ $key }}" {{ request()->packet_status == $key ? 'selected' : '' }}>{{ $value }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                                    <select name="invoice_status" form="search_form" class="form-control" data-toggle="select2">
+                                    <select name="invoice_status" form="search_form" class="form-control"
+                                            data-toggle="select2">
                                         <option value="all">وضعیت فاکتور (همه)</option>
                                         @foreach(\App\Models\Packet::INVOICE_STATUS as $key => $value)
-                                            <option value="{{ $key }}" {{ request()->invoice_status == $key ? 'selected' : '' }}>{{ $value }}</option>
+                                            <option
+                                                value="{{ $key }}" {{ request()->invoice_status == $key ? 'selected' : '' }}>{{ $value }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -99,6 +105,7 @@
                                         <th>وضعیت فاکتور</th>
                                         <th>زمان ارسال</th>
                                         <th>تاریخ ایجاد</th>
+                                        <th>تایید تحویل</th>
                                         <th>چاپ مشخصات پستی</th>
                                         <th>وضعیت مرسوله</th>
                                         @can('packets-edit')
@@ -116,34 +123,54 @@
                                             <td>{{ $packet->receiver }}</td>
                                             <td>{{ $packet->address }}</td>
                                             <td>
-                                                <strong><u><a href="{{ route('invoices.show', [$packet->invoice_id, 'type' => 'pishfactor']) }}"
-                                                              class="text-primary"
-                                                              target="_blank">{{ $packet->invoice_id }}</a></u></strong>
+                                                <strong><u><a
+                                                            href="{{ route('invoices.show', [$packet->invoice_id, 'type' => 'pishfactor']) }}"
+                                                            class="text-primary"
+                                                            target="_blank">{{ $packet->invoice_id }}</a></u></strong>
                                             </td>
                                             <td>{{ \App\Models\Packet::SENT_TYPE[$packet->sent_type] }}</td>
                                             <td>
                                                 @if($packet->packet_status == 'delivered')
-                                                    <span class="badge bg-success">{{ \App\Models\Packet::PACKET_STATUS[$packet->packet_status] }}</span>
+                                                    <span
+                                                        class="badge bg-success">{{ \App\Models\Packet::PACKET_STATUS[$packet->packet_status] }}</span>
                                                 @else
-                                                    <span class="badge bg-warning">{{ \App\Models\Packet::PACKET_STATUS[$packet->packet_status] }}</span>
+                                                    <span
+                                                        class="badge bg-warning">{{ \App\Models\Packet::PACKET_STATUS[$packet->packet_status] }}</span>
                                                 @endif
                                             </td>
                                             <td>
                                                 @if($packet->invoice_status == 'delivered')
-                                                    <span class="badge bg-success">{{ \App\Models\Packet::INVOICE_STATUS[$packet->invoice_status] }}</span>
+                                                    <span
+                                                        class="badge bg-success">{{ \App\Models\Packet::INVOICE_STATUS[$packet->invoice_status] }}</span>
                                                 @else
-                                                    <span class="badge bg-warning">{{ \App\Models\Packet::INVOICE_STATUS[$packet->invoice_status] }}</span>
+                                                    <span
+                                                        class="badge bg-warning">{{ \App\Models\Packet::INVOICE_STATUS[$packet->invoice_status] }}</span>
                                                 @endif
                                             </td>
                                             <td>{{ verta($packet->sent_time)->format('Y/m/d') }}</td>
                                             <td>{{ verta($packet->created_at)->format('H:i - Y/m/d') }}</td>
                                             <td>
-                                                <a href="{{ route('packet.download', $packet) }}" class="btn btn-info btn-floating" target="_blank">
+                                                <span
+                                                      data-bs-toggle="tooltip" data-bs-placement="top"
+                                                      data-bs-custom-class="custom-tooltip"
+                                                      data-bs-title="{{ !is_null($packet->delivery_at) ?verta($packet->delivery_at)->format('H:i - Y/m/d'):'' }}">
+                                                <button class="btn {{!is_null($packet->delivery_at) ? 'btn-success':'btn-warning'}} btn-floating modal-data-send"
+                                                        href="#delivery-modal"
+                                                        data-bs-toggle="modal" data-packet_id="{{ $packet->id }}"
+                                                {{!is_null($packet->delivery_at) ? 'disabled':''}}  >
+                                                    <i class="fa fa-check"></i>
+                                                </button>
+                                                    </span>
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('packet.download', $packet) }}"
+                                                   class="btn btn-info btn-floating" target="_blank">
                                                     <i class="fa fa-print"></i>
                                                 </a>
                                             </td>
                                             <td>
-                                                <button class="btn btn-primary btn-floating btn_post_status" type="button"
+                                                <button class="btn btn-primary btn-floating btn_post_status"
+                                                        type="button"
                                                         data-bs-toggle="modal" data-bs-target="#postStatusModal"
                                                         data-code="{{ $packet->send_tracking_code }}" {{ $packet->send_tracking_code != null && $packet->sent_type == 'post' ? '' : 'disabled' }}>
                                                     <i class="fa fa-truck"></i>
@@ -159,9 +186,8 @@
                                             @endcan
                                             @can('packets-delete')
                                                 <td>
-                                                    <button class="btn btn-danger btn-floating trashRow"
-                                                            data-url="{{ route('packets.destroy',$packet->id) }}"
-                                                            data-id="{{ $packet->id }}">
+                                                    <button class="btn btn-danger btn-floating trashRow "
+                                                            data-url="{{ route('packets.destroy',$packet->id) }}">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
                                                 </td>
@@ -175,9 +201,31 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-center">{{ $packets->appends(request()->all())->links() }}</div>
+                            <div
+                                class="d-flex justify-content-center">{{ $packets->appends(request()->all())->links() }}</div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="delivery-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="description-modal">کد تحویل</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن">
+                        <i class="ti-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mt2">
+                        <label for="delivery-code">کد</label>
+                        <input type="number" id="delivery_code" class="form-control">
+                        <span class="text-danger" id="delivery-code-error"></span>
+                        <span class="text-success" id="delivery-success"></span>
+                    </div>
+                    <button class="btn btn-primary mt-2" id="send-delivery-code">ارسال</button>
                 </div>
             </div>
         </div>
@@ -232,5 +280,50 @@
             })
         })
         // end btn post status
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var id;
+            $('.modal-data-send').click(function () {
+                id = $(this).data('packet_id');
+            });
+            $('#send-delivery-code').click(function () {
+                var $button = $(this);
+                $button.prop('disabled', true).html('درحال پردازش...');
+                var code = $('#delivery_code').val();
+                $.ajax({
+                    url: '{{route('check.delivery.code')}}',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        code: code,
+                        id: id,
+                    },
+                    success: function (response) {
+                        $('#delivery-code-error').html('');
+                        $('#delivery-success').html(response);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1300)
+                    },
+                    error: function (xhr, status, error) {
+                        var errors = xhr.responseJSON.errors;
+                        var errorMessage = '';
+                        if (errors) {
+                            $.each(errors, function (key, value) {
+                                errorMessage += value.join('<br>');
+                            });
+                        } else {
+                            errorMessage = xhr.responseJSON;
+                        }
+                        $('#delivery-code-error').html(errorMessage);
+                    },
+                    complete: function () {
+                        $button.prop('disabled', false).html('ارسال');
+                    }
+                });
+            });
+        });
     </script>
 @endsection
