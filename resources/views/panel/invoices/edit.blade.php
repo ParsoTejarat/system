@@ -18,7 +18,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="discountModalLabel">اعمال کد تخفیف</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="بستن">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن">
                         <i class="ti-close"></i>
                     </button>
                 </div>
@@ -33,7 +33,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
                     <button type="button" class="btn btn-primary" id="btn_apply_discount">اعمال</button>
                 </div>
             </div>
@@ -200,7 +200,7 @@
                                             <h4>مشخصات کالا یا خدمات مورد معامله</h4>
                                         </div>
                                         <div class="col-12 mt-2 text-center">
-                                            <h5>محصولات آرتین</h5>
+                                            <h5>محصولات شرکت</h5>
                                         </div>
                                         <div class="col-12 mb-3">
                                             <div class="d-flex justify-content-between mb-3">
@@ -291,7 +291,7 @@
                                                                     <input type="number" name="invoice_nets[]" class="form-control" min="0" value="{{ $item->pivot->invoice_net }}" readonly>
                                                                 </td>
                                                                 <td>
-                                                                    <button type="button" class="btn btn-primary btn-floating btn_discount" data-toggle="modal" data-target="#discountModal">
+                                                                    <button type="button" class="btn btn-primary btn-floating btn_discount" data-bs-toggle="modal" data-bs-target="#discountModal">
                                                                         <i class="fa fa-percent"></i>
                                                                     </button>
                                                                 </td>
@@ -505,6 +505,11 @@
                 </td>
                 <td>
                     <input type="number" name="invoice_nets[]" class="form-control" min="0" value="0" readonly>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-primary btn-floating btn_discount" data-bs-toggle="modal" data-bs-target="#discountModal">
+                        <i class="fa fa-percent"></i>
+                    </button>
                 </td>
                 <td>
                     <button class="btn btn-danger btn-floating btn_remove" type="button"><i class="fa fa-trash"></i></button>
