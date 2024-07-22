@@ -56,18 +56,22 @@
                             <form action="{{ route('invoices.search') }}" method="get" id="search_form"></form>
                             <div class="row mb-3 mt-5">
                                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                                    <select name="customer_id" form="search_form" class="form-control" data-toggle="select2">
+                                    <select name="customer_id" form="search_form" class="form-control"
+                                            data-toggle="select2">
                                         <option value="all">خریدار (همه)</option>
                                         @foreach($customers as $customer)
-                                            <option value="{{ $customer->id }}" {{ request()->customer_id == $customer->id ? 'selected' : '' }}>{{ $customer->name }}</option>
+                                            <option
+                                                value="{{ $customer->id }}" {{ request()->customer_id == $customer->id ? 'selected' : '' }}>{{ $customer->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                                    <select name="province" form="search_form" class="form-control" data-toggle="select2">
+                                    <select name="province" form="search_form" class="form-control"
+                                            data-toggle="select2">
                                         <option value="all">استان (همه)</option>
                                         @foreach(\App\Models\Province::all('name') as $province)
-                                            <option value="{{ $province->name }}" {{ request()->province == $province->name ? 'selected' : '' }}>{{ $province->name }}</option>
+                                            <option
+                                                value="{{ $province->name }}" {{ request()->province == $province->name ? 'selected' : '' }}>{{ $province->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -75,29 +79,34 @@
                                     <select name="status" form="search_form" class="form-control" data-toggle="select2">
                                         <option value="all">وضعیت (همه)</option>
                                         @foreach(\App\Models\Invoice::STATUS as $key => $value)
-                                            <option value="{{ $key }}" {{ request()->status == $key ? 'selected' : '' }}>{{ $value }}</option>
+                                            <option
+                                                value="{{ $key }}" {{ request()->status == $key ? 'selected' : '' }}>{{ $value }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 @can('accountant')
                                     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                                        <select name="user" form="search_form" class="form-control" data-toggle="select2">
+                                        <select name="user" form="search_form" class="form-control"
+                                                data-toggle="select2">
                                             <option value="all">همکار (همه)</option>
                                             @foreach(\App\Models\User::whereIn('role_id', $roles_id)->get() as $user)
-                                                <option value="{{ $user->id }}" {{ request()->user == $user->id ? 'selected' : '' }}>{{ $user->fullName() }}</option>
+                                                <option
+                                                    value="{{ $user->id }}" {{ request()->user == $user->id ? 'selected' : '' }}>{{ $user->fullName() }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 @endcan
                                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                                    <input type="text" form="search_form" name="need_no" class="form-control" value="{{ request()->need_no ?? null }}" placeholder="شماره نیاز">
+                                    <input type="text" form="search_form" name="need_no" class="form-control"
+                                           value="{{ request()->need_no ?? null }}" placeholder="شماره نیاز">
                                 </div>
                                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
                                     <button type="submit" class="btn btn-primary" form="search_form">جستجو</button>
                                 </div>
                             </div>
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered dataTable dtr-inline text-center" style="width: 100%">
+                                <table class="table table-striped table-bordered dataTable dtr-inline text-center"
+                                       style="width: 100%">
                                     <thead>
                                     <tr>
                                         <th>#</th>
@@ -142,7 +151,8 @@
                                             <td>{{ $invoice->city }}</td>
                                             <td>{{ $invoice->phone }}</td>
                                             <td>
-                                                <span class="badge bg-primary d-block">{{ \App\Models\Invoice::STATUS[$invoice->status] }}</span>
+                                                <span
+                                                    class="badge bg-primary d-block">{{ \App\Models\Invoice::STATUS[$invoice->status] }}</span>
                                             </td>
                                             @canany(['accountant', 'sales-manager'])
                                                 <td>{{ $invoice->user->fullName() }}</td>
@@ -150,10 +160,12 @@
                                             <td>{{ verta($invoice->created_at)->format('H:i - Y/m/d') }}</td>
                                             {{--                            @canany(['accountant','admin','ceo'])--}}
                                             <td>
-                                                <a class="btn btn-info btn-floating" href="{{ route('invoices.show', $invoice->id) }}">
+                                                <a class="btn btn-info btn-floating"
+                                                   href="{{ route('invoices.show', $invoice->id) }}">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
                                             </td>
+
                                             {{--                            @endcanany--}}
                                             <td>
                                                 {{-- invoices before 2024-02-03 order-status disabled --}}
@@ -229,14 +241,13 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-center">{{ $invoices->appends(request()->all())->links() }}</div>
+                            <div
+                                class="d-flex justify-content-center">{{ $invoices->appends(request()->all())->links() }}</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 @endsection
-
-
-

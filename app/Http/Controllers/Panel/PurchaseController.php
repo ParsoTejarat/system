@@ -46,7 +46,7 @@ class PurchaseController extends Controller
             })->get();
             Notification::send($users, new SendMessage($message, url('/panel/purchases')));
         }
-
+        activity_log('purchase-status', __METHOD__, $request->all());
         return redirect()->route('purchase.index');
     }
 }
