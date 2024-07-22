@@ -103,8 +103,8 @@
                                     <select name="type" form="search_form" class="form-control"
                                             data-toggle="select2">
                                         <option value="all">نوع (همه)</option>
-                                        @foreach(\App\Models\Inventory::TYPE as $key => $value)
-                                            <option value="{{ $key }}" {{ request()->type == $key ? 'selected' : '' }}>{{ $value }}</option>
+                                        @foreach(\App\Models\Category::all() as $category)
+                                            <option value="{{ $category->slug }}" {{ request()->type == $category->slug ? 'selected' : '' }}>{{ $category->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -140,7 +140,7 @@
                                             <td>{{ ++$key }}</td>
                                             <td>{{ $item->title }}</td>
                                             <td>{{ $item->code }}</td>
-                                            <td>{{ \App\Models\Inventory::TYPE[$item->type] }}</td>
+                                            <td>{{ \App\Models\Category::where('slug', $item->type)->first()->name }}</td>
                                             <td>{{ number_format($item->initial_count) }}</td>
                                             <td>{{ number_format($item->current_count) }}</td>
                                             <td>{{ number_format($item->getInputCount()) }}</td>
