@@ -12,14 +12,9 @@ class Inventory extends Model
     protected $guarded = [];
 
     const TYPE = [
-        'main_box' => 'جعبه مادر',
-        'cartridge_box' => 'جعبه کارتریج',
-        'cartridge' => 'کارتریج',
-        'wide_tape' => 'چسب پهن',
-        'hot_glue' => 'چسب حرارتی',
-        'ribbon' => 'ریبون',
-        'label' => 'لیبل',
-        'drum' => 'درام',
+        'printer' => 'پرینتر',
+        'scanner' => 'اسکنر',
+        'projector' => 'پروژکتور',
     ];
 
     public function warehouse()
