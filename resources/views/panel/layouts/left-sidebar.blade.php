@@ -132,7 +132,7 @@
 
                 {{-- Products --}}
                 @canany(['products-list','price-history','coupons-list'])
-                    @php $active_side = active_sidebar(['products','products/create','products/{product}/edit','search/products','coupons','coupons/create','coupons/{coupon}/edit','price-history']); @endphp
+                    @php $active_side = active_sidebar(['products','products/create','products/{product}/edit','search/products','coupons','coupons/create','coupons/{coupon}/edit','price-history','categories','categories/create','categories/{category}/edit']); @endphp
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#products" data-bs-toggle="collapse" aria-expanded="false" aria-controls="products">
                             <i class="ri-list-unordered"></i>
@@ -146,6 +146,12 @@
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
                                         <a href="{{ route('products.index') }}" {{ $active_item ? 'active' : '' }}>لیست
                                             محصولات</a>
+                                    </li>
+                                @endcan
+                                @can('categories-list')
+                                    @php $active_item = active_sidebar(['categories','categories/create','categories/{category}/edit']); @endphp
+                                    <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                        <a href="{{ route('categories.index') }}" {{ $active_item ? 'active' : '' }}>دسته بندی ها</a>
                                     </li>
                                 @endcan
                                 @can('parso-products')
@@ -286,7 +292,7 @@
 
                 {{-- Warehouse --}}
                 @canany(['guarantees-list','warehouses-list'])
-                    @php $active_side = active_sidebar(['inventory','inventory/create','inventory/{inventory}/edit','search/inventory','inventory-reports','inventory-reports/create','inventory-reports/{inventory_report}/edit','warehouses','warehouses/create','warehouses/{warehouse}/edit','search/inventory-reports','guarantees','guarantees/create','guarantees/{guarantee}/edit']); @endphp
+                    @php $active_side = active_sidebar(['inventory','inventory/create','inventory/{inventory}/edit','search/inventory','inventory-reports','inventory-reports/create','inventory-reports/{inventory_report}/edit','warehouses','warehouses/create','warehouses/{warehouse}/edit','search/inventory-reports','guarantees','guarantees/create','guarantees/{guarantee}/edit','categories','categories/create','categories/{category}/edit']); @endphp
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#warehouse" data-bs-toggle="collapse" aria-expanded="false" aria-controls="warehouse">
                             <i class="ri-home-5-line"></i>
@@ -307,6 +313,12 @@
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
                                         <a href="{{ route('warehouses.index') }}" {{ $active_item ? 'active' : '' }}>انبار
                                             ها</a>
+                                    </li>
+                                @endcan
+                                @can('categories-list')
+                                    @php $active_item = active_sidebar(['categories','categories/create','categories/{category}/edit']); @endphp
+                                    <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                        <a href="{{ route('categories.index') }}" {{ $active_item ? 'active' : '' }}>دسته بندی ها</a>
                                     </li>
                                 @endcan
                                 @if(request()->warehouse_id)

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Panel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreInventoryRequest;
 use App\Http\Requests\UpdateInventoryRequest;
+use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\InventoryReport;
 use App\Models\Warehouse;
@@ -114,7 +115,7 @@ class InventoryController extends Controller
     {
         $this->authorize('inventory-list');
 
-        $type = $request->type == 'all' ? array_keys(Inventory::TYPE) : [$request->type];
+        $type = $request->type == 'all' ? Category::pluck('slug') : [$request->type];
 
         $warehouse_id = $request->warehouse_id;
 

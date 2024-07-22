@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Panel\ArtinController;
 use App\Http\Controllers\Panel\BotController;
 use App\Http\Controllers\Panel\BuyOrderController;
+use App\Http\Controllers\Panel\CategoryController;
 use App\Http\Controllers\Panel\ChatController;
 use App\Http\Controllers\Panel\CouponController;
 use App\Http\Controllers\Panel\CustomerController;
@@ -121,7 +122,7 @@ Route::middleware('auth')->prefix('/panel')->group(function () {
     Route::resource('roles', RoleController::class)->except('show');
 
     // Categories
-    //    Route::resource('categories',CategoryController::class)->except('show');
+    Route::resource('categories',CategoryController::class)->except('show');
 
     // Products
     Route::resource('products', ProductController::class)->except('show');

@@ -14,11 +14,29 @@ use App\Notifications\SendMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
 {
     public function createInvoice(Request $request)
     {
+        $validator = Validator::make($request->all(),[
+            'created_in' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'national_code' => 'required',
+            'province' => 'required',
+            'city' => 'required',
+            'address_1' => 'required',
+            'postal_code' => 'required',
+            'phone' => 'required',
+            'items' => 'required',
+        ]);
+
+        if ($validator->fails()){
+            return response()->json(['data' => $validator->errors()->messages()]);
+        }
+
         $data = $request->all();
 
         // users where has single-price-user permission
@@ -36,9 +54,9 @@ class ApiController extends Controller
         })->get();
 
         if ($data['created_in'] == 'app'){
-            $notif_message = 'یک سفارش از سایت آرتین دریافت گردید';
+            $notif_message = 'یک سفارش از اپلیکیشن پرسو تجارت دریافت گردید';
         }else{
-            $notif_message = 'یک سفارش از اپلیکیشن آرتین دریافت گردید';
+            $notif_message = 'یک سفارش از سایت پرسو تجارت دریافت گردید';
         }
 
         $url = route('invoices.index');
@@ -85,7 +103,8 @@ class ApiController extends Controller
 //            $product = Product::first();
             // end for test
 
-            $product = Product::where('code', $item['acc_code'])->first();
+//            $product = Product::where('code', $item['acc_code'])->first();
+            $product = Product::where('sku', $item['sku'])->first();
 
             $price = ($item['total'] / $item['quantity']) .'0';
             $total = $item['total'].'0';
@@ -101,7 +120,7 @@ class ApiController extends Controller
                 'invoice_net' => (int)$total + ($total * $tax),
             ]);
 
-            $invoice->factor()->updateOrCreate(['status' => 'paid']);
+//            $invoice->factor()->updateOrCreate(['status' => 'paid']);
         }
     }
 
@@ -128,38 +147,5 @@ class ApiController extends Controller
             'other_products' => $invoice_other_products,
             'invoice_id' => $invoice->id
         ]);
-    }
-
-    public function getPrinterBrands()
-    {
-        return Printer::BRANDS;
-    }
-
-    public function getPrinters(string $brand = null)
-    {
-        if ($brand){
-            return Printer::whereBrand($brand)->pluck('name','id');
-        }
-
-        return Printer::pluck('name','id');
-    }
-
-    public function getCartridges($printer_id)
-    {
-        $cartridges = Printer::whereId($printer_id)->first()->cartridges;
-        $cartridges = explode(',',$cartridges);
-
-        return $cartridges;
-    }
-
-    public function createBotUser(Request $request)
-    {
-        if (!BotUser::where('user_id', $request->id)->first()){
-            BotUser::create([
-                'user_id' => $request->id,
-                'first_name' => $request->first_name,
-                'username' => $request->username,
-            ]);
-        }
     }
 }

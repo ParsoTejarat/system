@@ -140,7 +140,7 @@
                                         <h4>مشخصات کالا یا خدمات مورد معامله</h4>
                                     </div>
                                     <div class="col-12 mt-2 text-center">
-                                        <h5>محصولات آرتین</h5>
+                                        <h5>محصولات شرکت</h5>
                                     </div>
                                     <div class="col-12 mb-3">
                                         <div class="d-flex justify-content-between mb-3">
