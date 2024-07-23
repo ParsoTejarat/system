@@ -70,7 +70,7 @@ class PanelController extends Controller
                 abort(403);
         }
 
-        return view('panel.activities.index', compact('title', 'activities'));
+        return view('panel.activities.index', compact(['title', 'activities']));
     }
 
     public function readNotification($notification = null)

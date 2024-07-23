@@ -144,11 +144,6 @@ Route::middleware('auth')->prefix('/panel')->group(function () {
     Route::post('invoice-action/{invoice}', [InvoiceController::class, 'actionStore'])->name('invoice.action.store');
     Route::put('invoice-file/{invoice_action}/delete', [InvoiceController::class, 'deleteInvoiceFile'])->name('invoice.action.delete');
     Route::put('factor-file/{invoice_action}/delete', [InvoiceController::class, 'deleteFactorFile'])->name('factor.action.delete');
-
-
-
-
-
     // Coupons
     Route::resource('coupons', CouponController::class)->except('show');
 
@@ -159,11 +154,6 @@ Route::middleware('auth')->prefix('/panel')->group(function () {
     Route::post('get-post-status', [PacketController::class, 'getPostStatus'])->name('get-post-status');
     Route::get('packet-download-pdf/{packet}', [PacketController::class, 'downloadPDF'])->name('packet.download');
     Route::post('check-delivery-code',[PacketController::class, 'checkDeliveryCode'])->name('check.delivery.code');
-
-
-
-
-
 
     // Customers
     Route::resource('customers', CustomerController::class)->except('show');
