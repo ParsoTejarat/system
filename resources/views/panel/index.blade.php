@@ -569,7 +569,6 @@
                                             <th>انباردار</th>
                                             <th>وضعیت</th>
                                             <th>تاریخ ثبت</th>
-                                            <th>تعیین وضعیت</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -583,23 +582,7 @@
                                                 </td>
 
                                                 <td>{{ verta($purchase->created_at)->format('H:i - Y/m/d') }}</td>
-                                                <td>
-                                                    {{--                                                <a href="{{url('/purchases/status/'.$purchase->id)}}"--}}
-                                                    {{--                                                   class="btn btn-warning">{{$purchase->status =='pending_purchase'?'در انتظار خرید':'خریداری شده'}}</a>--}}
-                                                    @if($purchase->status =='pending_purchase')
-                                                        <a class="btn btn-warning btn-floating"
-                                                           href="{{ route('purchase.status', $purchase->id) }}">
-                                                            <i class="fa fa-edit"></i>
-                                                        </a>
-                                                    @else
-                                                        <button
-                                                            class="btn btn-primary btn-floating {{$purchase->desc??'disabled'}}"
-                                                            data-desc="{{$purchase->desc}}"
-                                                            href="#description-modal" data-bs-toggle="modal"><i
-                                                                class="fa fa-comment"></i></button>
-                                                    @endif
 
-                                                </td>
                                             </tr>
                                         @endforeach
                                         </tbody>
