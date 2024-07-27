@@ -65,7 +65,7 @@
                                     </div>
                                     <div class="form-group text-center mt-3 mb-4" id="captcha_sec">
                                         <div class="container-fluid d-flex justify-content-center align-items-center">
-                                            <div class="g-recaptcha" data-sitekey="{{config('services.recaptcha.secret')}}"></div>
+                                            <div class="g-recaptcha" data-sitekey="{{config('services.recaptcha.sitekey')}}"></div>
                                         </div>
                                         @error ('g-recaptcha-response')
                                             <span class="text-danger">{{$message}}</span>
