@@ -151,12 +151,13 @@
                                             <td>{{ verta($packet->created_at)->format('H:i - Y/m/d') }}</td>
                                             <td>
                                                 <span
-                                                      data-bs-toggle="tooltip" data-bs-placement="top"
-                                                      data-bs-custom-class="custom-tooltip"
-                                                      data-bs-title="{{ !is_null($packet->delivery_at) ?verta($packet->delivery_at)->format('H:i - Y/m/d'):'' }}">
-                                                <button class="btn {{!is_null($packet->delivery_at) ? 'btn-success':'btn-warning'}} btn-floating modal-data-send"
-                                                        href="#delivery-modal"
-                                                        data-bs-toggle="modal" data-packet_id="{{ $packet->id }}"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    data-bs-custom-class="custom-tooltip"
+                                                    data-bs-title="{{ !is_null($packet->delivery_at) ?verta($packet->delivery_at)->format('H:i - Y/m/d'):'' }}">
+                                                <button
+                                                    class="btn {{!is_null($packet->delivery_at) ? 'btn-success':'btn-warning'}} btn-floating modal-data-send"
+                                                    href="#delivery-modal"
+                                                    data-bs-toggle="modal" data-packet_id="{{ $packet->id }}"
                                                 {{!is_null($packet->delivery_at) ? 'disabled':''}}  >
                                                     <i class="fa fa-check"></i>
                                                 </button>
@@ -172,13 +173,15 @@
                                                 <button class="btn btn-primary btn-floating btn_post_status"
                                                         type="button"
                                                         data-bs-toggle="modal" data-bs-target="#postStatusModal"
-                                                        data-code="{{ $packet->send_tracking_code }}" {{ $packet->send_tracking_code != null && $packet->sent_type == 'post' ? '' : 'disabled' }}>
+                                                        data-code="{{ $packet->send_tracking_code }}"{{ (!is_null($packet->delivery_at) || $packet->send_tracking_code == null || $packet->sent_type != 'post') ? 'disabled' : '' }}
+                                                >
                                                     <i class="fa fa-truck"></i>
                                                 </button>
                                             </td>
+
                                             @can('packets-edit')
                                                 <td>
-                                                    <a class="btn btn-warning btn-floating"
+                                                    <a class="btn btn-warning btn-floating {{!is_null($packet->delivery_at) ? 'disabled':''}} "
                                                        href="{{ route('packets.edit', ['packet' => $packet->id, 'url' => request()->getRequestUri()]) }}">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
@@ -187,7 +190,7 @@
                                             @can('packets-delete')
                                                 <td>
                                                     <button class="btn btn-danger btn-floating trashRow "
-                                                            data-url="{{ route('packets.destroy',$packet->id) }}">
+                                                            data-url="{{ route('packets.destroy',$packet->id) }}" {{!is_null($packet->delivery_at) ? 'disabled':''}}>
                                                         <i class="fa fa-trash"></i>
                                                     </button>
                                                 </td>

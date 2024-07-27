@@ -74,8 +74,9 @@ class PacketController extends Controller
         //
     }
 
-    public function edit(Packet $packet)
+    public function edit($id)
     {
+        $packet = Packet::where('delivery_at' ,null)->findOrFail($id);
         // access to packets-edit permission
         $this->authorize('packets-edit');
 
