@@ -244,7 +244,7 @@
                             </div>
                         </div>
                     </div>
-                    @endcanany
+                @endcanany
                 {{--            EndLastProducts        --}}
 
                 {{--            LastInvoices        --}}
@@ -432,121 +432,121 @@
                 {{--            EndLastLeaves       --}}
 
                 {{--            Lastwarehouse        --}}
-                @canany(['ceo','warehouse-keeper','accountant-manager'])
-                    @php
-                        $title = 'انبار ها (5 تای اخیر)';
-                        $warehouses =\App\Models\Warehouse::latest()->limit(5)->get()
-                    @endphp
+                {{--                @canany(['ceo','warehouse-keeper','accountant-manager'])--}}
+                {{--                    @php--}}
+                {{--                        $title = 'انبار ها (5 تای اخیر)';--}}
+                {{--                        $warehouses =\App\Models\Warehouse::latest()->limit(5)->get()--}}
+                {{--                    @endphp--}}
 
-                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="card-title">{{ $title }}</div>
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-bordered dataTable dtr-inline text-center">
-                                        <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>نام انبار</th>
-                                            <th>موجودی اولیه</th>
-                                            <th>موجودی فعلی</th>
-                                            <th>ورود</th>
-                                            <th>خروج</th>
-                                            <th>تاریخ ایجاد</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($warehouses as $key => $item)
-                                            <tr>
-                                                <td>{{ ++$key }}</td>
-                                                <td>{{ $item->name }}</td>
-                                                <td>{{ number_format($item->getInitialCount()) }}</td>
-                                                <td>{{ number_format($item->getCurrentCount()) }}</td>
-                                                <td>{{ number_format($item->getInputCount()) }}</td>
-                                                <td>{{ number_format($item->getOutputCount()) }}</td>
-                                                <td>{{ verta($item->created_at)->format('H:i - Y/m/d') }}</td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                        <tfoot>
-                                        <tr>
-                                        </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                                <div class="text-center">
-                                    <a href="{{ route('warehouses.index') }}" class="btn btn-link">نمایش همه</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endcanany
+                {{--                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">--}}
+                {{--                        <div class="card">--}}
+                {{--                            <div class="card-body">--}}
+                {{--                                <div class="card-title">{{ $title }}</div>--}}
+                {{--                                <div class="table-responsive">--}}
+                {{--                                    <table class="table table-striped table-bordered dataTable dtr-inline text-center">--}}
+                {{--                                        <thead>--}}
+                {{--                                        <tr>--}}
+                {{--                                            <th>#</th>--}}
+                {{--                                            <th>نام انبار</th>--}}
+                {{--                                            <th>موجودی اولیه</th>--}}
+                {{--                                            <th>موجودی فعلی</th>--}}
+                {{--                                            <th>ورود</th>--}}
+                {{--                                            <th>خروج</th>--}}
+                {{--                                            <th>تاریخ ایجاد</th>--}}
+                {{--                                        </tr>--}}
+                {{--                                        </thead>--}}
+                {{--                                        <tbody>--}}
+                {{--                                        @foreach($warehouses as $key => $item)--}}
+                {{--                                            <tr>--}}
+                {{--                                                <td>{{ ++$key }}</td>--}}
+                {{--                                                <td>{{ $item->name }}</td>--}}
+                {{--                                                <td>{{ number_format($item->getInitialCount()) }}</td>--}}
+                {{--                                                <td>{{ number_format($item->getCurrentCount()) }}</td>--}}
+                {{--                                                <td>{{ number_format($item->getInputCount()) }}</td>--}}
+                {{--                                                <td>{{ number_format($item->getOutputCount()) }}</td>--}}
+                {{--                                                <td>{{ verta($item->created_at)->format('H:i - Y/m/d') }}</td>--}}
+                {{--                                            </tr>--}}
+                {{--                                        @endforeach--}}
+                {{--                                        </tbody>--}}
+                {{--                                        <tfoot>--}}
+                {{--                                        <tr>--}}
+                {{--                                        </tr>--}}
+                {{--                                        </tfoot>--}}
+                {{--                                    </table>--}}
+                {{--                                </div>--}}
+                {{--                                <div class="text-center">--}}
+                {{--                                    <a href="{{ route('warehouses.index') }}" class="btn btn-link">نمایش همه</a>--}}
+                {{--                                </div>--}}
+                {{--                            </div>--}}
+                {{--                        </div>--}}
+                {{--                    </div>--}}
+                {{--                @endcanany--}}
                 {{--            EndLastWarehouse       --}}
 
-                {{--            LastOutProduct        --}}
-                @canany(['ceo','warehouse-keeper'])
-                    @php
-                        $title = 'آخرین خروجی ها (5 تای اخیر)';
-                        $reports =\App\Models\InventoryReport::latest()->limit(5)->get()
-                    @endphp
+                {{--                --}}{{--            LastOutProduct        --}}
+                {{--                @canany(['ceo','warehouse-keeper'])--}}
+                {{--                    @php--}}
+                {{--                        $title = 'آخرین خروجی ها (5 تای اخیر)';--}}
+                {{--                        $reports =\App\Models\InventoryReport::latest()->limit(5)->get()--}}
+                {{--                    @endphp--}}
 
-                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="card-title">{{ $title }}</div>
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-bordered dataTable dtr-inline text-center">
-                                        <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>تحویل گیرنده</th>
-                                            <th>سفارش</th>
-                                            <th>تاریخ خروج</th>
-                                            <th>تاریخ ثبت</th>
-                                            <th>خروج انبار</th>
+                {{--                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">--}}
+                {{--                        <div class="card">--}}
+                {{--                            <div class="card-body">--}}
+                {{--                                <div class="card-title">{{ $title }}</div>--}}
+                {{--                                <div class="table-responsive">--}}
+                {{--                                    <table class="table table-striped table-bordered dataTable dtr-inline text-center">--}}
+                {{--                                        <thead>--}}
+                {{--                                        <tr>--}}
+                {{--                                            <th>#</th>--}}
+                {{--                                            <th>تحویل گیرنده</th>--}}
+                {{--                                            <th>سفارش</th>--}}
+                {{--                                            <th>تاریخ خروج</th>--}}
+                {{--                                            <th>تاریخ ثبت</th>--}}
+                {{--                                            <th>خروج انبار</th>--}}
 
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($reports as $key => $item)
-                                            <tr>
-                                                <td>{{ ++$key }}</td>
-                                                <td><strong>{{ $item->person }}</strong></td>
-                                                <td>
-                                                    @if($item->invoice)
-                                                        <strong><u><a
-                                                                    href="{{ route('invoices.show', [$item->invoice->id]) }}"
-                                                                    class="text-primary"
-                                                                    target="_blank">{{ $item->invoice_id }}</a></u></strong>
-                                                    @else
-                                                        ---
-                                                    @endif
-                                                </td>
-                                                <td>{{ verta($item->date)->format('Y/m/d') }}</td>
-                                                <td>{{ verta($item->created_at)->format('H:i - Y/m/d') }}</td>
-                                                <td>
-                                                    <a class="btn btn-info btn-floating"
-                                                       href="{{ route('inventory-reports.show', $item) }}">
-                                                        <i class="fa fa-eye"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                        <tfoot>
-                                        <tr>
-                                        </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                                <div class="text-center">
-                                    <a href="{{ route('warehouses.index') }}" class="btn btn-link">نمایش همه</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endcanany
-                {{--            EndLastOutProduct       --}}
+                {{--                                        </tr>--}}
+                {{--                                        </thead>--}}
+                {{--                                        <tbody>--}}
+                {{--                                        @foreach($reports as $key => $item)--}}
+                {{--                                            <tr>--}}
+                {{--                                                <td>{{ ++$key }}</td>--}}
+                {{--                                                <td><strong>{{ $item->person }}</strong></td>--}}
+                {{--                                                <td>--}}
+                {{--                                                    @if($item->invoice)--}}
+                {{--                                                        <strong><u><a--}}
+                {{--                                                                    href="{{ route('invoices.show', [$item->invoice->id]) }}"--}}
+                {{--                                                                    class="text-primary"--}}
+                {{--                                                                    target="_blank">{{ $item->invoice_id }}</a></u></strong>--}}
+                {{--                                                    @else--}}
+                {{--                                                        -----}}
+                {{--                                                    @endif--}}
+                {{--                                                </td>--}}
+                {{--                                                <td>{{ verta($item->date)->format('Y/m/d') }}</td>--}}
+                {{--                                                <td>{{ verta($item->created_at)->format('H:i - Y/m/d') }}</td>--}}
+                {{--                                                <td>--}}
+                {{--                                                    <a class="btn btn-info btn-floating"--}}
+                {{--                                                       href="{{ route('inventory-reports.show', $item) }}">--}}
+                {{--                                                        <i class="fa fa-eye"></i>--}}
+                {{--                                                    </a>--}}
+                {{--                                                </td>--}}
+                {{--                                            </tr>--}}
+                {{--                                        @endforeach--}}
+                {{--                                        </tbody>--}}
+                {{--                                        <tfoot>--}}
+                {{--                                        <tr>--}}
+                {{--                                        </tr>--}}
+                {{--                                        </tfoot>--}}
+                {{--                                    </table>--}}
+                {{--                                </div>--}}
+                {{--                                <div class="text-center">--}}
+                {{--                                    <a href="{{ route('warehouses.index') }}" class="btn btn-link">نمایش همه</a>--}}
+                {{--                                </div>--}}
+                {{--                            </div>--}}
+                {{--                        </div>--}}
+                {{--                    </div>--}}
+                {{--                @endcanany--}}
+                {{--                --}}{{--            EndLastOutProduct       --}}
 
                 {{--            LastPurchases        --}}
                 @canany(['ceo','purchase-engineering'])
@@ -554,7 +554,6 @@
                         $title = 'آخرین لیست نیاز ها (5 تای اخیر)';
                         $purchases =\App\Models\Purchase::latest()->limit(5)->get()
                     @endphp
-
                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                         <div class="card">
                             <div class="card-body">
@@ -569,7 +568,6 @@
                                             <th>انباردار</th>
                                             <th>وضعیت</th>
                                             <th>تاریخ ثبت</th>
-                                            <th>تعیین وضعیت</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -578,28 +576,13 @@
                                                 <td>{{ ++$key }}</td>
                                                 <td>{{ $purchase->inventory->title  }}</td>
                                                 <td>{{ $purchase->user->name .' '. $purchase->user->family }}</td>
-                                                <td><span
-                                                        class=" badge {{$purchase->status =='pending_purchase'?'bg-warning':'bg-success'}}">{{$purchase->status =='pending_purchase'?'در انتظار خرید':'خریداری شده'}}</span>
-                                                </td>
-
-                                                <td>{{ verta($purchase->created_at)->format('H:i - Y/m/d') }}</td>
                                                 <td>
-                                                    {{--                                                <a href="{{url('/purchases/status/'.$purchase->id)}}"--}}
-                                                    {{--                                                   class="btn btn-warning">{{$purchase->status =='pending_purchase'?'در انتظار خرید':'خریداری شده'}}</a>--}}
-                                                    @if($purchase->status =='pending_purchase')
-                                                        <a class="btn btn-warning btn-floating"
-                                                           href="{{ route('purchase.status', $purchase->id) }}">
-                                                            <i class="fa fa-edit"></i>
-                                                        </a>
-                                                    @else
-                                                        <button
-                                                            class="btn btn-primary btn-floating {{$purchase->desc??'disabled'}}"
-                                                            data-desc="{{$purchase->desc}}"
-                                                            href="#description-modal" data-bs-toggle="modal"><i
-                                                                class="fa fa-comment"></i></button>
-                                                    @endif
-
+                                                    <span
+                                                        class=" badge {{$purchase->status =='pending_purchase'?'bg-warning':'bg-success'}}">
+                                                        {{$purchase->status =='pending_purchase'?'در انتظار خرید':'خریداری شده'}}
+                                                    </span>
                                                 </td>
+                                                <td>{{ verta($purchase->created_at)->format('H:i - Y/m/d') }}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>

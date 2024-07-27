@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\Rules\GoogleCaptcha;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -50,9 +51,7 @@ class LoginController extends Controller
         $request->validate([
             $this->username() => 'required|string',
             'password' => 'required|string',
-            'captcha_code' => 'required|captcha',
-        ], [
-            'captcha_code.captcha' => 'کد امنیتی وارد شده صحیح نیست'
+            'g-recaptcha-response' => ['required', new GoogleCaptcha()],
         ]);
     }
 
