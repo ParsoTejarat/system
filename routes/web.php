@@ -1,27 +1,18 @@
 <?php
 use App\Events\SendMessage as SendMessageEvent;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Panel\ArtinController;
-use App\Http\Controllers\Panel\BotController;
 use App\Http\Controllers\Panel\BuyOrderController;
-use App\Http\Controllers\Panel\ChatController;
 use App\Http\Controllers\Panel\CouponController;
 use App\Http\Controllers\Panel\CustomerController;
-use App\Http\Controllers\Panel\DeliveryDayController;
-use App\Http\Controllers\Panel\ExitDoorController;
-use App\Http\Controllers\Panel\FactorController;
 use App\Http\Controllers\Panel\FileManagerController;
-use App\Http\Controllers\Panel\ForeignCustomerController;
 use App\Http\Controllers\Panel\GuaranteeController;
 use App\Http\Controllers\Panel\IndicatorController;
-use App\Http\Controllers\Panel\InputController;
 use App\Http\Controllers\Panel\InventoryController;
 use App\Http\Controllers\Panel\InventoryReportController;
 use App\Http\Controllers\Panel\InvoiceController;
 use App\Http\Controllers\Panel\LeaveController;
 use App\Http\Controllers\Panel\NoteController;
 use App\Http\Controllers\Panel\OffSiteProductController;
-use App\Http\Controllers\Panel\OrderController;
 use App\Http\Controllers\Panel\OrderStatusController;
 use App\Http\Controllers\Panel\PacketController;
 use App\Http\Controllers\Panel\PaymentOrderController;
@@ -33,8 +24,6 @@ use App\Http\Controllers\Panel\PurchaseController;
 use App\Http\Controllers\Panel\ReportController;
 use App\Http\Controllers\Panel\RoleController;
 use App\Http\Controllers\Panel\SaleReportController;
-use App\Http\Controllers\Panel\ScrapController;
-use App\Http\Controllers\Panel\ShopController;
 use App\Http\Controllers\Panel\SmsHistoryController;
 use App\Http\Controllers\Panel\SoftwareUpdateController;
 use App\Http\Controllers\Panel\TaskController;
@@ -55,6 +44,18 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF as PDF;
+//use App\Http\Controllers\Panel\ArtinController;
+//use App\Http\Controllers\Panel\BotController;
+//use App\Http\Controllers\Panel\ScrapController;
+//use App\Http\Controllers\Panel\ShopController;
+//use App\Http\Controllers\Panel\OrderController;
+//use App\Http\Controllers\Panel\InputController;
+//use App\Http\Controllers\Panel\ForeignCustomerController;
+//use App\Http\Controllers\Panel\DeliveryDayController;
+//use App\Http\Controllers\Panel\ExitDoorController;
+//use App\Http\Controllers\Panel\FactorController;
+//use App\Http\Controllers\Panel\ChatController;
+
 
 
 /*

@@ -5,14 +5,11 @@
         <title>پرسو تجارت | ورود</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
         <!-- App favicon -->
         <link rel="shortcut icon" href="/assets/images/favicon.ico">
-
 		<!-- App css -->
 		<link href="/assets/css/bootstrap-rtl.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/css/app-rtl.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
-
 		<!-- icons -->
 		<link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
@@ -20,14 +17,14 @@
 		<script src="/assets/js/config.js"></script>
 
         <style>
-            #captcha_sec img {
-                cursor: pointer;
-            }
+            /*#captcha_sec img {*/
+            /*    cursor: pointer;*/
+            /*}*/
 
-            #captcha_sec input {
-                text-align: center !important;
-                letter-spacing: 1rem;
-            }
+            /*#captcha_sec input {*/
+            /*    text-align: center !important;*/
+            /*    letter-spacing: 1rem;*/
+            /*}*/
         </style>
     </head>
     <body class="loading">
@@ -67,12 +64,11 @@
                                         <input type="password" id="password" name="password" class="form-control">
                                     </div>
                                     <div class="form-group text-center mt-3 mb-4" id="captcha_sec">
-                                        {!! captcha_img() !!}
-                                        <input type="text" name="captcha_code" class="form-control text-left mt-2 mb-0" placeholder="کد امنیتی" dir="ltr" required autofocus autocomplete="off">
-                                        @error('captcha_code')
-                                            <span class="invalid-feedback text-danger d-block" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
+                                        <div class="container-fluid d-flex justify-content-center align-items-center">
+                                            <div class="g-recaptcha" data-sitekey="{{env('google_captcha_site_key')}}"></div>
+                                        </div>
+                                        @error ('g-recaptcha-response')
+                                            <span class="text-danger">{{$message}}</span>
                                         @enderror
                                     </div>
                                     <div class="d-grid mb-0 text-center">
@@ -105,20 +101,6 @@
 
         <!-- App js -->
         <script src="/assets/js/app.min.js"></script>
-
-        <script>
-            $(document).ready(function () {
-                $(document).on('click', '#captcha_sec img', function (){
-                    $.ajax({
-                        type: 'get',
-                        url: '/captcha/api',
-                        success: function (res){
-                            $('#captcha_sec img').attr('src',res.img)
-                            // console.log($(this))
-                        }
-                    })
-                })
-            })
-        </script>
+        <script src="https://www.google.com/recaptcha/api.js?hl=fa" async defer></script>
     </body>
 </html>
