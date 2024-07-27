@@ -217,6 +217,7 @@ return [
         'invoice_link' => 'لینک پیش فاکتور',
         'payment_doc' => 'رسید پرداخت',
         'price' => 'قیمت',
+        'g-recaptcha-response' => 'کپچا گوگل',
     ],
 
 ];
