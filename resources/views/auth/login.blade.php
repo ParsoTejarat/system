@@ -65,7 +65,7 @@
                                     </div>
                                     <div class="form-group text-center mt-3 mb-4" id="captcha_sec">
                                         <div class="container-fluid d-flex justify-content-center align-items-center">
-                                            <div class="g-recaptcha" data-sitekey="{{env('google_captcha_site_key')}}"></div>
+                                            <div class="g-recaptcha" data-sitekey="{{config('services.recaptcha.secret')}}"></div>
                                         </div>
                                         @error ('g-recaptcha-response')
                                             <span class="text-danger">{{$message}}</span>
@@ -95,10 +95,8 @@
             <!-- end container -->
         </div>
         <!-- end page -->
-
         <!-- Vendor js -->
         <script src="/assets/js/vendor.min.js"></script>
-
         <!-- App js -->
         <script src="/assets/js/app.min.js"></script>
         <script src="https://www.google.com/recaptcha/api.js?hl=fa" async defer></script>
