@@ -68,6 +68,31 @@ return [
 //                'exclude_tables' => [],
             ]
         ],
+        'moshrefi_db' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('MOSHREFI_DB_HOST', '127.0.0.1'),
+            'port' => env('MOSHREFI_DB_PORT', '3306'),
+            'database' => env('MOSHREFI_DB_DATABASE', 'forge'),
+            'username' => env('MOSHREFI_DB_USERNAME', 'forge'),
+            'password' => env('MOSHREFI_DB_PASSWORD', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+            'dump' => [
+                'dump_binary_path' => 'C:\wamp\bin\mysql\mysql8.0.31\bin', // only the path, so without `mysqldump` or `pg_dump`
+                'use_single_transaction',
+                'timeout' => 60 * 5, // 5 minute timeout
+//                'exclude_tables' => [],
+            ]
+        ],
 
         'pgsql' => [
             'driver' => 'pgsql',

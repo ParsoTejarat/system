@@ -21,52 +21,51 @@
                                 @csrf
                                 <div class="row">
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
-                                        <label class="form-label" for="receiver">گیرنده<span class="text-danger">*</span></label>
-                                        <select name="receiver" class="form-control" data-toggle="select2">
-                                            <option value="">انتخاب کنید...</option>
-                                            @can('accountant')
-                                                @foreach(\App\Models\User::where('id','!=', auth()->id())->get() as $user)
-                                                    <option value="{{ $user->id }}" {{ old('receiver') == $user->id ? 'selected' : '' }}>{{ $user->role->label.' - '.$user->fullName() }}</option>
-                                                @endforeach
-                                            @else
-                                                @canany(['sales-manager','ceo','warehouse-keeper'])
-                                                    @foreach(\App\Models\User::where('id','!=', auth()->id())->get() as $user)
-                                                        <option value="{{ $user->id }}" {{ old('receiver') == $user->id ? 'selected' : '' }}>{{ $user->role->label.' - '.$user->fullName() }}</option>
-                                                    @endforeach
-                                                @else
-                                                    @php
-                                                        $accountants = \App\Models\User::whereHas('role' , function ($role) {
-                                                            $role->whereHas('permissions', function ($q) {
-                                                                $q->where('name', 'accountant');
-                                                            });
-                                                        })->pluck('id');
-                                                    @endphp
-                                                    @foreach(\App\Models\User::where('id','!=', auth()->id())->whereNotIn('id',$accountants)->get() as $user)
-                                                        <option value="{{ $user->id }}" {{ old('receiver') == $user->id ? 'selected' : '' }}>{{ $user->role->label.' - '.$user->fullName() }}</option>
-                                                    @endforeach
-                                                @endcanany
-                                            @endcan
+                                        <label class="form-label" for="company">شرکت<span class="text-danger">*</span></label>
+                                        <select name="company" id="company_id" class="form-control"
+                                                data-toggle="select2">
+                                            @foreach(\App\Models\Ticket::COMPANIES as $key => $value)
+                                                <option value="{{ $key }}" {{ old('company') == $key ? 'selected' : '' }}>{{ $value }}</option>
+                                            @endforeach
                                         </select>
-                                        @error('receiver')
-                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @error('company')
+                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
-                                        <label class="form-label" for="title">عنوان تیکت<span class="text-danger">*</span></label>
-                                        <input type="text" name="title" class="form-control" id="title" value="{{ old('title') }}">
+                                        <label class="form-label" for="receiver">گیرنده<span
+                                                class="text-danger">*</span></label>
+                                        <select name="receiver" id="user_select" class="form-control" data-toggle="select2">
+                                            <option value="">انتخاب کنید...</option>
+                                            @foreach($users as $user)
+                                                <option value="{{ $user['id'] }}" {{ old('receiver') == $user['id'] ? 'selected' : '' }}>
+                                                    {{ $user['name'] }} {{ $user['family'] }} - {{ $user['role_name'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('receiver')
+                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                                        <label class="form-label" for="title">عنوان تیکت<span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" name="title" class="form-control" id="title"
+                                               value="{{ old('title') }}">
                                         @error('title')
-                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="file">فایل</label>
                                         <input type="file" name="file" class="form-control" id="file">
                                         @error('file')
-                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
-                                        <a href="" target="_blank" class="btn btn-link d-none" id="file_preview">پیش نمایش</a>
+                                        <a href="" target="_blank" class="btn btn-link d-none" id="file_preview">پیش
+                                            نمایش</a>
                                     </div>
-                                    <div class="col-xl-2 col-lg-2 col-md-2"></div>
+
                                     <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                         <label class="form-label" for="text">متن تیکت<span class="text-danger">*</span></label>
                                         <textarea type="text" name="text" class="form-control" id="text"
@@ -87,6 +86,7 @@
 @endsection
 @section('scripts')
     <script>
+        var loading = $('.loading');
         $(document).ready(function () {
             $('#file').on('change', function () {
                 $('#file_preview').removeClass('d-none')
@@ -95,7 +95,47 @@
                 let url = URL.createObjectURL(file);
 
                 $('#file_preview').attr('href', url)
-            })
-        })
+            });
+
+            function fetchUsers(companyId) {
+                if (companyId) {
+                    $.ajax({
+                        url: '{{ env('API_BASE_URL').'get-users' }}',
+                        type: 'POST',
+                        data: {
+                            company_name: companyId,
+                            user_id:{{ auth()->id()}},
+                            _token: '{{ csrf_token() }}'
+                        },
+                        beforeSend: function () {
+                            $('#user_select').empty();
+                            $('#user_select').append('<option value="">در حال بارگذاری...</option>');
+                        },
+                        success: function (response) {
+                            $('#user_select').empty();
+                            $('#user_select').append('<option value="">انتخاب کنید...</option>');
+                            $.each(response, function (key, user) {
+                                $('#user_select').append('<option value="' + user.id + '">' + user.name + ' ' + user.family + ' - ' + user.role_name + '</option>');
+                            });
+                        },
+                        error: function (xhr) {
+                            console.error('Error:', xhr);
+                        }
+                    });
+                }
+            }
+
+            $('#company_id').change(function () {
+                var selectedValue = $(this).val();
+                console.log(selectedValue);
+                fetchUsers(selectedValue);
+            });
+
+
+            var initialCompanyId = $('#company_id').val();
+            if (initialCompanyId) {
+                fetchUsers(initialCompanyId);
+            }
+        });
     </script>
 @endsection

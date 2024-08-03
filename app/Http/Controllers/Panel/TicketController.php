@@ -7,7 +7,9 @@ use App\Http\Requests\StoreTicketRequest;
 use App\Models\Ticket;
 use App\Notifications\SendMessage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Notification;
 
 class TicketController extends Controller
@@ -16,61 +18,70 @@ class TicketController extends Controller
     {
         $this->authorize('tickets-list');
 
-        if (auth()->user()->isAdmin()){
-            $tickets = Ticket::latest()->paginate(30);
-        }else{
-            $tickets = Ticket::where('sender_id', auth()->id())->orWhere('receiver_id', auth()->id())
-                ->latest()->paginate(30);
+//        dd($tickets);
+        if (auth()->user()->isAdmin()) {
+            try {
+                $ticketsData = $this->getAllTickets();
+
+            } catch (\Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 500);
+            }
+
+
+        } else {
+            try {
+                $ticketsData = $this->getMyTickets();
+            } catch (\Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 500);
+            }
+
+
         }
 
-        return view('panel.tickets.index', compact('tickets'));
+
+        return view('panel.tickets.index', compact(['ticketsData']));
     }
 
     public function create()
     {
         $this->authorize('tickets-create');
+        $users = $this->getUsers(['user_id' => auth()->id(), 'company_name' => env('COMPANY_NAME')]);
 
-        return view('panel.tickets.create');
+
+        return view('panel.tickets.create', compact(['users']));
     }
 
     public function store(StoreTicketRequest $request)
     {
+//        dd($request->All());
         $this->authorize('tickets-create');
+//        dd($this->createTicket($request->all()));
 
-        $ticket = Ticket::create([
+//        $ticket = Ticket::create([
+//            'sender_id' => auth()->id(),
+//            'receiver_id' => $request->receiver,
+//            'title' => $request->title,
+//            'code' => $this->generateCode(),
+//        ]);
+
+        $data = [
             'sender_id' => auth()->id(),
+            'company' => $request->company,
             'receiver_id' => $request->receiver,
             'title' => $request->title,
-            'code' => $this->generateCode(),
-        ]);
-
-        if ($request->file){
-            $file_info = [
-                'name' => $request->file('file')->getClientOriginalName(),
-                'type' => $request->file('file')->getClientOriginalExtension(),
-                'size' => $request->file('file')->getSize(),
-            ];
-
-            $file = upload_file($request->file, 'Messages');
-
-            $file_info['path'] = $file;
-        }
-
-        $ticket->messages()->create([
-            'user_id' => auth()->id(),
             'text' => $request->text,
-            'file' => isset($file) ? json_encode($file_info) : null,
-        ]);
+            'file' => $request->file
+        ];
+        $ticket = $this->createTicket($data);
+
 
         // log
         activity_log('create-ticket', __METHOD__, [$request->all(), $ticket]);
-
-        $message = 'تیکتی با عنوان "'.$ticket->title.'" به شما ارسال شده است';
-        $url = route('tickets.edit', $ticket->id);
-
-        Notification::send($ticket->receiver, new SendMessage($message, $url));
-
-        return redirect()->route('tickets.edit', $ticket->id);
+//        $message = 'تیکتی با عنوان "' . json_decode($ticket->content())->title. '" به شما ارسال شده است';
+//        $url = route('tickets.edit', json_decode($ticket->content())->id);
+//        Notification::send($ticket->receiver, new SendMessage($message, $url));
+        $content = json_decode($ticket->content(), true);
+        return redirect()->route('tickets.edit', $content['id']);
     }
 
     public function show(Ticket $ticket)
@@ -78,78 +89,46 @@ class TicketController extends Controller
         //
     }
 
-    public function edit(Ticket $ticket)
+    public function edit($id)
     {
         $this->authorize('tickets-create');
-
-        $ticket->messages()->whereNull('read_at')->where('user_id','!=',auth()->id())->update(['read_at' => now()]);
-
-        return view('panel.tickets.edit', compact('ticket'));
+        $ticket = $this->getMessages($id);
+//        dd($ticket);
+        return view('panel.tickets.edit', compact(['ticket']));
     }
 
-    public function update(Request $request, Ticket $ticket)
+    public function update(Request $request, $id)
     {
         $this->authorize('tickets-create');
 
-        $ticket->update(['status' => 'pending']);
-
-        // prevent from send sequence notification
-        $first_message = $ticket->messages()->orderBy('created_at', 'desc')->first();
-        if ($first_message != null && $first_message->user_id != auth()->id()){
-            $message = 'پاسخی برای تیکت "'.$ticket->title.'" ثبت شده است';
-            $url = route('tickets.edit', $ticket->id);
-            $receiver = auth()->id() == $ticket->sender_id ? $ticket->receiver : $ticket->sender;
-            Notification::send($receiver, new SendMessage($message, $url));
-        }
-        // end prevent from send sequence notification
-
-        if ($request->file){
-            $file_info = [
-                'name' => $request->file('file')->getClientOriginalName(),
-                'type' => $request->file('file')->getClientOriginalExtension(),
-                'size' => $request->file('file')->getSize(),
-            ];
-
-            $file = upload_file($request->file, 'Messages');
-
-            $file_info['path'] = $file;
-        }
-
-        $ticket->messages()->create([
-            'user_id' => auth()->id(),
+        $data = [
+            'sender_id' => auth()->id(),
             'text' => $request->text,
-            'file' => isset($file) ? json_encode($file_info) : null,
-        ]);
-
-        // log
-        activity_log('edit-ticket', __METHOD__, [$request->all(), $ticket]);
-
+            'ticket_id' => $id,
+            'file' => $request->file,
+        ];
+        $ticket = $this->chatInTickets($data);
         return back();
+
+
     }
 
-    public function destroy(Ticket $ticket)
+    public function destroy($id)
     {
         $this->authorize('tickets-delete');
 
-        foreach ($ticket->messages as $message){
-            if ($message->file){
-                unlink(public_path(json_decode($message->file)->path));
-            }
-        }
+        $ticket = $this->deleteTicket($id);
+//        dd($ticket);
 
-        // log
-        activity_log('delete-ticket', __METHOD__, $ticket);
-
-        $ticket->delete();
         return back();
     }
 
     public function changeStatus(Ticket $ticket)
     {
-        if ($ticket->sender_id == auth()->id() || $ticket->receiver_id == auth()->id()){
-            if ($ticket->status == 'closed'){
+        if ($ticket->sender_id == auth()->id() || $ticket->receiver_id == auth()->id()) {
+            if ($ticket->status == 'closed') {
                 $ticket->update(['status' => 'pending']);
-            }else{
+            } else {
                 $ticket->update(['status' => 'closed']);
             }
 
@@ -159,31 +138,149 @@ class TicketController extends Controller
             $url = route('tickets.index');
             $receiver = auth()->id() == $ticket->sender_id ? $ticket->receiver : $ticket->sender;
             Notification::send($receiver, new SendMessage($message, $url));
-            // end send notif
+            // End-Send-Notification
 
             // log
             activity_log('ticket-change-status', __METHOD__, $ticket);
 
-            alert()->success('وضعیت تیکت با موفقیت تغییر یافت','تغییر وضعیت');
+            alert()->success('وضعیت تیکت با موفقیت تغییر یافت', 'تغییر وضعیت');
             return back();
 
-        }else{
+        } else {
             abort(403);
         }
     }
 
-    private function generateCode()
-    {
-        $last_ticket = Ticket::latest()->first();
-        $newCode = $last_ticket ? $last_ticket->code++ : 1;
 
-        if ($last_ticket) {
-            while (Ticket::where('code', $newCode)->exists()) {
-                $newCode++;
+    private function getAllTickets()
+    {
+        try {
+            $response = Http::timeout(30)->post(env('API_BASE_URL') . 'get-all-tickets');
+
+            if ($response->successful()) {
+                return $response->json();
+            } else {
+                return response()->json(['error' => 'Request-failed'], $response->status());
             }
-            return $newCode;
-        } else {
-            return $newCode;
+        } catch (\Illuminate\Http\Client\RequestException $e) {
+
+            return response()->json(['error' => 'Request-timed-out-or-failed', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    private function getMyTickets()
+    {
+        $data = ['user_id' => auth()->id()];
+
+        try {
+            $response = Http::timeout(30)->post(env('API_BASE_URL') . 'get-my-tickets', $data);
+            if ($response->successful()) {
+                return $response->json();
+            } else {
+                return response()->json(['error' => 'Request-failed'], $response->status());
+            }
+        } catch (\Illuminate\Http\Client\RequestException $e) {
+
+            return response()->json(['error' => 'Request-timed-out-or-failed', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    private function createTicket($data)
+    {
+
+        try {
+            $httpRequest = Http::timeout(30);
+            if (isset($data['file'])) {
+                $file = $data['file'];
+                unset($data['file']);
+                $httpRequest = $httpRequest->attach('file', file_get_contents($file), $file->getClientOriginalName());
+            }
+
+            $response = $httpRequest->post(env('API_BASE_URL') . 'create-ticket', $data);
+
+            if ($response->successful()) {
+                $responseData = $response->json();
+                return response()->json($responseData);
+            } else {
+                return response()->json(['error' => 'Request failed', 'details' => $response->body()], $response->status());
+            }
+        } catch (\Illuminate\Http\Client\RequestException $e) {
+            return response()->json(['error' => 'Request timed out or failed', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    private function getMessages($data)
+    {
+        $ticket_id = ['ticket_id' => $data];
+
+        try {
+            $response = Http::timeout(30)->post(env('API_BASE_URL') . 'get-messages', $ticket_id);
+            if ($response->successful()) {
+                return $response->json();
+            } else {
+                return response()->json(['error' => 'Request-failed'], $response->status());
+            }
+        } catch (\Illuminate\Http\Client\RequestException $e) {
+
+            return response()->json(['error' => 'Request-timed-out-or-failed', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+
+    private function chatInTickets($data)
+    {
+        try {
+            $httpRequest = Http::timeout(30);
+            if (isset($data['file'])) {
+                $file = $data['file'];
+                unset($data['file']);
+                $httpRequest = $httpRequest->attach('file', file_get_contents($file), $file->getClientOriginalName());
+            }
+
+            $response = $httpRequest->post(env('API_BASE_URL') . 'chat-in-tickets', $data);
+
+            if ($response->successful()) {
+                $responseData = $response->json();
+                return response()->json($responseData);
+            } else {
+                return response()->json(['error' => 'Request failed', 'details' => $response->body()], $response->status());
+            }
+        } catch (\Illuminate\Http\Client\RequestException $e) {
+            return response()->json(['error' => 'Request timed out or failed', 'message' => $e->getMessage()], 500);
+        }
+
+    }
+
+    private function getUsers($data)
+    {
+
+        try {
+            $response = Http::timeout(30)->post(env('API_BASE_URL') . 'get-users', $data);
+            if ($response->successful()) {
+                return $response->json();
+            } else {
+                return response()->json(['error' => 'Request-failed'], $response->status());
+            }
+        } catch (\Illuminate\Http\Client\RequestException $e) {
+            return response()->json(['error' => 'Request timed out or failed', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+
+    private function deleteTicket($data)
+    {
+        $ticket_id = ['ticket_id' => $data];
+
+        try {
+            $response = Http::timeout(30)->post(env('API_BASE_URL') . 'delete-ticket', $ticket_id);
+            if ($response->successful()) {
+                return $response->json();
+            } else {
+                return response()->json(['error' => 'Request-failed'], $response->status());
+            }
+        } catch (\Illuminate\Http\Client\RequestException $e) {
+
+            return response()->json(['error' => 'Request-timed-out-or-failed', 'message' => $e->getMessage()], 500);
         }
     }
 }
