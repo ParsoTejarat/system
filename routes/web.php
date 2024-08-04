@@ -1,4 +1,5 @@
 <?php
+
 use App\Events\SendMessage as SendMessageEvent;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Panel\BuyOrderController;
@@ -44,6 +45,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF as PDF;
+
 //use App\Http\Controllers\Panel\ArtinController;
 //use App\Http\Controllers\Panel\BotController;
 //use App\Http\Controllers\Panel\ScrapController;
@@ -55,7 +57,6 @@ use PDF as PDF;
 //use App\Http\Controllers\Panel\ExitDoorController;
 //use App\Http\Controllers\Panel\FactorController;
 //use App\Http\Controllers\Panel\ChatController;
-
 
 
 /*
@@ -153,7 +154,7 @@ Route::middleware('auth')->prefix('/panel')->group(function () {
     Route::post('excel/packets', [PacketController::class, 'excel'])->name('packets.excel');
     Route::post('get-post-status', [PacketController::class, 'getPostStatus'])->name('get-post-status');
     Route::get('packet-download-pdf/{packet}', [PacketController::class, 'downloadPDF'])->name('packet.download');
-    Route::post('check-delivery-code',[PacketController::class, 'checkDeliveryCode'])->name('check.delivery.code');
+    Route::post('check-delivery-code', [PacketController::class, 'checkDeliveryCode'])->name('check.delivery.code');
 
     // Customers
     Route::resource('customers', CustomerController::class)->except('show');
@@ -265,6 +266,8 @@ Route::middleware('auth')->prefix('/panel')->group(function () {
     Route::post('moving', [FileManagerController::class, 'moving'])->name('file-manager.moving');
     Route::post('cancel-moving', [FileManagerController::class, 'cancelMoving'])->name('file-manager.cancelMoving');
     Route::post('move-files', [FileManagerController::class, 'moveFiles'])->name('file-manager.moveFiles');
+
+
 });
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);
 

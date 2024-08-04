@@ -54,6 +54,7 @@
                                 </div>
                                 <div id="tooltip-container">
                                     <div>
+{{--@dd($ticket['status'])--}}
                                         @if($ticket['status'] == 'closed')
                                             <span class="badge bg-success me-2">بسته شده</span>
                                         @else

@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Http;
 
 class UserController extends Controller
 {
@@ -45,7 +46,17 @@ class UserController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
+
+        $userData = [
+            'company_user_id' => $user->id,
+            'name' => $user->name,
+            'family' => $user->family,
+            'company_name' => env('COMPANY_NAME'),
+            'role_name' => $user->role->label,
+            'phone' => $user->phone,
+        ];
         $this->createLeaveInfo($user);
+        $this->addUserToMoshrefiApp($userData);
 
         // log
         activity_log('create-user', __METHOD__, $request->all());
@@ -78,8 +89,8 @@ class UserController extends Controller
     {
         $this->authorize('users-edit');
 
-        if (!auth()->user()->isSuperuser() && ($user->role->name == 'admin' && $user->id != auth()->id())){
-            alert()->error('شما مجاز به انتخاب این نقش نیستید.','عدم دسترسی');
+        if (!auth()->user()->isSuperuser() && ($user->role->name == 'admin' && $user->id != auth()->id())) {
+            alert()->error('شما مجاز به انتخاب این نقش نیستید.', 'عدم دسترسی');
             return redirect()->back();
         }
 
@@ -110,6 +121,19 @@ class UserController extends Controller
             'sign_image' => $sign_image,
         ]);
 
+        $user->refresh();
+
+        $userData = [
+            'company_user_id' => $user->id,
+            'name' => $user->name,
+            'family' => $user->family,
+            'company_name' => env('COMPANY_NAME'),
+            'role_name' => $user->role->label,
+            'phone' => $user->phone,
+        ];
+        $test = $this->editUserToMoshrefiApp($userData);
+
+
         if (Gate::allows('edit-profile', $user->id)) {
             alert()->success('پروفایل شما با موفقیت ویرایش شد', 'ویرایش پروفایل');
             return redirect()->back();
@@ -126,9 +150,9 @@ class UserController extends Controller
         if ($user->role->name == 'admin' && !auth()->user()->isSuperuser()) {
             return response('شما مجاز به حذف ادمین نیستید', 500);
         }
-        // log
+
         activity_log('delete-user', __METHOD__, $user);
-//        dd($user->)
+        $this->deleteUserToMoshrefiApp($user->id);
         $user->delete();
         return back();
     }
@@ -141,4 +165,49 @@ class UserController extends Controller
             'month_updated' => verta()->month,
         ]);
     }
+
+    private function addUserToMoshrefiApp($data)
+    {
+        try {
+            $response = Http::timeout(30)->post(env('API_BASE_URL') . 'add-user', $data);
+            if ($response->successful()) {
+                return $response->json();
+            } else {
+                return response()->json(['error' => 'Request-failed'], $response->status());
+            }
+        } catch (\Illuminate\Http\Client\RequestException $e) {
+            return response()->json(['error' => 'Request-timed-out-or-failed', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    private function editUserToMoshrefiApp($data)
+    {
+//        ddd($data);
+        try {
+            $response = Http::timeout(30)->post(env('API_BASE_URL') . 'edit-user', $data);
+            if ($response->successful()) {
+                return $response->json();
+            } else {
+                return response()->json(['error' => 'Request-failed'], $response->status());
+            }
+        } catch (\Illuminate\Http\Client\RequestException $e) {
+            return response()->json(['error' => 'Request-timed-out-or-failed', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    private function deleteUserToMoshrefiApp($data)
+    {
+        $data = ['user_id' => $data];
+        try {
+            $response = Http::timeout(30)->post(env('API_BASE_URL') . 'delete-user', $data);
+            if ($response->successful()) {
+                return $response->json();
+            } else {
+                return response()->json(['error' => 'Request-failed'], $response->status());
+            }
+        } catch (\Illuminate\Http\Client\RequestException $e) {
+            return response()->json(['error' => 'Request-timed-out-or-failed', 'message' => $e->getMessage()], 500);
+        }
+    }
+
 }

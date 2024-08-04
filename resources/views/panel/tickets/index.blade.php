@@ -46,7 +46,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($ticketsData as $key =>  $ticket)
+                                    @foreach($ticketsData['data'] as $key =>  $ticket)
                                         <tr>
                                             <td>{{ ++$key }}</td>
                                             <td>{{ $ticket['sender_name'] }}</td>
@@ -88,7 +88,21 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            {{--                                class="d-flex justify-content-center">{{ $tickets->appends(request()->all())->links() }}</div>--}}
+                            <div class="d-flex justify-content-center">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination">
+                                            <li class="page-item {{ $ticketsData['pagination']['prev_page_url'] ? '' : 'disabled' }}">
+                                                <a class="page-link" href="{{ $ticketsData['pagination']['prev_page_url'] ? '/panel/tickets?url=' . $ticketsData['pagination']['prev_page_url'] : '#' }}">قبلی</a>
+                                            </li>
+                                            <li class="page-item active" aria-current="page">
+                                                <span class="page-link">صفحه {{ $ticketsData['pagination']['current_page'] }} از {{ $ticketsData['pagination']['last_page'] }}</span>
+                                            </li>
+                                            <li class="page-item {{ $ticketsData['pagination']['next_page_url'] ? '' : 'disabled' }}">
+                                                <a class="page-link" href="{{ $ticketsData['pagination']['next_page_url'] ? '/panel/tickets?url=' . $ticketsData['pagination']['next_page_url'] : '#' }}">بعدی</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                            </div>
                         </div>
                     </div>
                 </div>

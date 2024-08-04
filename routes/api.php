@@ -25,5 +25,4 @@ Route::post('invoice-create', [ApiController::class, 'createInvoice']);
 Route::post('get-invoice-products', [ApiController::class, 'getInvoiceProducts']);
 
 
-Route::get('/my-tickets/{id}', [TicketController::class, 'myTickets']);
-Route::get('/all-tickets',[TicketController::class, 'allTickets']);
+Route::post('/send-notification-to-user', [TicketController::class, 'appSendNotification']);
