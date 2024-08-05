@@ -182,7 +182,6 @@ class UserController extends Controller
 
     private function editUserToMoshrefiApp($data)
     {
-//        ddd($data);
         try {
             $response = Http::timeout(30)->post(env('API_BASE_URL') . 'edit-user', $data);
             if ($response->successful()) {

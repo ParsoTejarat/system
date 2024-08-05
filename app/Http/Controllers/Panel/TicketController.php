@@ -21,11 +21,13 @@ class TicketController extends Controller
 
         $url = $request->query('url');
 
+//        dd("test");
         try {
             if (auth()->user()->isAdmin()) {
                 $ticketsData = $this->getAllTickets($url);
             } else {
                 $ticketsData = $this->getMyTickets($url);
+//                dd($ticketsData);
             }
 
             // Check for errors in response
@@ -34,7 +36,7 @@ class TicketController extends Controller
             }
 
             // Return view with tickets data
-            return view('panel.tickets.index', compact('ticketsData'));
+            return view('panel.tickets.index', compact(['ticketsData']));
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -71,13 +73,16 @@ class TicketController extends Controller
             'file' => $request->file
         ];
         $ticket = $this->createTicket($data);
+//        dd($ticket);
+
 
 
         // log
         activity_log('create-ticket', __METHOD__, [$request->all(), $ticket]);
 
-        $content = json_decode($ticket->content(), true);
-        return redirect()->route('tickets.edit', $content['id']);
+//        $ticket->;
+//        return $ticket['id'];
+        return redirect()->route('tickets.edit', $ticket['id']);
     }
 
     public function show(Ticket $ticket)
@@ -135,6 +140,7 @@ class TicketController extends Controller
     private function getAllTickets($url)
     {
         $apiUrl = $url ?? env('API_BASE_URL') . 'get-all-tickets';
+
         try {
             $response = Http::timeout(30)->get($apiUrl);
 
@@ -150,11 +156,15 @@ class TicketController extends Controller
 
     private function getMyTickets($url)
     {
+
         $data = ['user_id' => auth()->id(), 'url' => $url];
         $apiUrl = $url ?? env('API_BASE_URL') . 'get-my-tickets';
+//        dd($apiUrl);
+
         try {
-            $response = Http::timeout(30)->post($apiUrl, $data);
+            $response = Http::timeout(30)->post($apiUrl,$data);
             if ($response->successful()) {
+//                dd($response->json());
                 return $response->json();
             } else {
                 return response()->json(['error' => 'Request-failed'], $response->status());
@@ -179,8 +189,7 @@ class TicketController extends Controller
             $response = $httpRequest->post(env('API_BASE_URL') . 'create-ticket', $data);
 
             if ($response->successful()) {
-                $responseData = $response->json();
-                return response()->json($responseData);
+                return $response->json();
             } else {
                 return response()->json(['error' => 'Request failed', 'details' => $response->body()], $response->status());
             }
@@ -221,6 +230,7 @@ class TicketController extends Controller
 
             if ($response->successful()) {
                 $responseData = $response->json();
+//                dd($responseData);
                 return response()->json($responseData);
             } else {
                 return response()->json(['error' => 'Request failed', 'details' => $response->body()], $response->status());

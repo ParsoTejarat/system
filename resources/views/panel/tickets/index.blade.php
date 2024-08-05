@@ -88,21 +88,25 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-center">
+                            @if(count($ticketsData['data']) && count($ticketsData['data']) >= 10)
+                                <div class="d-flex justify-content-center">
                                     <nav aria-label="Page navigation">
                                         <ul class="pagination">
                                             <li class="page-item {{ $ticketsData['pagination']['prev_page_url'] ? '' : 'disabled' }}">
-                                                <a class="page-link" href="{{ $ticketsData['pagination']['prev_page_url'] ? '/panel/tickets?url=' . $ticketsData['pagination']['prev_page_url'] : '#' }}">قبلی</a>
+                                                <a class="page-link"
+                                                   href="{{ $ticketsData['pagination']['prev_page_url'] ? '/panel/tickets?url=' . $ticketsData['pagination']['prev_page_url'] : '#' }}">قبلی</a>
                                             </li>
                                             <li class="page-item active" aria-current="page">
                                                 <span class="page-link">صفحه {{ $ticketsData['pagination']['current_page'] }} از {{ $ticketsData['pagination']['last_page'] }}</span>
                                             </li>
                                             <li class="page-item {{ $ticketsData['pagination']['next_page_url'] ? '' : 'disabled' }}">
-                                                <a class="page-link" href="{{ $ticketsData['pagination']['next_page_url'] ? '/panel/tickets?url=' . $ticketsData['pagination']['next_page_url'] : '#' }}">بعدی</a>
+                                                <a class="page-link"
+                                                   href="{{ $ticketsData['pagination']['next_page_url'] ? '/panel/tickets?url=' . $ticketsData['pagination']['next_page_url'] : '#' }}">بعدی</a>
                                             </li>
                                         </ul>
                                     </nav>
-                            </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

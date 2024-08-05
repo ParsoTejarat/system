@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
@@ -15,10 +16,12 @@ class TicketController extends Controller
 
     public function appSendNotification(Request $request)
     {
-        dd($request->all());
-        $message = 'تیکتی با عنوان "' . json_decode($ticket->content())->title . '" به شما ارسال شده است';
-        $url = route('tickets.edit', json_decode($ticket->content())->id);
-        Notification::send($ticket->receiver, new SendMessage($message, $url));
+//        return $request->all();
+        $user = User::whereId($request->user_id)->get();
+        $message = 'تیکتی با عنوان "' . $request->ticket_title . '" به شما ارسال شده است';
+        $url = route('tickets.index');
+        Notification::send($user, new SendMessage($message, $url));
+        return "success";
     }
 
 

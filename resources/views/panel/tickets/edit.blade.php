@@ -42,19 +42,19 @@
                                 <div class="flex-1">
                                     <h5 class="mt-0 mb-0 font-15">
                                         <a href="javascript:void(0)" class="text-reset">
-
                                             @if(auth()->id() == $ticket['sender']['company_user_id'])
                                                 {{ $ticket['receiver']['name'].' '.$ticket['receiver']['family'] }}
 
+
                                             @else
                                                 {{ $ticket['sender']['name'].' '.$ticket['sender']['family']}}
+{{--                                                @dd("test")--}}
                                             @endif
                                         </a>
                                     </h5>
                                 </div>
                                 <div id="tooltip-container">
                                     <div>
-{{--@dd($ticket['status'])--}}
                                         @if($ticket['status'] == 'closed')
                                             <span class="badge bg-success me-2">بسته شده</span>
                                         @else
@@ -91,8 +91,8 @@
                                     @php
                                         $file = json_decode($message['file']);
                                     @endphp
-                                    {{--                                @dd($ticket)--}}
-                                    @if($message['user_id'] == $ticket['sender']['company_user_id'])
+{{--                                    @dd(auth()->id(),$message['user']['company_user_id'])--}}
+                                    @if(auth()->id() == $message['user']['company_user_id'])
                                         <li class="clearfix" @if($loop->last) id="last_message" @endif>
                                             <div class="chat-avatar">
                                                 @if($message['read_at'])
@@ -110,7 +110,7 @@
                                                 </div>
                                             </div>
                                         </li>
-{{--                                    @dd($file)--}}
+                                        {{--                                    @dd($file)--}}
                                         @if($file)
                                             <li class="clearfix">
                                                 <div class="card mt-2 mb-1 shadow-none border text-start">
