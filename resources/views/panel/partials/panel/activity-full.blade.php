@@ -10,7 +10,6 @@
                     <th>کاربر</th>
                     <th>فعالیت</th>
                     <th>تاریخ</th>
-                    <th>تاریخ</th>
                 </tr>
                 </thead>
                 <tbody>

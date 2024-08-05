@@ -39,7 +39,7 @@
                                         <label class="form-label" for="type">نوع <span class="text-danger">*</span></label>
                                         <select class="form-control" name="type" id="type" data-toggle="select2">
                                             @foreach(\App\Models\Category::all() as $category)
-                                                <option value="{{ $category->id }}" {{ old('type') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                                <option value="{{ $category->slug }}" {{ old('type') == $category->slug ? 'selected' : '' }}>{{ $category->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('type')
