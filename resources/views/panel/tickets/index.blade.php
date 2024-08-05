@@ -32,6 +32,7 @@
                                         <th>#</th>
                                         <th>فرستنده</th>
                                         <th>گیرنده</th>
+                                        <th>شرکت</th>
                                         <th>عنوان تیکت</th>
                                         <th>شماره تیکت</th>
                                         <th>وضعیت</th>
@@ -45,25 +46,26 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($tickets as $key => $ticket)
+                                    @foreach($ticketsData['data'] as $key =>  $ticket)
                                         <tr>
                                             <td>{{ ++$key }}</td>
-                                            <td>{{ $ticket->sender_id != auth()->id() ? $ticket->sender->fullName() : 'شما' }}</td>
-                                            <td>{{ $ticket->receiver_id != auth()->id() ? $ticket->receiver->fullName() : 'شما' }}</td>
-                                            <td>{{ $ticket->title }}</td>
-                                            <td>{{ $ticket->code }}</td>
+                                            <td>{{ $ticket['sender_name'] }}</td>
+                                            <td>{{ $ticket['receiver_name'] }}</td>
+                                            <td>{{ getCompany($ticket['company']) }}</td>
+                                            <td>{{ $ticket['title']}}</td>
+                                            <td>{{ $ticket['code'] }}</td>
                                             <td>
-                                                @if($ticket->status == 'closed')
+                                                @if($ticket['status'] == 'closed')
                                                     <span class="badge bg-success">بسته شده</span>
                                                 @else
                                                     <span class="badge bg-warning">درحال بررسی</span>
                                                 @endif
                                             </td>
-                                            <td>{{ verta($ticket->created_at)->format('H:i - Y/m/d') }}</td>
+                                            <td>{{ verta($ticket['created_at'])->format('H:i - Y/m/d') }}</td>
                                             @can('tickets-create')
                                                 <td>
                                                     <a class="btn btn-info btn-floating"
-                                                       href="{{ route('tickets.edit', $ticket->id) }}">
+                                                       href="{{ route('tickets.edit', $ticket['id']) }}">
                                                         <i class="fa fa-eye"></i>
                                                     </a>
                                                 </td>
@@ -71,8 +73,8 @@
                                             @can('tickets-delete')
                                                 <td>
                                                     <button class="btn btn-danger btn-floating trashRow"
-                                                            data-url="{{ route('tickets.destroy',$ticket->id) }}"
-                                                            data-id="{{ $ticket->id }}">
+                                                            data-url="{{ route('tickets.destroy',$ticket['id']) }}"
+                                                            data-id="{{ $ticket['id'] }}">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
                                                 </td>
@@ -86,7 +88,25 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-center">{{ $tickets->appends(request()->all())->links() }}</div>
+                            @if(count($ticketsData['data']) && count($ticketsData['data']) >= 10)
+                                <div class="d-flex justify-content-center">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination">
+                                            <li class="page-item {{ $ticketsData['pagination']['prev_page_url'] ? '' : 'disabled' }}">
+                                                <a class="page-link"
+                                                   href="{{ $ticketsData['pagination']['prev_page_url'] ? '/panel/tickets?url=' . $ticketsData['pagination']['prev_page_url'] : '#' }}">قبلی</a>
+                                            </li>
+                                            <li class="page-item active" aria-current="page">
+                                                <span class="page-link">صفحه {{ $ticketsData['pagination']['current_page'] }} از {{ $ticketsData['pagination']['last_page'] }}</span>
+                                            </li>
+                                            <li class="page-item {{ $ticketsData['pagination']['next_page_url'] ? '' : 'disabled' }}">
+                                                <a class="page-link"
+                                                   href="{{ $ticketsData['pagination']['next_page_url'] ? '/panel/tickets?url=' . $ticketsData['pagination']['next_page_url'] : '#' }}">بعدی</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -94,4 +114,5 @@
         </div>
     </div>
 @endsection
+
 

@@ -1,8 +1,10 @@
 <?php
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\ApiController;
+use App\Http\Controllers\Api\v1\TicketController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +23,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('invoice-create', [ApiController::class, 'createInvoice']);
 Route::post('get-invoice-products', [ApiController::class, 'getInvoiceProducts']);
+
+
+Route::post('/send-notification-to-user', [TicketController::class, 'appSendNotification']);

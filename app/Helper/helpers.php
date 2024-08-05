@@ -126,3 +126,19 @@ function englishToPersianNumbers($input)
 
     return strtr($input, $persianNumbers);
 }
+
+function getCompany($data)
+{
+    $company = '';
+    switch ($data) {
+        case 'parso':
+            $company = 'پرسو تجارت ایرانیان';
+            break;
+        case 'barman':
+            $company = 'بارمان سیستم سرزمین پارس';
+            break;
+    }
+    return $company;
+
+
+}

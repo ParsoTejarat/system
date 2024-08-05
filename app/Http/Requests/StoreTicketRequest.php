@@ -27,6 +27,7 @@ class StoreTicketRequest extends FormRequest
             'receiver' => 'required',
             'title' => 'required',
             'text' => 'required',
+            'company' => 'required',
         ];
     }
 }

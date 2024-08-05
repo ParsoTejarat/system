@@ -16,6 +16,12 @@ class Ticket extends Model
         'closed' => 'بسته شده',
     ];
 
+
+    const COMPANIES = [
+        'parso' => 'پرسو تجارت ایرانیان',
+        'barman' => 'بارمان سیستم',
+    ];
+
     public function sender()
     {
         return $this->belongsTo(User::class);
