@@ -102,9 +102,12 @@
                     $.ajax({
                         url: '{{ env('API_BASE_URL').'get-users' }}',
                         type: 'POST',
+                        headers: {
+                            'API_KEY': "{{env('API_KEY_TOKEN_FOR_TICKET')}}"
+                        },
                         data: {
                             company_name: companyId,
-                            user_id:{{ auth()->id()}},
+                            user_id: {{ auth()->id() }},
                             _token: '{{ csrf_token() }}'
                         },
                         beforeSend: function () {

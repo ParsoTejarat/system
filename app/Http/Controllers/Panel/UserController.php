@@ -51,7 +51,7 @@ class UserController extends Controller
             'company_user_id' => $user->id,
             'name' => $user->name,
             'family' => $user->family,
-            'company_name' => env('COMPANY_NAME'),
+            'company' => env('COMPANY_NAME'),
             'role_name' => $user->role->label,
             'phone' => $user->phone,
         ];
@@ -127,7 +127,7 @@ class UserController extends Controller
             'company_user_id' => $user->id,
             'name' => $user->name,
             'family' => $user->family,
-            'company_name' => env('COMPANY_NAME'),
+            'company' => env('COMPANY_NAME'),
             'role_name' => $user->role->label,
             'phone' => $user->phone,
         ];
@@ -196,7 +196,7 @@ class UserController extends Controller
 
     private function deleteUserToMoshrefiApp($data)
     {
-        $data = ['user_id' => $data];
+        $data = ['user_id' => $data, 'company' => env('COMPANY_NAME')];
         try {
             $response = Http::timeout(30)->post(env('API_BASE_URL') . 'delete-user', $data);
             if ($response->successful()) {

@@ -18,7 +18,7 @@ class TicketController extends Controller
     {
 //        return $request->all();
         $user = User::whereId($request->user_id)->get();
-        $message = 'تیکتی با عنوان "' . $request->ticket_title . '" به شما ارسال شده است';
+        $message = $request->message;
         $url = route('tickets.index');
         Notification::send($user, new SendMessage($message, $url));
         return "success";

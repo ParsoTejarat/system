@@ -20,6 +20,7 @@ class Ticket extends Model
     const COMPANIES = [
         'parso' => 'پرسو تجارت ایرانیان',
         'barman' => 'بارمان سیستم',
+        'adaktejarat' => 'آداک تجارت خورشید قشم',
     ];
 
     public function sender()

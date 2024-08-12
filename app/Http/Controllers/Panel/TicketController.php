@@ -27,9 +27,9 @@ class TicketController extends Controller
                 $ticketsData = $this->getAllTickets($url);
             } else {
                 $ticketsData = $this->getMyTickets($url);
-//                dd($ticketsData);
+//
             }
-
+//            dd($ticketsData);
             // Check for errors in response
             if (isset($ticketsData['error'])) {
                 return response()->json(['error' => $ticketsData['error']], 500);
@@ -45,7 +45,7 @@ class TicketController extends Controller
     public function create()
     {
         $this->authorize('tickets-create');
-        $users = $this->getUsers(['user_id' => auth()->id(), 'company_name' => env('COMPANY_NAME')]);
+        $users = $this->getUsers(['user_id' => auth()->id(), 'company' => env('COMPANY_NAME')]);
 
 
         return view('panel.tickets.create', compact(['users']));
@@ -66,18 +66,13 @@ class TicketController extends Controller
 
         $data = [
             'sender_id' => auth()->id(),
-            'company' => $request->company,
+            'company' => env('COMPANY_NAME'),
             'receiver_id' => $request->receiver,
             'title' => $request->title,
             'text' => $request->text,
             'file' => $request->file
         ];
         $ticket = $this->createTicket($data);
-//        dd($ticket);
-
-
-
-        // log
         activity_log('create-ticket', __METHOD__, [$request->all(), $ticket]);
 
 //        $ticket->;
@@ -107,8 +102,10 @@ class TicketController extends Controller
             'text' => $request->text,
             'ticket_id' => $id,
             'file' => $request->file,
+            'company' => env('COMPANY_NAME'),
         ];
-        $ticket = $this->chatInTickets($data);
+        $this->chatInTickets($data);
+//        dd($ticket->content());
         return back();
 
 
@@ -142,7 +139,7 @@ class TicketController extends Controller
         $apiUrl = $url ?? env('API_BASE_URL') . 'get-all-tickets';
 
         try {
-            $response = Http::timeout(30)->get($apiUrl);
+            $response = Http::timeout(30)->withHeaders(['API_KEY' => env('API_KEY_TOKEN_FOR_TICKET')])->get($apiUrl);
 
             if ($response->successful()) {
                 return $response->json();
@@ -153,16 +150,19 @@ class TicketController extends Controller
             return response()->json(['error' => 'Request-timed-out-or-failed', 'message' => $e->getMessage()], 500);
         }
     }
-
     private function getMyTickets($url)
     {
 
-        $data = ['user_id' => auth()->id(), 'url' => $url];
+        $data = [
+            'user_id' => auth()->id(),
+            'url' => $url,
+            'company' => env('COMPANY_NAME')
+        ];
         $apiUrl = $url ?? env('API_BASE_URL') . 'get-my-tickets';
 //        dd($apiUrl);
 
         try {
-            $response = Http::timeout(30)->post($apiUrl,$data);
+            $response = Http::timeout(30)->withHeaders(['API_KEY' => env('API_KEY_TOKEN_FOR_TICKET')])->post($apiUrl, $data);
             if ($response->successful()) {
 //                dd($response->json());
                 return $response->json();
@@ -173,13 +173,10 @@ class TicketController extends Controller
             return response()->json(['error' => 'Request-timed-out-or-failed', 'message' => $e->getMessage()], 500);
         }
     }
-
-
     private function createTicket($data)
     {
-
         try {
-            $httpRequest = Http::timeout(30);
+            $httpRequest = Http::timeout(30)->withHeaders(['API_KEY' => env('API_KEY_TOKEN_FOR_TICKET')]);
             if (isset($data['file'])) {
                 $file = $data['file'];
                 unset($data['file']);
@@ -197,13 +194,12 @@ class TicketController extends Controller
             return response()->json(['error' => 'Request timed out or failed', 'message' => $e->getMessage()], 500);
         }
     }
-
     private function getMessages($data)
     {
         $ticket_id = ['ticket_id' => $data];
 
         try {
-            $response = Http::timeout(30)->post(env('API_BASE_URL') . 'get-messages', $ticket_id);
+            $response = Http::timeout(30)->withHeaders(['API_KEY' => env('API_KEY_TOKEN_FOR_TICKET')])->post(env('API_BASE_URL') . 'get-messages', $ticket_id);
             if ($response->successful()) {
                 return $response->json();
             } else {
@@ -214,12 +210,10 @@ class TicketController extends Controller
             return response()->json(['error' => 'Request-timed-out-or-failed', 'message' => $e->getMessage()], 500);
         }
     }
-
-
     private function chatInTickets($data)
     {
         try {
-            $httpRequest = Http::timeout(30);
+            $httpRequest = Http::timeout(30)->withHeaders(['API_KEY' => env('API_KEY_TOKEN_FOR_TICKET')]);
             if (isset($data['file'])) {
                 $file = $data['file'];
                 unset($data['file']);
@@ -240,12 +234,11 @@ class TicketController extends Controller
         }
 
     }
-
     private function getUsers($data)
     {
 
         try {
-            $response = Http::timeout(30)->post(env('API_BASE_URL') . 'get-users', $data);
+            $response = Http::timeout(30)->withHeaders(['API_KEY' => env('API_KEY_TOKEN_FOR_TICKET')])->post(env('API_BASE_URL') . 'get-users', $data);
             if ($response->successful()) {
                 return $response->json();
             } else {
@@ -255,14 +248,12 @@ class TicketController extends Controller
             return response()->json(['error' => 'Request timed out or failed', 'message' => $e->getMessage()], 500);
         }
     }
-
-
     private function deleteTicket($data)
     {
         $ticket_id = ['ticket_id' => $data];
 
         try {
-            $response = Http::timeout(30)->post(env('API_BASE_URL') . 'delete-ticket', $ticket_id);
+            $response = Http::timeout(30)->withHeaders(['API_KEY' => env('API_KEY_TOKEN_FOR_TICKET')])->post(env('API_BASE_URL') . 'delete-ticket', $ticket_id);
             if ($response->successful()) {
                 return $response->json();
             } else {
@@ -273,12 +264,11 @@ class TicketController extends Controller
             return response()->json(['error' => 'Request-timed-out-or-failed', 'message' => $e->getMessage()], 500);
         }
     }
-
     private function changeTicketStatus($data)
     {
-        $data = ['ticket_id' => $data, 'user_id' => auth()->id()];
+        $data = ['ticket_id' => $data, 'user_id' => auth()->id(), 'company' => env('COMPANY_NAME')];
         try {
-            $response = Http::timeout(30)->post(env('API_BASE_URL') . 'change-status-ticket', $data);
+            $response = Http::timeout(30)->withHeaders(['API_KEY' => env('API_KEY_TOKEN_FOR_TICKET')])->post(env('API_BASE_URL') . 'change-status-ticket', $data);
             if ($response->successful()) {
                 return $response->json();
             } else {

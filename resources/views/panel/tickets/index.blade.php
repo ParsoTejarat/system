@@ -51,7 +51,7 @@
                                             <td>{{ ++$key }}</td>
                                             <td>{{ $ticket['sender_name'] }}</td>
                                             <td>{{ $ticket['receiver_name'] }}</td>
-                                            <td>{{ getCompany($ticket['company']) }}</td>
+                                            <td>{{ getCompany($ticket["company_sender"]) }}</td>
                                             <td>{{ $ticket['title']}}</td>
                                             <td>{{ $ticket['code'] }}</td>
                                             <td>
