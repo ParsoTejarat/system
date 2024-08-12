@@ -48,7 +48,7 @@
 
                                             @else
                                                 {{ $ticket['sender']['name'].' '.$ticket['sender']['family']}}
-{{--                                                @dd("test")--}}
+                                                {{--                                                @dd("test")--}}
                                             @endif
                                         </a>
                                     </h5>
@@ -91,7 +91,7 @@
                                     @php
                                         $file = json_decode($message['file']);
                                     @endphp
-{{--                                    @dd(auth()->id(),$message['user']['company_user_id'])--}}
+                                    {{--                                    @dd(auth()->id(),$message['user']['company_user_id'])--}}
                                     @if(auth()->id() == $message['user']['company_user_id'])
                                         <li class="clearfix" @if($loop->last) id="last_message" @endif>
                                             <div class="chat-avatar">
@@ -112,32 +112,42 @@
                                         </li>
                                         {{--                                    @dd($file)--}}
                                         @if($file)
+
                                             <li class="clearfix">
+
                                                 <div class="card mt-2 mb-1 shadow-none border text-start">
+
                                                     <div class="p-2">
-                                                        <div class="row align-items-center">
-                                                            <div class="col-auto">
-                                                                <div class="avatar-sm">
+                                                        <a href="{{ env('API_PATH_URL').$file->path }}"
+                                                           download="{{env('API_PATH_URL'). $file->path }}"
+                                                           target="_blank">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-auto">
+                                                                    <div class="avatar-sm">
                                                                     <span
-                                                                        class="avatar-title bg-primary rounded">{{ $file->type }}</span>
+                                                                            class="avatar-title bg-primary rounded">{{ $file->type }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col ps-0" dir="ltr">
+                                                                    <a href="javascript:void(0);"
+                                                                       class="text-muted fw-medium">{{ $file->name }}</a>
+                                                                    <p class="mb-0">{{ formatBytes($file->size) }}</p>
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <a href="{{ env('API_PATH_URL').$file->path }}"
+                                                                       download="{{env('API_PATH_URL'). $file->path }}"
+                                                                       class="btn btn-link btn-lg text-muted">
+                                                                        <i class="ri-download-fill"></i>
+                                                                    </a>
                                                                 </div>
                                                             </div>
-                                                            <div class="col ps-0" dir="ltr">
-                                                                <a href="javascript:void(0);"
-                                                                   class="text-muted fw-medium">{{ $file->name }}</a>
-                                                                <p class="mb-0">{{ formatBytes($file->size) }}</p>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <a href="{{ env('API_PATH_URL').$file->path }}"
-                                                                   download="{{env('API_PATH_URL'). $file->path }}"
-                                                                   class="btn btn-link btn-lg text-muted">
-                                                                    <i class="ri-download-fill"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
+                                                        </a>
                                                     </div>
+
                                                 </div>
+
                                             </li>
+
                                         @endif
                                     @else
                                         <li class="clearfix odd" @if($loop->last) id="last_message" @endif>
@@ -159,7 +169,7 @@
                                                             <div class="col-auto">
                                                                 <div class="avatar-sm">
                                                                     <span
-                                                                        class="avatar-title bg-primary rounded">{{ $file['type'] }}</span>
+                                                                            class="avatar-title bg-primary rounded">{{ $file['type'] }}</span>
                                                                 </div>
                                                             </div>
                                                             <div class="col ps-0" dir="ltr">
