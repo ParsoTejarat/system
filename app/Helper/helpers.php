@@ -68,7 +68,7 @@ if (!function_exists('upload_file_factor')) {
     function upload_file_factor($file, $folder)
     {
         if ($file) {
-            try{
+
                 $pdfFile = $file;
                 $inputPdfPath = $pdfFile->getPathName();
 
@@ -119,11 +119,7 @@ if (!function_exists('upload_file_factor')) {
 
                 return $img;
 
-            } catch (\Exception $e) {
 
-                alert()->message('خطا در آپلود فایل','اخطار');
-                return back();
-            }
         }
     }
 }
