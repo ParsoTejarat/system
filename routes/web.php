@@ -38,6 +38,7 @@ use App\Models\Invoice;
 use App\Models\Packet;
 use App\Models\User;
 use App\Notifications\SendMessage;
+use Carbon\Carbon;
 use Google\Auth\Credentials\ServiceAccountCredentials;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
@@ -46,8 +47,8 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Mpdf\Mpdf;
 use PDF as PDF;
-
 
 
 //use App\Http\Controllers\Panel\ArtinController;
@@ -61,7 +62,6 @@ use PDF as PDF;
 //use App\Http\Controllers\Panel\ExitDoorController;
 //use App\Http\Controllers\Panel\FactorController;
 //use App\Http\Controllers\Panel\ChatController;
-
 
 
 /*
@@ -128,7 +128,7 @@ Route::middleware('auth')->prefix('/panel')->group(function () {
     Route::resource('roles', RoleController::class)->except('show');
 
     // Categories
-    Route::resource('categories',CategoryController::class)->except('show');
+    Route::resource('categories', CategoryController::class)->except('show');
 
     // Products
     Route::resource('products', ProductController::class)->except('show');
@@ -279,3 +279,69 @@ Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);
 Route::fallback(function () {
     abort(404);
 });
+
+
+Route::get('upload-pdf-for', function () {
+    return view('test.upload-pdf');
+});
+
+Route::post('process-pdf', function (Request $request) {
+
+    try{
+    $pdfFile = $request->file('pdf');
+    $inputPdfPath = $pdfFile->getPathName();
+
+    $outputPdfTempPath = storage_path('app/public/temp-processed-pdf.pdf');
+
+    $imagePath = public_path('assets/images/parso_mohr_emza.png');
+
+    $mpdf = new Mpdf();
+    $pageCount = $mpdf->SetSourceFile($inputPdfPath);
+
+    list($imgWidth, $imgHeight) = getimagesize($imagePath);
+
+    $imgWidthMm = $imgWidth * 0.264583;
+    $imgHeightMm = $imgHeight * 0.264583;
+
+    $x = 280 - $imgWidthMm;
+    $y = 180 - $imgHeightMm;
+
+// پردازش صفحات PDF
+    for ($i = 1; $i <= $pageCount; $i++) {
+        $templateId = $mpdf->ImportPage($i);
+        $mpdf->AddPage('L');
+        $mpdf->UseTemplate($templateId);
+
+
+        if ($i == $pageCount) {
+            $mpdf->Image($imagePath, $x, $y, $imgWidthMm, $imgHeightMm);
+        }
+    }
+
+
+    $mpdf->Output($outputPdfTempPath, 'F');
+
+
+    $folder = 'pdfs';
+    $year = Carbon::now()->year;
+    $month = Carbon::now()->month;
+    $uploadPath = public_path("/uploads/{$folder}/{$year}/{$month}/");
+
+
+    if (!file_exists($uploadPath)) {
+        mkdir($uploadPath, 0777, true);
+    }
+
+    $filename = time() . '-processed.pdf';
+    $finalPath = $uploadPath . $filename;
+    rename($outputPdfTempPath, $finalPath);
+
+    $img = "/uploads/{$folder}/{$year}/{$month}/" . $filename;
+
+    return url($img);
+
+    } catch (\Exception $e) {
+
+        return "خطا";
+    }
+})->name('processPdf');

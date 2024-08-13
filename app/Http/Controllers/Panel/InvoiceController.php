@@ -35,6 +35,7 @@ class InvoiceController extends Controller
 
         if (auth()->user()->isAdmin() || auth()->user()->isWareHouseKeeper() || auth()->user()->isAccountant() || auth()->user()->isCEO() || auth()->user()->isSalesManager()) {
             $invoices = Invoice::latest()->paginate(30);
+//            dd('test');
         } else {
             $invoices = Invoice::where('user_id', auth()->id())->latest()->paginate(30);
         }
@@ -46,7 +47,7 @@ class InvoiceController extends Controller
 
         $customers = Customer::all(['id', 'name']);
 
-        return view('panel.invoices.index', compact('invoices', 'customers', 'roles_id'));
+        return view('panel.invoices.index', compact(['invoices', 'customers', 'roles_id']));
     }
 
     public function create()
@@ -480,7 +481,8 @@ class InvoiceController extends Controller
         } elseif ($request->has('send_to_warehouse')) {
             $request->validate(['factor_file' => 'required|mimes:pdf|max:5000']);
 
-            $file = upload_file($request->factor_file, 'Action/Factors');
+            $file = upload_file_factor($request->factor_file, 'Action/Factors');
+
             $invoice->action()->updateOrCreate([
                 'invoice_id' => $invoice->id
             ], [
@@ -508,7 +510,7 @@ class InvoiceController extends Controller
             if ($status == 'invoice') {
                 $request->validate(['invoice_file' => 'required|mimes:pdf|max:5000']);
 
-                $file = upload_file($request->invoice_file, 'Action/Invoices');
+                $file = upload_file_factor($request->invoice_file, 'Action/Invoices');
                 $invoice->action()->updateOrCreate([
                     'invoice_id' => $invoice->id
                 ], [
@@ -533,7 +535,7 @@ class InvoiceController extends Controller
             } else {
                 $request->validate(['factor_file' => 'required|mimes:pdf|max:5000']);
 
-                $file = upload_file($request->factor_file, 'Action/Factors');
+                $file = upload_file_factor($request->factor_file, 'Action/Factors');
                 $invoice->action()->updateOrCreate([
                     'invoice_id' => $invoice->id
                 ], [

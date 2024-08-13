@@ -176,6 +176,7 @@
                                                 </a>
                                             </td>
                                             @can('warehouse-keeper')
+
                                                 <td>
                                                     <a href="{{ $invoice->action ? $invoice->action->factor_file ?? '#' : '#' }}"
                                                        class="btn btn-primary btn-floating {{ $invoice->action ? $invoice->action->factor_file ? '' : 'disabled' : 'disabled' }}"

@@ -137,7 +137,7 @@
                     CKEDITOR.basePath + 'contents.css',
                     `{{asset("/assets/ckeditor-fonts/font.css")}}`,
                 ],
-
+                extraPlugins: 'lineheight',
                 toolbar: [
                     {
                         name: 'clipboard',
@@ -160,8 +160,8 @@
                     {name: 'colors', items: ['TextColor']},
                     {name: 'tools', items: ['Maximize', 'ShowBlocks']}
                 ],
-
             });
+
 
 
 
@@ -170,7 +170,6 @@
             $(document).on('change', '.cke_combo__font', function () {
                 $innerHtml = $("#cke_16_text").text();
             });
-
 
             function toggleExportButton() {
                 const text = CKEDITOR.instances.text.getData().trim();

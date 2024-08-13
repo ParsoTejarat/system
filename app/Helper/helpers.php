@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
+use Mpdf\Mpdf;
 use PDF as PDF;
 
 if (!function_exists('active_sidebar')) {
@@ -47,6 +48,86 @@ if (!function_exists('upload_file')) {
         }
     }
 }
+
+
+if (!function_exists('upload_file')) {
+    function upload_file($file, $folder)
+    {
+        if ($file) {
+            $filename = time() . $file->getClientOriginalName();
+            $year = Carbon::now()->year;
+            $month = Carbon::now()->month;
+            $path = public_path("/uploads/{$folder}/{$year}/{$month}/");
+            $file->move($path, $filename);
+            $img = "/uploads/{$folder}/{$year}/{$month}/" . $filename;
+            return $img;
+        }
+    }
+}
+if (!function_exists('upload_file_factor')) {
+    function upload_file_factor($file, $folder)
+    {
+        if ($file) {
+            try{
+                $pdfFile = $file;
+                $inputPdfPath = $pdfFile->getPathName();
+
+                $outputPdfTempPath = storage_path('app/public/temp-processed-pdf.pdf');
+
+                $imagePath = public_path('assets/images/parso_mohr_emza.png');
+
+                $mpdf = new Mpdf();
+                $pageCount = $mpdf->SetSourceFile($inputPdfPath);
+
+                list($imgWidth, $imgHeight) = getimagesize($imagePath);
+
+                $imgWidthMm = $imgWidth * 0.264583;
+                $imgHeightMm = $imgHeight * 0.264583;
+
+                $x = 280 - $imgWidthMm;
+                $y = 180 - $imgHeightMm;
+
+
+                for ($i = 1; $i <= $pageCount; $i++) {
+                    $templateId = $mpdf->ImportPage($i);
+                    $mpdf->AddPage('L');
+                    $mpdf->UseTemplate($templateId);
+
+
+                    if ($i == $pageCount) {
+                        $mpdf->Image($imagePath, $x, $y, $imgWidthMm, $imgHeightMm);
+                    }
+                }
+
+
+                $mpdf->Output($outputPdfTempPath, 'F');
+
+                $year = Carbon::now()->year;
+                $month = Carbon::now()->month;
+                $uploadPath = public_path("/uploads/{$folder}/{$year}/{$month}/");
+
+
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0777, true);
+                }
+
+                $filename = time() . '-processed.pdf';
+                $finalPath = $uploadPath . $filename;
+                rename($outputPdfTempPath, $finalPath);
+
+                $img = "/uploads/{$folder}/{$year}/{$month}/" . $filename;
+
+                return $img;
+
+            } catch (\Exception $e) {
+
+                alert()->message('خطا در آپلود فایل','اخطار');
+                return back();
+            }
+        }
+    }
+}
+
 
 if (!function_exists('formatBytes')) {
     function formatBytes($bytes, $precision = 2)
