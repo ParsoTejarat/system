@@ -71,8 +71,11 @@ if (!function_exists('upload_file_factor')) {
             try {
                 $pdfFile = $file;
                 $inputPdfPath = $pdfFile->getPathName();
+
                 $outputPdfTempPath = storage_path('app/public/temp-processed-pdf.pdf');
+
                 $imagePath = public_path('assets/images/parso_mohr_emza.png');
+
                 $mpdf = new \Mpdf\Mpdf([
                     'tempDir' => storage_path('app/mpdf-temp')
                 ]);
@@ -87,18 +90,15 @@ if (!function_exists('upload_file_factor')) {
                 $x = 280 - $imgWidthMm;
                 $y = 180 - $imgHeightMm;
 
-
                 for ($i = 1; $i <= $pageCount; $i++) {
                     $templateId = $mpdf->ImportPage($i);
                     $mpdf->AddPage('L');
                     $mpdf->UseTemplate($templateId);
 
-
                     if ($i == $pageCount) {
                         $mpdf->Image($imagePath, $x, $y, $imgWidthMm, $imgHeightMm);
                     }
                 }
-
 
                 $mpdf->Output($outputPdfTempPath, 'F');
 
