@@ -68,15 +68,15 @@ if (!function_exists('upload_file_factor')) {
     function upload_file_factor($file, $folder)
     {
         if ($file) {
-
+            try {
                 $pdfFile = $file;
                 $inputPdfPath = $pdfFile->getPathName();
-
                 $outputPdfTempPath = storage_path('app/public/temp-processed-pdf.pdf');
-
                 $imagePath = public_path('assets/images/parso_mohr_emza.png');
+                $mpdf = new \Mpdf\Mpdf([
+                    'tempDir' => storage_path('app/mpdf-temp')
+                ]);
 
-                $mpdf = new Mpdf();
                 $pageCount = $mpdf->SetSourceFile($inputPdfPath);
 
                 list($imgWidth, $imgHeight) = getimagesize($imagePath);
@@ -106,7 +106,6 @@ if (!function_exists('upload_file_factor')) {
                 $month = Carbon::now()->month;
                 $uploadPath = public_path("/uploads/{$folder}/{$year}/{$month}/");
 
-
                 if (!file_exists($uploadPath)) {
                     mkdir($uploadPath, 0777, true);
                 }
@@ -118,6 +117,10 @@ if (!function_exists('upload_file_factor')) {
                 $img = "/uploads/{$folder}/{$year}/{$month}/" . $filename;
 
                 return $img;
+            } catch (Exception $e) {
+                alert()->warning('خطا در آپلود فایل', 'خطا');
+                return redirect()->to(route('invoices.index'));
+            }
 
 
         }
