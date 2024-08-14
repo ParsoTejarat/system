@@ -12,7 +12,9 @@ class Product extends Model
     protected $guarded = [];
 
     const COLORS = [
-        'black' => 'مشکی'
+        'black' => 'مشکی',
+        'white' => 'سفید',
+        'gray' => 'طوسی',
     ];
 
     const UNITS = [
@@ -58,13 +60,13 @@ class Product extends Model
 
     public function getPrice()
     {
-        if (auth()->user()->hasPermission('system-user')){
+        if (auth()->user()->hasPermission('system-user')) {
             return $this->system_price;
-        }elseif (auth()->user()->hasPermission('partner-other-user')){
+        } elseif (auth()->user()->hasPermission('partner-other-user')) {
             return $this->partner_price_other;
-        }elseif (auth()->user()->hasPermission('partner-tehran-user')){
+        } elseif (auth()->user()->hasPermission('partner-tehran-user')) {
             return $this->partner_price_tehran;
-        }else{
+        } else {
             return $this->single_price;
         }
     }

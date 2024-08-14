@@ -140,7 +140,8 @@
                                             <td>{{ ++$key }}</td>
                                             <td>{{ $item->title }}</td>
                                             <td>{{ $item->code }}</td>
-                                            <td>{{ $item->category->name ?? '-'}}</td>
+                                            <td>{{ $item->category->name ?? '-
+'}}</td>
                                             <td>{{ number_format($item->initial_count) }}</td>
                                             <td>{{ number_format($item->current_count) }}</td>
                                             <td>{{ number_format($item->getInputCount()) }}</td>
