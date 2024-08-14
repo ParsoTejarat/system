@@ -26,7 +26,7 @@ class UpdateInventoryRequest extends FormRequest
         return [
             'title' => 'required',
             'code' => 'required|numeric',
-            'type' => 'required',
+            'category_id' => 'required',
             'count' => 'required',
         ];
     }

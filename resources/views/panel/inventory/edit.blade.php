@@ -37,9 +37,9 @@
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="type">نوع <span class="text-danger">*</span></label>
-                                        <select class="form-control" name="type" id="type" data-toggle="select2">
+                                        <select class="form-control" name="category_id" id="category_id" data-toggle="select2">
                                             @foreach(\App\Models\Category::all() as $category)
-                                                <option value="{{ $category->slug }}" {{ $inventory->type == $category->slug ? 'selected' : '' }}>{{ $category->name }}</option>
+                                                <option value="{{ $category->id }}" {{ $inventory->category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('type')

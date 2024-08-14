@@ -21,7 +21,7 @@ class InventoryController extends Controller
         $warehouse_id = \request()->warehouse_id;
 
         $data = Inventory::where('warehouse_id',$warehouse_id)->latest()->paginate(30);
-        return view('panel.inventory.index', compact('data', 'warehouse_id'));
+        return view('panel.inventory.index', compact(['data', 'warehouse_id']));
     }
 
     public function create()
@@ -47,7 +47,7 @@ class InventoryController extends Controller
             'warehouse_id' => $warehouse_id,
             'title' => $request->title,
             'code' => $request->code,
-            'type' => $request->type,
+            'category_id' => $request->category_id,
             'initial_count' => $request->count,
             'current_count' => $request->count,
         ]);
@@ -91,7 +91,7 @@ class InventoryController extends Controller
             'warehouse_id' => $warehouse_id,
             'title' => $request->title,
             'code' => $request->code,
-            'type' => $request->type,
+            'category_id' => $request->category_id,
             'initial_count' => $request->count,
             'current_count' => ($inventory->current_count - $inventory->initial_count) + $request->count,
         ]);
