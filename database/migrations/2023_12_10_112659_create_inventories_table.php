@@ -18,12 +18,14 @@ class CreateInventoriesTable extends Migration
             $table->unsignedBigInteger('warehouse_id');
             $table->string('title');
             $table->string('code')->nullable();
-            $table->string('type');
+            $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('initial_count');
             $table->bigInteger('current_count');
             $table->timestamps();
-
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->foreign('warehouse_id')->references('id')->on('warehouses');
+
+
         });
     }
 

@@ -13,6 +13,7 @@
         "ext-pdo": "*",
         "beyondcode/laravel-websockets": "^1.14",
         "carlos-meneses/laravel-mpdf": "^2.1",
+        "doctrine/dbal": "^4.0",
         "fruitcake/laravel-cors": "^2.0",
         "google/auth": "^1.40",
         "guzzlehttp/guzzle": "^7.0.1",
