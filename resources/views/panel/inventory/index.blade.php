@@ -100,11 +100,11 @@
                                            value="{{ request()->title ?? null }}" form="search_form">
                                 </div>
                                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                                    <select name="type" form="search_form" class="form-control"
+                                    <select name="category_id" form="search_form" class="form-control"
                                             data-toggle="select2">
                                         <option value="all">نوع (همه)</option>
                                         @foreach(\App\Models\Category::all() as $category)
-                                            <option value="{{ $category->slug }}" {{ request()->type == $category->slug ? 'selected' : '' }}>{{ $category->name }}</option>
+                                            <option value="{{ $category->id }}" {{ request()->id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -140,8 +140,7 @@
                                             <td>{{ ++$key }}</td>
                                             <td>{{ $item->title }}</td>
                                             <td>{{ $item->code }}</td>
-                                            <td>{{ $item->category->name ?? '-
-'}}</td>
+                                            <td>{{ $item->category->name ?? '-'}}</td>
                                             <td>{{ number_format($item->initial_count) }}</td>
                                             <td>{{ number_format($item->current_count) }}</td>
                                             <td>{{ number_format($item->getInputCount()) }}</td>
