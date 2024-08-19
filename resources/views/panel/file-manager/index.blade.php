@@ -66,7 +66,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
                 </div>
                 <div class="modal-body text-center text-danger">
-                    <input type="text" name="folder_name" id="folder_name" class="form-control" placeholder="نام پوشه جدید">
+                    <input type="text" name="folder_name" id="folder_name" class="form-control"
+                           placeholder="نام پوشه جدید">
                     <span class="text-center text-danger" id="error_message"></span>
                 </div>
                 <div class="modal-footer">
@@ -127,9 +128,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
                 </div>
                 <div class="modal-body text-center text-danger">
-{{--                    <input type="text" name="file_name" id="file_name" class="form-control" placeholder="عنوان جدید">--}}
-{{--                    <input type="hidden" name="file_type" id="file_type">--}}
-{{--                    <span class="text-center text-danger" id="file_edit_error"></span>--}}
+                    {{--                    <input type="text" name="file_name" id="file_name" class="form-control" placeholder="عنوان جدید">--}}
+                    {{--                    <input type="hidden" name="file_type" id="file_type">--}}
+                    {{--                    <span class="text-center text-danger" id="file_edit_error"></span>--}}
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btn_move">انتقال</button>
@@ -156,28 +157,42 @@
                     <div class="card">
                         <div class="card-body">
                             @php $moving = session()->get('moving') @endphp
-                            <div class="btn btn-primary waves-effect waves-light default_sec {{ $moving ? 'd-none' : '' }} mb-3" data-bs-toggle="modal" data-bs-target="#CreateFolderModal">
+                            <div
+                                class="btn btn-primary waves-effect waves-light default_sec {{ $moving ? 'd-none' : '' }} mb-3"
+                                data-bs-toggle="modal" data-bs-target="#CreateFolderModal">
                                 <span><i class="mdi mdi-folder-plus me-1"></i> ایجاد پوشه</span>
                             </div>
                             <label for="new_files">
-                                <div class="btn btn-primary waves-effect waves-light default_sec {{ $moving ? 'd-none' : '' }} mb-3" id="btn_upload">
+                                <div
+                                    class="btn btn-primary waves-effect waves-light default_sec {{ $moving ? 'd-none' : '' }} mb-3"
+                                    id="btn_upload">
                                     <span><i class="mdi mdi-cloud-upload me-1"></i> بارگذاری فایل</span>
                                     <input type="file" name="new_files[]" style="display: none" id="new_files" multiple>
                                 </div>
                             </label>
-                            <div class="btn btn-primary waves-effect waves-light default_sec {{ $moving ? 'd-none' : '' }} disabled mb-3" id="btn_move_show">
+                            <div
+                                class="btn btn-primary waves-effect waves-light default_sec {{ $moving ? 'd-none' : '' }} disabled mb-3"
+                                id="btn_move_show">
                                 <span><i class="mdi mdi-cursor-move me-1" style="pointer-events: none"></i>انتقال</span>
                             </div>
-                            <div class="btn btn-primary waves-effect waves-light {{ $moving ? '' : 'd-none' }} moving_sec mb-3" id="btn_move">
+                            <div
+                                class="btn btn-primary waves-effect waves-light {{ $moving ? '' : 'd-none' }} moving_sec mb-3"
+                                id="btn_move">
                                 <span><i class="mdi mdi-cursor-move me-1"></i>انتقال به اینجا</span>
                             </div>
-                            <div class="btn btn-danger waves-effect waves-light {{ $moving ? '' : 'd-none' }} moving_sec mb-3" id="btn_cancel_move">
+                            <div
+                                class="btn btn-danger waves-effect waves-light {{ $moving ? '' : 'd-none' }} moving_sec mb-3"
+                                id="btn_cancel_move">
                                 <span><i class="mdi mdi-cursor-move me-1"></i>لغو انتقال</span>
                             </div>
-                            <div class="btn btn-primary waves-effect waves-light default_sec {{ $moving ? 'd-none' : '' }} disabled mb-3" id="btn_edit_show">
+                            <div
+                                class="btn btn-primary waves-effect waves-light default_sec {{ $moving ? 'd-none' : '' }} disabled mb-3"
+                                id="btn_edit_show">
                                 <span><i class="mdi mdi-pencil me-1"></i> ویرایش عنوان</span>
                             </div>
-                            <div class="btn btn-primary waves-effect waves-light default_sec {{ $moving ? 'd-none' : '' }} disabled mb-3" data-bs-toggle="modal" data-bs-target="#DeleteModal" id="btn_delete_show">
+                            <div
+                                class="btn btn-primary waves-effect waves-light default_sec {{ $moving ? 'd-none' : '' }} disabled mb-3"
+                                data-bs-toggle="modal" data-bs-target="#DeleteModal" id="btn_delete_show">
                                 <span><i class="mdi mdi-delete me-1"></i> حذف</span>
                             </div>
                             <div class="table-responsive">
@@ -201,9 +216,12 @@
                                             <td></td>
                                             <td style="text-align: right">
                                                 @php $sub_folder = \App\Models\File::whereId($sub_folder_id)->first() @endphp
-                                                <img src="/assets/images/file-icons/folder.svg" height="30" alt="icon" class="me-2">
-                                                <a href="{{ $sub_folder->parent_id ? url()->current().'?sub_folder_id='.$sub_folder->parent_id : url()->current() }}" class="text-dark">
-                                                    <i class="mdi mdi-subdirectory-arrow-right" style="font-size: large" title="برگشت"></i>
+                                                <img src="/assets/images/file-icons/folder.svg" height="30" alt="icon"
+                                                     class="me-2">
+                                                <a href="{{ $sub_folder->parent_id ? url()->current().'?sub_folder_id='.$sub_folder->parent_id : url()->current() }}"
+                                                   class="text-dark">
+                                                    <i class="mdi mdi-subdirectory-arrow-right" style="font-size: large"
+                                                       title="برگشت"></i>
                                                 </a>
                                             </td>
                                             <td>--</td>
@@ -212,40 +230,52 @@
                                         </tr>
                                     @endif
                                     @foreach($files as $key => $file)
-                                            @if($file->is_folder)
-                                                <tr data-is_folder="true">
-                                                    <td>
-                                                        <div class="form-check form-checkbox-primary first_td">
-                                                            {{ ++$key }}
-                                                            <input type="checkbox" name="files[]" class="form-check-input checkFile" value="{{ $file->id }}">
-                                                        </div>
-                                                    </td>
-                                                    <td style="text-align: right">
-                                                        <img src="/assets/images/file-icons/folder.svg" height="30" alt="icon" class="me-2">
-                                                        <a href="{{ route('file-manager.index', ['sub_folder_id' => $file->id]) }}" class="text-dark">{{ $file->name }}</a>
-                                                    </td>
-                                                    <td>--</td>
-                                                    <td>--</td>
-                                                    <td class="font-13" dir="ltr">{{ verta($file->updated_at)->format('Y/m/d - H:i') }}</td>
-                                                </tr>
-                                            @else
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-check form-checkbox-primary first_td">
-                                                            {{ ++$key }}
-                                                            <input type="checkbox" name="files[]" class="form-check-input checkFile" value="{{ $file->id }}">
-                                                        </div>
-                                                    </td>
-                                                    <td style="text-align: right">
-                                                        <img src="/assets/images/file-icons/{{ $file->type }}.svg" height="30" alt="icon" class="me-2">
-                                                        <a href="{{ asset($file->path) }}" class="text-dark" target="_blank">{{ $file->name }}</a>
-                                                    </td>
-                                                    <td>{{ strtoupper($file->type) }}</td>
-                                                    <td dir="ltr">{{ formatBytes($file->size) }}</td>
-                                                    <td class="font-13" dir="ltr">{{ verta($file->updated_at)->format('Y/m/d - H:i') }}</td>
-                                                </tr>
-                                            @endif
-                                        @endforeach
+                                        @if($file->is_folder)
+                                            <tr data-is_folder="true">
+                                                <td>
+                                                    <div class="form-check form-checkbox-primary first_td">
+                                                        {{ ++$key }}
+                                                        <input type="checkbox" name="files[]"
+                                                               class="form-check-input checkFile"
+                                                               value="{{ $file->id }}">
+                                                    </div>
+                                                </td>
+                                                <td style="text-align: right">
+                                                    <a href="{{ route('file-manager.index', ['sub_folder_id' => $file->id]) }}"
+                                                       class="text-dark">
+                                                        <img src="/assets/images/file-icons/folder.svg" height="30"
+                                                             alt="icon" class="me-2">
+                                                        {{ $file->name }}</a>
+                                                </td>
+                                                <td>--</td>
+                                                <td>--</td>
+                                                <td class="font-13"
+                                                    dir="ltr">{{ verta($file->updated_at)->format('Y/m/d - H:i') }}</td>
+                                            </tr>
+                                        @else
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check form-checkbox-primary first_td">
+                                                        {{ ++$key }}
+                                                        <input type="checkbox" name="files[]"
+                                                               class="form-check-input checkFile"
+                                                               value="{{ $file->id }}">
+                                                    </div>
+                                                </td>
+                                                <td style="text-align: right">
+                                                    <a href="{{ asset($file->path) }}" class="text-dark"
+                                                       target="_blank">
+                                                        <img src="/assets/images/file-icons/{{ $file->type }}.svg"
+                                                             height="30" alt="icon" class="me-2">
+                                                        {{ $file->name }}</a>
+                                                </td>
+                                                <td>{{ strtoupper($file->type) }}</td>
+                                                <td dir="ltr">{{ formatBytes($file->size) }}</td>
+                                                <td class="font-13"
+                                                    dir="ltr">{{ verta($file->updated_at)->format('Y/m/d - H:i') }}</td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -261,7 +291,7 @@
         var sub_folder_id = "{{ $sub_folder_id }}";
 
         $(document).ready(function () {
-            $(document).on('change','#checkAll', function () {
+            $(document).on('change', '#checkAll', function () {
                 $('.checkFile').prop('checked', this.checked);
                 toggleDeleteBtn();
                 toggleEditBtn();
@@ -272,7 +302,7 @@
             var duplicated_files_names = [];
             var moving = "{{ session()->get('moving') }}";
 
-            $(document).on('change','#new_files', function () {
+            $(document).on('change', '#new_files', function () {
                 var files = this.files;
                 let error = false;
                 let message;
@@ -319,10 +349,10 @@
                         $('#UploadingModal').modal('show');
 
                         $.ajax({
-                            xhr: function() {
+                            xhr: function () {
                                 var xhr = new window.XMLHttpRequest();
 
-                                xhr.upload.addEventListener("progress", function(evt) {
+                                xhr.upload.addEventListener("progress", function (evt) {
                                     if (evt.lengthComputable) {
                                         var percentComplete = evt.loaded / evt.total;
                                         percentComplete = parseInt(percentComplete * 100);
@@ -346,11 +376,11 @@
                             data: fileData,
                             contentType: false, // Not to set any content header
                             processData: false, // Not to process data
-                            success: function(res) {
+                            success: function (res) {
                                 // console.log(res);
-                                if (sub_folder_id){
+                                if (sub_folder_id) {
                                     window.location.replace(`{{ url()->current() }}?sub_folder_id=${sub_folder_id}`)
-                                }else {
+                                } else {
                                     window.location.replace(`{{ url()->current() }}`)
                                 }
                             }
@@ -360,7 +390,7 @@
 
             })
 
-            $(document).on('click','.btn_action', function () {
+            $(document).on('click', '.btn_action', function () {
                 $('#WarningModal').modal('hide');
                 $('.modal-backdrop').remove();
                 $('#UploadingModal').modal('show');
@@ -372,9 +402,9 @@
                 fileData.append('sub_folder_id', sub_folder_id);
 
                 $.ajax({
-                    xhr: function() {
+                    xhr: function () {
                         var xhr = new window.XMLHttpRequest();
-                        xhr.upload.addEventListener("progress", function(evt) {
+                        xhr.upload.addEventListener("progress", function (evt) {
                             if (evt.lengthComputable) {
                                 var percentComplete = evt.loaded / evt.total;
                                 percentComplete = parseInt(percentComplete * 100);
@@ -398,21 +428,21 @@
                     data: fileData,
                     contentType: false, // Not to set any content header
                     processData: false, // Not to process data
-                    success: function(res) {
+                    success: function (res) {
                         duplicated_files_names = [];
-                        if (sub_folder_id){
+                        if (sub_folder_id) {
                             window.location.replace(`{{ url()->current() }}?sub_folder_id=${sub_folder_id}`)
-                        }else {
+                        } else {
                             window.location.replace(`{{ url()->current() }}`)
                         }
                     }
                 });
             })
 
-            $(document).on('click','#btn_create_folder', function () {
-                $(this).attr('disabled','disabled').text('درحال ایجاد...');
+            $(document).on('click', '#btn_create_folder', function () {
+                $(this).attr('disabled', 'disabled').text('درحال ایجاد...');
 
-                if ($('#folder_name').val().trim() === ''){
+                if ($('#folder_name').val().trim() === '') {
                     $('#error_message').text('فیلد نام پوشه الزامی است');
                     return false;
                 }
@@ -426,7 +456,7 @@
                         sub_folder_id,
                         folder_name
                     },
-                    success: function(res) {
+                    success: function (res) {
                         if (res.error) {
                             $('#error_message').text(res.message);
                         } else {
@@ -439,8 +469,8 @@
                 });
             })
 
-            $(document).on('click','#btn_delete', function () {
-                let checked_files = $('input[name="files[]"]:checked').map(function() {
+            $(document).on('click', '#btn_delete', function () {
+                let checked_files = $('input[name="files[]"]:checked').map(function () {
                     return $(this).val();
                 }).get();
 
@@ -450,7 +480,7 @@
                     data: {
                         checked_files
                     },
-                    success: function(res) {
+                    success: function (res) {
                         $('.card-body').html($(res).find('.card-body').html());
                         $('#DeleteModal').modal('hide');
                         $('.modal-backdrop').remove();
@@ -458,8 +488,8 @@
                 });
             })
 
-            $(document).on('click','#btn_edit_show', function () {
-                let file_id = $('input[name="files[]"]:checked').map(function() {
+            $(document).on('click', '#btn_edit_show', function () {
+                let file_id = $('input[name="files[]"]:checked').map(function () {
                     return $(this).val();
                 }).first()[0];
 
@@ -469,7 +499,7 @@
                     data: {
                         file_id
                     },
-                    success: function(res) {
+                    success: function (res) {
                         $('#EditNameModal').modal('show');
                         $('#EditNameModal .modal-body #file_name').val(res.name)
                         $('#EditNameModal .modal-body #file_type').val(res.type)
@@ -477,8 +507,8 @@
                 });
             })
 
-            $(document).on('click','#btn_edit_name', function () {
-                let file_id = $('input[name="files[]"]:checked').map(function() {
+            $(document).on('click', '#btn_edit_name', function () {
+                let file_id = $('input[name="files[]"]:checked').map(function () {
                     return $(this).val();
                 }).first()[0];
 
@@ -498,13 +528,13 @@
                         file_type,
                         sub_folder_id
                     },
-                    success: function(res) {
+                    success: function (res) {
                         if (!res.error) {
                             $('.card-body').html($(res).find('.card-body').html());
                             $('#EditNameModal').modal('hide');
                             $('.modal-backdrop').remove();
                             $('#file_edit_error').text('');
-                        }else{
+                        } else {
                             $('#file_edit_error').text(res.message);
                         }
 
@@ -513,10 +543,10 @@
                 });
             })
 
-            $(document).on('click','#btn_move_show', function () {
-                $(this).addClass('disabled','disabled');
+            $(document).on('click', '#btn_move_show', function () {
+                $(this).addClass('disabled', 'disabled');
 
-                let checked_files = $('input[name="files[]"]:checked').map(function() {
+                let checked_files = $('input[name="files[]"]:checked').map(function () {
                     return $(this).val();
                 }).get();
 
@@ -526,32 +556,32 @@
                     data: {
                         checked_files
                     },
-                    success: function(res) {
+                    success: function (res) {
                         toggleSections();
                         $(this).removeClass('disabled');
                     }
                 });
             })
 
-            $(document).on('click','#btn_cancel_move', function () {
+            $(document).on('click', '#btn_cancel_move', function () {
                 $.ajax({
                     url: '/panel/cancel-moving',
                     type: "POST",
-                    success: function(res) {
+                    success: function (res) {
                         // console.log(res)
                         toggleSections();
                     }
                 });
             })
 
-            $(document).on('click','#btn_move', function () {
+            $(document).on('click', '#btn_move', function () {
                 $.ajax({
                     url: '/panel/move-files',
                     type: "POST",
                     data: {
                         sub_folder_id
                     },
-                    success: function(res) {
+                    success: function (res) {
                         $('.card-body').html($(res).find('.card-body').html());
                         toggleSections();
                     }
@@ -564,47 +594,43 @@
                 toggleMoveBtn();
             })
 
-            function toggleDeleteBtn()
-            {
-                let checked_files = $('input[name="files[]"]:checked').map(function() {
+            function toggleDeleteBtn() {
+                let checked_files = $('input[name="files[]"]:checked').map(function () {
                     return $(this).val();
                 }).get();
 
-                if (checked_files.length != 0){
+                if (checked_files.length != 0) {
                     $('#btn_delete_show').removeClass('disabled');
                 } else {
                     $('#btn_delete_show').addClass('disabled');
                 }
             }
 
-            function toggleEditBtn()
-            {
-                let checked_files = $('input[name="files[]"]:checked').map(function() {
+            function toggleEditBtn() {
+                let checked_files = $('input[name="files[]"]:checked').map(function () {
                     return $(this).val();
                 }).get();
 
-                if (checked_files.length == 0 || checked_files.length > 1){
+                if (checked_files.length == 0 || checked_files.length > 1) {
                     $('#btn_edit_show').addClass('disabled');
                 } else {
                     $('#btn_edit_show').removeClass('disabled');
                 }
             }
 
-            function toggleMoveBtn()
-            {
-                let checked_files = $('input[name="files[]"]:checked').map(function() {
+            function toggleMoveBtn() {
+                let checked_files = $('input[name="files[]"]:checked').map(function () {
                     return $(this).val();
                 }).get();
 
-                if (checked_files.length > 0){
+                if (checked_files.length > 0) {
                     $('#btn_move_show').removeClass('disabled');
                 } else {
                     $('#btn_move_show').addClass('disabled');
                 }
             }
 
-            function toggleSections()
-            {
+            function toggleSections() {
                 if (moving == false) {
                     moving = true;
                     $('.default_sec').addClass('d-none');

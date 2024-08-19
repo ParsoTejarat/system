@@ -15,13 +15,12 @@ class CategoryController extends Controller
         $this->authorize('categories-list');
 
         $categories = Category::latest()->paginate(30);
-        return view('panel.categories.index', compact('categories'));
+        return view('panel.categories.index', compact(['categories']));
     }
 
     public function create()
     {
         $this->authorize('categories-create');
-
         return view('panel.categories.create');
     }
 
@@ -49,14 +48,12 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         $this->authorize('categories-edit');
-
-        return view('panel.categories.edit', compact('category'));
+        return view('panel.categories.edit', compact(['category']));
     }
 
     public function update(UpdateCategoryRequest $request, Category $category)
     {
         $this->authorize('categories-edit');
-
         // log
         activity_log('edit-category', __METHOD__, [$request->all(), $category]);
 
@@ -82,6 +79,5 @@ class CategoryController extends Controller
         }else{
             return response('محصولاتی با این دسته بندی وجود دارند',500);
         }
-
     }
 }
