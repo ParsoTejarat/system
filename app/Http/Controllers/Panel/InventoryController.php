@@ -115,19 +115,19 @@ class InventoryController extends Controller
     {
         $this->authorize('inventory-list');
 
-        $type = $request->type == 'all' ? Category::pluck('slug') : [$request->type];
+        $type = $request->category_id == 'all' ? Category::pluck('id')->toArray() : [$request->category_id];
 
         $warehouse_id = $request->warehouse_id;
 
         $data = Inventory::where('warehouse_id', $warehouse_id)
-            ->whereIn('type', $type)
+            ->whereIn('category_id', $type)
             ->when($request->code, function ($q) use($request){
                 $q->where('code', $request->code);
             })
             ->where('title', 'like',"%$request->title%")
             ->latest()->paginate(30);
 
-        return view('panel.inventory.index', compact('data', 'warehouse_id'));
+        return view('panel.inventory.index', compact(['data', 'warehouse_id']));
     }
 
     public function excel()
