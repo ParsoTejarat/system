@@ -106,7 +106,7 @@
                                                     <i>{{ $message['user']['name'].' '. $message['user']['family'] }}</i>
                                                     <p>{{ $message['text'] }}</p>
                                                     <hr class="my-0 mt-2">
-                                                    <i class="text-muted">{{ verta($message['created_at'])->format('H:i - Y/m/d') }}</i>
+                                                    <i class="text-muted">{{ verta($message['created_at'])->timezone('Asia/Tehran')->format('H:i - Y/m/d') }}</i>
                                                 </div>
                                             </div>
                                         </li>
@@ -114,9 +114,7 @@
                                         @if($file)
 
                                             <li class="clearfix">
-
                                                 <div class="card mt-2 mb-1 shadow-none border text-start">
-
                                                     <div class="p-2">
                                                         <a href="{{ env('API_PATH_URL').$file->path }}"
                                                            download="{{env('API_PATH_URL'). $file->path }}"
@@ -169,17 +167,17 @@
                                                             <div class="col-auto">
                                                                 <div class="avatar-sm">
                                                                     <span
-                                                                            class="avatar-title bg-primary rounded">{{ $file['type'] }}</span>
+                                                                            class="avatar-title bg-primary rounded">{{ $file->type }}</span>
                                                                 </div>
                                                             </div>
                                                             <div class="col ps-0" dir="ltr">
                                                                 <a href="javascript:void(0);"
-                                                                   class="text-muted fw-medium">{{ $file['name'] }}</a>
-                                                                <p class="mb-0">{{ formatBytes($file['size']) }}</p>
+                                                                   class="text-muted fw-medium">{{ $file->name }}</a>
+                                                                <p class="mb-0">{{ formatBytes($file->size) }}</p>
                                                             </div>
                                                             <div class="col-auto">
-                                                                <a href="{{  $file['path']  }}"
-                                                                   download="{{  $file['path']  }}"
+                                                                <a href="{{env('API_PATH_URL'). $file->path }}"
+                                                                   download="{{env('API_PATH_URL'). $file->path }}"
                                                                    class="btn btn-link btn-lg text-muted">
                                                                     <i class="ri-download-fill"></i>
                                                                 </a>
