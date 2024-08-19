@@ -64,6 +64,17 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
+                                        <label for="role">جنسیت <span class="text-danger">*</span></label>
+                                        <select class="form-control" data-toggle="select2" name="gender" id="gender">
+                                            <option selected disabled>انتخاب کنید...</option>
+                                            <option value="male">مرد</option>
+                                            <option value="female">زن</option>
+                                        </select>
+                                        @error('gender')
+                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
 
                                 <button type="submit" class="btn btn-primary mt-3">ثبت فرم</button>

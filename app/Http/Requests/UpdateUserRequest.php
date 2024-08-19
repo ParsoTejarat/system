@@ -26,6 +26,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => 'required',
             'family' => 'required',
+            'gender' => 'required',
             'phone' => 'required|size:11|unique:users,phone,'.$this->user->id,
         ];
     }

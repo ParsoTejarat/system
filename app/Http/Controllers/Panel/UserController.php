@@ -41,6 +41,7 @@ class UserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'family' => $request->family,
+            'gender' => $request->gender,
             'phone' => $request->phone,
             'role_id' => $request->role,
             'password' => bcrypt($request->password),
@@ -116,6 +117,7 @@ class UserController extends Controller
             'name' => $request->name,
             'family' => $request->family,
             'phone' => $request->phone,
+            'gender' => $request->gender,
             'role_id' => $request->role ?? $user->role_id,
             'password' => $request->password ? bcrypt($request->password) : $user->password,
             'sign_image' => $sign_image,
