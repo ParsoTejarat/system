@@ -48,7 +48,7 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
-                                        @canany(['admin','ceo'])
+                                        @canany(['admin','ceo','it-manager'])
                                             <th>همکار</th>
                                         @endcanany
                                         <th>تاریخ گزارش</th>
@@ -66,7 +66,7 @@
                                     @foreach($reports as $key => $report)
                                         <tr>
                                             <td>{{ ++$key }}</td>
-                                            @canany(['admin','ceo'])
+                                            @canany(['admin','ceo','it-manager'])
                                                 <td>{{ $report->user->fullName() }}</td>
                                             @endcanany
                                             <td>{{ verta($report->date)->format('Y/m/d') }}</td>
