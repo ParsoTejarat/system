@@ -71,6 +71,10 @@ class User extends Authenticatable
     {
         return $this->role->permissions->pluck('name')->contains('ceo');
     }
+    public function isItManager()
+    {
+        return $this->role->permissions->pluck('name')->contains('it-manager');
+    }
 
     public function isSalesManager()
     {

@@ -13,7 +13,7 @@ class ReportController extends Controller
     {
         $this->authorize('reports-list');
 
-        if (auth()->user()->isAdmin() || auth()->user()->isCEO()){
+        if (auth()->user()->isAdmin() || auth()->user()->isCEO() ||auth()->user()->isItManager()){
             $reports = Report::latest()->paginate(30);
             return view('panel.reports.index', compact('reports'));
         }else{
