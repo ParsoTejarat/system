@@ -19,7 +19,7 @@ class Task extends Model
     public function users()
     {
         return $this->belongsToMany(User::class)
-            ->withPivot(['id','status','done_at','description'])
+            ->withPivot(['id', 'status', 'done_at', 'description'])
             ->withTimestamps();
     }
 

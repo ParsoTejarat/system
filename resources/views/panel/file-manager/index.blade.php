@@ -324,7 +324,7 @@
                         duplicated_files_names.push(file.name);
                         warning = true;
                         fileData.append(i, files[i]);
-                    } else if (file.size > 5000000) {
+                    } else if (file.size > 5000000000000000){
                         error = true;
                         message = `فایل ${file.name} حجمش بیشتر از 5 MB است`;
                         return false;

@@ -18,7 +18,7 @@ class UserController extends Controller
         $this->authorize('users-list');
 
         $users = User::latest()->paginate(10);
-        return view('panel.users.index', compact('users'));
+        return view('panel.users.index', compact(['users']));
     }
 
     public function create()

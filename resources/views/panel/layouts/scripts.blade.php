@@ -211,6 +211,7 @@
         myFunction();
         setInterval(myFunction, 60000);
     }, 60000);
+
 </script>
 
 </body>

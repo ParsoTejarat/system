@@ -1,11 +1,13 @@
 @extends('panel.layouts.master')
 @section('title', 'مشاهده وظیفه')
 @section('content')
+
     @php
-        $isCreator = $task->creator_id == auth()->id();
+        $isCreator = $task['task']['creator_id'] == auth()->id();
         if (!$isCreator){
-            $task_user = \Illuminate\Support\Facades\DB::table('task_user')->where(['task_id' => $task->id, 'user_id' => auth()->id()])->first();
-            $task_done = $task_user->status == 'done' ? true : false;
+
+            $task_done = $task['task_user']['status'] == 'done' ? true : false;
+
         }
     @endphp
 
@@ -35,7 +37,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
-                        <h4 class="page-title">مشاهده وظیفه "{{ $task->title }}"</h4>
+                        <h4 class="page-title">مشاهده وظیفه "{{ $task['task']['title'] }}"</h4>
                     </div>
                 </div>
             </div>
@@ -48,7 +50,8 @@
                             <div class="card-title d-flex justify-content-between align-items-center">
                                 @if(!$isCreator)
                                     <div class="form-check {{ $isCreator ? 'd-none' : '' }}">
-                                        <input class="form-check-input" type="checkbox" id="btn_task" {{ $task_done ? 'checked' : '' }}>
+                                        <input class="form-check-input" type="checkbox"
+                                               id="btn_task" {{ $task_done ? 'checked' : '' }}>
                                         <label class="form-check-label" for="btn_task" id="btn_task_lbl">
                                             {{ $task_done ? 'انجام شده' : 'انجام نشده' }}
                                         </label>
@@ -59,14 +62,16 @@
                                 <div class="row">
                                     <div class="col">
                                         <strong>توضیحات</strong>
-                                        <p>{{ $task->description }}</p>
+                                        <p>{{ $task['task']['description'] }}</p>
                                         <hr>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
                                         <div class="form-group">
-                                            <textarea class="form-control" placeholder="درصورت نیاز توضیحات را وارد کنید..." id="description">{{ $task_user->description }}</textarea>
+                                            <textarea class="form-control"
+                                                      placeholder="درصورت نیاز توضیحات را وارد کنید..."
+                                                      id="description">{{ $task['task_user']['description'] }}</textarea>
                                         </div>
                                         <button class="btn btn-primary mt-2" id="btn_add_desc">ثبت</button>
                                     </div>
@@ -85,21 +90,27 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach($task->users as $user)
+                                                @foreach($task['task']['users'] as $user)
                                                     <tr>
-                                                        <td>{{ $user->fullName() }}</td>
+
+                                                        <td>{{ $user['name'].' '.$user['family'] }}</td>
                                                         <td>
-                                                            @if($user->pivot->status == 'done')
-                                                                <span class="badge bg-success">{{ \App\Models\Task::STATUS[$user->pivot->status] }}</span>
+                                                            {{--                                                            @dd($user['pivot']['status'])--}}
+                                                            @if($user['pivot']['status'] == 'done')
+                                                                <span
+                                                                    class="badge bg-success">{{ \App\Models\Task::STATUS[$user['pivot']['status'] ] }}</span>
                                                             @else
-                                                                <span class="badge bg-warning">{{ \App\Models\Task::STATUS[$user->pivot->status] }}</span>
+                                                                <span
+                                                                    class="badge bg-warning">{{ \App\Models\Task::STATUS[$user['pivot']['status']] }}</span>
                                                             @endif
                                                         </td>
-                                                        <td>{{ $user->pivot->done_at ? verta($user->pivot->done_at)->format('H:i - Y/m/d') : '---' }}</td>
+
+                                                        <td>{{ $user['pivot']['done_at'] ? verta($user['pivot']['done_at'])->format('H:i - Y/m/d') : '---' }}</td>
                                                         <td>
-                                                            <button class="btn btn-primary btn-floating btn_show_desc" data-id="{{ $user->pivot->id }}" {{ $user->pivot->description ? '' : 'disabled' }}>
+                                                            <button class="btn btn-primary btn-floating btn_show_desc"
+                                                                    data-id="{{ $user['pivot']['id'] }}" {{ $user['pivot']['description'] ? '' : 'disabled' }}>
                                                                 <i class="fa fa-comment">
-{{--                                                                    <span class="badge bg-info">{{ $user->pivot->description ? 1 : '' }}</span>--}}
+                                                                    {{--                                                                    <span class="badge bg-info">{{ $user->pivot->description ? 1 : '' }}</span>--}}
                                                                 </i>
                                                             </button>
                                                         </td>
@@ -120,7 +131,7 @@
 @endsection
 @section('scripts')
     <script>
-        var task_id = "{{ $task->id }}";
+        var task_id = "{{ $task['task']['id'] }}";
 
         $(document).ready(function () {
             // btn task status
@@ -134,7 +145,7 @@
                         task_id
                     },
                     success: function (res) {
-                        $('#btn_task_lbl').text(res.message)
+                        $('#btn_task_lbl').text(JSON.parse(res).message)
                         $('#btn_task').removeAttr('disabled')
                     }
                 })
@@ -187,7 +198,7 @@
                     },
                     success: function (res) {
                         $('#descriptionModal').modal('show')
-                        $('#descriptionModal .modal-body p').text(res.data)
+                        $('#descriptionModal .modal-body p').text(JSON.parse(res).data)
                     }
                 })
             })
@@ -195,4 +206,6 @@
         })
     </script>
 @endsection
+
+
 

@@ -3,15 +3,18 @@
     <div class="container-fluid">
         <ul class="list-unstyled topnav-menu float-end mb-0">
             <li class="d-none d-md-inline-block">
-                <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light"  id="light-dark-mode" href="#">
+                <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" id="light-dark-mode" href="#">
                     <i class="fe-moon noti-icon"></i>
                 </a>
             </li>
 
             <li class="dropdown notification-list topbar-dropdown">
-                <a class="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                <a class="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" href="#"
+                   role="button" aria-haspopup="false" aria-expanded="false">
                     <i class="fe-bell noti-icon"></i>
-                    <span class="badge bg-danger rounded-circle noti-icon-badge {{ auth()->user()->unreadNotifications()->count() ? '' : 'd-none' }}" id="notif_count">{{ auth()->user()->unreadNotifications()->count() }}</span>
+                    <span
+                        class="badge bg-danger rounded-circle noti-icon-badge {{ auth()->user()->unreadNotifications()->count() ? '' : 'd-none' }}"
+                        id="notif_count">{{ auth()->user()->unreadNotifications()->count() }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-lg">
 
@@ -29,12 +32,15 @@
                     <div class="noti-scroll" data-simplebar id="notif_sec">
                         @foreach(auth()->user()->unreadNotifications as $notification)
                             <!-- item-->
-                            <a href="{{ route('notifications.read', $notification->id) }}" class="dropdown-item notify-item active" style="white-space: nowrap">
+                            <a href="{{ route('notifications.read', $notification->id) }}"
+                               class="dropdown-item notify-item active" style="white-space: nowrap">
                                 <div class="notify-icon bg-soft-primary text-primary">
                                     <i class="mdi mdi-comment-account-outline"></i>
                                 </div>
-                                <p class="notify-details" style="overflow: unset; text-overflow: unset; white-space: wrap">{{ $notification->data['message'] }}
-                                    <small class="text-muted">{{ \Carbon\Carbon::parse($notification->created_at)->ago() }}</small>
+                                <p class="notify-details"
+                                   style="overflow: unset; text-overflow: unset; white-space: wrap">{{ $notification->data['message'] }}
+                                    <small
+                                        class="text-muted">{{ \Carbon\Carbon::parse($notification->created_at)->ago() }}</small>
                                 </p>
                             </a>
                         @endforeach
@@ -43,10 +49,14 @@
             </li>
 
             <li class="dropdown notification-list topbar-dropdown">
-                <a class="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                    <img src="{{auth()->user()->gender == 'male'?'/assets/images/users/avatar.png':'/assets/images/users/girl.png'}}" alt="user-image" class="rounded-circle">
+                <a class="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light" data-bs-toggle="dropdown"
+                   href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                    <img
+                        src="{{auth()->user()->gender == 'male'?'/assets/images/users/avatar.png':'/assets/images/users/girl.png'}}"
+                        alt="user-image" class="rounded-circle">
                     <span class="pro-user-name ms-1">
-                                    {{ auth()->user()->fullName() }} <i class="mdi mdi-chevron-down"></i>
+                                    {{ auth()->user()->fullName() }}
+                        <i class="mdi mdi-chevron-down"></i>
                                 </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end profile-dropdown ">
