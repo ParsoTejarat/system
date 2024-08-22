@@ -2,13 +2,17 @@
 @section('title', 'مشاهده وظیفه')
 @section('content')
 
+{{--@dd($task['company_auth_id'],$task,auth()->id())--}}
     @php
-        $isCreator = $task['task']['creator_id'] == auth()->id();
+        $isCreator = $task['company_auth_id'] == auth()->id();
+
+
         if (!$isCreator){
 
             $task_done = $task['task_user']['status'] == 'done' ? true : false;
 
         }
+
     @endphp
 
     {{--  description Modal  --}}

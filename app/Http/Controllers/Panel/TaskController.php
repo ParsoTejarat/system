@@ -223,6 +223,7 @@ class TaskController extends Controller
         $data = [
             'task_id' => $data,
             'user_id' => auth()->id(),
+            'company_name' => env('COMPANY_NAME'),
         ];
         try {
             $response = Http::timeout(30)->withHeaders(['API_KEY' => env('API_KEY_TOKEN_FOR_TICKET')])->post(env('API_BASE_URL') . 'show-task', $data);
