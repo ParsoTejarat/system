@@ -99,7 +99,7 @@ Route::get('test/{id?}', function ($id = null) {
 //    }
 //})->name('import-excel');
 
-Route::middleware('auth')->prefix('/panel')->group(function () {
+Route::middleware(['auth','web'])->prefix('/panel')->group(function () {
     Route::match(['get', 'post'], '/', [PanelController::class, 'index'])->name('panel');
     Route::post('send-sms', [PanelController::class, 'sendSMS'])->name('sendSMS');
     Route::post('saveFcmToken', [PanelController::class, 'saveFCMToken']);

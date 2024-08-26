@@ -197,5 +197,6 @@ return [
     */
 
     'same_site' => 'lax',
+    'remember_me_lifetime' => 432000,
 
 ];

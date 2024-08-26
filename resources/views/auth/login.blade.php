@@ -63,6 +63,10 @@
                                         <label for="password" class="form-label">رمز عبور</label>
                                         <input type="password" id="password" name="password" class="form-control">
                                     </div>
+                                    <div class="mb-2">
+                                        <input type="checkbox" id="remember" name="remember">
+                                        <label for="remember" class="form-label">منو به خاطر داشته باش</label>
+                                    </div>
                                     <div class="form-group text-center mt-3 mb-4" id="captcha_sec">
                                         <div class="container-fluid d-flex justify-content-center align-items-center">
                                             <div class="g-recaptcha" data-sitekey="{{config('services.recaptcha.sitekey')}}"></div>

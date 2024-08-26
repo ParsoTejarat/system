@@ -63,8 +63,9 @@ class LoginController extends Controller
 
     protected function attemptLogin(Request $request)
     {
+        $remember = $request->boolean('remember');
         $attemp = $this->guard()->attempt(
-            $this->credentials($request), $request->boolean('remember')
+            $this->credentials($request), $remember
         );
 
         if ($attemp) {
