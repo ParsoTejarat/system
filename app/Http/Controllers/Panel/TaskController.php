@@ -126,8 +126,6 @@ class TaskController extends Controller
     public function changeStatus(Request $request)
     {
         $task = $this->changeTaskStatus($request->task_id);
-
-
         // log
         activity_log('task-change-status', __METHOD__, [$request->all(), $task]);
         return $task;
@@ -143,9 +141,11 @@ class TaskController extends Controller
             'description' => $request->description,
         ];
 
-        $task = $this->changeTaskDescription($data);
 
+        $task = $this->changeTaskDescription($data);
         activity_log('task-add-desc', __METHOD__, [$request->all(), $task]);
+
+        return $task;
 
     }
 
@@ -154,15 +154,6 @@ class TaskController extends Controller
         $task = $this->getTaskDescription($request->pivot_id);
         return $task;
     }
-
-//    private function assignTaskNotification($users)
-//    {
-//        $users = User::whereIn('id', $users)->get();
-//        $message = 'وظیفه جدیدی به شما تخصیص داده شد';
-//        $url = route('tasks.index');
-//        Notification::send($users, new SendMessage($message, $url));
-//    }
-
 
     private function getTasks($url)
     {
@@ -213,7 +204,6 @@ class TaskController extends Controller
                 return response()->json(['error' => 'Request-failed'], $response->status());
             }
         } catch (\Illuminate\Http\Client\RequestException $e) {
-
             return response()->json(['error' => 'Request-timed-out-or-failed', 'message' => $e->getMessage()], 500);
         }
     }
@@ -222,19 +212,19 @@ class TaskController extends Controller
     {
         $data = [
             'task_id' => $data,
-            'user_id' => auth()->id(),
+            'auth_id' => auth()->id(),
             'company_name' => env('COMPANY_NAME'),
         ];
         try {
-            $response = Http::timeout(30)->withHeaders(['API_KEY' => env('API_KEY_TOKEN_FOR_TICKET')])->post(env('API_BASE_URL') . 'show-task', $data);
-//            dd($response->body());
+            $response = Http::timeout(30)
+                ->withHeaders(['API_KEY' => env('API_KEY_TOKEN_FOR_TICKET')])
+                ->post(env('API_BASE_URL') . 'show-task', $data);
             if ($response->successful()) {
                 return $response->json();
             } else {
                 return response()->json(['error' => 'Request-failed'], $response->status());
             }
         } catch (\Illuminate\Http\Client\RequestException $e) {
-
             return response()->json(['error' => 'Request-timed-out-or-failed', 'message' => $e->getMessage()], 500);
         }
     }
@@ -262,7 +252,6 @@ class TaskController extends Controller
 
     public function changeTaskDescription($data)
     {
-
         try {
             $response = Http::timeout(30)->withHeaders(['API_KEY' => env('API_KEY_TOKEN_FOR_TICKET')])->post(env('API_BASE_URL') . 'add-task-desc', $data);
             if ($response->successful()) {
@@ -281,7 +270,6 @@ class TaskController extends Controller
         $data = [
             'pivot_id' => $data
         ];
-
         try {
             $response = Http::timeout(30)->withHeaders(['API_KEY' => env('API_KEY_TOKEN_FOR_TICKET')])->post(env('API_BASE_URL') . 'get-task-desc', $data);
 //            dd($response->body());
@@ -301,7 +289,6 @@ class TaskController extends Controller
         $data = [
             'task_id' => $data
         ];
-
         try {
             $response = Http::timeout(30)->withHeaders(['API_KEY' => env('API_KEY_TOKEN_FOR_TICKET')])->post(env('API_BASE_URL') . 'delete-task', $data);
 //            dd($response->body());

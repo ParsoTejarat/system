@@ -1,20 +1,16 @@
 @extends('panel.layouts.master')
 @section('title', 'مشاهده وظیفه')
 @section('content')
-
-{{--@dd($task['company_auth_id'],$task,auth()->id())--}}
+    {{--    $task['company_auth_id']--}}
+    {{--$task['auth_user']['id'])--}}
     @php
-        $isCreator = $task['company_auth_id'] == auth()->id();
-
-
+        $isCreator = $task['auth_user']['id']==$task['creator']['id'];
         if (!$isCreator){
 
             $task_done = $task['task_user']['status'] == 'done' ? true : false;
 
         }
-
     @endphp
-
     {{--  description Modal  --}}
     <div class="modal fade" id="descriptionModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
@@ -159,7 +155,6 @@
             // btn add desc
             $(document).on('click', '#btn_add_desc', function () {
                 $(this).attr('disabled', 'disabled')
-
                 let description = $('#description').val();
                 $.ajax({
                     url: `/panel/task/add-desc`,
@@ -210,6 +205,3 @@
         })
     </script>
 @endsection
-
-
-
