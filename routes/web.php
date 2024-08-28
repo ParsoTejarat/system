@@ -272,7 +272,6 @@ Route::middleware(['auth','web'])->prefix('/panel')->group(function () {
     Route::post('cancel-moving', [FileManagerController::class, 'cancelMoving'])->name('file-manager.cancelMoving');
     Route::post('move-files', [FileManagerController::class, 'moveFiles'])->name('file-manager.moveFiles');
 
-
 });
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);
 

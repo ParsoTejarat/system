@@ -32,6 +32,10 @@
                                     <tr>
                                         <th>#</th>
                                         <th>عنوان</th>
+                                        @if(!auth()->user()->isCEO() || !auth()->user()->isItManager() )
+                                            <th>وضعیت</th>
+                                        @endif
+
                                         <th>ایجاد کننده</th>
                                         <th>زمان شروع</th>
                                         <th>زمان پایان</th>
@@ -45,10 +49,18 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    {{--                                    @dd($tasks['data'])--}}
                                     @foreach($tasks['data'] as $key => $task)
                                         <tr>
                                             <td>{{ ++$key }}</td>
                                             <td>{{ $task['title'] }}</td>
+                                            @if(!auth()->user()->isCEO() || !auth()->user()->isItManager )
+                                                <td>@if($task['status'] == 'doing')
+                                                        <span class="badge bg-warning">در انتظار انجام</span>
+                                                    @else
+                                                        <span class="badge bg-success">انجام شد</span>
+                                                    @endif</td>
+                                            @endif
                                             <td> {{ $task['creator_id'] == auth()->id() ? 'شما' : $task['creator'] }}</td>
                                             <td>{{ verta($task['start_at'])->format('Y/m/d') }}</td>
                                             <td>{{verta( $task['expire_at'])->format('Y/m/d') }}</td>
