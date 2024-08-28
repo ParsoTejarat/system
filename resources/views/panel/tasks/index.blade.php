@@ -54,7 +54,7 @@
                                         <tr>
                                             <td>{{ ++$key }}</td>
                                             <td>{{ $task['title'] }}</td>
-                                            @if(!auth()->user()->isCEO() || !auth()->user()->isItManager )
+                                            @if(!auth()->user()->isCEO() || !auth()->user()->isItManager() )
                                                 <td>@if($task['status'] == 'doing')
                                                         <span class="badge bg-warning">در انتظار انجام</span>
                                                     @else
