@@ -62,7 +62,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <strong>توضیحات</strong>
-                                        <p>{{ $task['task']['description'] }}</p>
+                                        <div>{!! nl2br(e($task['task']['description'])) !!}</div>
                                         <hr>
                                     </div>
                                 </div>
