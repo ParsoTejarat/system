@@ -75,7 +75,7 @@ class TaskController extends Controller
 //        // edit own task
 //        $this->authorize('edit-task', $task);
 
-        return view('panel.tasks.edit', compact('task'));
+        return view('panel.tasks.edit', compact(['task']));
     }
 
     public function update(UpdateTaskRequest $request, $id)

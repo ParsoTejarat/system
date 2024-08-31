@@ -121,4 +121,5 @@ class ReportController extends Controller
     {
         return response()->json(['data' => json_decode($report->items)]);
     }
+
 }
