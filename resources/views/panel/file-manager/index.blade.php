@@ -228,7 +228,7 @@
                                                 </a>
                                             </td>
                                             @if(auth()->user()->isAdmin() || auth()->user()->isCEO() ||auth()->user()->isItManager())
-                                                <td>{{ auth()->user()->fullName() }}</td>
+                                                <td>{{ $file->user()->fullName() }}</td>
                                             @endif
                                             <td>--</td>
                                             <td>--</td>
@@ -254,7 +254,7 @@
                                                         {{ $file->name }}</a>
                                                 </td>
                                                 @if(auth()->user()->isAdmin() || auth()->user()->isCEO() ||auth()->user()->isItManager())
-                                                    <td>{{ auth()->user()->fullName() }}</td>
+                                                    <td>{{ $file->user()->fullName() }}</td>
                                                 @endif
                                                 <td>--</td>
                                                 <td>--</td>
@@ -279,7 +279,7 @@
                                                         {{ $file->name }}</a>
                                                 </td>
                                                 @if(auth()->user()->isAdmin() || auth()->user()->isCEO() ||auth()->user()->isItManager())
-                                                    <td>{{ auth()->user()->fullName() }}</td>
+                                                    <td>{{ $file->user()->fullName() }}</td>
                                                 @endif
                                                 <td>{{ strtoupper($file->type) }}</td>
                                                 <td dir="ltr">{{ formatBytes($file->size) }}</td>
