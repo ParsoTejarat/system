@@ -14,13 +14,23 @@ class FileManagerController extends Controller
 
         $sub_folder_id = $request->sub_folder_id;
 
-        if ($sub_folder_id) {
-            $files = auth()->user()->files()->where('parent_id', $sub_folder_id)->orderBy('is_folder','desc')->latest()->paginate(30);
+
+        if (auth()->user()->isAdmin() || auth()->user()->isCEO() || auth()->user()->isItManager()) {
+            if ($sub_folder_id) {
+                $files = File::where('parent_id', $sub_folder_id)->orderBy('is_folder', 'desc')->latest()->paginate(30);
+            } else {
+                $files = File::whereNull('parent_id')->orderBy('is_folder', 'desc')->latest()->paginate(30);
+            }
         } else {
-            $files = auth()->user()->files()->whereNull('parent_id')->orderBy('is_folder','desc')->latest()->paginate(30);
+            if ($sub_folder_id) {
+                $files = auth()->user()->files()->where('parent_id', $sub_folder_id)->orderBy('is_folder', 'desc')->latest()->paginate(30);
+            } else {
+                $files = auth()->user()->files()->whereNull('parent_id')->orderBy('is_folder', 'desc')->latest()->paginate(30);
+            }
         }
 
-        return view('panel.file-manager.index', compact('files','sub_folder_id'));
+
+        return view('panel.file-manager.index', compact('files', 'sub_folder_id'));
     }
 
     public function createFolder(Request $request)
@@ -122,7 +132,7 @@ class FileManagerController extends Controller
         $file = File::where('id', $request->file_id)->first();
 
         if ($file->is_folder) {
-            if (File::where('id','!=', $file->id)->where(['name' => $request->new_name, 'parent_id' => $request->sub_folder_id, 'is_folder' => 1])->first()) {
+            if (File::where('id', '!=', $file->id)->where(['name' => $request->new_name, 'parent_id' => $request->sub_folder_id, 'is_folder' => 1])->first()) {
                 return response()->json([
                     'error' => true,
                     'message' => 'نام انتخابی موجود است'
@@ -131,9 +141,9 @@ class FileManagerController extends Controller
 
             File::where('id', $request->file_id)->update(['name' => $request->new_name]);
         } else {
-            $new_name = $request->new_name.'.'.$request->file_type;
+            $new_name = $request->new_name . '.' . $request->file_type;
 
-            if (File::where('id','!=', $file->id)->where(['name' => $new_name, 'parent_id' => $request->sub_folder_id, 'type' => $request->file_type,'is_folder' => 0])->first()) {
+            if (File::where('id', '!=', $file->id)->where(['name' => $new_name, 'parent_id' => $request->sub_folder_id, 'type' => $request->file_type, 'is_folder' => 0])->first()) {
                 return response()->json([
                     'error' => true,
                     'message' => 'نام انتخابی موجود است'
@@ -165,7 +175,7 @@ class FileManagerController extends Controller
     {
         $this->authorize('file-manager');
 
-        session()->forget(['moving','files_id']);
+        session()->forget(['moving', 'files_id']);
 
         // log
         activity_log('cancel-move-file', __METHOD__);
@@ -179,7 +189,7 @@ class FileManagerController extends Controller
 
         File::whereIn('id', $files_id)->update(['parent_id' => $request->sub_folder_id]);
 
-        session()->forget(['moving','files_id']);
+        session()->forget(['moving', 'files_id']);
 
         // log
         activity_log('move-file', __METHOD__, $request->all());
@@ -198,7 +208,7 @@ class FileManagerController extends Controller
             'size' => $file->getSize(),
             'is_folder' => 0,
             'parent_id' => $sub_folder_id,
-            'path' => upload_file($file, 'FileManager/'.auth()->id()),
+            'path' => upload_file($file, 'FileManager/' . auth()->id()),
         ]);
 
         // log
