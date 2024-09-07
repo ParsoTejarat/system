@@ -228,7 +228,7 @@
                                                 </a>
                                             </td>
                                             @if(auth()->user()->isAdmin() || auth()->user()->isCEO() ||auth()->user()->isItManager())
-                                                <td>{{ $file->user->fullName() }}</td>
+                                                <td>{{ $sub_folder->user->fullName() }}</td>
                                             @endif
                                             <td>--</td>
                                             <td>--</td>
