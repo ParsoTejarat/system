@@ -279,7 +279,7 @@
                                                         {{ $file->name }}</a>
                                                 </td>
                                                 @if(auth()->user()->isAdmin() || auth()->user()->isCEO() ||auth()->user()->isItManager())
-                                                    <td>{{ <td>{{ $file->user->fullName() }}</td> }}</td>
+                                                    <td>{{  $file->user->fullName() }}</td>
                                                 @endif
                                                 <td>{{ strtoupper($file->type) }}</td>
                                                 <td dir="ltr">{{ formatBytes($file->size) }}</td>
