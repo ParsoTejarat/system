@@ -123,7 +123,7 @@
             console.log(e)
             $('#notif_count').removeClass('d-none')
             $('#notif_count').html(parseInt($('#notif_count').html()) + 1)
-            $("#notif_sec").prepend(`<a href="/panel/read-notifications/${e.data.id}" class="dropdown-item notify-item active">
+            $("#notif_sec .simplebar-content").prepend(`<a href="/panel/read-notifications/${e.data.id}" class="dropdown-item notify-item active">
                                 <div class="notify-icon bg-soft-primary text-primary">
                                     <i class="mdi mdi-comment-account-outline"></i>
                                 </div>
