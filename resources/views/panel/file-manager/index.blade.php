@@ -205,6 +205,9 @@
                                             </div>
                                         </th>
                                         <th scope="col" style="text-align: right">عنوان</th>
+                                        @if(auth()->user()->isAdmin() || auth()->user()->isCEO() ||auth()->user()->isItManager())
+                                            <th scope="col">توسط</th>
+                                        @endif
                                         <th scope="col">نوع</th>
                                         <th scope="col">حجم</th>
                                         <th scope="col">تاریخ ویرایش</th>
@@ -224,6 +227,9 @@
                                                        title="برگشت"></i>
                                                 </a>
                                             </td>
+                                            @if(auth()->user()->isAdmin() || auth()->user()->isCEO() ||auth()->user()->isItManager())
+                                                <td>{{ auth()->user()->fullName() }}</td>
+                                            @endif
                                             <td>--</td>
                                             <td>--</td>
                                             <td>--</td>
@@ -247,6 +253,9 @@
                                                              alt="icon" class="me-2">
                                                         {{ $file->name }}</a>
                                                 </td>
+                                                @if(auth()->user()->isAdmin() || auth()->user()->isCEO() ||auth()->user()->isItManager())
+                                                    <td>{{ auth()->user()->fullName() }}</td>
+                                                @endif
                                                 <td>--</td>
                                                 <td>--</td>
                                                 <td class="font-13"
@@ -269,6 +278,9 @@
                                                              height="30" alt="icon" class="me-2">
                                                         {{ $file->name }}</a>
                                                 </td>
+                                                @if(auth()->user()->isAdmin() || auth()->user()->isCEO() ||auth()->user()->isItManager())
+                                                    <td>{{ auth()->user()->fullName() }}</td>
+                                                @endif
                                                 <td>{{ strtoupper($file->type) }}</td>
                                                 <td dir="ltr">{{ formatBytes($file->size) }}</td>
                                                 <td class="font-13"
@@ -324,7 +336,7 @@
                         duplicated_files_names.push(file.name);
                         warning = true;
                         fileData.append(i, files[i]);
-                    } else if (file.size > 5000000000000000){
+                    } else if (file.size > 5000000000000000) {
                         error = true;
                         message = `فایل ${file.name} حجمش بیشتر از 5 MB است`;
                         return false;

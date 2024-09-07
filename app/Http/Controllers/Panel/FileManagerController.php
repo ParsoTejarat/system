@@ -30,7 +30,7 @@ class FileManagerController extends Controller
         }
 
 
-        return view('panel.file-manager.index', compact('files', 'sub_folder_id'));
+        return view('panel.file-manager.index', compact(['files', 'sub_folder_id']));
     }
 
     public function createFolder(Request $request)
