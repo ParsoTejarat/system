@@ -99,7 +99,7 @@ Route::get('test/{id?}', function ($id = null) {
 //    }
 //})->name('import-excel');
 
-Route::middleware(['auth','web'])->prefix('/panel')->group(function () {
+Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     Route::match(['get', 'post'], '/', [PanelController::class, 'index'])->name('panel');
     Route::post('send-sms', [PanelController::class, 'sendSMS'])->name('sendSMS');
     Route::post('saveFcmToken', [PanelController::class, 'saveFCMToken']);
@@ -108,11 +108,13 @@ Route::middleware(['auth','web'])->prefix('/panel')->group(function () {
     // Users
     Route::resource('users', UserController::class)->except('show');
 
-    //Indicators
+    //IndicatorsExport
     Route::resource('indicator', IndicatorController::class)->except('show', 'destroy')->middleware('can:indicator');
     Route::get('indicator/inbox', [IndicatorController::class, 'inbox'])->name('indicator.inbox')->middleware('can:indicator');
     //    Route::post('/export-indicator-pdf', [IndicatorController::class, 'exportToPdf'])->middleware('can:indicator');
     Route::get('download/indicator/{id}', [IndicatorController::class, 'downloadFromIndicator'])->name('indicator.download')->middleware('can:indicator');
+    Route::get('export/excel/indicators', [IndicatorController::class, 'exportExcelIndicator'])->name('indicator.excel')->middleware('can:indicator');
+
 
     //PaymentsOrder
     Route::resource('payments_order', PaymentOrderController::class)->except('show');

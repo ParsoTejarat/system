@@ -78,6 +78,7 @@
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
+
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
                                         <label for="attachment" class="form-label">ارسال به</label>
                                         <select name="receiver[]" class="form-control" id="receiver" data-toggle="select2" multiple>
@@ -85,8 +86,16 @@
                                                 <option value="{{$user->id}}">{{$user->name.' '.$user->family}}</option>
                                             @endforeach
                                         </select>
-
                                     </div>
+                                    <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
+                                        <label for="attachment" class="form-label">خطاب به</label>
+                                        <input type="text" class="form-control" name="to" id="attachment"
+                                               value="{{ old('to') }}">
+                                        @error('to')
+                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
                                 </div>
                                 <div class="row">
                                     <div class="mb-2 col-xl-12 col-lg-12 col-md-12">
