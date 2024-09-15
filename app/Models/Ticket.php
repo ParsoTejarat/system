@@ -22,7 +22,7 @@ class Ticket extends Model
         'barman' => 'بارمان سیستم',
         'adaktejarat' => 'آداک تجارت خورشید قشم',
         'adakhamrah' => 'آداک همراه خورشید قشم',
-        'adakpetro' => 'آداک تجارت خورشید قشم',
+        'adakpetro' => 'آداک پترو خورشید قشم',
         'sayman' => 'سایمان داده',
     ];
 
