@@ -69,14 +69,14 @@ class ActivityLog extends Model
         'invoice-action' => 'اقدام سفارش',
         'delete-invoice-file' => 'حذف فایل پیش فاکتور',
         'delete-factor-file' => 'حذف فایل فاکتور',
-        'order-change-status' => 'تغییر وضعیت سفارش',
-        'order-add-desc' => 'افزودن توضحات سفارش',
+        'orders-change-status' => 'تغییر وضعیت سفارش',
+        'orders-add-desc' => 'افزودن توضحات سفارش',
 
         // buy-orders
-        'create-buy-order' => 'ثبت سفارش خرید',
-        'edit-buy-order' => 'ویرایش سفارش خرید',
-        'delete-buy-order' => 'حذف سفارش خرید',
-        'buy-order-change-status' => 'تغییر وضعیت سفارش خرید',
+        'create-buy-orders' => 'ثبت سفارش خرید',
+        'edit-buy-orders' => 'ویرایش سفارش خرید',
+        'delete-buy-orders' => 'حذف سفارش خرید',
+        'buy-orders-change-status' => 'تغییر وضعیت سفارش خرید',
 
         // sales-reports
         'create-sale-report' => 'ثبت گزارش خرید',

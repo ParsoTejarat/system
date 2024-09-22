@@ -6,6 +6,7 @@ use App\Models\BuyOrder;
 use App\Models\Indicator;
 use App\Models\Invoice;
 use App\Models\Note;
+use App\Models\Order;
 use App\Models\Packet;
 use App\Models\PaymentOrder;
 use App\Models\Permission;
@@ -86,7 +87,7 @@ class AuthServiceProvider extends ServiceProvider
             return $user->id == $report->user_id || $user->isAdmin() || $user->isCEO();
         });
 
-        Gate::define('edit-buy-order', function ($user, BuyOrder $buyOrder) {
+        Gate::define('edit-buy-orders', function ($user, BuyOrder $buyOrder) {
             return $user->id == $buyOrder->user_id || $user->isSalesManager();
         });
 
@@ -94,12 +95,16 @@ class AuthServiceProvider extends ServiceProvider
             return $user->id == $indicator->user_id;
         });
 
-        Gate::define('order-payment-edit', function ($user, PaymentOrder $payment) {
+        Gate::define('orders-payment-edit', function ($user, PaymentOrder $payment) {
             return $user->id == $payment->user_id;
         });
 
-        Gate::define('order-payment-delete', function ($user, PaymentOrder $payment) {
+        Gate::define('orders-payment-delete', function ($user, PaymentOrder $payment) {
             return $user->id == $payment->user_id;
+        });
+
+        Gate::define('edit-order-customer', function ($user, Order $order) {
+            return $user->id == $order->user_id;
         });
     }
 }

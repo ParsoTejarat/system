@@ -27,7 +27,7 @@ class CreateInvoicesTable extends Migration
             $table->text('address');
             $table->string('postal_code');
             $table->string('phone');
-            $table->enum('status',['invoiced','pending','order'])->default('order');
+            $table->enum('status',['invoiced','pending','orders'])->default('orders');
             $table->unsignedInteger('discount')->comment('تخفیف نهایی');
             $table->longText('description')->nullable();
             $table->text('order_status_desc')->nullable();

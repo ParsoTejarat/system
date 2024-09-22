@@ -2311,7 +2311,7 @@ Sortable.prototype =
 
   /**
    * Sorts the elements according to the array.
-   * @param  {String[]}  order  order of the items
+   * @param  {String[]}  order  orders of the items
    */
   sort: function sort(order) {
     var items = {},
@@ -2548,7 +2548,7 @@ function _getSwapDirection(evt, target, targetRect, vertical, swapThreshold, inv
   return 0;
 }
 /**
- * Gets the direction dragEl must be swapped relative to target in order to make it
+ * Gets the direction dragEl must be swapped relative to target in orders to make it
  * seem that dragEl has been "inserted" into that element's position
  * @param  {HTMLElement} target       The target whose position dragEl is being inserted at
  * @return {Number}                   Direction dragEl must be swapped

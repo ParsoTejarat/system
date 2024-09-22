@@ -864,7 +864,7 @@ $.widget( "ui.dialog", {
 
 			// Prevent use of anchors and inputs
 			// Using _on() for an event handler shared across many instances is
-			// safe because the dialogs stack and must be closed in reverse order
+			// safe because the dialogs stack and must be closed in reverse orders
 			this._on( this.document, {
 				focusin: function( event ) {
 					if ( isOpening ) {

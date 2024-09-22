@@ -747,7 +747,7 @@ function greatestDurationDenominator(dur, dontReturnWeeks) {
 
 /* FullCalendar-specific DOM Utilities
 ----------------------------------------------------------------------------------------------------------------------*/
-// Given the scrollbar widths of some other container, create borders/margins on rowEls in order to match the left
+// Given the scrollbar widths of some other container, create borders/margins on rowEls in orders to match the left
 // and right space that was offset by the scrollbars. A 1-pixel border first, then margin beyond that.
 function compensateScroll(rowEl, scrollbarWidths) {
     if (scrollbarWidths.left) {
@@ -1441,7 +1441,7 @@ function invertRanges(ranges, constraintRange) {
     var start = constraintRange.start; // the end of the previous range. the start of the new range
     var i;
     var dateRange;
-    // ranges need to be in order. required for our date-walking algorithm
+    // ranges need to be in orders. required for our date-walking algorithm
     ranges.sort(compareRanges);
     for (i = 0; i < ranges.length; i++) {
         dateRange = ranges[i];
@@ -4397,7 +4397,7 @@ function expandRanges(daysOfWeek, startTime, framingRange, dateEnv) {
     var endMarker = framingRange.end;
     var instanceStarts = [];
     while (dayMarker < endMarker) {
-        var instanceStart 
+        var instanceStart
         // if everyday, or this particular day-of-week
         = void 0;
         // if everyday, or this particular day-of-week

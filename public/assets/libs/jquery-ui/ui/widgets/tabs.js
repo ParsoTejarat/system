@@ -371,7 +371,7 @@ $.widget( "ui.tabs", {
 				"aria-hidden": "true"
 			} );
 
-		// Make sure one tab is in the tab order
+		// Make sure one tab is in the tab orders
 		if ( !this.active.length ) {
 			this.tabs.eq( 0 ).attr( "tabIndex", 0 );
 		} else {
@@ -683,9 +683,9 @@ $.widget( "ui.tabs", {
 			"aria-expanded": "false"
 		} );
 
-		// If we're switching tabs, remove the old tab from the tab order.
-		// If we're opening from collapsed state, remove the previous tab from the tab order.
-		// If we're collapsing, then keep the collapsing tab in the tab order.
+		// If we're switching tabs, remove the old tab from the tab orders.
+		// If we're opening from collapsed state, remove the previous tab from the tab orders.
+		// If we're collapsing, then keep the collapsing tab in the tab orders.
 		if ( toShow.length && toHide.length ) {
 			eventData.oldTab.attr( "tabIndex", -1 );
 		} else if ( toShow.length ) {

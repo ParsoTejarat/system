@@ -25,7 +25,7 @@ class PaymentOrderController extends Controller
         })->get();
 
 
-        $this->authorize('order-payment-list');
+        $this->authorize('orders-payment-list');
         $type = request()->type;
         if (!isset($type)) {
             return redirect(route('payments_order.index', ['type' => 'payments']));
@@ -45,7 +45,7 @@ class PaymentOrderController extends Controller
 
     public function create()
     {
-        $this->authorize('order-payment-create');
+        $this->authorize('orders-payment-create');
 
         $type = request()->type;
         if (!isset($type)) {
@@ -59,7 +59,7 @@ class PaymentOrderController extends Controller
     public function store(StorePaymentRequest $request)
     {
 //        dd($request->all(), $this->generateNumber());
-        $this->authorize('order-payment-create');
+        $this->authorize('orders-payment-create');
         $payment = new PaymentOrder();
         $payment->type = $request->type;
         $payment->amount = $request->amount;
@@ -80,7 +80,7 @@ class PaymentOrderController extends Controller
         })->get();
         $message = "یک دستور به شماره $payment->number توسط " . $payment->user->family . " ایجاد شده است.";
         Notification::send($users, new SendMessage($message, url('/panel/payments_order')));
-        activity_log('order-payment-create', __METHOD__, [$request->all(), $payment]);
+        activity_log('orders-payment-create', __METHOD__, [$request->all(), $payment]);
         alert()->success('درخواست شما ثبت شد و در انتظار تایید قرار گرفت.', 'موفقیت آمیز');
         return redirect()->route('payments_order.index', ['type' => $payment->type]);
 
@@ -94,7 +94,7 @@ class PaymentOrderController extends Controller
             return redirect()->route('payments_order.edit', ['type' => 'payments', 'payments_order' => $id]);
         }
         $order_payment = PaymentOrder::where(['id' => $id, 'status' => 'pending'])->firstOrFail();
-        $this->authorize('order-payment-edit',$order_payment);
+        $this->authorize('orders-payment-edit',$order_payment);
         return view('panel.payments_order.edit', compact(['order_payment', 'type']));
 
 
@@ -105,7 +105,7 @@ class PaymentOrderController extends Controller
     {
 
         $paymentOrder = PaymentOrder::where(['id' => $id, 'status' => 'pending'])->firstOrFail();
-        $this->authorize('order-payment-edit', $paymentOrder);
+        $this->authorize('orders-payment-edit', $paymentOrder);
         $paymentOrder->amount = $request->amount;
         $paymentOrder->amount_words = $request->amount_words;
         $paymentOrder->invoice_number = $request->invoice_number ?? 0;
@@ -117,7 +117,7 @@ class PaymentOrderController extends Controller
         $paymentOrder->bank_number = $request->bank_number;
         $paymentOrder->is_online_payment = $request->is_online_payment === 'true' ? true : false;
         $paymentOrder->save();
-        activity_log('order-payment-edit', __METHOD__, [$request->all(), $paymentOrder]);
+        activity_log('orders-payment-edit', __METHOD__, [$request->all(), $paymentOrder]);
         $users = User::whereHas('role.permissions', function ($q) {
             $q->where('name', 'ceo');
         })->get();
@@ -133,9 +133,9 @@ class PaymentOrderController extends Controller
 
         $type = request('type');
         $order_payment = PaymentOrder::where(['id' => $id, 'status' => 'pending', 'type' => $type])->firstOrFail();
-        $this->authorize('order-payment-delete', $order_payment);
+        $this->authorize('orders-payment-delete', $order_payment);
         $order_payment->delete();
-        activity_log('order-payment-delete', __METHOD__, $order_payment);
+        activity_log('orders-payment-delete', __METHOD__, $order_payment);
         alert()->success('دستور با موفقیت حذف شد.', 'موفقیت آمیز');
         return redirect()->route('payments_order.index', ['type' => $order_payment->type]);
     }
@@ -164,7 +164,7 @@ class PaymentOrderController extends Controller
         $status = $order_payment_approved->status == 'approved' ? 'تایید' : 'رد';
         $message = "دستور شما با شماره $order_payment_approved->number ، $status شد";
         Notification::send($order_payment_approved->user, new SendMessage($message, url('/panel/payments_order')));
-        activity_log('order-payment-status', __METHOD__, [$request->all(), $order_payment_approved]);
+        activity_log('orders-payment-status', __METHOD__, [$request->all(), $order_payment_approved]);
         alert()->success('وضعیت تعیین شد.', 'موفقیت آمیز');
         return redirect()->back();
     }

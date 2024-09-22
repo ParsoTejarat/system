@@ -12,7 +12,7 @@ class BuyOrder extends Model
     protected $guarded = [];
 
     const STATUS = [
-        'order' => 'ثبت سفارش',
+        'orders' => 'ثبت سفارش',
         'bought' => 'خریداری شده',
     ];
 

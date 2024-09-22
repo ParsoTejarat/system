@@ -82,13 +82,13 @@ class InventoryReportController extends Controller
         } else {
             $this->authorize('output-reports-create');
 
-            // order status
+            // orders status
             if ($request->invoice_id) {
                 $invoice = Invoice::find($request->invoice_id);
-                $invoice->order_status()->firstOrCreate(['order' => 2, 'status' => 'processing']);
-                $invoice->order_status()->firstOrCreate(['order' => 3, 'status' => 'out']);
+                $invoice->order_status()->firstOrCreate(['orders' => 2, 'status' => 'processing']);
+                $invoice->order_status()->firstOrCreate(['orders' => 3, 'status' => 'out']);
             }
-            // end order status
+            // end orders status
 
             $type_lbl = 'خروجی';
             $request->validate([

@@ -1,16 +1,16 @@
 /*
- * Flot plugin to order bars side by side.
+ * Flot plugin to orders bars side by side.
  *
  * Released under the MIT license by Benjamin BUFFET, 20-Sep-2010.
  * Modifications made by Steven Hall <github.com/emmerich>, 01-May-2013.
  *
  * This plugin is an alpha version.
  *
- * To activate the plugin you must specify the parameter "order" for the specific serie :
+ * To activate the plugin you must specify the parameter "orders" for the specific serie :
  *
- *  $.plot($("#placeholder"), [{ data: [ ... ], bars :{ order = null or integer }])
+ *  $.plot($("#placeholder"), [{ data: [ ... ], bars :{ orders = null or integer }])
  *
- * If 2 series have the same order param, they are ordered by the position in the array;
+ * If 2 series have the same orders param, they are ordered by the position in the array;
  *
  * The plugin adjust the point by adding a value depanding of the barwidth
  * Exemple for 3 series (barwidth : 0.1) :
@@ -32,7 +32,7 @@
         var pixelInXWidthEquivalent = 1;
         var isHorizontal = false;
 
-        // A mapping of order integers to decallage.
+        // A mapping of orders integers to decallage.
         var decallageByOrder = {};
 
         /*
@@ -53,7 +53,7 @@
 
                     var centerBarShift = calculCenterBarShift();
 
-                    // If we haven't already calculated the decallage for this order value, do it.
+                    // If we haven't already calculated the decallage for this orders value, do it.
                     if(typeof decallageByOrder[serie.bars.order] === 'undefined') {
                         if (isBarAtLeftOfCenter(position)){
                             decallageByOrder[serie.bars.order] = -1*(sumWidth(orderedBarSeries,position-1,Math.floor(nbOfBarsToOrder / 2)-1)) - centerBarShift;
@@ -62,7 +62,7 @@
                         }
                     }
 
-                    // Lookup the decallage based on the series' order value.
+                    // Lookup the decallage based on the series' orders value.
                     decallage = decallageByOrder[serie.bars.order];
 
                     shiftedPoints = shiftPoints(datapoints,serie,decallage);

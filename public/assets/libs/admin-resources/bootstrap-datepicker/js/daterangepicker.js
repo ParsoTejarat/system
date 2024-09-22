@@ -269,7 +269,7 @@
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
 
-        // update day names order to firstDay
+        // update day names orders to firstDay
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
             while (iterator > 0) {
@@ -328,7 +328,7 @@
 
                 // If the end of the range is before the minimum or the start of the range is
                 // after the maximum, don't display this range option at all.
-                if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day')) 
+                if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day'))
                   || (maxDate && start.isAfter(maxDate, this.timepicker ? 'minute' : 'day')))
                     continue;
 
@@ -766,7 +766,7 @@
             html += '</thead>';
             html += '<tbody>';
 
-            //adjust maxDate to reflect the dateLimit setting in order to
+            //adjust maxDate to reflect the dateLimit setting in orders to
             //grey out end dates beyond the dateLimit
             if (this.endDate == null && this.dateLimit) {
                 var maxLimit = this.startDate.clone().add(this.dateLimit).endOf('day');
@@ -1526,7 +1526,7 @@
             this.container.find('input[name="daterangepicker_start"], input[name="daterangepicker_end"]').removeClass('active');
             $(e.target).addClass('active');
 
-            // Set the state such that if the user goes back to using a mouse, 
+            // Set the state such that if the user goes back to using a mouse,
             // the calendars are aware we're selecting the end of the range, not
             // the start. This allows someone to edit the end of a date range without
             // re-selecting the beginning, by clicking on the end date input then

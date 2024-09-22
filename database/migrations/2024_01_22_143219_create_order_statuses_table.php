@@ -16,7 +16,7 @@ class CreateOrderStatusesTable extends Migration
         Schema::create('order_statuses', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('invoice_id');
-            $table->integer('order');
+            $table->integer('orders');
             $table->string('status')->default('register');
             $table->timestamps();
 

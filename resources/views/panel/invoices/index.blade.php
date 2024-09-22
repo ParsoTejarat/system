@@ -168,7 +168,7 @@
 
                                             {{--                            @endcanany--}}
                                             <td>
-                                                {{-- invoices before 2024-02-03 order-status disabled --}}
+                                                {{-- invoices before 2024-02-03 orders-status disabled --}}
                                                 <a href="{{ route('orders-status.index', $invoice->id) }}"
                                                    class="btn btn-purple btn-floating {{ $invoice->created_at < verta('2024-02-03 00:00:00') ? 'disabled' : '' }}"
                                                    target="_blank">

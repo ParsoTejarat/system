@@ -1473,8 +1473,8 @@ define(["eve"], function(eve) {
      o         y: (number) y coordinate of the point
      o         t1: (number) t value for segment of path1
      o         t2: (number) t value for segment of path2
-     o         segment1: (number) order number for segment of path1
-     o         segment2: (number) order number for segment of path2
+     o         segment1: (number) orders number for segment of path1
+     o         segment2: (number) orders number for segment of path2
      o         bez1: (array) eight coordinates representing beziér curve for the segment of path1
      o         bez2: (array) eight coordinates representing beziér curve for the segment of path2
      o     }

@@ -18,7 +18,7 @@
                         <div class="card-body">
                             <div class="card-title d-flex justify-content-end">
                                 @cannot('ceo')
-                                    @can('order-payment-create')
+                                    @can('orders-payment-create')
                                         <a href="{{ route('payments_order.create',['type'=>$type]) }}"
                                            class="btn btn-primary">
                                             <i class="fa fa-plus mr-2"></i>
@@ -98,14 +98,14 @@
                                             @cannot('ceo')
                                                 <td>
 
-                                                        <a class="btn btn-warning btn-floating {{($payment->status =='pending')&&(\Illuminate\Support\Facades\Gate::allows('order-payment-edit',$payment))?'':'disabled'}}"
+                                                        <a class="btn btn-warning btn-floating {{($payment->status =='pending')&&(\Illuminate\Support\Facades\Gate::allows('orders-payment-edit',$payment))?'':'disabled'}}"
                                                            href="{{ route('payments_order.edit', ['payments_order'=>$payment->id,'type'=>$type]) }}">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
                                                 </td>
                                                 <td>
                                                     <button
-                                                            class="btn btn-danger btn-floating trashRow {{($payment->status =='pending')&&(\Illuminate\Support\Facades\Gate::allows('order-payment-delete',$payment))?'':'disabled'}}"
+                                                            class="btn btn-danger btn-floating trashRow {{($payment->status =='pending')&&(\Illuminate\Support\Facades\Gate::allows('orders-payment-delete',$payment))?'':'disabled'}}"
                                                             data-url="{{ route('payments_order.destroy',['payments_order'=>$payment->id,'type'=>$type]) }}"
                                                             data-id="{{ $payment->id }}">
                                                             <i class="fa fa-trash"></i>

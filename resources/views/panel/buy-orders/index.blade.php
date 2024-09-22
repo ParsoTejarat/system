@@ -70,14 +70,14 @@
                                                         <form action="{{ route('buy-orders.changeStatus', $order->id) }}" method="post">
                                                             @csrf
                                                             <button type="submit"
-                                                                    class="btn btn-warning">{{ \App\Models\BuyOrder::STATUS['order'] }}</button>
+                                                                    class="btn btn-warning">{{ \App\Models\BuyOrder::STATUS['orders'] }}</button>
                                                         </form>
                                                     @endif
                                                 @else
                                                     @if($order->status == 'bought')
                                                         <span class="badge bg-success">{{ \App\Models\BuyOrder::STATUS['bought'] }}</span>
                                                     @else
-                                                        <span class="badge bg-warning">{{ \App\Models\BuyOrder::STATUS['order'] }}</span>
+                                                        <span class="badge bg-warning">{{ \App\Models\BuyOrder::STATUS['orders'] }}</span>
                                                     @endif
                                                 @endcan
                                             </td>

@@ -58,7 +58,7 @@ class BuyOrderController extends Controller
         ]);
 
         // log
-        activity_log('create-buy-order', __METHOD__, [$request->all(), $buy_order]);
+        activity_log('create-buy-orders', __METHOD__, [$request->all(), $buy_order]);
 
         alert()->success('سفارش مورد نظر با موفقیت ثبت شد','ثبت سفارش خرید');
         return redirect()->route('buy-orders.index');
@@ -74,7 +74,7 @@ class BuyOrderController extends Controller
     public function edit(BuyOrder $buyOrder)
     {
         $this->authorize('buy-orders-edit');
-        $this->authorize('edit-buy-order', $buyOrder);
+        $this->authorize('edit-buy-orders', $buyOrder);
 
         if (Gate::allows('ceo') || $buyOrder->status == 'bought'){
             return back();
@@ -100,7 +100,7 @@ class BuyOrderController extends Controller
         }
 
         // log
-        activity_log('edit-buy-order', __METHOD__, [$request->all(), $buyOrder]);
+        activity_log('edit-buy-orders', __METHOD__, [$request->all(), $buyOrder]);
 
         $buyOrder->update([
             'customer_id' => $request->customer_id,
@@ -121,7 +121,7 @@ class BuyOrderController extends Controller
         }
 
         // log
-        activity_log('delete-buy-order', __METHOD__, $buyOrder);
+        activity_log('delete-buy-orders', __METHOD__, $buyOrder);
 
         $buyOrder->delete();
         return back();
@@ -134,13 +134,13 @@ class BuyOrderController extends Controller
         }
 
         if ($buyOrder->status == 'bought'){
-            $buyOrder->update(['status' => 'order']);
+            $buyOrder->update(['status' => 'orders']);
         }else{
             $buyOrder->update(['status' => 'bought']);
         }
 
         // log
-        activity_log('buy-order-change-status', __METHOD__, $buyOrder);
+        activity_log('buy-orders-change-status', __METHOD__, $buyOrder);
 
         alert()->success('وضعیت سفارش با موفقیت تغییر کرد','تغییر وضعیت سفارش');
         return back();

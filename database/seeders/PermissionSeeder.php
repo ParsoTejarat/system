@@ -139,10 +139,10 @@ class PermissionSeeder extends Seeder
 //            'parso-products' => 'محصولات سایت پرسو تجارت',
 //            'file-manager' => 'مدیریت فایل',
 //            'indicator' => 'نامه نگاری',
-//            'order-payment-list' => 'لیست دستور پرداخت/دریافت',
-//            'order-payment-create' => 'ثبت دستور پرداخت/دریافت',
-//            'order-payment-edit' => 'ویرایش دستور پرداخت/دریافت',
-//            'order-payment-delete' => 'حذف دستور پرداخت/دریافت',
+//            'orders-payment-list' => 'لیست دستور پرداخت/دریافت',
+//            'orders-payment-create' => 'ثبت دستور پرداخت/دریافت',
+//            'orders-payment-edit' => 'ویرایش دستور پرداخت/دریافت',
+//            'orders-payment-delete' => 'حذف دستور پرداخت/دریافت',
 
 //            'accountant-manager' => 'رئیس حسابداری',
 //            'free-sales' => 'فروش آزاد',
@@ -152,6 +152,14 @@ class PermissionSeeder extends Seeder
 //            'it-manager' => 'مدیر آی تی',
 //            'it-man' => 'کارمند آی تی',
 //            'purchase-engineering' => 'مهندسی خرید',
+//            'customer-order-list' => 'لیست سفارشات مشتری',
+//            'customer-order-create' => 'ثبت سفارشات مشتری',
+//            'customer-order-edit' => 'ویرایش سفارشات مشتری',
+//            'customer-order-delete' => 'حذف سفارشات مشتری',
+
+
+
+
         ];
 
         foreach ($items as $key => $item) {

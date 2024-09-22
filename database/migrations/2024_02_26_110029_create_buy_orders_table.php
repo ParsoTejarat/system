@@ -17,7 +17,7 @@ class CreateBuyOrdersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('customer_id');
-            $table->enum('status',['order', 'bought'])->default('order');
+            $table->enum('status',['orders', 'bought'])->default('orders');
             $table->longText('items');
             $table->longText('description')->nullable();
             $table->timestamps();

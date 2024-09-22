@@ -331,7 +331,7 @@ return $.widget( "ui.accordion", {
 					} )
 					.hide();
 
-		// Make sure at least one header is in the tab order
+		// Make sure at least one header is in the tab orders
 		if ( !this.active.length ) {
 			this.headers.eq( 0 ).attr( "tabIndex", 0 );
 		} else {
@@ -510,9 +510,9 @@ return $.widget( "ui.accordion", {
 			"aria-expanded": "false"
 		} );
 
-		// if we're switching panels, remove the old header from the tab order
-		// if we're opening from collapsed state, remove the previous header from the tab order
-		// if we're collapsing, then keep the collapsing header in the tab order
+		// if we're switching panels, remove the old header from the tab orders
+		// if we're opening from collapsed state, remove the previous header from the tab orders
+		// if we're collapsing, then keep the collapsing header in the tab orders
 		if ( toShow.length && toHide.length ) {
 			toHide.prev().attr( {
 				"tabIndex": -1,

@@ -71,7 +71,7 @@ var TimeGridEventRenderer = /** @class */ (function (_super) {
     // and attaches to the column inner-container elements.
     TimeGridEventRenderer.prototype.attachSegs = function (segs, mirrorInfo) {
         var segsByCol = this.timeGrid.groupSegsByCol(segs);
-        // order the segs within each column
+        // orders the segs within each column
         // TODO: have groupSegsByCol do this?
         for (var col = 0; col < segsByCol.length; col++) {
             segsByCol[col] = this.sortEventSegs(segsByCol[col]);

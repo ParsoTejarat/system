@@ -182,7 +182,7 @@
                                         <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                             <label for="status">وضعیت <span class="text-danger">*</span></label>
                                             <select name="status" id="status" class="form-control" data-toggle="select2">
-                                                <option value="order" {{ $invoice->status == 'order' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['order'] }}</option>
+                                                <option value="order" {{ $invoice->status == 'orders' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['orders'] }}</option>
                                                 <option value="pending" {{ $invoice->status == 'pending' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['pending'] }}</option>
                                                 <option value="invoiced" {{ $invoice->status == 'invoiced' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['invoiced'] }}</option>
                                             </select>

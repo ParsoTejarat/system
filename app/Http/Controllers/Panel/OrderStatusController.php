@@ -14,7 +14,7 @@ class OrderStatusController extends Controller
     {
         $this->authorize('invoices-list');
 
-        return view('panel.invoices.order-status', compact('invoice'));
+        return view('panel.invoices.orders-status', compact('invoice'));
     }
 
     public function changeStatus(Request $request)
@@ -35,7 +35,7 @@ class OrderStatusController extends Controller
                 'invoice_id' => $request->invoice_id,
             ],[
                 'status' => $item,
-                'order' => array_flip(OrderStatus::ORDER)[$item],
+                'orders' => array_flip(OrderStatus::ORDER)[$item],
                 'invoice_id' => $request->invoice_id,
                 'created_at' => now(),
                 'updated_at' => now()
@@ -47,14 +47,14 @@ class OrderStatusController extends Controller
             'invoice_id' => $request->invoice_id,
         ],[
             'status' => $status,
-            'order' => array_flip(OrderStatus::ORDER)[$status],
+            'orders' => array_flip(OrderStatus::ORDER)[$status],
             'invoice_id' => $request->invoice_id,
             'created_at' => now(),
             'updated_at' => now()
         ]);
 
         // log
-        activity_log('order-change-status', __METHOD__, $request->all());
+        activity_log('orders-change-status', __METHOD__, $request->all());
 
         return back();
     }
@@ -62,7 +62,7 @@ class OrderStatusController extends Controller
     public function addDescription(Request $request)
     {
         // log
-        activity_log('order-add-desc', __METHOD__, $request->all());
+        activity_log('orders-add-desc', __METHOD__, $request->all());
 
         Invoice::find($request->invoice_id)->update(['order_status_desc' => $request->description]);
     }

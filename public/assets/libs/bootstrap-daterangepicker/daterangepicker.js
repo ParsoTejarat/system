@@ -278,7 +278,7 @@
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
 
-        // update day names order to firstDay
+        // update day names orders to firstDay
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
             while (iterator > 0) {
@@ -761,7 +761,7 @@
             html += '</thead>';
             html += '<tbody>';
 
-            //adjust maxDate to reflect the maxSpan setting in order to
+            //adjust maxDate to reflect the maxSpan setting in orders to
             //grey out end dates beyond the maxSpan
             if (this.endDate == null && this.maxSpan) {
                 var maxLimit = this.startDate.clone().add(this.maxSpan).endOf('day');

@@ -199,7 +199,7 @@ Globalize.cultures[ "default" ] = {
 			AM: [ "AM", "am", "AM" ],
 			PM: [ "PM", "pm", "PM" ],
 			eras: [
-				// eras in reverse chronological order.
+				// eras in reverse chronological orders.
 				// name: the name of the era in this culture (e.g. A.D., C.E.)
 				// start: when the era starts in ticks (gregorian, gmt), null if it is the earliest supported era.
 				// offset: offset in years from gregorian calendar

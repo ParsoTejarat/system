@@ -50289,7 +50289,7 @@ function _deepEqual(actual, expected) {
   // 7.5 For all other Object pairs, including Array objects, equivalence is
   // determined by having the same number of owned properties (as verified
   // with Object.prototype.hasOwnProperty.call), the same set of keys
-  // (although not necessarily the same order), equivalent values for every
+  // (although not necessarily the same orders), equivalent values for every
   // corresponding key, and an identical 'prototype' property. Note: this
   // accounts for both named and indexed properties on Arrays.
   } else {
@@ -50327,7 +50327,7 @@ function objEquiv(a, b) {
   // hasOwnProperty)
   if (ka.length != kb.length)
     return false;
-  //the same set of keys (although not necessarily the same order),
+  //the same set of keys (although not necessarily the same orders),
   ka.sort();
   kb.sort();
   //~~~cheap key test
@@ -50695,7 +50695,7 @@ EventEmitter.prototype.removeAllListeners = function(type) {
   if (isFunction(listeners)) {
     this.removeListener(type, listeners);
   } else {
-    // LIFO order
+    // LIFO orders
     while (listeners.length)
       this.removeListener(type, listeners[listeners.length - 1]);
   }
@@ -51858,7 +51858,7 @@ function assert(expression) {
   };
 
   // Use a comparator function to figure out the smallest index at which
-  // an object should be inserted so as to maintain order. Uses binary search.
+  // an object should be inserted so as to maintain orders. Uses binary search.
   _.sortedIndex = function(array, obj, iterator, context) {
     iterator = iterator == null ? _.identity : lookupIterator(iterator);
     var value = iterator.call(context, obj);
@@ -52026,7 +52026,7 @@ function assert(expression) {
   // we need this function. Return the position of the first occurrence of an
   // item in an array, or -1 if the item is not included in the array.
   // Delegates to **ECMAScript 5**'s native `indexOf` if available.
-  // If the array is large and already in sort order, pass `true`
+  // If the array is large and already in sort orders, pass `true`
   // for **isSorted** to use binary search.
   _.indexOf = function(array, item, isSorted) {
     if (array == null) return -1;
@@ -52322,7 +52322,7 @@ function assert(expression) {
 
   // Invokes interceptor with the obj, and then returns obj.
   // The primary purpose of this method is to "tap into" a method chain, in
-  // order to perform operations on intermediate results within the chain.
+  // orders to perform operations on intermediate results within the chain.
   _.tap = function(obj, interceptor) {
     interceptor(obj);
     return obj;
@@ -57131,9 +57131,9 @@ var JSHINT = (function () {
   }
 
   // array comprehension parsing function
-  // parses and defines the three states of the list comprehension in order
+  // parses and defines the three states of the list comprehension in orders
   // to avoid defining global variables, but keeping them to the list comprehension scope
-  // only. The order of the states are as follows:
+  // only. The orders of the states are as follows:
   //  * "use" which will be the returned iterative part of the list comprehension
   //  * "define" which will define the variables local to the list comprehension
   //  * "filter" which will help filter out values

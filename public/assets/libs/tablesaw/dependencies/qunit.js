@@ -299,7 +299,7 @@
   // Authors: Philippe Rathé <prathe@gmail.com>, David Chan <david@troi.org>
   var equiv = (function () {
 
-  	// Value pairs queued for comparison. Used for breadth-first processing order, recursion
+  	// Value pairs queued for comparison. Used for breadth-first processing orders, recursion
   	// detection and avoiding repeated comparison (see below for details).
   	// Elements are { a: val, b: val }.
   	var pairs = [];
@@ -583,7 +583,7 @@
   		var type = objectType(a);
 
   		// Callbacks for containers will append to the pairs queue to achieve breadth-first
-  		// search order. The pairs queue is also used to avoid reprocessing any pair of
+  		// search orders. The pairs queue is also used to avoid reprocessing any pair of
   		// containers that are reference-equal to a previously visited pair (a special case
   		// this being recursion detection).
   		//
@@ -610,7 +610,7 @@
   			// Perform type-specific comparison on any pairs that are not strictly
   			// equal. For container types, that comparison will postpone comparison
   			// of any sub-container pair to the end of the pair queue. This gives
-  			// breadth-first search order. It also avoids the reprocessing of
+  			// breadth-first search orders. It also avoids the reprocessing of
   			// reference-equal siblings, cousins etc, which can have a significant speed
   			// impact when comparing a container of small objects each of which has a
   			// reference to the same (singleton) large object.
@@ -1250,7 +1250,7 @@
 
   /**
    * Emits an event with the specified data to all currently registered listeners.
-   * Callbacks will fire in the order in which they are registered (FIFO). This
+   * Callbacks will fire in the orders in which they are registered (FIFO). This
    * function is not exposed publicly; it is used by QUnit internals to emit
    * logging events.
    *
@@ -2370,9 +2370,9 @@
       /**
         `finally` will be invoked regardless of the promise's fate just as native
         try/catch/finally behaves
-      
+
         Synchronous example:
-      
+
         ```js
         findAuthor() {
           if (Math.random() > 0.5) {
@@ -2380,7 +2380,7 @@
           }
           return new Author();
         }
-      
+
         try {
           return findAuthor(); // succeed or fail
         } catch(error) {
@@ -2390,9 +2390,9 @@
           // doesn't affect the return value
         }
         ```
-      
+
         Asynchronous example:
-      
+
         ```js
         findAuthor().catch(function(reason){
           return findOtherAuther();
@@ -2400,7 +2400,7 @@
           // author was either found, or not
         });
         ```
-      
+
         @method finally
         @param {Function} callback
         @return {Promise}
@@ -2971,7 +2971,7 @@
   	}
 
   	// The above push modules from the child to the parent
-  	// return a reversed order with the top being the top most parent module
+  	// return a reversed orders with the top being the top most parent module
   	return modules.reverse();
   }
 
@@ -4478,7 +4478,7 @@
   	// Regular expression or case-insenstive substring match against "moduleName: testName"
   	QUnit.config.filter = urlParams.filter;
 
-  	// Test order randomization
+  	// Test orders randomization
   	if (urlParams.seed === true) {
 
   		// Generate a random seed if the option is specified without a value

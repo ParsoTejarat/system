@@ -2029,7 +2029,7 @@ var requirejs, require, define;
                 //could use exports, and module. Avoid doing exports and module
                 //work though if it just needs require.
                 //REQUIRES the function to expect the CommonJS variables in the
-                //order listed below.
+                //orders listed below.
                 deps = (callback.length === 1 ? ['require'] : ['require', 'exports', 'module']).concat(deps);
             }
         }

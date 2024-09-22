@@ -16,6 +16,7 @@ use App\Http\Controllers\Panel\InvoiceController;
 use App\Http\Controllers\Panel\LeaveController;
 use App\Http\Controllers\Panel\NoteController;
 use App\Http\Controllers\Panel\OffSiteProductController;
+use App\Http\Controllers\Panel\OrderController;
 use App\Http\Controllers\Panel\OrderStatusController;
 use App\Http\Controllers\Panel\PacketController;
 use App\Http\Controllers\Panel\PaymentOrderController;
@@ -100,6 +101,13 @@ Route::get('test/{id?}', function ($id = null) {
 //})->name('import-excel');
 
 Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
+
+
+    Route::resource('/orders', OrderController::class);
+    Route::match(['get', 'post'], 'search/orders', [InvoiceController::class, 'search'])->name('orders.search');
+
+
+
     Route::match(['get', 'post'], '/', [PanelController::class, 'index'])->name('panel');
     Route::post('send-sms', [PanelController::class, 'sendSMS'])->name('sendSMS');
     Route::post('saveFcmToken', [PanelController::class, 'saveFCMToken']);
@@ -117,9 +125,9 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
 
 
     //PaymentsOrder
-    Route::resource('payments_order', PaymentOrderController::class)->except('show');
-    Route::post('status-order-payment', [PaymentOrderController::class, 'statusOrderPayment'])->name('payments_order_status');
-    Route::get('download-order-payment/{id}', [PaymentOrderController::class, 'downloadOrderPaymentPdf'])->name('payments_order.download');
+        Route::resource('payments_order', PaymentOrderController::class)->except('show');
+    Route::post('status-orders-payment', [PaymentOrderController::class, 'statusOrderPayment'])->name('payments_order_status');
+    Route::get('download-orders-payment/{id}', [PaymentOrderController::class, 'downloadOrderPaymentPdf'])->name('payments_order.download');
 
     //purchaseEngineer
     Route::get('purchases', [PurchaseController::class, 'index'])->name('purchase.index');
@@ -261,7 +269,7 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
 
     // Buy Orders
     Route::resource('buy-orders', BuyOrderController::class);
-    Route::post('buy-order/{buy_order}/change-status', [BuyOrderController::class, 'changeStatus'])->name('buy-orders.changeStatus');
+    Route::post('buy-orders/{buy_order}/change-status', [BuyOrderController::class, 'changeStatus'])->name('buy-orders.changeStatus');
 
     // File Manager
     Route::get('file-manager', [FileManagerController::class, 'index'])->name('file-manager.index');

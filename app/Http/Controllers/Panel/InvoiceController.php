@@ -86,8 +86,8 @@ class InvoiceController extends Controller
         // create products for invoice
         $this->storeInvoiceProducts($invoice, $request);
 
-        // create order status
-        $invoice->order_status()->create(['order' => 1, 'status' => 'register']);
+        // create orders status
+        $invoice->order_status()->create(['orders' => 1, 'status' => 'register']);
 
         // log
         activity_log('create-invoice', __METHOD__, [$request->all(), $invoice]);
@@ -131,6 +131,7 @@ class InvoiceController extends Controller
         }
 
 //        $seller = Seller::first();
+
 
         return view('panel.invoices.edit', compact('invoice'));
     }
@@ -288,7 +289,7 @@ class InvoiceController extends Controller
         })->pluck('id');
 
         $customers_id = $request->customer_id == 'all' ? $customers->pluck('id') : [$request->customer_id];
-        $status = $request->status == 'all' ? ['pending', 'return', 'invoiced', 'order'] : [$request->status];
+        $status = $request->status == 'all' ? ['pending', 'return', 'invoiced', 'orders'] : [$request->status];
         $province = $request->province == 'all' ? Province::pluck('name') : [$request->province];
         $user_id = $request->user == 'all' || $request->user == null ? User::whereIn('role_id', $roles_id)->pluck('id') : [$request->user];
 
@@ -430,7 +431,7 @@ class InvoiceController extends Controller
             'margin_bottom' => 0,
         ]);
 
-        return $pdf->stream("order.pdf");
+        return $pdf->stream("orders.pdf");
     }
 
     public function action(Invoice $invoice)
