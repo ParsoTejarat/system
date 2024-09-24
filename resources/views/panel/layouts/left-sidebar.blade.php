@@ -190,7 +190,7 @@
                         <div class="collapse {{ $active_side ? 'show' : '' }}" id="orders">
                             <ul class="nav-second-level">
                                 @can('customer-order-list')
-                                    @php $active_item = active_sidebar(['orders','orders/create','orders/{order}/edit','search/orders','order-action/{orders}','customer-orders-status/{orders}']); @endphp
+                                    @php $active_item = active_sidebar(['orders','orders/create','orders/{order}/edit','search/orders','order-action/{orders}','customer-orders-status/{orders}','order-action/{order}']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
                                         <a href="{{ route('orders.index') }}" {{ $active_item ? 'active' : '' }}>
                                             سفارشات مشتری
