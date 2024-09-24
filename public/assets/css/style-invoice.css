@@ -318,7 +318,7 @@ table th{
 }
 
 .invoice-1 .inv-title-1{
-    color: #ff3200;
+    color: #0096d6;
     margin-bottom: 5px;
 }
 
@@ -327,7 +327,7 @@ table th{
 }
 
 .invoice-1 .invoice-logo img {
-    height: 60px;
+    height: 70px;
 }
 
 .invoice-1 .table-section {
@@ -339,7 +339,7 @@ table th{
 }
 
 .invoice-1 .table > :not(caption) > * > * {
-    padding: 13px 30px;
+    padding: 10px 30px;
 }
 
 .invoice-1 .table > :not(caption) > * > * {
@@ -389,7 +389,7 @@ table th{
 }
 
 .invoice-1 .active-color{
-    color: #ff3200!important;
+    color: #0096d6!important;
 }
 
 .invoice-1 .invoice-bottom h3 {

@@ -104,7 +104,11 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
 
 
     Route::resource('/orders', OrderController::class);
-    Route::match(['get', 'post'], 'search/orders', [InvoiceController::class, 'search'])->name('orders.search');
+    Route::get('order-action/{order}', [OrderController::class,'orderAction'])->name('order.action');
+    Route::post('order-action/{invoice}', [OrderController::class, 'actionStore'])->name('order.action.store');
+    Route::put('order-invoice-file/{order_action}/delete', [OrderController::class, 'deleteInvoiceFile'])->name('order.invoice.action.delete');
+    Route::put('order-factor-file/{order_action}/delete', [OrderController::class, 'deleteFactorFile'])->name('order.factor.action.delete');
+    Route::match(['get', 'post'], '/order/search/orders', [OrderController::class, 'search'])->name('orders.search');
 
 
 

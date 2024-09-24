@@ -148,6 +148,12 @@ class ActivityLog extends Model
         'payment-create-create' => 'ثبت دستور پرداخت/دریافت',
         'payment-edit-edit' => 'ویرایش دستور پرداخت/دریافت',
         'payment-delete-delete' => 'حذف دستور پرداخت/دریافت',
+        //delete_orders
+        'create-orders' => 'ایجاد سفارش مشتری',
+        'edit-orders' => 'ویرایش سفارش مشتری',
+        'delete-orders' => 'حذف سفارش مشتری',
+        'order-action' => 'اقدام به سفارش مشتری',
+        'delete-order-file' => 'حذف فایل پیش فاکتور',
     ];
 
     public function user()

@@ -17,10 +17,14 @@ class Customer extends Model
     ];
 
     const CUSTOMER_TYPE = [
-        'system' => 'سامانه',
-        'tehran' => 'تهران',
-        'city' => 'شهرستان',
-        'single-sale' => 'تک فروشی',
+//        'system' => 'سامانه',
+//        'tehran' => 'تهران',
+//        'city' => 'شهرستان',
+//        'single-sale' => 'تک فروشی',
+
+    'setad'=>'سامانه ستاد',
+    'online-sale'=>'فروش اینترنتی',
+    'free-sale'=>'آزاد(بازار)',
     ];
 
     public function invoices()

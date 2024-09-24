@@ -179,7 +179,7 @@
                                                 @canany(['sales-manager','accountant'])
                                                     <td>
                                                         <a class="btn btn-primary btn-floating @cannot('accountant') {{ $order->action ? '' : 'disabled' }} @endcannot"
-                                                           href="{{ route('invoice.action', $order->id) }}">
+                                                           href="{{ route('order.action', $order->id) }}">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
                                                     </td>
@@ -233,8 +233,7 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            <div
-                                class="d-flex justify-content-center">{{ $orders->appends(request()->all())->links() }}</div>
+                            <div class="d-flex justify-content-center">{{ $orders->appends(request()->all())->links() }}</div>
                         </div>
                     </div>
                 </div>

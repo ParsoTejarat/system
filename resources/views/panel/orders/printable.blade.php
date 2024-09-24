@@ -27,7 +27,7 @@
                                     <div class="invoice-logo">
                                         <!-- logo started -->
                                         <div class="logo">
-                                            <img src="https://parso.moshrefiholding.com/assets/images/logo-dark.png"
+                                            <img src="/assets/images/header-logo.png"
                                                  alt="logo">
                                         </div>
                                         <!-- logo ended -->
@@ -50,11 +50,12 @@
                                         <h4 class="inv-title-1 mb-3">مشخصات مشتری</h4>
                                         <h2 class="name mb-10">نام شخص حقیقی/حقوقی : {{$order->customer->name}}</h2>
                                         <p class="invo-addr-1">
-                                            {{$order->customer->city}} {{$order->customer->province}} <br/>
+
                                             شماره ثبت/ملی : {{$order->customer->national_number}} <br/>
                                             کد پستی : {{$order->customer->postal_code}} <br/>
                                             شماره تماس : {{$order->customer->phone1}} <br/>
-                                            {{$order->customer->address1}} <br/>
+                                            آدرس : {{$order->customer->province}}
+                                            ،{{$order->customer->city}} {{$order->customer->address1}} <br/>
                                         </p>
                                     </div>
                                 </div>
@@ -68,33 +69,48 @@
                                         <th class="pl0 text-end">ردیف</th>
                                         <th class="pl0 text-end">کالا</th>
                                         <th class="text-center">تعداد</th>
-                                        <th class="text-center">قیمت</th>
-                                        <th class="text-start">جمع</th>
+                                        <th class="text-center">قیمت (ریال)</th>
+                                        <th class="text-start">جمع (ریال)</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {{--                            @dd(json_decode($order->products))--}}
-                                    @foreach(array_merge(json_decode($order->products)->products, json_decode($order->products)->other_products) as $product)
+                                    {{--                                                                @dd(array_merge(json_decode($order->products)->products, json_decode($order->products)->other_products))--}}
+
+                                    @php
+                                        $productsData = json_decode($order->products);
+                                        $products = $productsData->products ?? [];
+                                        $otherProducts = $productsData->other_products ?? [];
+                                        $mergedProducts = array_merge($products, $otherProducts);
+                                        $total = 0;
+                                    @endphp
+
+                                    @foreach($mergedProducts as $product)
                                         <tr class="tr">
                                             <td>
                                                 <div class="item-desc-1 text-end">
                                                     <span>{{$loop->index + 1}}</span>
                                                 </div>
                                             </td>
-                                            <td class="pl0">{{$product->product}}</td>
-                                            <!-- Assuming 'name' field exists in product -->
-                                            <td class="text-center">{{$product->quantity}}</td>
-                                            <td class="text-center">{{$product->price}}</td>
-                                            <td class="text-start">{{$product->quantity * $product->price}}</td>
+                                            <td class="pl0">{{ $product->products ?? $product->other_products ?? 'N/A' }}</td>
+                                            <td class="text-center">{{ $product->counts ?? $product->other_counts ?? 0 }}</td>
+                                            <td class="text-center">{{ number_format($product->prices?? $product->other_prices) ?? 0 }}</td>
+                                            <td class="text-start">{{
+            number_format(($product->counts ?? $product->other_counts ?? 0) *
+            ($product->prices ?? $product->other_prices ?? 0))
+        }}</td>
                                         </tr>
+                                        @php
+                                            $total += (($product->counts ?? $product->other_counts ?? 0) *
+                                                        ($product->prices ?? $product->other_prices ?? 0));
+                                        @endphp
                                     @endforeach
 
                                     <tr class="tr2">
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td class="text-center f-w-600 active-color">Grand Total</td>
-                                        <td class="f-w-600 text-start active-color">$795.99</td>
+                                        <td class="text-center f-w-600 active-color">جمع کل</td>
+                                        <td class="f-w-600 text-start active-color">{{ number_format($total) }}</td>
                                     </tr>
                                     </tbody>
                                 </table>

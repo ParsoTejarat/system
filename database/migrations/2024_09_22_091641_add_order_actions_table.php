@@ -14,9 +14,9 @@ class AddOrderActionsTable extends Migration
     public function up()
     {
 
-        Schema::create('order-actions', function (Blueprint $table) {
+        Schema::create('order_actions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('invoice_id');
+            $table->unsignedBigInteger('order_id');
             $table->enum('status', ['invoice', 'factor']);
             $table->string('invoice_file')->nullable();
             $table->string('factor_file')->nullable();
@@ -24,7 +24,7 @@ class AddOrderActionsTable extends Migration
             $table->boolean('confirm')->default(0)->comment('تایید توسط مسئول فروش');
             $table->boolean('sent_to_warehouse')->default(0);
             $table->timestamps();
-            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->foreign('acceptor_id')->references('id')->on('users')->onDelete(null);
         });
     }

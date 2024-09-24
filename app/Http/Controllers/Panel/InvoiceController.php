@@ -587,7 +587,7 @@ class InvoiceController extends Controller
     public function deleteFactorFile(InvoiceAction $invoiceAction)
     {
         // log
-        activity_log(' delete-factor-file', __METHOD__, $invoiceAction);
+        activity_log('delete-factor-file', __METHOD__, $invoiceAction);
 
         unlink(public_path($invoiceAction->factor_file));
 

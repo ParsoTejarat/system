@@ -9,6 +9,7 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
     const STATUS = [
         'orders' => 'ثبت سفارش',
         'pending' => 'پیش فاکتور شده',
@@ -29,5 +30,10 @@ class Order extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function action()
+    {
+        return $this->hasOne(OrderAction::class);
     }
 }
