@@ -12,7 +12,7 @@
     </style>
 @endsection
 @section('content')
-    @dd(json_decode($order->products))
+{{--    @dd(json_decode($order->products))--}}
     <div class="content">
         <div class="container-fluid">
             <!-- start page title -->
