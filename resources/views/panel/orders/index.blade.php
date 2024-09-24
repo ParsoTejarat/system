@@ -27,9 +27,9 @@
                             @endcannot
                             <div class="card-title d-flex justify-content-end">
                                 <div>
-                                    {{--                                    <form action="{{ route('invoices.excel') }}" method="post" id="excel_form">--}}
-                                    {{--                                        @csrf--}}
-                                    {{--                                    </form>--}}
+                                    <form action="{{ route('orders.excel') }}" method="post" id="excel_form">
+                                        @csrf
+                                    </form>
 
                                     <button class="btn btn-success" form="excel_form">
                                         <i class="fa fa-file-excel mr-2"></i>
@@ -116,7 +116,7 @@
                                         {{--                        @canany(['accountant','admin','ceo'])--}}
                                         <th>مشاهده سفارش</th>
                                         {{--                        @endcanany--}}
-{{--                                        <th>وضعیت سفارش</th>--}}
+                                        {{--                                        <th>وضعیت سفارش</th>--}}
 
                                         @canany(['sales-manager','accountant'])
                                             <th>اقدام</th>
@@ -158,14 +158,14 @@
                                             </td>
 
                                             {{--                            @endcanany--}}
-{{--                                            <td>--}}
-{{--                                                --}}{{-- invoices before 2024-02-03 orders-status disabled --}}
-{{--                                                <a href="{{ route('orders-status.index', $order->id) }}"--}}
-{{--                                                   class="btn btn-purple btn-floating {{ $order->created_at < verta('2024-02-03 00:00:00') ? 'disabled' : '' }}"--}}
-{{--                                                   target="_blank">--}}
-{{--                                                    <i class="fa fa-truck"></i>--}}
-{{--                                                </a>--}}
-{{--                                            </td>--}}
+                                            {{--                                            <td>--}}
+                                            {{--                                                --}}{{-- invoices before 2024-02-03 orders-status disabled --}}
+                                            {{--                                                <a href="{{ route('orders-status.index', $order->id) }}"--}}
+                                            {{--                                                   class="btn btn-purple btn-floating {{ $order->created_at < verta('2024-02-03 00:00:00') ? 'disabled' : '' }}"--}}
+                                            {{--                                                   target="_blank">--}}
+                                            {{--                                                    <i class="fa fa-truck"></i>--}}
+                                            {{--                                                </a>--}}
+                                            {{--                                            </td>--}}
                                             @can('warehouse-keeper')
 
                                                 <td>

@@ -18,6 +18,7 @@ use App\Notifications\SendMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Notification;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
@@ -397,6 +398,11 @@ class OrderController extends Controller
         $message = "سفارش '{$order->customer->name}' ثبت شد";
 
         Notification::send($managers, new SendMessage($message, $url));
+    }
+
+    public function excel()
+    {
+        return Excel::download(new \App\Exports\OrderExport, 'orders.xlsx');
     }
 
 

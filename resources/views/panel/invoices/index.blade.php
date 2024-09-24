@@ -34,7 +34,7 @@
                             @endcan
                             <div class="card-title d-flex justify-content-end">
                                 <div>
-                                    <form action="{{ route('invoices.excel') }}" method="post" id="excel_form">
+                                    <form action="{{ route('orders.excel') }}" method="post" id="excel_form">
                                         @csrf
                                     </form>
 

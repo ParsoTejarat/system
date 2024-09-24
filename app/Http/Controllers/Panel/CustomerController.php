@@ -129,7 +129,7 @@ class CustomerController extends Controller
         $this->authorize('customers-list');
 
         if (auth()->user()->isAdmin() || auth()->user()->isCEO() || auth()->user()->isItManager()) {
-            $customers = Customer::query(); // شروع با یک کوئری پایه
+            $customers = Customer::query();
         } else {
             $customers = Customer::where('user_id', auth()->id());
         }

@@ -36,4 +36,26 @@ class Order extends Model
     {
         return $this->hasOne(OrderAction::class);
     }
+
+    public function getNetAmount()
+    {
+        $productsData = json_decode($this->products);
+
+        $total = 0;
+
+
+        if (isset($productsData->products)) {
+            foreach ($productsData->products as $product) {
+                $total += ($product->counts * $product->prices);
+            }
+        }
+
+        if (isset($productsData->other_products)) {
+            foreach ($productsData->other_products as $otherProduct) {
+                $total += ($otherProduct->other_counts * $otherProduct->other_prices);
+            }
+        }
+
+        return $total;
+    }
 }

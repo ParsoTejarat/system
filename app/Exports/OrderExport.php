@@ -2,8 +2,9 @@
 
 namespace App\Exports;
 
-use App\Models\Customer;
-use App\Models\Packet;
+use App\Models\Invoice;
+use App\Models\Order;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
@@ -18,40 +19,35 @@ use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class CustomersExport implements FromCollection, WithMapping, WithHeadings, WithStyles, WithEvents, ShouldAutoSize, WithColumnFormatting
+class OrderExport implements FromCollection, WithMapping, WithHeadings, WithStyles, WithEvents, ShouldAutoSize, WithColumnFormatting
 {
-
+    /**
+    * @return \Illuminate\Support\Collection
+    */
     public function collection()
     {
-        if (auth()->user()->isCEO() || auth()->user()->isAdmin()) {
-            return Customer::all();
-        } else {
-            return Customer::where(['user_id' => auth()->id()])->get();
-        }
+        return Order::all();
     }
 
-    public function map($customer): array
+    public function map($order): array
     {
         return [
-            $customer->name,
-            $customer->code ?? '---',
-            Customer::TYPE[$customer->type],
-            Customer::CUSTOMER_TYPE[$customer->customer_type],
-            $customer->economical_number ?? '---',
-            $customer->national_number ?? '---',
-            $customer->postal_code ?? '---',
-            $customer->province ?? '---',
-            $customer->city ?? '---',
-            $customer->phone1 ?? '---',
-            $customer->address1 ?? '---',
-            $customer->description ?? '---',
+            $order->customer->name,
+            (string)($order->customer->economical_number ?? 0),
+            $order->customer->national_number,
+            $order->customer->postal_code,
+            $order->customer->phone1,
+            $order->customer->province,
+            $order->customer->city,
+            Order::STATUS[$order->status],
+            number_format($order->getNetAmount()),
         ];
     }
 
     public function registerEvents(): array
     {
         return [
-            AfterSheet::class => function (AfterSheet $event) {
+            AfterSheet::class => function(AfterSheet $event) {
                 $sheet = $event->sheet->getDelegate();
 
                 $sheet->setRightToLeft(true)
@@ -60,6 +56,8 @@ class CustomersExport implements FromCollection, WithMapping, WithHeadings, With
                     ->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
                 $sheet->getStyle('A1:XFD1048576')->getFont()->setName('B Nazanin');
+
+//                $event->sheet->mergeCells('B1:C1');
             },
         ];
     }
@@ -67,24 +65,21 @@ class CustomersExport implements FromCollection, WithMapping, WithHeadings, With
     public function headings(): array
     {
         return [
-            'A' => 'نام حقیقی/حقوقی',
-            'B' => 'کد',
-            'C' => 'نوع',
-            'D' => 'مشتری',
-            'E' => 'شماره اقتصادی',
-            'F' => 'شماره ثبت/ملی',
-            'G' => 'کد پستی',
-            'H' => 'استان',
-            'I' => 'شهر',
-            'J' => 'شماره تماس',
-            'K' => 'آدرس',
-            'L' => 'توضیحات',
+            'A' => 'خریدار',
+            'B' => 'شماره اقتصادی',
+            'C' => 'شماره ثبت/ملی',
+            'D' => 'کد پستی',
+            'E' => 'شماره تماس',
+            'F' => 'استان',
+            'G' => 'شهر',
+            'H' => 'وضعیت',
+            'I' => 'مبلغ خالص فاکتور',
         ];
     }
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->getStyle('A1:L1')->applyFromArray([
+        $sheet->getStyle('A1:I1')->applyFromArray([
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
                 'startColor' => ['rgb' => '0096d6']
@@ -99,8 +94,9 @@ class CustomersExport implements FromCollection, WithMapping, WithHeadings, With
     public function columnFormats(): array
     {
         return [
-            'E' => NumberFormat::FORMAT_NUMBER,
-            'F' => NumberFormat::FORMAT_NUMBER,
+            'B' => NumberFormat::FORMAT_NUMBER,
+            'C' => NumberFormat::FORMAT_NUMBER,
+            'D' => NumberFormat::FORMAT_NUMBER,
         ];
     }
 }
