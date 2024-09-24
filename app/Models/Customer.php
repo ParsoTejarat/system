@@ -24,7 +24,7 @@ class Customer extends Model
 
     'setad'=>'سامانه ستاد',
     'online-sale'=>'فروش اینترنتی',
-    'free-sale'=>'آزاد(بازار)',
+    'free-sale'=>'آزاد (بازار)',
     ];
 
     public function invoices()

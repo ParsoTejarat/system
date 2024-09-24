@@ -15,7 +15,7 @@ class ReportsController extends Controller
 
         $page = $request->input('page', 1);
 
-        $reports = Report::with('user.role')->paginate($perPage, ['*'], 'page', $page);
+        $reports = Report::with('user.role')->latest()->paginate($perPage, ['*'], 'page', $page);
 
         return response()->json($reports);
     }

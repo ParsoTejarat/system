@@ -73,8 +73,7 @@
                                         <th>#</th>
                                         <th>نام حقیقی/حقوقی</th>
                                         <th>کد مشتری</th>
-                                        <th>نوع</th>
-                                        <th>مشتری</th>
+                                        <th>نوع مشتری</th>
                                         <th>استان</th>
                                         <th>شماره تماس 1</th>
                                         <th>تعداد سفارش</th>
@@ -93,7 +92,6 @@
                                             <td>{{ ++$key }}</td>
                                             <td>{{ $customer->name }}</td>
                                             <td>{{ $customer->code ?? '---' }}</td>
-                                            <td>{{ \App\Models\Customer::TYPE[$customer->type] }}</td>
                                             <td>{{ \App\Models\Customer::CUSTOMER_TYPE[$customer->customer_type] }}</td>
                                             <td>{{ $customer->province }}</td>
                                             <td>{{ $customer->phone1 }}</td>
