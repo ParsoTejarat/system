@@ -121,7 +121,7 @@
                                 <div class="col-lg-6 col-md-8 col-sm-7">
                                     <div class="mb-30 dear-client">
                                         <h3 class="inv-title-1">توضیحات</h3>
-                                        <p>توضیحات تستی</p>
+                                        <p>{{$order->description}}</p>
                                     </div>
                                 </div>
 
