@@ -69,6 +69,7 @@
                                         <th class="pl0 text-end">ردیف</th>
                                         <th class="pl0 text-end">کالا</th>
                                         <th class="text-center">تعداد</th>
+                                        <th class="text-center">رنگ</th>
                                         <th class="text-center">قیمت (ریال)</th>
                                         <th class="text-start">جمع (ریال)</th>
                                     </tr>
@@ -77,10 +78,19 @@
                                     {{--                                                                @dd(array_merge(json_decode($order->products)->products, json_decode($order->products)->other_products))--}}
 
                                     @php
+                                        // Decode JSON data from the order
                                         $productsData = json_decode($order->products);
+
+                                        // Extract products and other products
                                         $products = $productsData->products ?? [];
                                         $otherProducts = $productsData->other_products ?? [];
-                                        $mergedProducts = array_merge($products, $otherProducts);
+
+                                        // Merge products and other products, ensuring they are arrays
+                                        $mergedProducts = array_merge(
+                                            is_array($products) ? $products : [$products],
+                                            is_array($otherProducts) ? $otherProducts : [$otherProducts]
+                                        );
+
                                         $total = 0;
                                     @endphp
 
@@ -88,24 +98,52 @@
                                         <tr class="tr">
                                             <td>
                                                 <div class="item-desc-1 text-end">
-                                                    <span>{{$loop->index + 1}}</span>
+                                                    <span>{{ $loop->index + 1 }}</span>
                                                 </div>
                                             </td>
-                                            <td class="pl0">{{ $product->products ?? $product->other_products ?? 'N/A' }}</td>
-                                            <td class="text-center">{{ $product->counts ?? $product->other_counts ?? 0 }}</td>
-                                            <td class="text-center">{{ number_format($product->prices?? $product->other_prices) ?? 0 }}</td>
-                                            <td class="text-start">{{
-            number_format(($product->counts ?? $product->other_counts ?? 0) *
-            ($product->prices ?? $product->other_prices ?? 0))
-        }}</td>
+
+                                            <td class="pl0">
+                                                {{ $product->products ?? $product->other_products ?? 'N/A' }}
+                                            </td>
+
+                                            @php
+                                                $units = isset($product->units) ? (\App\Models\Product::UNITS[$product->units] ?? 'N/A') : (\App\Models\Product::UNITS[$product->other_units] ?? 'N/A');
+                                            @endphp
+
+                                            <td class="text-center">
+                                                {{ ($product->counts ?? $product->other_counts) . ' ' . ($units ?? '') }}
+                                            </td>
+
+                                            <td class="text-center">
+                                                @php
+                                                    $color = isset($product->colors) ? (\App\Models\Product::COLORS[$product->colors] ?? 'N/A') : ($product->other_colors ?? 'N/A');
+                                                @endphp
+                                                {{ $color }}
+                                            </td>
+
+                                            <td class="text-center">
+                                                {{ number_format($product->prices ?? $product->other_prices) ?? 0 }}
+                                            </td>
+
+                                            <td class="text-start">
+                                                {{
+                                                    number_format(
+                                                        ($product->counts ?? $product->other_counts ?? 0) *
+                                                        ($product->prices ?? $product->other_prices ?? 0)
+                                                    )
+                                                }}
+                                            </td>
                                         </tr>
+
                                         @php
                                             $total += (($product->counts ?? $product->other_counts ?? 0) *
-                                                        ($product->prices ?? $product->other_prices ?? 0));
+                                                       ($product->prices ?? $product->other_prices ?? 0));
                                         @endphp
                                     @endforeach
 
+
                                     <tr class="tr2">
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
