@@ -26,7 +26,7 @@ class OrderController extends Controller
     public function index()
     {
         $this->authorize('customer-order-list');
-        if (auth()->user()->isAdmin() || auth()->user()->isAccountant() || auth()->user()->isCEO() || auth()->user()->isSalesManager()) {
+        if (auth()->user()->isAdmin() || auth()->user()->isAccountant() || auth()->user()->isCEO()) {
             $orders = Order::latest()->paginate(30);
         } else {
             $orders = Order::where('user_id', auth()->id())->latest()->paginate(30);
