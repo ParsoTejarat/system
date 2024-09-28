@@ -119,10 +119,12 @@
                         <div class="invoice-bottom">
                             <div class="row">
                                 <div class="col-lg-6 col-md-8 col-sm-7">
+                                    @if(!is_null($order->description))
                                     <div class="mb-30 dear-client">
                                         <h3 class="inv-title-1">توضیحات</h3>
                                         <p>{{$order->description}}</p>
                                     </div>
+                                    @endif
                                 </div>
 
                             </div>
