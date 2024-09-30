@@ -14,7 +14,7 @@ class OrderStatusController extends Controller
     {
         $this->authorize('invoices-list');
 
-        return view('panel.invoices.orders-status', compact('invoice'));
+        return view('panel.invoices.order-status', compact('invoice'));
     }
 
     public function changeStatus(Request $request)
