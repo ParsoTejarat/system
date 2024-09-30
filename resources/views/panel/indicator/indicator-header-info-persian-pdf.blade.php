@@ -7,10 +7,9 @@
         .div-indicator {
             position: absolute;
             right: 1px;
-            top: 18rem;
+            top: 16rem;
             padding: 2.3rem !important;
             direction: rtl !important;
-            line-height: 3em;
 
         }
 
@@ -18,7 +17,7 @@
             position: absolute;
             top: 8.9rem;
             left: 4rem;
-            font-size: 1.4rem;
+            font-size: 1.1rem;
 
         }
 
@@ -26,7 +25,7 @@
             position: absolute;
             top: 11.8rem;
             left: 3rem;
-            font-size: 1.4rem;
+            font-size: 1.1rem;
             width: 8rem;
             text-align: center;
         }
@@ -35,7 +34,7 @@
             position: absolute;
             top: 14.5rem;
             left: 3rem;
-            font-size: 1.4rem;
+            font-size: 1.1rem;
             width: 8rem;
             text-align: center;
         }

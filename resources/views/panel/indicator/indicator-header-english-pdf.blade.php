@@ -8,30 +8,28 @@
             position: absolute;
             top: 16rem;
             padding: 2.3rem !important;
-            line-height: 3em;
+
         }
         .date{
             position: absolute;
             top: 2.2rem;
             right: 3rem;
-            font-size: 1.4rem;
+            font-size: 1.1rem;
 
         }
         .number{
             position: absolute;
             top: 5rem;
             right: 2.5rem;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             width: 8rem;
-            text-align: center;
         }
         .attachment{
             position: absolute;
             top: 7.6rem;
             right: 1rem;
-            font-size: 1.4rem;
+            font-size: 1.1rem;
             width: 8rem;
-            text-align: center;
         }
     </style>
 </head>

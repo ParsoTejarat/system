@@ -169,7 +169,7 @@ class IndicatorController extends Controller
             'format' => 'A4',
             'orientation' => 'P',
             'default_font_size' => '10',
-            'default_font' => $this->extractName($text),
+            'default_font' => 'sahel',
             'display_mode' => 'fullpage',
             'watermark_text_alpha' => 1,
             'watermark_image_path' => $backgroundImage,
@@ -191,7 +191,7 @@ class IndicatorController extends Controller
             'format' => 'A4',
             'orientation' => 'P',
             'default_font_size' => '10',
-            'default_font' => $this->extractName($text),
+            'default_font' => 'sahel',
             'display_mode' => 'fullpage',
             'watermark_text_alpha' => 1,
             'watermark_image_path' => $backgroundImage,
@@ -212,7 +212,7 @@ class IndicatorController extends Controller
             'format' => 'A4',
             'orientation' => 'P',
             'default_font_size' => '10',
-            'default_font' => $this->extractName($text),
+            'default_font' => 'sahel',
             'display_mode' => 'fullpage',
             'watermark_text_alpha' => 1,
             'watermark_image_path' => $backgroundImage,
@@ -227,23 +227,23 @@ class IndicatorController extends Controller
     }
 
 
-    public function extractName($text)
-    {
-        $tempDiv = new \DOMDocument();
-        $tempDiv->loadHTML('<?xml encoding="utf-8" ?>' . $text);
-        $spanElements = $tempDiv->getElementsByTagName('span');
-        $fontFamily = null;
-        foreach ($spanElements as $span) {
-            $style = $span->getAttribute('style');
-            preg_match('/font-family\s*:\s*([^;]+)(;|$)/', $style, $matches);
-
-            if (isset($matches[1])) {
-                $fontFamily = trim($matches[1], " '\"");
-                break;
-            }
-        }
-        return $fontFamily ?? 'dana';
-    }
+//    public function extractName($text)
+//    {
+//        $tempDiv = new \DOMDocument();
+/*        $tempDiv->loadHTML('<?xml encoding="utf-8" ?>' . $text);*/
+//        $spanElements = $tempDiv->getElementsByTagName('span');
+//        $fontFamily = null;
+//        foreach ($spanElements as $span) {
+//            $style = $span->getAttribute('style');
+//            preg_match('/font-family\s*:\s*([^;]+)(;|$)/', $style, $matches);
+//
+//            if (isset($matches[1])) {
+//                $fontFamily = trim($matches[1], " '\"");
+//                break;
+//            }
+//        }
+//        return $fontFamily ?? 'dana';
+//    }
 
     public function generateUniqueCode()
     {
@@ -272,19 +272,31 @@ class IndicatorController extends Controller
 
     public function previewIndicator(Request $request)
     {
-//        $validatedData = $request->validate([
-//            'date' => 'required|date',
-//            'number' => 'required|string',
-//            'attachment' => 'nullable|string',
-//            'text' => 'required|string',
-//        ]);
+//        dd($request->input('header'));
+        if ($request->input('header') == 'info'){
+            return view('panel.indicator.preview-info', [
+                'date' => $request->input('date'),
+                'number' => $request->input('number'),
+                'attachment' => $request->input('attachment'),
+                'text' => $request->input('text')
+            ]);
+        }
+        if ($request->input('header') == 'sale'){
+            return view('panel.indicator.preview-sale', [
+                'date' => $request->input('date'),
+                'number' => $request->input('number'),
+                'attachment' => $request->input('attachment'),
+                'text' => $request->input('text')
+            ]);
+        }
+        if ($request->input('header') == 'english'){
+            return view('panel.indicator.preview-english', [
+                'date' => $request->input('date'),
+                'number' => $request->input('number'),
+                'attachment' => $request->input('attachment'),
+                'text' => $request->input('text')
+            ]);
+        }
 
-
-        return view('panel.indicator.preview', [
-            'date' => $request->input('date'),
-            'number' => $request->input('number'),
-            'attachment' => $request->input('attachment'),
-            'text' => $request->input('text')
-        ]);
     }
 }

@@ -158,10 +158,10 @@
                             <div class="row">
                                 <div class="col-lg-6 col-md-8 col-sm-7">
                                     @if(!is_null($order->description))
-                                    <div class="mb-30 dear-client">
-                                        <h3 class="inv-title-1">توضیحات</h3>
-                                        <p>{{$order->description}}</p>
-                                    </div>
+                                        <div class="mb-30 dear-client">
+                                            <h3 class="inv-title-1">توضیحات</h3>
+                                            <p>{{$order->description}}</p>
+                                        </div>
                                     @endif
                                 </div>
 
@@ -175,8 +175,6 @@
                         <a href="javascript:window.print()" class="btn btn-lg btn-download btn-theme">
                             <i class="fa fa-print"></i>چاپ
                         </a>
-
-
                     </div>
                 </div>
             </div>
