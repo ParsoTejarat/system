@@ -242,7 +242,7 @@ class IndicatorController extends Controller
                 break;
             }
         }
-        return $fontFamily ?? 'Nazanin';
+        return $fontFamily ?? 'dana';
     }
 
     public function generateUniqueCode()
@@ -268,5 +268,23 @@ class IndicatorController extends Controller
         } while ($existingIndicator);
 
         return $uniqueCode;
+    }
+
+    public function previewIndicator(Request $request)
+    {
+//        $validatedData = $request->validate([
+//            'date' => 'required|date',
+//            'number' => 'required|string',
+//            'attachment' => 'nullable|string',
+//            'text' => 'required|string',
+//        ]);
+
+
+        return view('panel.indicator.preview', [
+            'date' => $request->input('date'),
+            'number' => $request->input('number'),
+            'attachment' => $request->input('attachment'),
+            'text' => $request->input('text')
+        ]);
     }
 }
