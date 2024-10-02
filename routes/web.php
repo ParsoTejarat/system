@@ -88,6 +88,10 @@ Route::get('test/{id?}', function ($id = null) {
 //    event(new SendMessageEvent(1, []));
 });
 
+
+Route::get('/timeline',function (){
+   return view('panel.timeline');
+});
 //Route::get('testt/{id}',[IndicatorController::class,'downloadFromIndicator']);
 
 // import excel

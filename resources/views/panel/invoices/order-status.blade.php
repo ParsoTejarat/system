@@ -67,42 +67,42 @@
                                     @endcanany
                                     <div class="row">
                                         <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 my-2">
-                                            <img src="{{ asset('assets/images/orders/register.png') }}" data-toggle="tooltip"
+                                            <img src="{{ asset('assets/images/order/register.png') }}" data-toggle="tooltip"
                                                  data-placement="top"
                                                  data-original-title="{{ verta($order->created_at)->format('H:i - Y/m/d') }}">
                                             <small class="d-block">ثبت سفارش</small>
                                         </div>
                                         <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 my-2">
                                             <img class="{{ $processing ? '' : 'inactive' }}"
-                                                 src="{{ asset('assets/images/orders/processing.png') }}" data-toggle="tooltip"
+                                                 src="{{ asset('assets/images/order/processing.png') }}" data-toggle="tooltip"
                                                  data-placement="top"
                                                  data-original-title="{{ $processing ? verta($processing->created_at)->format('H:i - Y/m/d') : '' }}">
                                             <small class="d-block">آماده سازی سفارش</small>
                                         </div>
                                         <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 my-2">
                                             <img class="{{ $out ? '' : 'inactive' }}"
-                                                 src="{{ asset('assets/images/orders/out.png') }}" data-toggle="tooltip"
+                                                 src="{{ asset('assets/images/order/out.png') }}" data-toggle="tooltip"
                                                  data-placement="top"
                                                  data-original-title="{{ $out ? verta($out->created_at)->format('H:i - Y/m/d') : '' }}">
                                             <small class="d-block">خروج از انبار</small>
                                         </div>
                                         <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 my-2">
                                             <img class="{{ $exit_door ? '' : 'inactive' }}"
-                                                 src="{{ asset('assets/images/orders/exit_door.png') }}" data-toggle="tooltip"
+                                                 src="{{ asset('assets/images/order/exit_door.png') }}" data-toggle="tooltip"
                                                  data-placement="top"
                                                  data-original-title="{{ $exit_door ? verta($exit_door->created_at)->format('H:i - Y/m/d') : '' }}">
                                             <small class="d-block">درب خروج</small>
                                         </div>
                                         <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 my-2">
                                             <img class="{{ $sending ? '' : 'inactive' }} flip-x"
-                                                 src="{{ asset('assets/images/orders/sending.png') }}" data-toggle="tooltip"
+                                                 src="{{ asset('assets/images/order/sending.png') }}" data-toggle="tooltip"
                                                  data-placement="top"
                                                  data-original-title="{{ $sending ? verta($sending->created_at)->format('H:i - Y/m/d') : '' }}">
                                             <small class="d-block">درحال ارسال</small>
                                         </div>
                                         <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4 my-2">
                                             <img class="{{ $delivered ? '' : 'inactive' }} flip-x"
-                                                 src="{{ asset('assets/images/orders/delivered.png') }}" data-toggle="tooltip"
+                                                 src="{{ asset('assets/images/order/delivered.png') }}" data-toggle="tooltip"
                                                  data-placement="top"
                                                  data-original-title="{{ $delivered ? verta($delivered->created_at)->format('H:i - Y/m/d') : '' }}">
                                             <small class="d-block">تحویل به مشتری</small>

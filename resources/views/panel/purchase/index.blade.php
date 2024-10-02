@@ -1,4 +1,4 @@
-@extends('panel.layouts.master')
+    @extends('panel.layouts.master')
 @section('title', 'مهندسی خرید')
 @section('content')
     <div class="content">
