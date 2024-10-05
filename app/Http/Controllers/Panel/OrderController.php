@@ -413,7 +413,6 @@ class OrderController extends Controller
 
     public function getCustomerOrderStatus($id)
     {
-        sleep(2);
         $order = Order::with('order_status')->whereId($id)->first();
 
         if ($order->type == 'setad'){
