@@ -36,7 +36,7 @@
                                 <div class="col-sm-6 invoice-id">
                                     <div class="info">
                                         <h1 class="color-white inv-header-1">سفارش مشتری</h1>
-                                        <p class="color-white mb-1"> شماره سفارش : {{$order->id}}</p>
+                                        <p class="color-white mb-1"> شماره سفارش : {{$order->code}}</p>
                                         <p class="color-white mb-0"> تاریخ
                                             : {{verta($order->created_at)->format('%Y/%m/%d')}}</p>
                                     </div>

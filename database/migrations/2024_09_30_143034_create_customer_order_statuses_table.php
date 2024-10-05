@@ -14,14 +14,13 @@ class CreateCustomerOrderStatusesTable extends Migration
     public function up()
     {
         Schema::create('customer_order_statuses', function (Blueprint $table) {
-
             $table->id();
-            $table->unsignedBigInteger('invoice_id');
+            $table->unsignedBigInteger('order_id');
             $table->integer('orders');
             $table->string('status')->default('register');
             $table->timestamps();
 
-            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
         });
     }
 

@@ -114,6 +114,7 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     Route::put('order-factor-file/{order_action}/delete', [OrderController::class, 'deleteFactorFile'])->name('order.factor.action.delete');
     Route::match(['get', 'post'], '/order/search/orders', [OrderController::class, 'search'])->name('orders.search');
     Route::post('excel/orders', [OrderController::class, 'excel'])->name('orders.excel');
+    Route::get('get-customer-order-status/{id}', [OrderController::class, 'getCustomerOrderStatus'])->name('order.get.customer.order.status');
 
 
 
@@ -293,6 +294,9 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     Route::post('move-files', [FileManagerController::class, 'moveFiles'])->name('file-manager.moveFiles');
 
 });
+
+
+
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);
 
 Route::fallback(function () {

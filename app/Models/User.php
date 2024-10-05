@@ -80,6 +80,10 @@ class User extends Authenticatable
     {
         return $this->role->permissions->pluck('name')->contains('sales-manager');
     }
+    public function isSystematicSales()
+    {
+        return $this->role->permissions->pluck('name')->contains('systematic_sales');
+    }
 
     public function isExitDoor()
     {

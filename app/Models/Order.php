@@ -36,6 +36,10 @@ class Order extends Model
     {
         return $this->hasOne(OrderAction::class);
     }
+    public function order_status()
+    {
+        return $this->hasMany(CustomerOrderStatus::class);
+    }
 
     public function getNetAmount()
     {
@@ -58,4 +62,8 @@ class Order extends Model
 
         return $total;
     }
+
+
+
+
 }

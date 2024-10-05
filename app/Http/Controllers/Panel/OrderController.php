@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBuyOrderRequest;
 use App\Http\Requests\StoreOrderRequest;
 use App\Models\Customer;
+use App\Models\CustomerOrderStatus;
 use App\Models\Invoice;
 use App\Models\InvoiceAction;
 use App\Models\Order;
@@ -52,20 +53,25 @@ class OrderController extends Controller
     public function store(StoreOrderRequest $request)
     {
         $this->authorize('customer-order-create');
+        $customer = Customer::whereId($request->buyer_name)->first();
+//        dd($customer);
 
 
         $invoiceData = $this->sortData($request);
         $order = new Order();
         $order->description = $request->description;
+        $order->type = $customer->customer_type;
         $order->req_for = $request->req_for;
+        $order->code = $this->generateCode();
         $order->user_id = auth()->id();
         $order->customer_id = $request->buyer_name;
         $order->products = json_encode($invoiceData);
         $order->save();
 
+
         $this->send_notif_to_accountants($order);
         $this->send_notif_to_sales_manager($order);
-
+        $order->order_status()->create(['orders' => 1, 'status' => 'register']);
 
         activity_log('create-orders', __METHOD__, [$request->all(), $order]);
         alert()->success('سفارش مورد نظر با موفقیت ثبت شد', 'ثبت سفارش');
@@ -403,6 +409,59 @@ class OrderController extends Controller
     public function excel()
     {
         return Excel::download(new \App\Exports\OrderExport, 'orders.xlsx');
+    }
+
+    public function getCustomerOrderStatus($id)
+    {
+        sleep(2);
+        $order = Order::with('order_status')->whereId($id)->first();
+
+        if ($order->type == 'setad'){
+            $statuses = CustomerOrderStatus::ORDER;
+        }else{
+            $statuses = CustomerOrderStatus::ORDER_OTHER;
+        }
+
+        $statusData = [];
+
+
+        foreach ($statuses as $key => $status) {
+            $date = optional($order->order_status()->where('status', $status)->first())->created_at ?
+                verta($order->order_status()->where('status', $status)->first()->created_at)->format('H:i %Y/%m/%d') : '';
+
+            $statusData[] = [
+                'status' => $status,
+                'status_label' => CustomerOrderStatus::STATUS[$status],
+                'date' => $date,
+                'pending' => false,
+            ];
+        }
+
+
+        $lastDateIndex = -1;
+        foreach ($statusData as $index => $statusItem) {
+            if (!empty($statusItem['date'])) {
+                $lastDateIndex = $index;
+            }
+        }
+
+
+        if ($lastDateIndex !== -1 && $lastDateIndex + 1 < count($statusData)) {
+            $statusData[$lastDateIndex + 1]['pending'] = true;
+        }
+
+        return response()->json($statusData);
+    }
+
+    public function generateCode()
+    {
+        $code = '666' . str_pad(rand(0, 99999), 5, '0', STR_PAD_LEFT);
+
+        while (Order::where('code', $code)->lockForUpdate()->exists()) {
+            $code = '666' . str_pad(rand(0, 99999), 5, '0', STR_PAD_LEFT);
+        }
+
+        return $code;
     }
 
 
