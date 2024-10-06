@@ -4,7 +4,8 @@ use App\Events\SendMessage as SendMessageEvent;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Panel\BuyOrderController;
 use App\Http\Controllers\Panel\CategoryController;
-use App\Http\Controllers\Panel\ChatController;
+
+//use App\Http\Controllers\Panel\ChatController;
 use App\Http\Controllers\Panel\CouponController;
 use App\Http\Controllers\Panel\CustomerController;
 use App\Http\Controllers\Panel\FileManagerController;
@@ -28,6 +29,7 @@ use App\Http\Controllers\Panel\PurchaseController;
 use App\Http\Controllers\Panel\ReportController;
 use App\Http\Controllers\Panel\RoleController;
 use App\Http\Controllers\Panel\SaleReportController;
+use App\Http\Controllers\Panel\SetadFeeController;
 use App\Http\Controllers\Panel\SmsHistoryController;
 use App\Http\Controllers\Panel\SoftwareUpdateController;
 use App\Http\Controllers\Panel\TaskController;
@@ -89,8 +91,8 @@ Route::get('test/{id?}', function ($id = null) {
 });
 
 
-Route::get('/timeline',function (){
-   return view('panel.timeline');
+Route::get('/timeline', function () {
+    return view('panel.timeline');
 });
 //Route::get('testt/{id}',[IndicatorController::class,'downloadFromIndicator']);
 
@@ -106,15 +108,24 @@ Route::get('/timeline',function (){
 
 Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
 
-
+//customer setad fee
     Route::resource('/orders', OrderController::class);
-    Route::get('order-action/{order}', [OrderController::class,'orderAction'])->name('order.action');
+    Route::get('order-action/{order}', [OrderController::class, 'orderAction'])->name('order.action');
     Route::post('order-action/{invoice}', [OrderController::class, 'actionStore'])->name('order.action.store');
     Route::put('order-invoice-file/{order_action}/delete', [OrderController::class, 'deleteInvoiceFile'])->name('order.invoice.action.delete');
     Route::put('order-factor-file/{order_action}/delete', [OrderController::class, 'deleteFactorFile'])->name('order.factor.action.delete');
     Route::match(['get', 'post'], '/order/search/orders', [OrderController::class, 'search'])->name('orders.search');
     Route::post('excel/orders', [OrderController::class, 'excel'])->name('orders.excel');
     Route::get('get-customer-order-status/{id}', [OrderController::class, 'getCustomerOrderStatus'])->name('order.get.customer.order.status');
+
+
+
+    //setad fee
+    Route::resource('setad-fee', SetadFeeController::class);
+    Route::get('search-setad-fee/{order}', [SetadFeeController::class,'search']);
+    Route::get('setad-fee/{order}/action', [SetadFeeController::class,'action'])->name('setad-fee.action');
+    Route::post('setad-fee/{order}/action/store', [SetadFeeController::class,'actionStore'])->name('setad-fee.store.action');
+    Route::put('receipt-file/{id}/delete', [SetadFeeController::class, 'deleteReceiptFile'])->name('receipt.action.delete');
 
 
 
@@ -136,7 +147,7 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
 
 
     //PaymentsOrder
-        Route::resource('payments_order', PaymentOrderController::class)->except('show');
+    Route::resource('payments_order', PaymentOrderController::class)->except('show');
     Route::post('status-orders-payment', [PaymentOrderController::class, 'statusOrderPayment'])->name('payments_order_status');
     Route::get('download-orders-payment/{id}', [PaymentOrderController::class, 'downloadOrderPaymentPdf'])->name('payments_order.download');
 
@@ -294,7 +305,6 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     Route::post('move-files', [FileManagerController::class, 'moveFiles'])->name('file-manager.moveFiles');
 
 });
-
 
 
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);

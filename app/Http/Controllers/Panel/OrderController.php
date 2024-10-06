@@ -71,7 +71,11 @@ class OrderController extends Controller
 
         $this->send_notif_to_accountants($order);
         $this->send_notif_to_sales_manager($order);
-        $order->order_status()->create(['orders' => 1, 'status' => 'register']);
+
+        $order->order_status()->updateOrCreate(
+            ['status' => 'register'],
+            ['orders' => 1, 'status' => 'register']
+        );
 
         activity_log('create-orders', __METHOD__, [$request->all(), $order]);
         alert()->success('سفارش مورد نظر با موفقیت ثبت شد', 'ثبت سفارش');
@@ -304,6 +308,16 @@ class OrderController extends Controller
 
         // log
         activity_log('order-action', __METHOD__, [$request->all(), $invoice]);
+
+        $invoice->order_status()->updateOrCreate(
+            ['status' => 'processing_by_accountant_step_1'],
+            ['orders' => 2, 'status' => 'processing_by_accountant_step_1']
+        );
+
+        $invoice->order_status()->updateOrCreate(
+            ['status' => 'pre_invoice'],
+            ['orders' => 3, 'status' => 'pre_invoice']
+        );
 
         alert()->success($message, $title);
         return back();

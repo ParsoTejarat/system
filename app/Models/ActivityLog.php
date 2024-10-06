@@ -154,6 +154,13 @@ class ActivityLog extends Model
         'delete-orders' => 'حذف سفارش مشتری',
         'order-action' => 'اقدام به سفارش مشتری',
         'delete-order-file' => 'حذف فایل پیش فاکتور',
+        //Setad_Fee
+        'setad-fee-list' => 'لیست کارمزد ستاد',
+        'setad-fee-create' => 'ثبت کارمزد ستاد',
+        'setad-fee-edit' => 'ویرایش کارمزد ستاد',
+        'setad-fee-delete' => 'حذف کارمزد ستاد',
+        'setad-fee-upload' => 'آپلود رسید کارمزد ستاد',
+        'setad-fee-delete-receipt' => 'حذف رسید کارمزد ستاد',
     ];
 
     public function user()
