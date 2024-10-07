@@ -18,6 +18,19 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
+                            @can('accountant')
+                                <div class="alert alert-info">
+                                    <i class="fa fa-info-circle font-size-20 align-middle"></i>
+                                    <strong>توجه!</strong>
+                                   برای پرداخت کارمزد سامانه ستاد مشخصات را از دکمه اقدام مشاهده کرده و سپس رسید پرداخت را به صورت فایل PDF آپلود کنید.
+                                </div>
+                            @else
+                                <div class="alert alert-info">
+                                    <i class="fa fa-info-circle font-size-20 align-middle"></i>
+                                    <strong>توجه!</strong>
+                                    درصورت نیاز به دانلود رسید کارمزد سامانه ستاد، دکمه اقدام فعال خواهد شد
+                                </div>
+                            @endcannot
 
 
                             <div class="card-title d-flex justify-content-end">
@@ -112,7 +125,7 @@
                                             @php
                                                 $highlightedNumber2 = $setad->tracking_number ?? '---';
                                                 if ($tracking_number) {
-                                                    $highlightedNumber2 = str_ireplace($search, "<span class='bg-warning'>" . $search . "</span>", $highlightedNumber2);
+                                                    $highlightedNumber2 = str_ireplace($tracking_number, "<span class='bg-warning'>" . $tracking_number . "</span>", $highlightedNumber2);
                                                 }
                                             @endphp
                                             <td>{!!   $highlightedNumber2 !!}</td>
@@ -125,14 +138,22 @@
                                                 <td>{{ $setad->user->fullName() }}</td>
                                             @endcanany
                                             <td>{{ verta($setad->created_at)->format('H:i - Y/m/d') }}</td>
-                                            @canany(['accountant','sales-manager'])
+                                            @canany(['accountant', 'sales-manager'])
                                                 <td>
-                                                    <a class="btn btn-primary btn-floating"
-                                                       href="{{ route('setad-fee.action', $setad->id) }}" >
-                                                        <i class="fa fa-edit"></i></a>
+                                                    @php
+                                                        $isDisabled = false;
+                                                        if (!auth()->user()->isAccountant()) {
+                                                            $isDisabled = $setad->status == 'pending';
+                                                        }
+                                                    @endphp
+                                                    <a class="btn btn-primary btn-floating {{ $isDisabled ? 'disabled' : '' }}"
+                                                       href="{{ route('setad-fee.action', $setad->id) }}">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
                                                 </td>
                                             @endcanany
-                                            @cannot('accountant')
+
+                                        @cannot('accountant')
                                                 @can('sales-manager')
                                                     @can('setad-fee-edit')
                                                         <td>

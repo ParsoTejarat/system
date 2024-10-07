@@ -252,6 +252,11 @@ class OrderController extends Controller
             $notif_message = "پیش فاکتور سفارش {$invoice->customer->name} مورد تایید قرار گرفت";
             $accountants = User::whereIn('role_id', $roles_id)->get();
             Notification::send($accountants, new SendMessage($notif_message, $url));
+
+            $invoice->order_status()->updateOrCreate(
+                ['status' => 'awaiting_confirm_by_sales_manager'],
+                ['orders' => 4, 'status' => 'awaiting_confirm_by_sales_manager']
+            );
             //end send notif to accountants
 
         } elseif ($request->has('send_to_warehouse')) {

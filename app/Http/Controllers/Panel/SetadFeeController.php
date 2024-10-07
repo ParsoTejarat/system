@@ -20,21 +20,41 @@ class SetadFeeController extends Controller
     {
         $this->authorize('setad-fee-list');
         $setadFees = SetadFee::query();
+        $code = request()->query('code');
+        $tracking_number = request()->query('tracking_number');
+        $status = request()->query('status');
 
         if (auth()->user()->isAdmin() || auth()->user()->isAccountant() || auth()->user()->isCEO()) {
-            if ($code = request()->query('code')) {
-                $setadFees->where('code', 'like', '%' . $code . '%')
-                    ->orWhere('tracking_number', 'like', '%' . $code . '%');
+            if (!empty($code)) {
+                $setadFees->whereHas('order', function ($query) use ($code) {
+                    $query->where('code', 'like', '%' . $code . '%');
+                });
+            }
+            if (!empty($tracking_number)) {
+                $setadFees->where('tracking_number', 'like', '%' . $tracking_number . '%');
+            }
+            if (!empty($status) && $status !== 'all') {
+                $setadFees->where('status', $status);
             }
             $setadFees = $setadFees->latest()->paginate(30);
         } else {
-            if ($code = request()->query('code')) {
-                $setadFees->where('order_id',$code);
+            if (!empty($code)) {
+                $setadFees->whereHas('order', function ($query) use ($code) {
+                    $query->where('code', 'like', '%' . $code . '%');
+                });
+            }
+            if (!empty($tracking_number)) {
+                $setadFees->where('tracking_number', 'like', '%' . $tracking_number . '%');
+            }
+            if (!empty($status) && $status !== 'all') {
+                $setadFees->where('status', $status);
             }
             $setadFees = $setadFees->where('user_id', auth()->id())->latest()->paginate(30);
         }
 
-        return view('panel.setad_fee.index', compact(['setadFees']));
+        return view('panel.setad_fee.index', compact('setadFees'));
+
+
     }
 
 
@@ -133,9 +153,21 @@ class SetadFeeController extends Controller
     {
         $this->authorize('setad-fee-delete');
         $setad = SetadFee::findOrfail($id);
+        $order = Order::findOrfail($setad->order_id);
         activity_log('setad-fee-edit', __METHOD__, [$setad]);
+        $order->order_status()->where('status', 'setad_fee')->delete();
+        $order->order_status()->where('status', 'processing_by_accountant_step_2')->delete();
+        $order->order_status()->where('status', 'upload_setad_fee')->delete();
         $setad->delete();
         return back();
+
+
+
+
+
+
+
+
 
     }
 
