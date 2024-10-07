@@ -19,10 +19,19 @@ class SetadFeeController extends Controller
     public function index()
     {
         $this->authorize('setad-fee-list');
+        $setadFees = SetadFee::query();
+
         if (auth()->user()->isAdmin() || auth()->user()->isAccountant() || auth()->user()->isCEO()) {
-            $setadFees = SetadFee::latest()->paginate(30);
+            if ($code = request()->query('code')) {
+                $setadFees->where('code', 'like', '%' . $code . '%')
+                    ->orWhere('tracking_number', 'like', '%' . $code . '%');
+            }
+            $setadFees = $setadFees->latest()->paginate(30);
         } else {
-            $setadFees = SetadFee::where('user_id', auth()->id())->latest()->paginate(30);
+            if ($code = request()->query('code')) {
+                $setadFees->where('order_id',$code);
+            }
+            $setadFees = $setadFees->where('user_id', auth()->id())->latest()->paginate(30);
         }
 
         return view('panel.setad_fee.index', compact(['setadFees']));

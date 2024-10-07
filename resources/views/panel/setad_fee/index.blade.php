@@ -44,8 +44,12 @@
                             <form action="{{ route('setad-fee.index') }}" method="get" id="search_form"></form>
                             <div class="row mb-3 mt-5">
                                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                                    <input type="text" form="code" name="code" class="form-control"
-                                           value="{{ request()->code ?? null }}" placeholder="شماره سفارش یا کد رهگیری">
+                                    <input type="text" form="search_form" name="code" class="form-control"
+                                           value="{{ request()->code ?? null }}" placeholder="شماره سفارش">
+                                </div>
+                                <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
+                                    <input type="text" form="search_form" name="tracking_number" class="form-control"
+                                           value="{{ request()->tracking_number ?? null }}" placeholder="کد رهگیری">
                                 </div>
                                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
                                     <select name="status" form="search_form" class="form-control" data-toggle="select2">
@@ -91,11 +95,27 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    @php
+                                        $search = request()->input('code');
+                                        $tracking_number = request()->input('tracking_number');
+                                    @endphp
                                     @foreach($setadFees as $key => $setad)
                                         <tr>
                                             <td>{{ ++$key }}</td>
-                                            <td>{{ $setad->order->code }}</td>
-                                            <td>{{ $setad->tracking_number }}</td>
+                                            @php
+                                                $highlightedNumber = $setad->order->code ?? '---';
+                                                if ($search) {
+                                                    $highlightedNumber = str_ireplace($search, "<span class='bg-warning'>" . $search . "</span>", $highlightedNumber);
+                                                }
+                                            @endphp
+                                            <td><a href="/panel/orders?code={{$setad->order->code}}">{!! $highlightedNumber !!}</a></td>
+                                            @php
+                                                $highlightedNumber2 = $setad->tracking_number ?? '---';
+                                                if ($tracking_number) {
+                                                    $highlightedNumber2 = str_ireplace($search, "<span class='bg-warning'>" . $search . "</span>", $highlightedNumber2);
+                                                }
+                                            @endphp
+                                            <td>{!!   $highlightedNumber2 !!}</td>
                                             <td>{{ number_format($setad->price) }}</td>
                                             <td>
                                                 <span
@@ -263,7 +283,6 @@
                         loading.hide();
                     }
                 });
-
             });
         });
     </script>

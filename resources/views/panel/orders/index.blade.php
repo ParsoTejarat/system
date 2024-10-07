@@ -220,7 +220,7 @@
                                     @endcan
                                 </div>
                             </div>
-                            <form action="{{ route('orders.search') }}" method="get" id="search_form"></form>
+                            <form action="{{ route('orders.index') }}" method="get" id="search_form"></form>
                             <div class="row mb-3 mt-5">
                                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
                                     <select name="customer_id" form="search_form" class="form-control"
@@ -232,40 +232,43 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                                    <select name="province" form="search_form" class="form-control"
-                                            data-toggle="select2">
-                                        <option value="all">استان (همه)</option>
-                                        @foreach(\App\Models\Province::all('name') as $province)
-                                            <option
-                                                value="{{ $province->name }}" {{ request()->province == $province->name ? 'selected' : '' }}>{{ $province->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                {{--                                <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">--}}
+                                {{--                                    <select name="province" form="search_form" class="form-control"--}}
+                                {{--                                            data-toggle="select2">--}}
+                                {{--                                        <option value="all">استان (همه)</option>--}}
+                                {{--                                        @foreach(\App\Models\Province::all('name') as $province)--}}
+                                {{--                                            <option--}}
+                                {{--                                                value="{{ $province->name }}" {{ request()->province == $province->name ? 'selected' : '' }}>{{ $province->name }}</option>--}}
+                                {{--                                        @endforeach--}}
+                                {{--                                    </select>--}}
+                                {{--                                </div>--}}
                                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
                                     <select name="status" form="search_form" class="form-control" data-toggle="select2">
                                         <option value="all">وضعیت (همه)</option>
-                                        @foreach(\App\Models\Invoice::STATUS as $key => $value)
-                                            <option
-                                                value="{{ $key }}" {{ request()->status == $key ? 'selected' : '' }}>{{ $value }}</option>
-                                        @endforeach
+{{--                                        @foreach(\App\Models\Invoice::STATUS as $key => $value)--}}
+{{--                                            <option--}}
+{{--                                                value="{{ $key }}" {{ request()->status == $key ? 'selected' : '' }}>{{ $value }}</option>--}}
+                                            <option value="orders" {{ request()->status == 'order' ? 'selected' : '' }}>ثبت سفارش</option>
+                                            <option value="pending" {{ request()->status == 'pending' ? 'selected' : '' }}>پیش فاکتور شده</option>
+                                            <option value="invoiced" {{ request()->status == 'invoiced' ? 'selected' : '' }}>فاکتور شده</option>
+{{--                                        @endforeach--}}
                                     </select>
                                 </div>
-                                @can('accountant')
-                                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                                        <select name="user" form="search_form" class="form-control"
-                                                data-toggle="select2">
-                                            <option value="all">همکار (همه)</option>
-                                            @foreach(\App\Models\User::whereIn('role_id', $roles_id)->get() as $user)
-                                                <option
-                                                    value="{{ $user->id }}" {{ request()->user == $user->id ? 'selected' : '' }}>{{ $user->fullName() }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                @endcan
+                                {{--                                @can('accountant')--}}
+                                {{--                                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">--}}
+                                {{--                                        <select name="user" form="search_form" class="form-control"--}}
+                                {{--                                                data-toggle="select2">--}}
+                                {{--                                            <option value="all">همکار (همه)</option>--}}
+                                {{--                                            @foreach(\App\Models\User::whereIn('role_id', $roles_id)->get() as $user)--}}
+                                {{--                                                <option--}}
+                                {{--                                                    value="{{ $user->id }}" {{ request()->user == $user->id ? 'selected' : '' }}>{{ $user->fullName() }}</option>--}}
+                                {{--                                            @endforeach--}}
+                                {{--                                        </select>--}}
+                                {{--                                    </div>--}}
+                                {{--                                @endcan--}}
                                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                                    <input type="text" form="search_form" name="need_no" class="form-control"
-                                           value="{{ request()->need_no ?? null }}" placeholder="شماره نیاز">
+                                    <input type="text" form="search_form" name="code" class="form-control"
+                                           value="{{ request()->code ?? null }}" placeholder="شناسه سفارش">
                                 </div>
                                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
                                     <button type="submit" class="btn btn-primary" form="search_form">جستجو</button>
@@ -309,10 +312,19 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    @php
+                                        $search = request()->input('code');
+                                    @endphp
                                     @foreach($orders as $key => $order)
                                         <tr>
                                             <td>{{ ++$key }}</td>
-                                            <td>{{ $order->code }}</td>
+                                            @php
+                                                $highlightedNumber = $order->code ?? '---';
+                                                if ($search) {
+                                                    $highlightedNumber = str_ireplace($search, "<span class='bg-warning'>" . $search . "</span>", $highlightedNumber);
+                                                }
+                                            @endphp
+                                            <td>{!! $highlightedNumber !!}</td>
                                             <td>{{ $order->customer->name }}</td>
                                             <td>{{ \App\Models\Invoice::REQ_FOR[$order->req_for] }}</td>
                                             <td>{{ $order->customer->province }}</td>
@@ -329,7 +341,8 @@
                                             <td>
                                                 <a class="btn btn-primary btn-floating show-status"
                                                    data-bs-toggle="modal"
-                                                   data-bs-target="#timelineModal" data-id="{{$order->id}}" data-code="{{$order->code}}" >
+                                                   data-bs-target="#timelineModal" data-id="{{$order->id}}"
+                                                   data-code="{{$order->code}}">
                                                     <i class="fa fa-info"></i>
                                                 </a>
                                             </td>
@@ -488,7 +501,7 @@
                             </div>
                         `;
 
-                           const stageTemplate = `
+                            const stageTemplate = `
                             ${progressBar}
                             <div class="timeline-stage stage-left d-flex align-items-center">
                                 <div class="rounded-circle ${stageClass} text-white stage-circle me-2">${icon}</div>

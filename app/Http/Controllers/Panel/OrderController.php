@@ -26,11 +26,45 @@ class OrderController extends Controller
 
     public function index()
     {
+
+
         $this->authorize('customer-order-list');
+
+        $orders = Order::query();
+
         if (auth()->user()->isAdmin() || auth()->user()->isAccountant() || auth()->user()->isCEO()) {
-            $orders = Order::latest()->paginate(30);
+
+            if ($code = request()->query('code')) {
+
+                $orders->where('code', 'like', '%' . $code . '%');
+
+            }
+            if ($status1 = request()->query('status')) {
+                $status = $status1 == 'all' ? ['pending','invoiced', 'orders'] : [$status1];
+                $orders->whereIn('status', $status);
+            }
+            if ($customer = request()->query('customer_id')) {
+                $customers = Customer::all(['id', 'name']);
+                $customers_id = $customer == 'all' ? $customers->pluck('id') : [$customer];
+                $orders->where('customer_id', $customers_id);
+            }
+            $orders = $orders->latest()->paginate(30);
         } else {
-            $orders = Order::where('user_id', auth()->id())->latest()->paginate(30);
+            if ($code = request()->query('code')) {
+
+                $orders->where('code', 'like', '%' . $code . '%');
+
+            }
+            if ($status1 = request()->query('status')) {
+                $status = $status1 == 'all' ? ['pending','invoiced', 'orders'] : [$status1];
+                $orders->whereIn('status', $status);
+            }
+            if ($customer = request()->query('customer_id')) {
+                $customers = Customer::all(['id', 'name']);
+                $customers_id = $customer == 'all' ? $customers->pluck('id') : [$customer];
+                $orders->where('customer_id', $customers_id);
+            }
+            $orders = $orders->where('user_id', auth()->id())->latest()->paginate(30);
         }
         $customers = Customer::all(['id', 'name']);
         $permissionsId = Permission::whereIn('name', ['partner-tehran-user', 'partner-other-user', 'system-user', 'single-price-user'])->pluck('id');
@@ -323,42 +357,42 @@ class OrderController extends Controller
         return back();
     }
 
-    public function search(Request $request)
-    {
-        $this->authorize('customer-order-list');
-        $customers = Customer::all(['id', 'name']);
-
-        $permissionsId = Permission::whereIn('name', ['partner-tehran-user', 'partner-other-user', 'system-user', 'single-price-user'])->pluck('id');
-        $roles_id = Role::whereHas('permissions', function ($q) use ($permissionsId) {
-            $q->whereIn('permission_id', $permissionsId);
-        })->pluck('id');
-
-        $customers_id = $request->customer_id == 'all' ? $customers->pluck('id') : [$request->customer_id];
-        $status = $request->status == 'all' ? ['pending', 'return', 'invoiced', 'orders'] : [$request->status];
-        $province = $request->province == 'all' ? Province::pluck('name') : [$request->province];
-        $user_id = $request->user == 'all' || $request->user == null ? User::whereIn('role_id', $roles_id)->pluck('id') : [$request->user];
-
-//        dd($user_id);
-        if (auth()->user()->isAdmin() || auth()->user()->isWareHouseKeeper() || auth()->user()->isAccountant() || auth()->user()->isCEO() || auth()->user()->isSalesManager()) {
-            $orders = Order::when($request->need_no, function ($q) use ($request) {
-                return $q->where('need_no', $request->need_no);
-            })
-                ->whereIn('user_id', $user_id)
-                ->whereIn('customer_id', $customers_id)
-                ->whereIn('status', $status)
-                ->latest()->paginate(30);
-        } else {
-            $orders = Order::when($request->need_no, function ($q) use ($request) {
-                return $q->where('need_no', $request->need_no);
-            })->whereIn('customer_id', $customers_id)
-                ->whereIn('status', $status)
-                ->whereIn('province', $province)
-                ->where('user_id', auth()->id())
-                ->latest()->paginate(30);
-        }
-
-        return view('panel.orders.index', compact(['orders', 'customers', 'roles_id']));
-    }
+//    public function search(Request $request)
+//    {
+//        $this->authorize('customer-order-list');
+//        $customers = Customer::all(['id', 'name']);
+//
+//        $permissionsId = Permission::whereIn('name', ['partner-tehran-user', 'partner-other-user', 'system-user', 'single-price-user'])->pluck('id');
+//        $roles_id = Role::whereHas('permissions', function ($q) use ($permissionsId) {
+//            $q->whereIn('permission_id', $permissionsId);
+//        })->pluck('id');
+//
+//        $customers_id = $request->customer_id == 'all' ? $customers->pluck('id') : [$request->customer_id];
+//        $status = $request->status == 'all' ? ['pending', 'return', 'invoiced', 'orders'] : [$request->status];
+//        $province = $request->province == 'all' ? Province::pluck('name') : [$request->province];
+//        $user_id = $request->user == 'all' || $request->user == null ? User::whereIn('role_id', $roles_id)->pluck('id') : [$request->user];
+//
+////        dd($user_id);
+//        if (auth()->user()->isAdmin() || auth()->user()->isWareHouseKeeper() || auth()->user()->isAccountant() || auth()->user()->isCEO() || auth()->user()->isSalesManager()) {
+//            $orders = Order::when($request->need_no, function ($q) use ($request) {
+//                return $q->where('need_no', $request->need_no);
+//            })
+//                ->whereIn('user_id', $user_id)
+//                ->whereIn('customer_id', $customers_id)
+//                ->whereIn('status', $status)
+//                ->latest()->paginate(30);
+//        } else {
+//            $orders = Order::when($request->need_no, function ($q) use ($request) {
+//                return $q->where('need_no', $request->need_no);
+//            })->whereIn('customer_id', $customers_id)
+//                ->whereIn('status', $status)
+//                ->whereIn('province', $province)
+//                ->where('user_id', auth()->id())
+//                ->latest()->paginate(30);
+//        }
+//
+//        return view('panel.orders.index', compact(['orders', 'customers', 'roles_id']));
+//    }
 
     public function deleteInvoiceFile(OrderAction $orderAction)
     {
@@ -429,9 +463,9 @@ class OrderController extends Controller
     {
         $order = Order::with('order_status')->whereId($id)->first();
 
-        if ($order->type == 'setad'){
+        if ($order->type == 'setad') {
             $statuses = CustomerOrderStatus::ORDER;
-        }else{
+        } else {
             $statuses = CustomerOrderStatus::ORDER_OTHER;
         }
 
