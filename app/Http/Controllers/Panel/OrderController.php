@@ -403,7 +403,11 @@ class OrderController extends Controller
     {
         // log
 //        dd($orderAction);
+        $order = Order::whereId($orderAction->order_id)->first();
         activity_log('delete-invoice-file', __METHOD__, $orderAction);
+
+        $order->order_status()->where('status', 'processing_by_accountant_step_1')->delete();
+        $order->order_status()->where('status', 'pre_invoice')->delete();
 
         unlink(public_path($orderAction->invoice_file));
         $orderAction->delete();
