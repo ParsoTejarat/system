@@ -145,6 +145,10 @@
                                                             <td>
                                                                 <select class="form-control" name="units[]">
                                                                     <option value="number">عدد</option>
+                                                                    <option value="pack">بسته</option>
+                                                                    <option value="box">جعبه</option>
+                                                                    <option value="kg">کیلوگرم</option>
+                                                                    <option value="ton">تن</option>
                                                                 </select>
                                                             </td>
                                                             <td>
@@ -245,6 +249,10 @@
                                                             <td>
                                                                 <select class="form-control" name="other_units[]">
                                                                     <option value="number">عدد</option>
+                                                                    <option value="pack">بسته</option>
+                                                                    <option value="box">جعبه</option>
+                                                                    <option value="kg">کیلوگرم</option>
+                                                                    <option value="ton">تن</option>
                                                                 </select>
                                                             </td>
                                                             <td>
@@ -342,7 +350,11 @@
                 </td>
                 <td>
                     <select class="form-control" name="units[]">
-                        <option value="number">عدد</option>
+                            <option value="number">عدد</option>
+                            <option value="pack">بسته</option>
+                            <option value="box">جعبه</option>
+                            <option value="kg">کیلوگرم</option>
+                            <option value="ton">تن</option>
                     </select>
                 </td>
                 <td>
@@ -376,6 +388,10 @@
                 <td>
                     <select class="form-control" name="other_units[]">
                         <option value="number">عدد</option>
+                        <option value="pack">بسته</option>
+                        <option value="box">جعبه</option>
+                        <option value="kg">کیلوگرم</option>
+                        <option value="ton">تن</option>
                     </select>
                 </td>
                 <td>

@@ -117,7 +117,7 @@ class SetadFeeController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(StoreSetadFeeRequest $request, $id)
     {
         $this->authorize('setad-fee-edit');
         $order = Order::where('code', $request->input('order'))->first();
