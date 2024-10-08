@@ -6,6 +6,7 @@ use App\Http\Controllers\Panel\BuyOrderController;
 use App\Http\Controllers\Panel\CategoryController;
 
 //use App\Http\Controllers\Panel\ChatController;
+use App\Http\Controllers\Panel\CompanyInfoController;
 use App\Http\Controllers\Panel\CouponController;
 use App\Http\Controllers\Panel\CustomerController;
 use App\Http\Controllers\Panel\FileManagerController;
@@ -118,7 +119,10 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     Route::post('excel/orders', [OrderController::class, 'excel'])->name('orders.excel');
     Route::get('get-customer-order-status/{id}', [OrderController::class, 'getCustomerOrderStatus'])->name('order.get.customer.order.status');
 
-
+    //company-info
+    Route::resource('company-info', CompanyInfoController::class)->except(['show', 'destroy', 'create', 'store']);
+    Route::get('company-info-copy', [CompanyInfoController::class,'copyItem']);
+    Route::post('company-info-print-data', [CompanyInfoController::class,'printData'])->name('company-info-print-data');
 
     //setad fee
     Route::resource('setad-fee', SetadFeeController::class);
