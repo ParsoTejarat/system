@@ -23,6 +23,7 @@ class Ticket extends Model
         'adaktejarat' => 'آداک تجارت خورشید قشم',
         'adakhamrah' => 'آداک همراه خورشید قشم',
         'adakpetro' => 'آداک پترو خورشید قشم',
+        'adaksanat' => 'آداک صنعت خورشید قشم',
         'sayman' => 'سایمان داده',
     ];
 

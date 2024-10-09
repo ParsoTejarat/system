@@ -97,7 +97,7 @@
                                             <td>{{ \App\Models\Customer::CUSTOMER_TYPE[$customer->customer_type] }}</td>
                                             <td>{{ $customer->province }}</td>
                                             <td>{{ $customer->phone1 }}</td>
-                                            <td>{{ $customer->invoices()->count() }}</td>
+                                            <td>{{ $customer->orders()->count() }}</td>
                                             <td>{{ verta($customer->created_at)->format('H:i - Y/m/d') }}</td>
                                             @can('customers-edit')
                                                 <td>

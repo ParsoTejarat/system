@@ -160,7 +160,7 @@ class PermissionSeeder extends Seeder
 //            'setad-fee-create' => 'ثبت کارمزد ستاد',
 //            'setad-fee-edit' => 'ویرایش کارمزد ستاد',
 //            'setad-fee-delete' => 'حذف کارمزد ستاد',
-            'company-info' => 'اطلاعات شرکت',
+//            'company-info' => 'اطلاعات شرکت',
 
         ];
 
