@@ -38,7 +38,7 @@
                                     @endcan
                                 </div>
                             </div>
-{{--                            <form action="{{ route('transfers.search') }}" method="get" id="search_form"></form>--}}
+                            <form action="{{ route('transfers.index') }}" method="get" id="search_form"></form>
                             <div class="row mb-3">
                                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
                                     <input name="code" form="search_form" placeholder="شناسه سفارش" class="form-control"/>
@@ -68,10 +68,19 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    @php
+                                        $search = request()->input('code');
+                                    @endphp
                                     @foreach($transfers as $key => $transfer)
                                         <tr>
                                             <td>{{ ++$key }}</td>
-                                            <td>{{ $transfer->code }}</td>
+                                            @php
+                                                $highlightedNumber = $transfer->code ?? '---';
+                                                if ($search) {
+                                                    $highlightedNumber = str_ireplace($search, "<span class='bg-warning'>" . $search . "</span>", $highlightedNumber);
+                                                }
+                                            @endphp
+                                            <td>{!! $highlightedNumber !!}</td>
                                             <td>{{ $transfer->recipient_name }}</td>
                                             <td>{{ $transfer->phone }}</td>
                                             <td>{{ $transfer->address }}</td>

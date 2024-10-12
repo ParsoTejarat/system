@@ -96,12 +96,11 @@ class TransferController extends Controller
 
     public function destroy(Transfer $transfer)
     {
-        $this->authorize('transfer-destroy');
+        $this->authorize('transfer-delete');
 
         $transfer->delete();
-        alert()->success('مشخصات ارسالی حذف شد.', 'موفقیت آمیز');
         activity_log('transfer-delete', __METHOD__, [$transfer]);
-        return redirect(route('transfers.index'));
+        return back();
     }
 
     public function generateCode()
