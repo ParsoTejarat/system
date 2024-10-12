@@ -26,54 +26,41 @@ class OrderController extends Controller
 
     public function index()
     {
-
-
         $this->authorize('customer-order-list');
 
         $orders = Order::query();
 
+        if ($code = request()->query('code')) {
+            $orders->where('code', 'like', '%' . $code . '%');
+        }
+
+        if ($status1 = request()->query('status')) {
+            $status = $status1 == 'all' ? ['pending', 'invoiced', 'orders'] : [$status1];
+            $orders->whereIn('status', $status);
+        }
+
+        if ($customer = request()->query('customer_id')) {
+            $customers = Customer::pluck('id');
+            $customers_id = $customer == 'all' ? $customers : [$customer];
+            $orders->whereIn('customer_id', $customers_id);
+        }
+
         if (auth()->user()->isAdmin() || auth()->user()->isAccountant() || auth()->user()->isCEO()) {
-
-            if ($code = request()->query('code')) {
-
-                $orders->where('code', 'like', '%' . $code . '%');
-
-            }
-            if ($status1 = request()->query('status')) {
-                $status = $status1 == 'all' ? ['pending','invoiced', 'orders'] : [$status1];
-                $orders->whereIn('status', $status);
-            }
-            if ($customer = request()->query('customer_id')) {
-                $customers = Customer::all(['id', 'name']);
-                $customers_id = $customer == 'all' ? $customers->pluck('id') : [$customer];
-                $orders->where('customer_id', $customers_id);
-            }
             $orders = $orders->latest()->paginate(30);
         } else {
-            if ($code = request()->query('code')) {
-
-                $orders->where('code', 'like', '%' . $code . '%');
-
-            }
-            if ($status1 = request()->query('status')) {
-                $status = $status1 == 'all' ? ['pending','invoiced', 'orders'] : [$status1];
-                $orders->whereIn('status', $status);
-            }
-            if ($customer = request()->query('customer_id')) {
-                $customers = Customer::all(['id', 'name']);
-                $customers_id = $customer == 'all' ? $customers->pluck('id') : [$customer];
-                $orders->where('customer_id', $customers_id);
-            }
             $orders = $orders->where('user_id', auth()->id())->latest()->paginate(30);
         }
+
         $customers = Customer::all(['id', 'name']);
         $permissionsId = Permission::whereIn('name', ['partner-tehran-user', 'partner-other-user', 'system-user', 'single-price-user'])->pluck('id');
 
         $roles_id = Role::whereHas('permissions', function ($q) use ($permissionsId) {
             $q->whereIn('permission_id', $permissionsId);
         })->pluck('id');
+
         return view('panel.orders.index', compact(['orders', 'customers', 'roles_id']));
     }
+
 
 
     public function create()
