@@ -35,6 +35,7 @@ use App\Http\Controllers\Panel\SmsHistoryController;
 use App\Http\Controllers\Panel\SoftwareUpdateController;
 use App\Http\Controllers\Panel\TaskController;
 use App\Http\Controllers\Panel\TicketController;
+use App\Http\Controllers\Panel\TransferController;
 use App\Http\Controllers\Panel\UserController;
 use App\Http\Controllers\Panel\WarehouseController;
 use App\Http\Controllers\PanelController;
@@ -109,8 +110,15 @@ Route::get('/timeline', function () {
 
 Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
 
+
+    //Transfer
+    Route::resource('transfers', TransferController::class)->except('show');
+    Route::get('transfers/download/{id}', [TransferController::class,'downloadReceipt'])->name('transfers.download');
+
+
+
 //customer setad fee
-    Route::resource('/orders', OrderController::class);
+    Route::resource('orders', OrderController::class);
     Route::get('order-action/{order}', [OrderController::class, 'orderAction'])->name('order.action');
     Route::post('order-action/{invoice}', [OrderController::class, 'actionStore'])->name('order.action.store');
     Route::put('order-invoice-file/{order_action}/delete', [OrderController::class, 'deleteInvoiceFile'])->name('order.invoice.action.delete');
@@ -121,16 +129,15 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
 
     //company-info
     Route::resource('company-info', CompanyInfoController::class)->except(['show', 'destroy', 'create', 'store']);
-    Route::get('company-info-copy', [CompanyInfoController::class,'copyItem']);
-    Route::post('company-info-print-data', [CompanyInfoController::class,'printData'])->name('company-info-print-data');
+    Route::get('company-info-copy', [CompanyInfoController::class, 'copyItem']);
+    Route::post('company-info-print-data', [CompanyInfoController::class, 'printData'])->name('company-info-print-data');
 
     //setad fee
     Route::resource('setad-fee', SetadFeeController::class);
-    Route::get('search-setad-fee/{order}', [SetadFeeController::class,'search']);
-    Route::get('setad-fee/{order}/action', [SetadFeeController::class,'action'])->name('setad-fee.action');
-    Route::post('setad-fee/{order}/action/store', [SetadFeeController::class,'actionStore'])->name('setad-fee.store.action');
+    Route::get('search-setad-fee/{order}', [SetadFeeController::class, 'search']);
+    Route::get('setad-fee/{order}/action', [SetadFeeController::class, 'action'])->name('setad-fee.action');
+    Route::post('setad-fee/{order}/action/store', [SetadFeeController::class, 'actionStore'])->name('setad-fee.store.action');
     Route::put('receipt-file/{id}/delete', [SetadFeeController::class, 'deleteReceiptFile'])->name('receipt.action.delete');
-
 
 
     Route::match(['get', 'post'], '/', [PanelController::class, 'index'])->name('panel');

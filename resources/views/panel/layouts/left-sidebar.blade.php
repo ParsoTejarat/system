@@ -248,7 +248,7 @@
 
                 {{-- Packets --}}
                 @can('packets-list')
-                    @php $active_side = active_sidebar(['packets','packets/create','packets/{packet}/edit','search/packets']); @endphp
+                    @php $active_side = active_sidebar(['packets','packets/create','packets/{packet}/edit','search/packets','transfers','transfers/create','transfers/{transfer}/edit']); @endphp
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#packets" data-bs-toggle="collapse" aria-expanded="false" aria-controls="packets">
                             <i class="ri-truck-line"></i>
@@ -264,6 +264,16 @@
                                 </li>
                             </ul>
                         </div>
+                        @can('transfer-list')
+                        <div class="collapse {{ $active_side ? 'show' : '' }}" id="packets">
+                            <ul class="nav-second-level">
+                                @php $active_item = active_sidebar(['transfers','transfers/create','transfers/{transfer}/edit']); @endphp
+                                <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                    <a href="{{ route('transfers.index') }}" {{ $active_item ? 'active' : '' }}>مشخصات ارسال بسته </a>
+                                </li>
+                            </ul>
+                        </div>
+                        @endcan
                     </li>
                 @endcan
 

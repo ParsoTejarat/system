@@ -165,6 +165,12 @@ class ActivityLog extends Model
         'copy-information' => 'کپی اطلاعات',
         'print-information' => 'پرینت اطلاعات',
         'edit-company-information' => 'ویرایش اطلاعات شرکت',
+        // transfer
+        'transfer-list' => 'لیست ارسال کالاها',
+        'transfer-create' => 'ثبت ارسال کالا',
+        'transfer-edit' => 'ویرایش ارسال کالا',
+        'transfer-delete' => 'حذف ارسال کالا',
+        'transfer-download' => 'دانلود رسید کالا',
     ];
 
     public function user()
