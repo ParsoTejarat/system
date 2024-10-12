@@ -188,8 +188,21 @@
                 });
             });
 
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'F12') {
+                    event.preventDefault(); // جلوگیری از پیش‌فرض
+                }
+            });
 
+            document.addEventListener('contextmenu', function (event) {
+                event.preventDefault();
+            });
 
+            document.addEventListener('keydown', function (event) {
+                if (event.ctrlKey && event.shiftKey && (event.key === 'I' || event.key === 'C')) {
+                    event.preventDefault();
+                }
+            });
 
         });
     </script>

@@ -162,10 +162,10 @@ class PermissionSeeder extends Seeder
 //            'setad-fee-delete' => 'حذف کارمزد ستاد',
 //            'company-info' => 'اطلاعات شرکت',
 
-            'transfer-list' => 'لیست ارسال کالاها',
-            'transfer-create' => 'ثبت ارسال کالا',
-            'transfer-edit' => 'ویرایش ارسال کالا',
-            'transfer-delete' => 'حذف ارسال کالا',
+//            'transfer-list' => 'لیست ارسال کالاها',
+//            'transfer-create' => 'ثبت ارسال کالا',
+//            'transfer-edit' => 'ویرایش ارسال کالا',
+//            'transfer-delete' => 'حذف ارسال کالا',
 
         ];
 
