@@ -12,14 +12,15 @@
                 </div>
             </div>
             <!-- end page title -->
+
             <div class="row">
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
                             <div class="card-title d-flex justify-content-end">
                                 @cannot('ceo')
-                                    @can('buy-orders-create')
-                                        <a href="{{ route('buy-orders.create') }}" class="btn btn-primary">
+                                    @can('supply-request-create')
+                                        <a href="{{ route('supply-requests.create') }}" class="btn btn-primary">
                                             <i class="fa fa-plus me-2"></i>
                                             ثبت سفارش خرید
                                         </a>
@@ -31,9 +32,7 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>مشتری</th>
-                                        <th>استان</th>
-                                        <th>شهر</th>
+                                        <th>شناسه سفارش</th>
                                         <th>وضعیت</th>
                                         @canany(['admin','ceo','sales-manager'])
                                             <th>همکار</th>
@@ -125,3 +124,6 @@
         </div>
     </div>
 @endsection
+
+
+

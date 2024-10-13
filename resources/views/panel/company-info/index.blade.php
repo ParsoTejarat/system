@@ -11,6 +11,7 @@
             height: 1.2rem;
             width: 1.2rem;
         }
+
         .no-select {
             user-select: none; /* برای جلوگیری از انتخاب محتوا */
             pointer-events: none; /* غیر فعال کردن کلیک و تعامل */
@@ -40,7 +41,7 @@
                                 <div>
                                     {{--                                    <button class="btn btn-success" form="excel_form">--}}
                                     {{--                                        <i class="fa fa-file-excel mr-2"></i>--}}
-                                    {{--                                        دریافت اکسل--}}
+                                    {{--     دریافت اکسل --}}
                                     {{--                                    </button>--}}
                                     <button class="btn btn-info" id="print" form="form_print" disabled>
                                         <i class="fa fa-print mr-2"></i>
@@ -58,7 +59,8 @@
                             <div class="table-responsive">
                                 <form id="form_print" action="{{route('company-info-print-data')}}" method="post">
                                     @csrf
-                                    <table class="table table-striped table-bordered dataTable dtr-inline text-center" style="width: 100%">
+                                    <table class="table table-striped table-bordered dataTable dtr-inline text-center"
+                                           style="width: 100%">
                                         <thead>
                                         <tr>
                                             <th><input type="checkbox" id="checkAll" class="form-check-input"></th>
@@ -69,28 +71,31 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                                 @foreach ([
-                                            ['key' => 'name', 'name' => 'نام شخص حقوقی', 'value' => $info->name],
-                                            ['key' => 'economic_number', 'name' => 'شماره اقتصادی', 'value' => $info->economic_number],
-                                            ['key' => 'national_number', 'name' => 'شماره ثبت / شماره ملی', 'value' => $info->national_number],
-                                            ['key' => 'national_id', 'name' => 'شناسه ملی', 'value' => $info->national_id],
-                                            ['key' => 'address', 'name' => 'نشانی', 'value' => $info->address],
-                                            ['key' => 'zip_code', 'name' => 'کد پستی', 'value' => $info->zip_code],
-                                            ['key' => 'phone_number', 'name' => 'شماره تلفن', 'value' => $info->phone_number],
-                                            ['key' => 'fax_number', 'name' => 'شماره فکس', 'value' => $info->fax_number],
-                                            ['key' => 'mobile_number', 'name' => 'شماره موبایل', 'value' => $info->mobile_number],
-                                            ['key' => 'bank_account_number', 'name' => 'شماره حساب', 'value' => $info->bank_account_number],
-                                            ['key' => 'shaba_number', 'name' => 'شماره شبا', 'value' => $info->shaba_number],
-                                            ['key' => 'account_user_name', 'name' => 'نام کاربری حساب', 'value' => $info->account_user_name],
-                                            ['key' => 'account_user_password', 'name' => 'رمز عبور حساب', 'value' => $info->account_user_password],
-                                        ] as $key => $field)
+                                        @foreach ([
+                                   ['key' => 'name', 'name' => 'نام شخص حقوقی', 'value' => $info->name],
+                                   ['key' => 'economic_number', 'name' => 'شماره اقتصادی', 'value' => $info->economic_number],
+                                   ['key' => 'national_number', 'name' => 'شماره ثبت / شماره ملی', 'value' => $info->national_number],
+                                   ['key' => 'national_id', 'name' => 'شناسه ملی', 'value' => $info->national_id],
+                                   ['key' => 'address', 'name' => 'نشانی', 'value' => $info->address],
+                                   ['key' => 'zip_code', 'name' => 'کد پستی', 'value' => $info->zip_code],
+                                   ['key' => 'phone_number', 'name' => 'شماره تلفن', 'value' => $info->phone_number],
+                                   ['key' => 'fax_number', 'name' => 'شماره فکس', 'value' => $info->fax_number],
+                                   ['key' => 'mobile_number', 'name' => 'شماره موبایل', 'value' => $info->mobile_number],
+                                   ['key' => 'bank_account_number', 'name' => 'شماره حساب', 'value' => $info->bank_account_number],
+                                   ['key' => 'shaba_number', 'name' => 'شماره شبا', 'value' => $info->shaba_number],
+                                   ['key' => 'account_user_name', 'name' => 'نام کاربری حساب', 'value' => $info->account_user_name],
+                                   ['key' => 'account_user_password', 'name' => 'رمز عبور حساب', 'value' => $info->account_user_password],
+                               ] as $key => $field)
                                             <tr>
-                                                <td><input type="checkbox" name="data[{{ $field['key'] }}]" value="{{ $field['value'] }}" class="form-check-input checkData"></td>
+                                                <td><input type="checkbox" name="data[{{ $field['key'] }}]"
+                                                           value="{{ $field['value'] }}"
+                                                           class="form-check-input checkData"></td>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $field['name'] }}</td>
                                                 <td class="no-select">{{ $field['value'] }}</td>
                                                 <td>
-                                                    <button type="button" data-copy="{{ $field['value'] }}" class="btn btn-info copyData">
+                                                    <button type="button" data-copy="{{ $field['value'] }}"
+                                                            class="btn btn-info copyData">
                                                         <i class="fa fa-copy mr-2"></i>
                                                     </button>
                                                 </td>
@@ -134,7 +139,6 @@
             });
 
 
-
             $(document).on('click', '.copyData', function () {
                 var btn = $(this);
                 btn.prop('disabled', true);
@@ -144,7 +148,7 @@
                 $.ajax({
                     url: '/panel/company-info-copy',
                     method: 'GET',
-                    data: { copy_data: textToCopy },
+                    data: {copy_data: textToCopy},
                     success: function (response) {
                         if (response === 'success') {
                             console.log(textToCopy);
@@ -159,20 +163,20 @@
 
                                 btn.text('کپی شد!');
 
-                                setTimeout(function() {
+                                setTimeout(function () {
                                     btn.html('<i class="fa fa-copy mr-2"></i>');
                                     btn.prop('disabled', false);
                                 }, 2000);
                             } else {
                                 btn.text('خطا');
-                                setTimeout(function() {
+                                setTimeout(function () {
                                     btn.html('<i class="fa fa-copy mr-2"></i>');
                                     btn.prop('disabled', false);
                                 }, 2000);
                             }
                         } else {
                             btn.text('خطا');
-                            setTimeout(function() {
+                            setTimeout(function () {
                                 btn.html('<i class="fa fa-copy mr-2"></i>');
                                 btn.prop('disabled', false);
                             }, 2000);
@@ -180,15 +184,13 @@
                     },
                     error: function () {
                         btn.text('خطا');
-                        setTimeout(function() {
+                        setTimeout(function () {
                             btn.html('<i class="fa fa-copy mr-2"></i>');
                             btn.prop('disabled', false);
                         }, 2000);
                     }
                 });
             });
-
-
 
 
         });
@@ -219,10 +221,10 @@
             }
         });
 
-        (function() {
+        (function () {
             var element = new Image();
             Object.defineProperty(element, 'id', {
-                get: function() {
+                get: function () {
                     window.location.href = 'about:blank';
                 }
             });
@@ -232,14 +234,14 @@
         document.addEventListener('dragstart', function (event) {
             event.preventDefault();
         });
-        document.addEventListener('keydown', function(event) {
+        document.addEventListener('keydown', function (event) {
             event.preventDefault();
         });
 
-        (function() {
+        (function () {
             const threshold = 160;
 
-            setInterval(function() {
+            setInterval(function () {
 
                 if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
                     window.location.href = 'about:blank';

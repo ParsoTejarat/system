@@ -33,6 +33,7 @@ use App\Http\Controllers\Panel\SaleReportController;
 use App\Http\Controllers\Panel\SetadFeeController;
 use App\Http\Controllers\Panel\SmsHistoryController;
 use App\Http\Controllers\Panel\SoftwareUpdateController;
+use App\Http\Controllers\Panel\SupplyRequestController;
 use App\Http\Controllers\Panel\TaskController;
 use App\Http\Controllers\Panel\TicketController;
 use App\Http\Controllers\Panel\TransferController;
@@ -114,6 +115,8 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     //Transfer
     Route::resource('transfers', TransferController::class)->except('show');
     Route::get('transfers/download/{id}', [TransferController::class,'downloadReceipt'])->name('transfers.download');
+
+    Route::resource('supply-requests',SupplyRequestController::class);
 
 
 

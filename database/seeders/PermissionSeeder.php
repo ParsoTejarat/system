@@ -166,6 +166,10 @@ class PermissionSeeder extends Seeder
 //            'transfer-create' => 'ثبت ارسال کالا',
 //            'transfer-edit' => 'ویرایش ارسال کالا',
 //            'transfer-delete' => 'حذف ارسال کالا',
+//            'supply-request-list' => 'لیست تامین کالا',
+//            'supply-request-create' => 'ثبت تامین کالا',
+//            'supply-request-edit' => 'ویرایش تامین کالا',
+//            'supply-request-delete' => 'حذف تامین کالا',
 
         ];
 
