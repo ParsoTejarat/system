@@ -51,7 +51,6 @@
                                         <h2 class="name mb-10">نام شخص حقیقی/حقوقی : {{$order->customer->name}}</h2>
                                         <h3 class="name mb-10">نوع فروش : {{\App\Models\Customer::CUSTOMER_TYPE[$order->customer->customer_type]}}</h3>
                                         <p class="invo-addr-1">
-
                                             شماره ثبت/ملی : {{$order->customer->national_number}} <br/>
                                             کد پستی : {{$order->customer->postal_code}} <br/>
                                             شماره تماس : {{$order->customer->phone1}} <br/>
