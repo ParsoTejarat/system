@@ -88,7 +88,7 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request, User $user)
     {
-        $this->authorize('users-edit');
+//        $this->authorize('users-edit');
 
         if (!auth()->user()->isSuperuser() && ($user->role->name == 'admin' && $user->id != auth()->id())) {
             alert()->error('شما مجاز به انتخاب این نقش نیستید.', 'عدم دسترسی');
