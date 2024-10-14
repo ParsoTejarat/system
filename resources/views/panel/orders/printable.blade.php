@@ -160,7 +160,8 @@
                                     @if(!is_null($order->description))
                                         <div class="mb-30 dear-client">
                                             <h3 class="inv-title-1">توضیحات</h3>
-                                            <p>{{$order->description}}</p>
+                                            <p>{!! nl2br(e($order->description)) !!}</p>
+
                                         </div>
                                     @endif
                                 </div>
