@@ -161,14 +161,6 @@ class SetadFeeController extends Controller
         $setad->delete();
         return back();
 
-
-
-
-
-
-
-
-
     }
 
     public function search($orderCode)

@@ -12,6 +12,7 @@ use App\Models\InvoiceAction;
 use App\Models\Order;
 use App\Models\OrderAction;
 use App\Models\Permission;
+use App\Models\Product;
 use App\Models\Province;
 use App\Models\Role;
 use App\Models\User;
@@ -60,7 +61,6 @@ class OrderController extends Controller
 
         return view('panel.orders.index', compact(['orders', 'customers', 'roles_id']));
     }
-
 
 
     public function create()
@@ -505,6 +505,62 @@ class OrderController extends Controller
         }
 
         return $code;
+    }
+
+    public function getCustomerOrder($code)
+    {
+        $order = Order::where('code', $code)->first();
+
+        $mergedProducts = [];
+
+        if ($order) {
+            $decodedProducts = json_decode($order->products);
+
+            if (!empty($decodedProducts->products)) {
+                $productIds = collect($decodedProducts->products)->pluck('products');
+                $productsFromDB = Product::whereIn('id', $productIds)->get()->keyBy('id');
+
+                foreach ($decodedProducts->products as $product) {
+                    $productModel = $productsFromDB->get($product->products);
+                    $mergedProducts[] = [
+                        'title' => $productModel ? $productModel->title : 'Unknown Product',
+                        'color' => Product::COLORS[$product->colors] ?? 'Unknown Color',
+                        'count' => $product->counts,
+                        'unit' => $product->units,
+                        'price' => 0,
+                    ];
+                }
+            }
+
+            if (!empty($decodedProducts->other_products)) {
+                foreach ($decodedProducts->other_products as $product) {
+                    $mergedProducts[] = [
+                        'title' => $product->other_products,
+                        'color' => $product->other_colors,
+                        'count' => $product->other_counts,
+                        'unit' => $product->other_units,
+                        'price' => 0,
+                    ];
+                }
+            }
+
+            $data = [
+                'customer' => $order->customer,
+                'order' => $mergedProducts
+            ];
+            $response = [
+                'status' => 'success',
+                'data' => $data
+            ];
+            return response()->json($response, 200);
+        }
+        $response = [
+            'status' => 'failed',
+            'data' => null
+        ];
+        return response()->json($response, 200);
+
+
     }
 
 

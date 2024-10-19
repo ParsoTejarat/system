@@ -103,8 +103,7 @@
                                             </td>
 
                                             <td class="pl0">
-                                                {{ $product->products ?? $product->other_products ?? 'N/A' }}
-                                            </td>
+                                                {{ isset($product->products) ? \App\Models\Product::whereId($product->products)->first()->title : ($product->other_products ?? 'N/A') }}                                            </td>
 
                                             @php
                                                 $units = isset($product->units) ? (\App\Models\Product::UNITS[$product->units] ?? 'N/A') : (\App\Models\Product::UNITS[$product->other_units] ?? 'N/A');

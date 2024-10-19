@@ -1,5 +1,5 @@
 @extends('panel.layouts.master')
-@section('title', 'سفارشات')
+@section('title', 'پیش فاکتور ها')
 @section('content')
     <div class="content">
         <div class="container-fluid">
@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
-                        <h4 class="page-title">سفارشات</h4>
+                        <h4 class="page-title">پیش فاکتور ها</h4>
                     </div>
                 </div>
             </div>
@@ -44,20 +44,19 @@
                                     </button>
 
                                     @can('invoices-create')
-                                        @cannot('accountant')
+{{--                                        @cannot('accountant')--}}
                                             <a href="{{ route('invoices.create') }}" class="btn btn-primary">
                                                 <i class="fa fa-plus mr-2"></i>
-                                                ایجاد سفارش
+                                                ایجاد پیش فاکتور
                                             </a>
-                                        @endcannot
+{{--                                        @endcannot--}}
                                     @endcan
                                 </div>
                             </div>
                             <form action="{{ route('invoices.search') }}" method="get" id="search_form"></form>
                             <div class="row mb-3 mt-5">
                                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                                    <select name="customer_id" form="search_form" class="form-control"
-                                            data-toggle="select2">
+                                    <select name="customer_id" form="search_form" class="form-control" data-toggle="select2">
                                         <option value="all">خریدار (همه)</option>
                                         @foreach($customers as $customer)
                                             <option
@@ -110,6 +109,7 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>شناسه سفارش</th>
                                         <th>خریدار</th>
                                         <th>درخواست جهت</th>
                                         <th>استان</th>
@@ -123,7 +123,7 @@
                                         {{--                        @canany(['accountant','admin','ceo'])--}}
                                         <th>مشاهده سفارش</th>
                                         {{--                        @endcanany--}}
-                                        <th>وضعیت سفارش</th>
+{{--                                        <th>وضعیت سفارش</th>--}}
                                         @can('warehouse-keeper')
                                             <th>فاکتور</th>
                                         @else
@@ -131,20 +131,21 @@
                                                 <th>اقدام</th>
                                             @endcanany
                                         @endcan
-                                        @cannot('accountant')
+{{--                                        @cannot('accountant')--}}
                                             @can('invoices-edit')
                                                 <th>ویرایش</th>
                                             @endcan
                                             @can('invoices-delete')
                                                 <th>حذف</th>
                                             @endcan
-                                        @endcannot
+{{--                                        @endcannot--}}
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @foreach($invoices as $key => $invoice)
                                         <tr>
                                             <td>{{ ++$key }}</td>
+                                            <td><a href="/panel/orders?code={{$invoice->order->code}}">{{ $invoice->order->code }}</a></td>
                                             <td>{{ $invoice->customer->name }}</td>
                                             <td>{{ \App\Models\Invoice::REQ_FOR[$invoice->req_for] }}</td>
                                             <td>{{ $invoice->province }}</td>
@@ -167,14 +168,14 @@
                                             </td>
 
                                             {{--                            @endcanany--}}
-                                            <td>
-                                                {{-- invoices before 2024-02-03 orders-status disabled --}}
-                                                <a href="{{ route('orders-status.index', $invoice->id) }}"
-                                                   class="btn btn-purple btn-floating {{ $invoice->created_at < verta('2024-02-03 00:00:00') ? 'disabled' : '' }}"
-                                                   target="_blank">
-                                                    <i class="fa fa-truck"></i>
-                                                </a>
-                                            </td>
+{{--                                            <td>--}}
+{{--                                                --}}{{-- invoices before 2024-02-03 orders-status disabled --}}
+{{--                                                <a href="{{ route('orders-status.index', $invoice->id) }}"--}}
+{{--                                                   class="btn btn-purple btn-floating {{ $invoice->created_at < verta('2024-02-03 00:00:00') ? 'disabled' : '' }}"--}}
+{{--                                                   target="_blank">--}}
+{{--                                                    <i class="fa fa-truck"></i>--}}
+{{--                                                </a>--}}
+{{--                                            </td>--}}
                                             @can('warehouse-keeper')
 
                                                 <td>
@@ -194,7 +195,7 @@
                                                     </td>
                                                 @endcanany
                                             @endcan
-                                            @cannot('accountant')
+{{--                                            @cannot('accountant')--}}
                                                 @can('sales-manager')
                                                     @can('invoices-edit')
                                                         <td>
@@ -232,7 +233,7 @@
                                                         </td>
                                                     @endcan
                                                 @endcan
-                                            @endcannot
+{{--                                            @endcannot--}}
                                         </tr>
                                     @endforeach
                                     </tbody>
@@ -242,8 +243,7 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            <div
-                                class="d-flex justify-content-center">{{ $invoices->appends(request()->all())->links() }}</div>
+                            <div class="d-flex justify-content-center">{{ $invoices->appends(request()->all())->links() }}</div>
                         </div>
                     </div>
                 </div>

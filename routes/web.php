@@ -115,7 +115,6 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     //Transfer
     Route::resource('transfers', TransferController::class)->except('show');
     Route::get('transfers/download/{id}', [TransferController::class,'downloadReceipt'])->name('transfers.download');
-
     Route::resource('supply-requests',SupplyRequestController::class);
 
 
@@ -129,6 +128,7 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
 //    Route::match(['get', 'post'], '/order/search/orders', [OrderController::class, 'search'])->name('orders.search');
     Route::post('excel/orders', [OrderController::class, 'excel'])->name('orders.excel');
     Route::get('get-customer-order-status/{id}', [OrderController::class, 'getCustomerOrderStatus'])->name('order.get.customer.order.status');
+    Route::get('get-customer-order/{code}', [OrderController::class, 'getCustomerOrder'])->name('order.get.customer.order');
 
     //company-info
     Route::resource('company-info', CompanyInfoController::class)->except(['show', 'destroy', 'create', 'store']);

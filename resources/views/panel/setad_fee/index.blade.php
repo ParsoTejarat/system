@@ -251,62 +251,62 @@
     </div>
 @endsection
 
-@section('scripts')
-    <script>
-        $(document).ready(function () {
-            $(document).on('click', '.show-status', function () {
-                var id = $(this).data('id');
-                var code = $(this).data('code');
-                $('#timelineModalLabel').text(`وضعیت سفارش ${code}`)
-                var loading = $('.loading');
-                var timelineContent = $('.timeline-content');
-                timelineContent.empty();
-                loading.show();
-                $.ajax({
-                    url: '/panel/get-customer-order-status/' + id,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function (response) {
-                        loading.hide();
-                        console.log('Response:', response);
-                        response.forEach((stage, index) => {
-                            const hasDate = stage.date !== '';
-                            const stageClass = stage.pending ? 'bg-warning' : hasDate ? 'bg-success' : 'bg-secondary';
-                            const icon = stage.pending ? '<i class="fa fa-undo rotate-icon"></i>' : hasDate ? '✓' : '✖';
-                            const date = stage.pending ? 'در حال بررسی' : hasDate ? stage.date : '';
+{{--@section('scripts')--}}
+{{--    <script>--}}
+{{--        $(document).ready(function () {--}}
+{{--            $(document).on('click', '.show-status', function () {--}}
+{{--                var id = $(this).data('id');--}}
+{{--                var code = $(this).data('code');--}}
+{{--                $('#timelineModalLabel').text(`وضعیت سفارش ${code}`)--}}
+{{--                var loading = $('.loading');--}}
+{{--                var timelineContent = $('.timeline-content');--}}
+{{--                timelineContent.empty();--}}
+{{--                loading.show();--}}
+{{--                $.ajax({--}}
+{{--                    url: '/panel/get-customer-order-status/' + id,--}}
+{{--                    type: 'GET',--}}
+{{--                    dataType: 'json',--}}
+{{--                    success: function (response) {--}}
+{{--                        loading.hide();--}}
+{{--                        console.log('Response:', response);--}}
+{{--                        response.forEach((stage, index) => {--}}
+{{--                            const hasDate = stage.date !== '';--}}
+{{--                            const stageClass = stage.pending ? 'bg-warning' : hasDate ? 'bg-success' : 'bg-secondary';--}}
+{{--                            const icon = stage.pending ? '<i class="fa fa-undo rotate-icon"></i>' : hasDate ? '✓' : '✖';--}}
+{{--                            const date = stage.pending ? 'در حال بررسی' : hasDate ? stage.date : '';--}}
 
-                            const progressBar = index === 0 ? '' : `
-                            <div class="progress progress-vertical ${stageClass}">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated ${stageClass}" role="progressbar" style="height: 100%;"></div>
-                            </div>
-                        `;
+{{--                            const progressBar = index === 0 ? '' : `--}}
+{{--                            <div class="progress progress-vertical ${stageClass}">--}}
+{{--                                <div class="progress-bar progress-bar-striped progress-bar-animated ${stageClass}" role="progressbar" style="height: 100%;"></div>--}}
+{{--                            </div>--}}
+{{--                        `;--}}
 
-                           const stageTemplate = `
-                            ${progressBar}
-                            <div class="timeline-stage stage-left d-flex align-items-center">
-                                <div class="rounded-circle ${stageClass} text-white stage-circle me-2">${icon}</div>
-                                <div>
-                                    <h6 class="stage-text" style="font-weight: bolder;font-size: medium;">${stage.status_label}</h6>
-                                    <small class="stage-text">${date}</small>
-                                </div>
-                            </div>
-                        `;
+{{--                           const stageTemplate = `--}}
+{{--                            ${progressBar}--}}
+{{--                            <div class="timeline-stage stage-left d-flex align-items-center">--}}
+{{--                                <div class="rounded-circle ${stageClass} text-white stage-circle me-2">${icon}</div>--}}
+{{--                                <div>--}}
+{{--                                    <h6 class="stage-text" style="font-weight: bolder;font-size: medium;">${stage.status_label}</h6>--}}
+{{--                                    <small class="stage-text">${date}</small>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        `;--}}
 
-                            timelineContent.append(stageTemplate);
-                        });
+{{--                            timelineContent.append(stageTemplate);--}}
+{{--                        });--}}
 
-                        timelineContent.show();
-                    }
-                    ,
+{{--                        timelineContent.show();--}}
+{{--                    }--}}
+{{--                    ,--}}
 
-                    error: function (xhr, status, error) {
-                        console.log('Error:', error);
-                        loading.hide();
-                    }
-                });
-            });
-        });
-    </script>
-@endsection
+{{--                    error: function (xhr, status, error) {--}}
+{{--                        console.log('Error:', error);--}}
+{{--                        loading.hide();--}}
+{{--                    }--}}
+{{--                });--}}
+{{--            });--}}
+{{--        });--}}
+{{--    </script>--}}
+{{--@endsection--}}
 
 

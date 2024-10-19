@@ -105,4 +105,9 @@ class Invoice extends Model
     {
         return $this->products()->sum('invoice_net') + $this->other_products()->sum('invoice_net');
     }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id');
+    }
 }

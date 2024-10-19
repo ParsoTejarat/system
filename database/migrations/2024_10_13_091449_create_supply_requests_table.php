@@ -13,11 +13,11 @@ class CreateSupplyRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('supply_requests', function (Blueprint $table) {
-            $table->id();
-//            $table->string('');
-            $table->timestamps();
-        });
+//        Schema::create('supply_requests', function (Blueprint $table) {
+//            $table->id();
+////            $table->string('');
+//            $table->timestamps();
+//        });
     }
 
     /**

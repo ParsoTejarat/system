@@ -2,9 +2,6 @@
 @section('title', 'نامه نگاری')
 @section('styles')
     <style>
-        <
-        style >
-
         @font-face {
             font-family: dana;
             font-style: normal;

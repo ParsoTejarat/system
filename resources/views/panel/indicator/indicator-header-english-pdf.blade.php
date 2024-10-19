@@ -37,7 +37,7 @@
 <body>
 
     <div class="date">
-{{--        {{\Hekmatinasser\Verta\Verta::parse($date)->toCarbon()->format('Y-m-d')}}--}}
+        {{\Hekmatinasser\Verta\Verta::parse($date)->toCarbon()->format('Y-m-d')}}
     </div>
     <div class="number">
         {{$number}}
