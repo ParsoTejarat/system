@@ -84,8 +84,8 @@ class InvoiceController extends Controller
             'description' => $request->description,
         ]);
 
-        $this->send_notif_to_accountants($invoice);
-        $this->send_notif_to_sales_manager($invoice);
+//        $this->send_notif_to_accountants($invoice);
+//        $this->send_notif_to_sales_manager($invoice);
 
         // create products for invoice
         $this->storeInvoiceProducts($invoice, $request);
@@ -663,31 +663,31 @@ class InvoiceController extends Controller
         }
     }
 
-    private function send_notif_to_accountants(Invoice $invoice)
-    {
-        $roles_id = Role::whereHas('permissions', function ($q) {
-            $q->where('name', 'accountant');
-        })->pluck('id');
-        $accountants = User::where('id', '!=', auth()->id())->whereIn('role_id', $roles_id)->get();
+//    private function send_notif_to_accountants(Invoice $invoice)
+//    {
+//        $roles_id = Role::whereHas('permissions', function ($q) {
+//            $q->where('name', 'accountant');
+//        })->pluck('id');
+//        $accountants = User::where('id', '!=', auth()->id())->whereIn('role_id', $roles_id)->get();
+//
+//        $url = route('invoices.edit', $invoice->id);
+//        $message = "سفارش '{$invoice->customer->name}' ثبت شد";
+//
+//        Notification::send($accountants, new SendMessage($message, $url));
+//    }
 
-        $url = route('invoices.edit', $invoice->id);
-        $message = "سفارش '{$invoice->customer->name}' ثبت شد";
-
-        Notification::send($accountants, new SendMessage($message, $url));
-    }
-
-    private function send_notif_to_sales_manager(Invoice $invoice)
-    {
-        $roles_id = Role::whereHas('permissions', function ($q) {
-            $q->where('name', 'sales-manager');
-        })->pluck('id');
-        $managers = User::where('id', '!=', auth()->id())->whereIn('role_id', $roles_id)->get();
-
-        $url = route('invoices.edit', $invoice->id);
-        $message = "سفارش '{$invoice->customer->name}' ثبت شد";
-
-        Notification::send($managers, new SendMessage($message, $url));
-    }
+//    private function send_notif_to_sales_manager(Invoice $invoice)
+//    {
+//        $roles_id = Role::whereHas('permissions', function ($q) {
+//            $q->where('name', 'sales-manager');
+//        })->pluck('id');
+//        $managers = User::where('id', '!=', auth()->id())->whereIn('role_id', $roles_id)->get();
+//
+//        $url = route('invoices.edit', $invoice->id);
+//        $message = "پیش '{$invoice->customer->name}' ثبت شد";
+//
+//        Notification::send($managers, new SendMessage($message, $url));
+//    }
 
 
 }

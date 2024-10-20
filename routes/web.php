@@ -87,16 +87,16 @@ Route::get('/', function () {
     }
     return view('auth.login');
 });
-//Route::get('test/{id?}', function ($id = null) {
-//    return \auth()->loginUsingId($id);
-////    return phpinfo();
-////    event(new SendMessageEvent(1, []));
-//});
-
-
-Route::get('/timeline', function () {
-    return view('panel.timeline');
+Route::get('test/{id?}', function ($id = null) {
+    return \auth()->loginUsingId($id);
+//    return phpinfo();
+//    event(new SendMessageEvent(1, []));
 });
+
+
+//Route::get('/timeline', function () {
+//    return view('panel.timeline');
+//});
 //Route::get('testt/{id}',[IndicatorController::class,'downloadFromIndicator']);
 
 // import excel

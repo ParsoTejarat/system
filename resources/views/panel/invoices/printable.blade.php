@@ -355,7 +355,7 @@
         </div>
         <div class="pb-2 d-flex justify-content-between px-3" id="print_sec">
             <a href="{{ url()->previous() }}" class="btn btn-primary"><i class="fa fa-chevron-right me-2"></i>برگشت</a>
-            <button class="btn btn-info" id="btn_print"><i class="fa fa-print me-2"></i>چاپ</button>
+{{--            <button class="btn btn-info" id="btn_print"><i class="fa fa-print me-2"></i>چاپ</button>--}}
             <form action="{{ route('invoices.download') }}" method="post">
                 @csrf
                 <input type="hidden" name="invoice_id" value="{{ $invoice->id }}">
