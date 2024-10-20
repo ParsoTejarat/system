@@ -87,11 +87,11 @@ Route::get('/', function () {
     }
     return view('auth.login');
 });
-Route::get('test/{id?}', function ($id = null) {
-    return \auth()->loginUsingId($id);
-//    return phpinfo();
-//    event(new SendMessageEvent(1, []));
-});
+//Route::get('test/{id?}', function ($id = null) {
+//    return \auth()->loginUsingId($id);
+////    return phpinfo();
+////    event(new SendMessageEvent(1, []));
+//});
 
 
 Route::get('/timeline', function () {
@@ -119,13 +119,13 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
 
 
 
-//customer setad fee
+    //customer setad fee
     Route::resource('orders', OrderController::class);
     Route::get('order-action/{order}', [OrderController::class, 'orderAction'])->name('order.action');
     Route::post('order-action/{invoice}', [OrderController::class, 'actionStore'])->name('order.action.store');
     Route::put('order-invoice-file/{order_action}/delete', [OrderController::class, 'deleteInvoiceFile'])->name('order.invoice.action.delete');
     Route::put('order-factor-file/{order_action}/delete', [OrderController::class, 'deleteFactorFile'])->name('order.factor.action.delete');
-//    Route::match(['get', 'post'], '/order/search/orders', [OrderController::class, 'search'])->name('orders.search');
+    //    Route::match(['get', 'post'], '/order/search/orders', [OrderController::class, 'search'])->name('orders.search');
     Route::post('excel/orders', [OrderController::class, 'excel'])->name('orders.excel');
     Route::get('get-customer-order-status/{id}', [OrderController::class, 'getCustomerOrderStatus'])->name('order.get.customer.order.status');
     Route::get('get-customer-order/{code}', [OrderController::class, 'getCustomerOrder'])->name('order.get.customer.order');
@@ -228,7 +228,7 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     Route::get('notes', [NoteController::class, 'index'])->name('notes.index');
     Route::post('notes', [NoteController::class, 'store'])->name('notes.store');
     Route::post('notes/delete', [NoteController::class, 'delete'])->name('notes.destroy');
-//    Route::post('note/change-status', [NoteController::class, 'changeStatus']);
+    // Route::post('note/change-status', [NoteController::class, 'changeStatus']);
 
     // Leaves
     Route::resource('leaves', LeaveController::class)->except('show')->parameters(['leaves' => 'leave']);
@@ -249,7 +249,7 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     Route::post('price-history', [ProductController::class, 'pricesHistorySearch'])->name('price-history');
 
     // Login Account
-//    Route::match(['get','post'],'ud54g78d2fs77gh6s$4sd15p5d',[PanelController::class, 'login'])->name('login-account');
+    // Route::match(['get','post'],'ud54g78d2fs77gh6s$4sd15p5d',[PanelController::class, 'login'])->name('login-account');
 
     // Off-site Products
     Route::get('off-site-products/{website}', [OffSiteProductController::class, 'index'])->name('off-site-products.index');

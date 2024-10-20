@@ -1,5 +1,5 @@
 @extends('panel.layouts.master')
-@section('title', 'چاپ سفارش')
+@section('title', 'چاپ پیش فاکتور ها')
 @php
     $left_sidebar = false;
     $topbar = false;
@@ -141,7 +141,7 @@
                         <img src="/assets/images/header-logo.png" style="width: 15rem;">
                     </div>
                     <div class="col-3 text-end">
-                        <h3>سفارش مشتری</h3>
+                        <h3>پیش فاکتور فروش کالا و خدمات</h3>
                     </div>
                     <div class="col-2"></div>
                     <div class="col-2 text-center">
@@ -321,16 +321,23 @@
                                             </div>
                                         </div>
                                     </td>
+                                    <td colspan="8" class="text-start">
+                                         {{change_number_to_words($sum_invoice_net - $invoice->discount)}} ریال
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"><small>توضیحات</small></td>
-                                    <td colspan="10">{{ $invoice->description }}</td>
-                                    {{--                                        <td colspan="10">لطفا مبلغ فاکتور را به شماره شبا IR55 0110 0000 0010 3967 1380 01 نزد بانک صنعت و معدن شعبه مرکزی واریز فرمایید.</td>--}}
+                                    <td colspan="10">{!!  nl2br(e($invoice->description )) !!}</td>
                                 </tr>
-{{--                                <tr>--}}
-{{--                                    <td colspan="12"><strong>تمام اجناس ارائه شده دارای 18 ماه گارانتی از سوی شرکت--}}
-{{--                                            صنایع ماشین های اداری ماندگار پارس می باشد</strong></td>--}}
-{{--                                </tr>--}}
+                                <tr>
+                                    <td colspan="12">
+                                        خواهشمند است مبلغ فاكتور را به شماره شبا IR19-0150-0001-8878-2299-0698-11 نزد بانك سپه شعبه ميدان منيريه واريز نماييد. با تشكر
+                                        <br>
+                                        <br>
+                                        آدرس سایت  https://parsotejarat.com
+                                    </td>
+                                </tr>
+
                                 <tr>
                                     <td colspan="6" id="seller_sign_sec">
                                         <img src="{{ $invoice->user->sign_image ?? '' }}" class="sign">

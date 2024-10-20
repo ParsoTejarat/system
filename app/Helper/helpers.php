@@ -279,3 +279,14 @@ function dataInfoName($data)
     }
     return $name;
 }
+
+if (!function_exists('convert_number_to_words')) {
+    function change_number_to_words($number)
+    {
+        $dictionary = new MojtabaaHN\PersianNumberToWords\Dictionary();
+        $converter = new MojtabaaHN\PersianNumberToWords\PersianNumberToWords($dictionary);
+        return $converter->convert($number);
+
+    }
+}
+

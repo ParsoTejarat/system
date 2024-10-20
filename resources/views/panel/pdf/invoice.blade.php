@@ -96,7 +96,7 @@
                         <img src="{{ public_path('/assets/images/header-logo.png') }}" style="width: 15rem;">
                     </td>
                     <td>
-                        <span style="font-size: 25px">سفارش مشتری</span>
+                        <span style="font-size: 25px">پیش فاکتور فروش کالا و خدمات</span>
                     </td>
                     <td style="width: 200px">
                         <p style="font-size: 15px">شماره سریال: {{ $invoice->id }}</p>
@@ -288,14 +288,24 @@
                                         غیر نقدی<input type="checkbox">
                                     </div>
                                 </td>
+                                <td colspan="8" class="text-start">
+                                    {{change_number_to_words($sum_invoice_net - $invoice->discount)}} ریال
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="2"><small>توضیحات</small></td>
-                                <td colspan="10">{{ $invoice->description }}</td>
-                                {{--                                <td colspan="10">لطفا مبلغ فاکتور را به شماره شبا IR55 0110 0000 0010 3967 1380 01 نزد بانک صنعت و معدن شعبه مرکزی واریز فرمایید.</td>--}}
+                                <td colspan="10">{!!  nl2br(e($invoice->description)) !!}</td>
                             </tr>
                             <tr>
-                                <td colspan="12"><strong>تمام اجناس ارائه شده دارای 18 ماه گارانتی از سوی شرکت صنایع ماشین های اداری ماندگار پارس می باشد</strong></td>
+                                <td colspan="12">
+                                    خواهشمند است مبلغ فاكتور را به شماره شبا IR19-0150-0001-8878-2299-0698-11 نزد بانك سپه شعبه ميدان منيريه واريز نماييد. با تشكر
+                                    <br>
+                                    <br>
+                                    آدرس سایت https://parsotejarat.com
+                                </td>
+                            </tr>
+                            <tr>
+{{--                                <td colspan="12"><strong>تمام اجناس ارائه شده دارای 18 ماه گارانتی از سوی شرکت صنایع ماشین های اداری ماندگار پارس می باشد</strong></td>--}}
                             </tr>
                             <tr>
                                 <td colspan="6">

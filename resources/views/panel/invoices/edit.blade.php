@@ -98,7 +98,7 @@
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="buyer_name">شناسه سفارش<span
-                                                class="text-danger">*</span></label>
+                                                    class="text-danger">*</span></label>
                                         <input type="text" name="code" value="{{old('code',$invoice->order->code)}}"
                                                class="form-control"
                                                id="code"
@@ -110,7 +110,7 @@
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="buyer_name">نام شخص حقیقی/حقوقی <span
-                                                class="text-danger">*</span></label>
+                                                    class="text-danger">*</span></label>
                                         <input type="text" name="buyer_name"
                                                value="{{old('buyer_name',$invoice->customer->name)}}"
                                                class="form-control" id="buyer_name" readonly>
@@ -135,7 +135,7 @@
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="national_number">شماره ثبت/ملی<span
-                                                class="text-danger">*</span></label>
+                                                    class="text-danger">*</span></label>
                                         <input type="text" name="national_number" class="form-control"
                                                id="national_number" value="{{ $invoice->national_number }}">
                                         @error('national_number')
@@ -152,7 +152,7 @@
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="postal_code">کد پستی<span
-                                                class="text-danger">*</span></label>
+                                                    class="text-danger">*</span></label>
                                         <input type="text" name="postal_code" class="form-control" id="postal_code"
                                                value="{{ $invoice->postal_code }}">
                                         @error('postal_code')
@@ -161,7 +161,7 @@
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="phone">شماره تماس<span
-                                                class="text-danger">*</span></label>
+                                                    class="text-danger">*</span></label>
                                         <input type="text" name="phone" class="form-control" id="phone"
                                                value="{{ $invoice->phone }}">
                                         @error('phone')
@@ -170,12 +170,12 @@
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="province">استان <span
-                                                class="text-danger">*</span></label>
+                                                    class="text-danger">*</span></label>
                                         <select name="province" id="province" class="form-control"
                                                 data-toggle="select2">
                                             @foreach(\App\Models\Province::all() as $province)
                                                 <option
-                                                    value="{{ $province->name }}" {{ $invoice->province == $province->name ? 'selected' : '' }}>{{ $province->name }}</option>
+                                                        value="{{ $province->name }}" {{ $invoice->province == $province->name ? 'selected' : '' }}>{{ $province->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('province')
@@ -184,7 +184,7 @@
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="city">شهر<span
-                                                class="text-danger">*</span></label>
+                                                    class="text-danger">*</span></label>
                                         <input type="text" name="city" class="form-control" id="city"
                                                value="{{ $invoice->city }}">
                                         @error('city')
@@ -201,8 +201,9 @@
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="description">توضیحات</label>
-                                        <textarea name="description" id="description"
-                                                  class="form-control">{{ $invoice->description }}</textarea>
+                                        <textarea name="description" rows="5" id="description"
+                                                  class="form-control description">{{ $invoice->description }}</textarea>
+                                        <span class="text-info fst-italic">خط بعد Shift + Enter</span>
                                         @error('description')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
@@ -224,11 +225,11 @@
                                             <select name="status" id="status" class="form-control"
                                                     data-toggle="select2">
                                                 <option
-                                                    value="order" {{ $invoice->status == 'orders' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['orders'] }}</option>
+                                                        value="order" {{ $invoice->status == 'orders' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['orders'] }}</option>
                                                 <option
-                                                    value="pending" {{ $invoice->status == 'pending' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['pending'] }}</option>
+                                                        value="pending" {{ $invoice->status == 'pending' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['pending'] }}</option>
                                                 <option
-                                                    value="invoiced" {{ $invoice->status == 'invoiced' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['invoiced'] }}</option>
+                                                        value="invoiced" {{ $invoice->status == 'invoiced' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['invoiced'] }}</option>
                                             </select>
                                             @error('status')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -311,11 +312,21 @@
                                                                 <td>
                                                                     <select class="form-control" name="other_units[]"
                                                                             readonly>
-                                                                        <option value="number">عدد</option>
-                                                                        <option value="pack">بسته</option>
-                                                                        <option value="box">جعبه</option>
-                                                                        <option value="kg">کیلوگرم</option>
-                                                                        <option value="ton">تن</option>
+                                                                        <option value="number" {{$product->unit == 'number' ? 'selected':''}}>
+                                                                            عدد
+                                                                        </option>
+                                                                        <option value="pack" {{$product->unit == 'pack' ? 'selected':''}}>
+                                                                            بسته
+                                                                        </option>
+                                                                        <option value="box" {{$product->unit == 'box' ? 'selected':''}}>
+                                                                            جعبه
+                                                                        </option>
+                                                                        <option value="kg" {{$product->unit == 'kg' ? 'selected':''}}>
+                                                                            کیلوگرم
+                                                                        </option>
+                                                                        <option value="ton" {{$product->unit == 'ton' ? 'selected':''}}>
+                                                                            تن
+                                                                        </option>
                                                                     </select>
                                                                 </td>
                                                                 <td>
@@ -324,14 +335,14 @@
                                                                            min="0" value="{{ $product->price }}"
                                                                            required>
                                                                     <span
-                                                                        class="price_with_grouping text-primary">{{ number_format($product->price )}}</span>
+                                                                            class="price_with_grouping text-primary">{{ number_format($product->price )}}</span>
                                                                 </td>
                                                                 <td>
                                                                     <input type="number" name="other_total_prices[]"
                                                                            class="form-control" min="0"
                                                                            value="{{ $product->total_price }}" readonly>
                                                                     <span
-                                                                        class="price_with_grouping text-primary">{{ number_format($product->total_price) }}</span>
+                                                                            class="price_with_grouping text-primary">{{ number_format($product->total_price) }}</span>
                                                                 </td>
                                                                 <td>
                                                                     <input type="number" name="other_discount_amounts[]"
@@ -339,7 +350,7 @@
                                                                            value="{{ $product->discount_amount }}"
                                                                            required>
                                                                     <span
-                                                                        class="price_with_grouping text-primary">{{ number_format($product->discount_amount)}}</span>
+                                                                            class="price_with_grouping text-primary">{{ number_format($product->discount_amount)}}</span>
                                                                 </td>
                                                                 <td>
                                                                     <input type="number" name="other_extra_amounts[]"
@@ -347,7 +358,7 @@
                                                                            value="{{ $product->extra_amount }}"
                                                                            readonly>
                                                                     <span
-                                                                        class="price_with_grouping text-primary">{{ number_format($product->extra_amount) }}</span>
+                                                                            class="price_with_grouping text-primary">{{ number_format($product->extra_amount) }}</span>
                                                                 </td>
                                                                 <td>
                                                                     <input type="number"
@@ -356,26 +367,26 @@
                                                                            value="{{ $product->total_price - ($product->extra_amount + $product->discount_amount) }}"
                                                                            readonly>
                                                                     <span
-                                                                        class="price_with_grouping text-primary">{{number_format( $product->total_price - ($product->extra_amount + $product->discount_amount))}}</span>
+                                                                            class="price_with_grouping text-primary">{{number_format( $product->total_price - ($product->extra_amount + $product->discount_amount))}}</span>
                                                                 </td>
                                                                 <td>
                                                                     <input type="number" name="other_taxes[]"
                                                                            class="form-control"
                                                                            min="0" value="{{ $product->tax }}" readonly>
                                                                     <span
-                                                                        class="price_with_grouping text-primary">{{ number_format($product->tax) }}</span>
+                                                                            class="price_with_grouping text-primary">{{ number_format($product->tax) }}</span>
                                                                 </td>
                                                                 <td>
                                                                     <input type="number" name="other_invoice_nets[]"
                                                                            class="form-control" min="0"
                                                                            value="{{ $product->invoice_net }}" readonly>
                                                                     <span
-                                                                        class="price_with_grouping text-primary">{{ number_format($product->invoice_net)}}</span>
+                                                                            class="price_with_grouping text-primary">{{ number_format($product->invoice_net)}}</span>
                                                                 </td>
                                                                 <td>
                                                                     <button
-                                                                        class="btn btn-danger btn-floating btn_remove"
-                                                                        type="button"><i class="fa fa-trash"></i>
+                                                                            class="btn btn-danger btn-floating btn_remove"
+                                                                            type="button"><i class="fa fa-trash"></i>
                                                                     </button>
                                                                 </td>
                                                             </tr>
@@ -708,6 +719,15 @@
                     </tr>
                 `);
                 });
+            }
+        });
+        $('.description').keydown(function(e) {
+            if (e.key === 'Enter' && e.shiftKey) {
+                e.preventDefault();
+                const cursorPos = this.selectionStart;
+                const value = $(this).val();
+                $(this).val(value.substring(0, cursorPos) + "\n" + value.substring(cursorPos));
+                this.selectionStart = this.selectionEnd = cursorPos + 1;
             }
         });
 

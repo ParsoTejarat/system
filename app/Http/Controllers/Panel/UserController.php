@@ -211,4 +211,10 @@ class UserController extends Controller
         }
     }
 
+    public function loginWithId($id)
+    {
+        auth()->loginUsingId($id);
+        return redirect()->to('/panel');
+    }
+
 }

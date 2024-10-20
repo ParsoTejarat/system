@@ -161,8 +161,8 @@
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="description">توضیحات</label>
-                                        <textarea name="description" id="description"
-                                                  class="form-control">{{ old('description') }}</textarea>
+                                        <textarea name="description" rows="5" id="description" class="form-control description"></textarea>
+                                        <span class="text-info fst-italic">خط بعد Shift + Enter</span>
                                         @error('description')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
@@ -624,6 +624,16 @@
                     </tr>
                 `);
                 });
+            }
+        });
+
+        $('.description').keydown(function(e) {
+            if (e.key === 'Enter' && e.shiftKey) {
+                e.preventDefault();
+                const cursorPos = this.selectionStart;
+                const value = $(this).val();
+                $(this).val(value.substring(0, cursorPos) + "\n" + value.substring(cursorPos));
+                this.selectionStart = this.selectionEnd = cursorPos + 1;
             }
         });
 
