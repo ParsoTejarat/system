@@ -426,7 +426,7 @@ class InvoiceController extends Controller
         $invoice = Invoice::find($request->invoice_id);
 
         $pdf = PDF::loadView('panel.pdf.invoice', ['invoice' => $invoice], [], [
-            'format' => 'A3',
+            'format' => 'A4',
             'orientation' => 'L',
             'margin_left' => 2,
             'margin_right' => 2,
@@ -434,7 +434,10 @@ class InvoiceController extends Controller
             'margin_bottom' => 0,
         ]);
 
-        return $pdf->stream("orders.pdf");
+        return response($pdf->output(), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="pre_invoice_' . time() . '.pdf"');
+
     }
 
     public function action(Invoice $invoice)
