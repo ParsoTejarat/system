@@ -246,6 +246,7 @@ class OrderController extends Controller
             );
             //end send notif to accountants
 
+
         } elseif ($request->has('send_to_warehouse')) {
             $request->validate(['factor_file' => 'required|mimes:pdf|max:5000']);
 
@@ -275,8 +276,10 @@ class OrderController extends Controller
             Notification::send($accountants, new SendMessage($notif_message, $url));
             //end send notif to warehouse-keeper and sales-manager
         } else {
+
             if ($status == 'invoice') {
                 $request->validate(['invoice_file' => 'required|mimes:pdf|max:5000']);
+
 
                 $file = upload_file_factor($request->invoice_file, 'Action/Invoices');
                 $invoice->action()->updateOrCreate([
