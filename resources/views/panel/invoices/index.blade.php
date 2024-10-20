@@ -145,7 +145,7 @@
                                     @foreach($invoices as $key => $invoice)
                                         <tr>
                                             <td>{{ ++$key }}</td>
-                                            <td><a href="/panel/orders?code={{$invoice->order->code??'-'}}">{{ $invoice->order->code }}</a></td>
+                                            <td><a href="/panel/orders?code={{$invoice->order->code??'-'}}">{{ $invoice->order->code??'-' }}</a></td>
                                             <td>{{ $invoice->customer->name }}</td>
                                             <td>{{ \App\Models\Invoice::REQ_FOR[$invoice->req_for] }}</td>
                                             <td>{{ $invoice->province }}</td>
