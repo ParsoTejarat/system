@@ -426,7 +426,7 @@ class InvoiceController extends Controller
         $invoice = Invoice::find($request->invoice_id);
 
         $pdf = PDF::loadView('panel.pdf.invoice', ['invoice' => $invoice], [], [
-            'format' => 'A4',
+            'format' => 'A3',
             'orientation' => 'L',
             'margin_left' => 2,
             'margin_right' => 2,
