@@ -322,7 +322,7 @@
                                 </td>
                                 <td>
                                     <img src="{{ $invoice->user->sign_image ? public_path($invoice->user->sign_image) : '' }}" style="width: 10rem">
-                                    <img src="{{ public_path('assets/images/stamp.png') }}" style="width: 13rem">
+{{--                                    <img src="{{ public_path('assets/images/stamp.png') }}" style="width: 13rem">--}}
                                 </td>
                                 <td></td>
                                 <td></td>
