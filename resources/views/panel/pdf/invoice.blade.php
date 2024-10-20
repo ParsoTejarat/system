@@ -294,7 +294,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2"><small>توضیحات</small></td>
-                                <td colspan="10">{!!  nl2br(e($invoice->description)) !!}</td>
+                                <td colspan="10">{!! nl2br(e($invoice->description)) !!}</td>
                             </tr>
                             <tr>
                                 <td colspan="12">

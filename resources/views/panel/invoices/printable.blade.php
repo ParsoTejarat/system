@@ -327,7 +327,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2"><small>توضیحات</small></td>
-                                    <td colspan="10">{!!  nl2br(e($invoice->description )) !!}</td>
+                                    <td colspan="10">{!! nl2br(e($invoice->description )) !!}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="12">
@@ -341,7 +341,7 @@
                                 <tr>
                                     <td colspan="6" id="seller_sign_sec">
                                         <img src="{{ $invoice->user->sign_image ?? '' }}" class="sign">
-                                        <img src="{{ asset('/assets/images/stamp.png') }}" class="stamp">
+{{--                                        <img src="{{ asset('/assets/images/stamp.png') }}" class="stamp">--}}
                                         <small>مهر و امضای فروشنده</small>
                                     </td>
                                     <td colspan="6"><small>مهر و امضای خریدار</small></td>
