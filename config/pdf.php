@@ -2,7 +2,7 @@
 
 return [
     'mode'                     => 'utf-8',
-    'format'                   => 'A4',
+    'format'                   => 'A3',
     'default_font_size'        => '10',
     'default_font'             => 'vazir',
     'margin_left'              => 3,
