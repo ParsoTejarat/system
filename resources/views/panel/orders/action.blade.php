@@ -176,7 +176,7 @@
                                                             بررسی کرده ، سپس به بارگذاری آن اقدام کنید. در صورت وجود
                                                             مغایرت با واحد فروش ارتباط برقرار کنید.
                                                         </div>
-                                                    @endcannot
+                                                    @endcan
                                                     <div class="col">
                                                         <a href="{{ $order->action->invoice_file }}"
                                                            class="btn btn-primary"
@@ -227,6 +227,15 @@
                                                 @endif
                                             @endcannot
                                         @else
+                                            @can('accountant')
+                                                <div class="alert alert-info">
+                                                    <i class="fa fa-info-circle font-size-20 align-middle"></i>
+                                                    <strong>توجه!</strong>
+                                                    حسابدار گرامی ابتدا فایل پیش فاکتور / فاکتور را پس از ایجاد
+                                                    بررسی کرده ، سپس به بارگذاری آن اقدام کنید. در صورت وجود
+                                                    مغایرت با واحد فروش ارتباط برقرار کنید.
+                                                </div>
+                                            @endcan
                                             <div class="form-group">
                                                 <label for="invoice_file">فایل پیش فاکتور (PDF)<span
                                                         class="text-danger">*</span></label>
