@@ -337,27 +337,22 @@ class OrderController extends Controller
 
         // log
         activity_log('order-action', __METHOD__, [$request->all(), $invoice]);
-
         $invoice->order_status()->updateOrCreate(
             ['status' => 'processing_by_accountant_step_1'],
             ['orders' => 2, 'status' => 'processing_by_accountant_step_1']
         );
-
         $invoice->order_status()->updateOrCreate(
             ['status' => 'pre_invoice'],
             ['orders' => 3, 'status' => 'pre_invoice']
         );
-
         alert()->success($message, $title);
         return back();
     }
 
 
-
     public function deleteInvoiceFile(OrderAction $orderAction)
     {
-        // log
-//        dd($orderAction);
+
         $order = Order::whereId($orderAction->order_id)->first();
         activity_log('delete-invoice-file', __METHOD__, $orderAction);
 
@@ -383,7 +378,6 @@ class OrderController extends Controller
             'factor_file' => null,
             'sent_to_warehouse' => 0
         ]);
-
 
         if ($orderAction->status == 'factor') {
             $orderAction->delete();
@@ -420,10 +414,12 @@ class OrderController extends Controller
         Notification::send($managers, new SendMessage($message, $url));
     }
 
+
     public function excel()
     {
         return Excel::download(new \App\Exports\OrderExport, 'orders.xlsx');
     }
+
 
     public function getCustomerOrderStatus($id)
     {
@@ -450,21 +446,19 @@ class OrderController extends Controller
             ];
         }
 
-
         $lastDateIndex = -1;
+
         foreach ($statusData as $index => $statusItem) {
             if (!empty($statusItem['date'])) {
                 $lastDateIndex = $index;
             }
         }
-
-
         if ($lastDateIndex !== -1 && $lastDateIndex + 1 < count($statusData)) {
             $statusData[$lastDateIndex + 1]['pending'] = true;
         }
-
         return response()->json($statusData);
     }
+
 
     public function generateCode()
     {
@@ -476,6 +470,7 @@ class OrderController extends Controller
 
         return $code;
     }
+
 
     public function getCustomerOrder($code)
     {
@@ -529,8 +524,6 @@ class OrderController extends Controller
             'data' => null
         ];
         return response()->json($response, 200);
-
     }
-
 
 }
