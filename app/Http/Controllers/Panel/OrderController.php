@@ -281,6 +281,7 @@ class OrderController extends Controller
                 $request->validate(['invoice_file' => 'required|mimes:pdf|max:5000']);
 
 
+
                 $file = upload_file_factor($request->invoice_file, 'Action/Invoices');
                 $invoice->action()->updateOrCreate([
                     'order_id' => $invoice->id

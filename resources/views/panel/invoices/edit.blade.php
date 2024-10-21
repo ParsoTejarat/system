@@ -409,7 +409,13 @@
                                         </div>
                                     @endif
                                 </div>
-                                <button class="btn btn-primary" type="submit" id="btn_form">ثبت فرم</button>
+                                <button class="btn btn-primary float-start mx-1" type="submit" id="btn_form">ثبت فرم</button>
+
+                            </form>
+                            <form action="{{ route('invoices.download') }}" method="post" class="">
+                                @csrf
+                                <input type="hidden" name="invoice_id" value="{{ $invoice->id }}">
+                                <button class="btn btn-danger"><i class="fa fa-file-pdf me-2"></i>دانلود</button>
                             </form>
                         </div>
                     </div>

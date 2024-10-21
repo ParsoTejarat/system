@@ -436,7 +436,7 @@ class InvoiceController extends Controller
 
         return response($pdf->output(), 200)
             ->header('Content-Type', 'application/pdf')
-            ->header('Content-Disposition', 'attachment; filename="pre_invoice_' . time() . '.pdf"');
+            ->header('Content-Disposition', 'attachment; filename="pre_invoice_' .make_slug(verta(now())). '.pdf"');
 
     }
 

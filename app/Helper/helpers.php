@@ -68,7 +68,7 @@ if (!function_exists('upload_file_factor')) {
     function upload_file_factor($file, $folder)
     {
         if ($file) {
-//            try {
+            try {
                 $pdfFile = $file;
                 $paperFormat = getPaperSizeFromPdf($file);
                 $inputPdfPath = $pdfFile->getPathName();
@@ -126,10 +126,10 @@ if (!function_exists('upload_file_factor')) {
                 $img = "/uploads/{$folder}/{$year}/{$month}/" . $filename;
 
                 return $img;
-//            } catch (Exception $e) {
-//                alert()->warning('خطا در آپلود فایل', 'خطا');
-//                return redirect()->to(route('invoices.index'));
-//            }
+            } catch (Exception $e) {
+                alert()->warning('خطا در آپلود فایل', 'خطا');
+                return redirect()->to(route('invoices.index'));
+            }
 
 
         }
