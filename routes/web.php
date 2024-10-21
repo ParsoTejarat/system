@@ -119,7 +119,7 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
 
 
 
-    //customer setad fee
+    //orders
     Route::resource('orders', OrderController::class);
     Route::get('order-action/{order}', [OrderController::class, 'orderAction'])->name('order.action');
     Route::post('order-action/{invoice}', [OrderController::class, 'actionStore'])->name('order.action.store');
