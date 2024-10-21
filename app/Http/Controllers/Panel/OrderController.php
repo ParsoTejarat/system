@@ -281,7 +281,6 @@ class OrderController extends Controller
                 $request->validate(['invoice_file' => 'required|mimes:pdf|max:5000']);
 
 
-
                 $file = upload_file_factor($request->invoice_file, 'Action/Invoices');
                 $invoice->action()->updateOrCreate([
                     'order_id' => $invoice->id
@@ -353,42 +352,6 @@ class OrderController extends Controller
         return back();
     }
 
-//    public function search(Request $request)
-//    {
-//        $this->authorize('customer-order-list');
-//        $customers = Customer::all(['id', 'name']);
-//
-//        $permissionsId = Permission::whereIn('name', ['partner-tehran-user', 'partner-other-user', 'system-user', 'single-price-user'])->pluck('id');
-//        $roles_id = Role::whereHas('permissions', function ($q) use ($permissionsId) {
-//            $q->whereIn('permission_id', $permissionsId);
-//        })->pluck('id');
-//
-//        $customers_id = $request->customer_id == 'all' ? $customers->pluck('id') : [$request->customer_id];
-//        $status = $request->status == 'all' ? ['pending', 'return', 'invoiced', 'orders'] : [$request->status];
-//        $province = $request->province == 'all' ? Province::pluck('name') : [$request->province];
-//        $user_id = $request->user == 'all' || $request->user == null ? User::whereIn('role_id', $roles_id)->pluck('id') : [$request->user];
-//
-////        dd($user_id);
-//        if (auth()->user()->isAdmin() || auth()->user()->isWareHouseKeeper() || auth()->user()->isAccountant() || auth()->user()->isCEO() || auth()->user()->isSalesManager()) {
-//            $orders = Order::when($request->need_no, function ($q) use ($request) {
-//                return $q->where('need_no', $request->need_no);
-//            })
-//                ->whereIn('user_id', $user_id)
-//                ->whereIn('customer_id', $customers_id)
-//                ->whereIn('status', $status)
-//                ->latest()->paginate(30);
-//        } else {
-//            $orders = Order::when($request->need_no, function ($q) use ($request) {
-//                return $q->where('need_no', $request->need_no);
-//            })->whereIn('customer_id', $customers_id)
-//                ->whereIn('status', $status)
-//                ->whereIn('province', $province)
-//                ->where('user_id', auth()->id())
-//                ->latest()->paginate(30);
-//        }
-//
-//        return view('panel.orders.index', compact(['orders', 'customers', 'roles_id']));
-//    }
 
     public function deleteInvoiceFile(OrderAction $orderAction)
     {
@@ -400,6 +363,7 @@ class OrderController extends Controller
         $order->order_status()->where('status', 'processing_by_accountant_step_1')->delete();
         $order->order_status()->where('status', 'pre_invoice')->delete();
 
+        $order->update(['status' => 'pending']);
         unlink(public_path($orderAction->invoice_file));
         $orderAction->delete();
 
@@ -418,6 +382,7 @@ class OrderController extends Controller
             'factor_file' => null,
             'sent_to_warehouse' => 0
         ]);
+
 
         if ($orderAction->status == 'factor') {
             $orderAction->delete();
