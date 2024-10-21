@@ -353,6 +353,7 @@ class OrderController extends Controller
     }
 
 
+
     public function deleteInvoiceFile(OrderAction $orderAction)
     {
         // log
@@ -363,7 +364,7 @@ class OrderController extends Controller
         $order->order_status()->where('status', 'processing_by_accountant_step_1')->delete();
         $order->order_status()->where('status', 'pre_invoice')->delete();
 
-        $order->update(['status' => 'pending']);
+        $order->update(['status' => 'orders']);
         unlink(public_path($orderAction->invoice_file));
         $orderAction->delete();
 
