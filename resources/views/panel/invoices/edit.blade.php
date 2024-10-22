@@ -99,7 +99,7 @@
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="buyer_name">شناسه سفارش<span
                                                     class="text-danger">*</span></label>
-                                        <input type="text" name="code" value="{{old('code',$invoice->order->code)}}"
+                                        <input type="text" name="code" value="{{old('code',$invoice->order->code??'')}}"
                                                class="form-control"
                                                id="code"
                                                placeholder="شناسه سفارش را وارد کنید..." readonly>
