@@ -70,6 +70,7 @@ class ActivityLog extends Model
         'delete-invoice-file' => 'حذف فایل پیش فاکتور',
         'delete-factor-file' => 'حذف فایل فاکتور',
         'order-change-status' => 'تغییر وضعیت سفارش',
+        'orders-change-status' => 'تغییر وضعیت سفارش',
         'order-add-desc' => 'افزودن توضیحات سفارش',
 
         // buy-orders
