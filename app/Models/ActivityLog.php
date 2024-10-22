@@ -63,14 +63,14 @@ class ActivityLog extends Model
         'delete-coupon' => 'حذف کد تخفیف',
 
         // invoices
-        'create-invoice' => 'ثبت سفارش',
-        'edit-invoice' => 'ویرایش سفارش',
-        'delete-invoice' => 'حذف سفارش',
-        'invoice-action' => 'اقدام سفارش',
+        'create-invoice' => 'ثبت پیش فاکتور',
+        'edit-invoice' => 'ویرایش پیش فاکتور',
+        'delete-invoice' => 'حذف پیش فاکتور',
+        'invoice-action' => 'اقدام پیش فاکتور',
         'delete-invoice-file' => 'حذف فایل پیش فاکتور',
         'delete-factor-file' => 'حذف فایل فاکتور',
-        'orders-change-status' => 'تغییر وضعیت سفارش',
-        'orders-add-desc' => 'افزودن توضحات سفارش',
+        'order-change-status' => 'تغییر وضعیت سفارش',
+        'order-add-desc' => 'افزودن توضیحات سفارش',
 
         // buy-orders
         'create-buy-orders' => 'ثبت سفارش خرید',
