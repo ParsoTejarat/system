@@ -25,14 +25,17 @@ class StoreBuyOrderRequest extends FormRequest
     {
         return [
             'customer_id' => 'required',
-            'products' => 'required'
+            'order' => 'required|exists:orders,code',
+            'products' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'products.required' => 'وارد کردن کالاهای سفارش خرید الزامی است'
+            'products.required' => 'وارد کردن کالاهای سفارش خرید الزامی است',
+            'order.required' => 'شناسه سفارش را وارد کنید.',
+            'order.exists' => 'این شناسه معتبر نیست.',
         ];
     }
 }

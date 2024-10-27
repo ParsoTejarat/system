@@ -16,7 +16,7 @@ class CreateBuyOrdersTable extends Migration
         Schema::create('buy_orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('customer_id');
+            $table->unsignedBigInteger('customer_id')->nullable();
             $table->enum('status',['orders', 'bought'])->default('orders');
             $table->longText('items');
             $table->longText('description')->nullable();

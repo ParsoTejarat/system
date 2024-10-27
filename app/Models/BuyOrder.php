@@ -25,4 +25,8 @@ class BuyOrder extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }

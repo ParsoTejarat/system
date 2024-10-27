@@ -87,6 +87,8 @@ Route::get('/', function () {
     }
     return view('auth.login');
 });
+
+
 //Route::get('test/{id?}', function ($id = null) {
 //    return \auth()->loginUsingId($id);
 ////    return phpinfo();
@@ -115,9 +117,6 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     //Transfer
     Route::resource('transfers', TransferController::class)->except('show');
     Route::get('transfers/download/{id}', [TransferController::class,'downloadReceipt'])->name('transfers.download');
-    Route::resource('supply-requests',SupplyRequestController::class);
-
-
 
     //orders
     Route::resource('orders', OrderController::class);
@@ -306,6 +305,9 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     // Buy Orders
     Route::resource('buy-orders', BuyOrderController::class);
     Route::post('buy-orders/{buy_order}/change-status', [BuyOrderController::class, 'changeStatus'])->name('buy-orders.changeStatus');
+    Route::post('buy-orders-invoice-delete/{buy_order}', [BuyOrderController::class, 'deleteInvoice'])->name('buy-orders.delete.invoice');
+    Route::post('buy-orders-upload-receipt/{buy_order}', [BuyOrderController::class, 'receiptInvoiceUpload'])->name('buy-orders.upload.receipt');
+    Route::post('delete-receipt-buy-order/{buy_order}', [BuyOrderController::class, 'DeleteReceiptBuyOrder'])->name('buy-orders.delete.receipt');
 
     // File Manager
     Route::get('file-manager', [FileManagerController::class, 'index'])->name('file-manager.index');

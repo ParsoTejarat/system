@@ -31,9 +31,9 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>شناسه سفارش</th>
                                         <th>مشتری</th>
                                         <th>استان</th>
-                                        <th>شهر</th>
                                         <th>وضعیت</th>
                                         @canany(['admin','ceo','sales-manager'])
                                             <th>همکار</th>
@@ -54,38 +54,26 @@
                                     @foreach($orders as $key => $order)
                                         <tr>
                                             <td>{{ ++$key }}</td>
+                                            <td><a href=""></a></td>
                                             <td>{{ $order->customer->name }}</td>
                                             <td>{{ $order->customer->province }}</td>
                                             <td>{{ $order->customer->city }}</td>
                                             <td>
-                                                @can('ceo')
-                                                    @if($order->status == 'bought')
-                                                        <form action="{{ route('buy-orders.changeStatus', $order->id) }}" method="post">
-                                                            @csrf
-                                                            <button type="submit"
-                                                                    class="btn btn-success">{{ \App\Models\BuyOrder::STATUS['bought'] }}</button>
-                                                        </form>
-                                                    @else
-                                                        <form action="{{ route('buy-orders.changeStatus', $order->id) }}" method="post">
-                                                            @csrf
-                                                            <button type="submit"
-                                                                    class="btn btn-warning">{{ \App\Models\BuyOrder::STATUS['orders'] }}</button>
-                                                        </form>
-                                                    @endif
+                                                @if($order->status == 'bought')
+                                                    <span
+                                                        class="badge bg-success">{{ \App\Models\BuyOrder::STATUS['bought'] }}</span>
                                                 @else
-                                                    @if($order->status == 'bought')
-                                                        <span class="badge bg-success">{{ \App\Models\BuyOrder::STATUS['bought'] }}</span>
-                                                    @else
-                                                        <span class="badge bg-warning">{{ \App\Models\BuyOrder::STATUS['orders'] }}</span>
-                                                    @endif
-                                                @endcan
+                                                    <span
+                                                        class="badge bg-warning">{{ \App\Models\BuyOrder::STATUS['orders'] }}</span>
+                                                @endif
                                             </td>
                                             @canany(['admin','ceo','sales-manager'])
                                                 <td>{{ $order->user->fullName() }}</td>
                                             @endcanany
                                             <td>{{ verta($order->created_at)->format('H:i - Y/m/d') }}</td>
                                             <td>
-                                                <a class="btn btn-info btn-floating" href="{{ route('buy-orders.show', $order->id) }}">
+                                                <a class="btn btn-info btn-floating"
+                                                   href="{{ route('buy-orders.show', $order->id) }}">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
                                             </td>
@@ -117,7 +105,8 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-center">{{ $orders->appends(request()->all())->links() }}</div>
+                            <div
+                                class="d-flex justify-content-center">{{ $orders->appends(request()->all())->links() }}</div>
                         </div>
                     </div>
                 </div>

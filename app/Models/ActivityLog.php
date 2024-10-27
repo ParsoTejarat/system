@@ -78,6 +78,10 @@ class ActivityLog extends Model
         'edit-buy-orders' => 'ویرایش سفارش خرید',
         'delete-buy-orders' => 'حذف سفارش خرید',
         'buy-orders-change-status' => 'تغییر وضعیت سفارش خرید',
+        'delete-invoice-buy-orders' => 'حذف پیش فاکتور سفارش خرید',
+        'delete-receipt-buy-orders' => 'حذف رسید سفارش خرید',
+        'upload-invoice-buy-orders' => 'آپلود پیش فاکتور سفارش خرید',
+        'upload-receipt-buy-orders' => 'آپلود رسید سفارش خرید',
 
         // sales-reports
         'create-sale-report' => 'ثبت گزارش خرید',
