@@ -176,6 +176,11 @@ class ActivityLog extends Model
         'transfer-edit' => 'ویرایش ارسال کالا',
         'transfer-delete' => 'حذف ارسال کالا',
         'transfer-download' => 'دانلود رسید کالا',
+        //costs
+        'costs-index' => 'لیست بهای تمام شده',
+        'costs-create' => 'ایجاد بهای تمام شده',
+        'costs-edit' => 'ویرایش بهای تمام شده',
+        'costs-delete' => 'حذف بهای تمام شده',
     ];
 
     public function user()

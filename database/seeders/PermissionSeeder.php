@@ -171,6 +171,17 @@ class PermissionSeeder extends Seeder
 //            'supply-request-edit' => 'ویرایش تامین کالا',
 //            'supply-request-delete' => 'حذف تامین کالا',
 
+            'costs-list' => 'لیست بهای تمام شده',
+            'costs-create' => 'ایجاد بهای تمام شده',
+            'costs-edit' => 'ویرایش بهای تمام شده',
+            'costs-delete' => 'حذف بهای تمام شده',
+//            'supply-request-create' => 'ثبت تامین کالا',
+//            'supply-request-edit' => 'ویرایش تامین کالا',
+//            'supply-request-delete' => 'حذف تامین کالا',
+
+
+
+
         ];
 
         foreach ($items as $key => $item) {

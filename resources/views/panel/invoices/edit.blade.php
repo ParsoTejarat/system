@@ -396,6 +396,13 @@
                                                 </table>
                                             </div>
                                         </div>
+                                        <div class="row mt-3">
+                                            <span class="">مجموع سفارش مشتری (ریال) :<span class="text-primary sum_total_price">{{number_format(old('sum_total_price',calculateTotal($order)))}}</span></span>
+                                            <span class="">مجموع پیش فاکتور با مالیات و ارزش افزوده (ریال) :<span class="text-primary total_invoice">{{number_format(old('total_invoice',calculateTotalInvoice($invoice->other_products)))}}</span></span>
+                                            <input type="hidden" class="sum_total_price" value="{{number_format(old('sum_total_price',calculateTotal($order)))}}" name="sum_total_price">
+                                            <input type="hidden" class="total_invoice" value="{{number_format(old('total_invoice',calculateTotalInvoice($invoice->other_products)))}}" name="total_invoice">
+
+                                        </div>
                                         <div class="col-12 mb-2 mt-2 text-center">
                                             <hr>
                                             <h4>تخفیف نهایی</h4>
@@ -428,6 +435,7 @@
     <script>
         var products = [];
         var colors = [];
+        var totalTotalInvoice = 0;
 
         var form = document.getElementById('invoice_form');
         form.addEventListener('keypress', function (e) {
@@ -498,15 +506,19 @@
                 </td>
                 <td>
                     <input type="number" name="other_extra_amounts[]" class="form-control" min="0" value="0" readonly>
+                    <span class="price_with_grouping text-primary"></span>
                 </td>
                 <td>
                     <input type="number" name="other_total_prices_with_off[]" class="form-control" min="0" value="0" readonly>
+                    <span class="price_with_grouping text-primary"></span>
                 </td>
                 <td>
                     <input type="number" name="other_taxes[]" class="form-control" min="0" value="0" readonly>
+                    <span class="price_with_grouping text-primary"></span>
                 </td>
                 <td>
                     <input type="number" name="other_invoice_nets[]" class="form-control" min="0" value="0" readonly>
+                    <span class="price_with_grouping text-primary"></span>
                 </td>
                 <td>
                     <button class="btn btn-danger btn-floating btn_remove" type="button"><i class="fa fa-trash"></i></button>
@@ -519,7 +531,10 @@
 
             // remove property
             $(document).on('click', '.btn_remove', function () {
-                $(this).parent().parent().remove();
+                var row = $(this).closest('tr');
+                row.remove(); // حذف سطر
+                updatePrice();
+
             })
 
 
@@ -534,6 +549,7 @@
 
                     if (e.type === 'change') {
                         CalcOtherProductInvoice(this);
+
                     }
                 });
             }
@@ -588,6 +604,7 @@
                     'discount_amount': discount_amount,
                 },
                 success: function (res) {
+
                     $('#other_products_table input[name="other_prices[]"]')[index].value = res.data.price;
                     $('#other_products_table input[name="other_total_prices[]"]')[index].value = res.data.total_price;
                     $('#other_products_table input[name="other_discount_amounts[]"]')[index].value = res.data.discount_amount;
@@ -595,12 +612,8 @@
                     $('#other_products_table input[name="other_total_prices_with_off[]"]')[index].value = res.data.total_price_with_off;
                     $('#other_products_table input[name="other_taxes[]"]')[index].value = res.data.tax;
                     $('#other_products_table input[name="other_invoice_nets[]"]')[index].value = res.data.invoice_net;
-                    $($('#other_products_table input[name="other_total_prices[]"]')[index]).siblings()[0].innerText = res.data.total_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    $($('#other_products_table input[name="other_discount_amounts[]"]')[index]).siblings()[0].innerText = res.data.discount_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    $($('#other_products_table input[name="other_extra_amounts[]"]')[index]).siblings()[0].innerText = res.data.extra_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    $($('#other_products_table input[name="other_total_prices_with_off[]"]')[index]).siblings()[0].innerText = res.data.total_price_with_off.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    $($('#other_products_table input[name="other_taxes[]"]')[index]).siblings()[0].innerText = res.data.tax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    $($('#other_products_table input[name="other_invoice_nets[]"]')[index]).siblings()[0].innerText = res.data.invoice_net.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    updatePrice();
+                    updateTableData(index, res);
 
                     $('#btn_form').removeAttr('disabled').text('ثبت فرم');
                 },
@@ -619,6 +632,8 @@
                     $('#buyer_name, #economical_number, #national_number, #postal_code, #phone, #address, #province, #city').val('');
                     $('#other_products_table tbody').empty();
                     processDesc.empty();
+                    $('.sum_total_price').text('0').val('0');
+                    $('.total_invoice').text('0').val('0');
                     return;
                 }
 
@@ -644,7 +659,6 @@
             function handleResponse(response) {
                 var processDesc = $('#process_desc');
                 if (response.status === 'success') {
-
                     $('#buyer_name').val(response.data.customer.name)
                     $('#buyer_id').val(response.data.customer.id)
                     $('#economical_number').val(response.data.customer.economical_number ?? 0)
@@ -654,11 +668,14 @@
                     $('#address').val(response.data.customer.address1)
                     $('#province').val(response.data.customer.province).trigger('change');
                     $('#city').val(response.data.customer.city)
+                    $('.sum_total_price').text(formatNumber(response.data.total_price)).val(response.data.total_price)
                     $('#other_products_table tbody').empty();
                     add_products(response.data.order);
                     processDesc.html("<span class='text-success'>تایید ✓</span>");
                 } else {
                     $('#buyer_name, #economical_number, #national_number, #postal_code, #phone, #address, #province, #city').val('');
+                    $('.sum_total_price').text('0').val('0');
+                    $('.total_invoice').text('0').val('0');
                     $('#other_products_table tbody').empty();
                     processDesc.html("<span class='text-danger'>شناسه پیگیری یافت نشد</span>");
                 }
@@ -727,7 +744,9 @@
                 });
             }
         });
-        $('.description').keydown(function(e) {
+
+
+        $('.description').keydown(function (e) {
             if (e.key === 'Enter' && e.shiftKey) {
                 e.preventDefault();
                 const cursorPos = this.selectionStart;
@@ -736,6 +755,64 @@
                 this.selectionStart = this.selectionEnd = cursorPos + 1;
             }
         });
+
+
+        function updatePrice() {
+            totalTotalInvoice = 0;
+
+            $('#other_products_table input[name="other_invoice_nets[]"]').each(function () {
+                var value = parseFloat($(this).val());
+                if (!isNaN(value)) {
+                    totalTotalInvoice += value;
+                }
+            });
+
+            $('.total_invoice').val(totalTotalInvoice).text(formatNumber(totalTotalInvoice));
+
+        }
+
+        function formatNumber(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function updateTableData(index, res) {
+            // For total price
+            var sibling = $($('#other_products_table input[name="other_total_prices[]"]')[index]).siblings()[0];
+            if (sibling) {
+                sibling.innerText = res.data.total_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+
+            // For discount amount
+            sibling = $($('#other_products_table input[name="other_discount_amounts[]"]')[index]).siblings()[0];
+            if (sibling) {
+                sibling.innerText = res.data.discount_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+
+            // For extra amount
+            sibling = $($('#other_products_table input[name="other_extra_amounts[]"]')[index]).siblings()[0];
+            if (sibling) {
+                sibling.innerText = res.data.extra_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+
+            // For total price with off
+            sibling = $($('#other_products_table input[name="other_total_prices_with_off[]"]')[index]).siblings()[0];
+            if (sibling) {
+                sibling.innerText = res.data.total_price_with_off.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+
+            // For tax amount
+            sibling = $($('#other_products_table input[name="other_taxes[]"]')[index]).siblings()[0];
+            if (sibling) {
+                sibling.innerText = res.data.tax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+
+            // For invoice net
+            sibling = $($('#other_products_table input[name="other_invoice_nets[]"]')[index]).siblings()[0];
+            if (sibling) {
+                sibling.innerText = res.data.invoice_net.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+        }
+
 
     </script>
 @endsection

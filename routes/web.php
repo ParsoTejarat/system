@@ -7,6 +7,7 @@ use App\Http\Controllers\Panel\CategoryController;
 
 //use App\Http\Controllers\Panel\ChatController;
 use App\Http\Controllers\Panel\CompanyInfoController;
+use App\Http\Controllers\Panel\CostController;
 use App\Http\Controllers\Panel\CouponController;
 use App\Http\Controllers\Panel\CustomerController;
 use App\Http\Controllers\Panel\FileManagerController;
@@ -89,11 +90,11 @@ Route::get('/', function () {
 });
 
 
-//Route::get('test/{id?}', function ($id = null) {
-//    return \auth()->loginUsingId($id);
-////    return phpinfo();
-////    event(new SendMessageEvent(1, []));
-//});
+Route::get('test/{id?}', function ($id = null) {
+    return \auth()->loginUsingId($id);
+//    return phpinfo();
+//    event(new SendMessageEvent(1, []));
+});
 
 
 //Route::get('/timeline', function () {
@@ -113,10 +114,13 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
 
-
     //Transfer
     Route::resource('transfers', TransferController::class)->except('show');
     Route::get('transfers/download/{id}', [TransferController::class,'downloadReceipt'])->name('transfers.download');
+
+    //costs
+    Route::resource('costs', CostController::class)->except('show');
+    Route::post('costs/export-excel', [CostController::class,'exportExcel'])->name('costs.excel');
 
     //orders
     Route::resource('orders', OrderController::class);

@@ -299,35 +299,76 @@ if (!function_exists('convert_number_to_words')) {
     }
 }
 
+if (!function_exists('getPaperSizeFromPdf')){
+    function getPaperSizeFromPdf($pdfFile)
+    {
+        $inputPdfPath = $pdfFile->getPathName();
 
-function getPaperSizeFromPdf($pdfFile)
-{
-    $inputPdfPath = $pdfFile->getPathName();
+        $mpdf = new \Mpdf\Mpdf([
+            'tempDir' => storage_path('app/mpdf-temp'),
+        ]);
 
-    $mpdf = new \Mpdf\Mpdf([
-        'tempDir' => storage_path('app/mpdf-temp'),
-    ]);
+        $pageCount = $mpdf->SetSourceFile($inputPdfPath);
 
-    $pageCount = $mpdf->SetSourceFile($inputPdfPath);
+        $page = $mpdf->ImportPage(1);
 
-    $page = $mpdf->ImportPage(1);
-
-    $pageSize = $mpdf->getTemplateSize($page);
+        $pageSize = $mpdf->getTemplateSize($page);
 
 
-    $width = round($pageSize['width']);
-    $height = round($pageSize['height']);
+        $width = round($pageSize['width']);
+        $height = round($pageSize['height']);
 
-    $A3Width = 420;
-    $A3Height = 297;
-    $A4Width =  297;
-    $A4Height = 210;
+        $A3Width = 420;
+        $A3Height = 297;
+        $A4Width =  297;
+        $A4Height = 210;
 
-    if ($width >= $A3Width || $height >= $A3Height) { // ابعاد A3
-        return 'A3';
-    } else {
-        return 'A4';
+        if ($width >= $A3Width || $height >= $A3Height) { // ابعاد A3
+            return 'A3';
+        } else {
+            return 'A4';
+        }
     }
 }
+
+
+if (!function_exists('calculateTotal')){
+    function calculateTotal($order)
+    {
+        $products = json_decode($order->products);
+        $sum_total_price = 0;
+        if (!empty($products->products)) {
+
+            foreach ($products->products as $product) {
+                $sum_total_price += $product->total_prices;
+            }
+        }
+
+        if (!empty($products->other_products)) {
+            foreach ($products->other_products as $product) {
+                $sum_total_price += $product->other_total_prices;
+            }
+        }
+        return $sum_total_price;
+    }
+}
+
+if (!function_exists('calculateTotalInvoice')){
+    function calculateTotalInvoice($products)
+    {
+//        dd($products);
+        $sum_total = 0;
+
+
+
+            foreach ($products as $product) {
+
+                $sum_total += $product->invoice_net;
+            }
+
+        return $sum_total;
+    }
+}
+
 
 

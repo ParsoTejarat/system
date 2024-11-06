@@ -480,6 +480,7 @@ class OrderController extends Controller
 
         if ($order) {
             $decodedProducts = json_decode($order->products);
+            $total_price = $this->calculateTotal($decodedProducts);
 
             if (!empty($decodedProducts->products)) {
                 $productIds = collect($decodedProducts->products)->pluck('products');
@@ -511,7 +512,8 @@ class OrderController extends Controller
 
             $data = [
                 'customer' => $order->customer,
-                'order' => $mergedProducts
+                'order' => $mergedProducts,
+                'total_price' => $total_price,
             ];
             $response = [
                 'status' => 'success',
@@ -524,6 +526,25 @@ class OrderController extends Controller
             'data' => null
         ];
         return response()->json($response, 200);
+    }
+
+
+    public function calculateTotal($products)
+    {
+        $sum_total_price = 0;
+        if (!empty($products->products)) {
+
+            foreach ($products->products as $product) {
+                $sum_total_price += $product->total_prices;
+            }
+        }
+
+        if (!empty($products->other_products)) {
+            foreach ($products->other_products as $product) {
+                $sum_total_price += $product->other_total_prices;
+            }
+        }
+        return $sum_total_price;
     }
 
 }

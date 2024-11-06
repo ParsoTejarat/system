@@ -129,6 +129,7 @@ class InvoiceController extends Controller
                 return back();
             }
         }
+        $order = Order::whereId($invoice->order_id)->first();
 
 //        if (auth()->user()->isAccountant()) {
 //            return back();
@@ -137,7 +138,7 @@ class InvoiceController extends Controller
 //        $seller = Seller::first();
 
 
-        return view('panel.invoices.edit', compact('invoice'));
+        return view('panel.invoices.edit', compact(['invoice','order']));
     }
 
     public function update(UpdateInvoiceRequest $request, Invoice $invoice)
