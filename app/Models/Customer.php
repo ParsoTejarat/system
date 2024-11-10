@@ -21,15 +21,16 @@ class Customer extends Model
 //        'tehran' => 'تهران',
 //        'city' => 'شهرستان',
 //    'single-sale' => 'تک فروشی',
-    'setad'=>'سامانه ستاد',
-    'online-sale'=>'فروش اینترنتی',
-    'free-sale'=>'آزاد (بازار)',
+        'setad' => 'سامانه ستاد',
+        'online-sale' => 'فروش اینترنتی',
+        'free-sale' => 'آزاد (بازار)',
     ];
 
     public function invoices()
     {
         return $this->hasMany(Invoice::class);
     }
+
     public function orders()
     {
         return $this->hasMany(Order::class);
@@ -39,6 +40,7 @@ class Customer extends Model
     {
         return $this->hasMany(BuyOrder::class);
     }
+
     public function user()
     {
         return $this->belongsTo(User::class);

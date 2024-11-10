@@ -181,6 +181,11 @@ class ActivityLog extends Model
         'costs-create' => 'ایجاد بهای تمام شده',
         'costs-edit' => 'ویرایش بهای تمام شده',
         'costs-delete' => 'حذف بهای تمام شده',
+        //ActiveLog
+        'software-update-list' => 'لیست تغییرات نرم افزار',
+        'software-update-create' => 'ایجاد تغییرات نرم افزار',
+        'software-update-edit' => 'ویرایش تغییرات نرم افزار',
+        'software-update-delete' => 'حذف تغییرات نرم افزار',
     ];
 
     public function user()

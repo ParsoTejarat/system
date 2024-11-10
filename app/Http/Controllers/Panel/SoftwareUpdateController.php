@@ -12,27 +12,30 @@ class SoftwareUpdateController extends Controller
 {
     public function index()
     {
-        $this->authorize('software-updates-list');
+        $this->authorize('software-update-list');
 
         $software_updates = SoftwareUpdate::latest()->paginate(30);
-        return view('panel.software-updates.index', compact('software_updates'));
+        return view('panel.software-update.index', compact('software_updates'));
     }
 
     public function create()
     {
-        $this->authorize('software-updates-create');
+        $this->authorize('software-update-create');
 
-        return view('panel.software-updates.create');
+        return view('panel.software-update.create');
     }
 
     public function store(StoreSoftwareUpdateRequest $request)
     {
-        $this->authorize('software-updates-create');
+
+        $this->authorize('software-update-create');
+
+        $items = explode(',', $request->items);
 
         SoftwareUpdate::create([
-            'version' => $request->version_number,
-            'date' => Verta::parse($request->release_date)->toCarbon(),
-            'description' => $request->description,
+            'version' => $request->version,
+            'date' => now(),
+            'description' => json_encode($items),
         ]);
 
         alert()->success('تغییرات نرم افزار با موفقیت افزوده شد','ثبت تغییرات');
@@ -46,20 +49,22 @@ class SoftwareUpdateController extends Controller
 
     public function edit(SoftwareUpdate $softwareUpdate)
     {
-        $this->authorize('software-updates-edit');
+        $this->authorize('software-update-edit');
 
-        return view('panel.software-updates.edit', compact('softwareUpdate'));
+        return view('panel.software-update.edit', compact('softwareUpdate'));
     }
 
     public function update(Request $request, SoftwareUpdate $softwareUpdate)
     {
-        $this->authorize('software-updates-edit');
+        $this->authorize('software-update-edit');
+
+        $items = explode(',', $request->items);
 
         $softwareUpdate->update([
-            'version' => $request->version_number,
-            'date' => Verta::parse($request->release_date)->toCarbon(),
-            'description' => $request->description,
-        ]);
+                'version' => $request->version,
+                'date' => now(),
+                'description' => json_encode($items),
+            ]);
 
         alert()->success('تغییرات نرم افزار با موفقیت ویرایش شد','ویرایش تغییرات');
         return redirect()->route('software-updates.index');
@@ -67,15 +72,15 @@ class SoftwareUpdateController extends Controller
 
     public function destroy(SoftwareUpdate $softwareUpdate)
     {
-        $this->authorize('software-updates-delete');
+        $this->authorize('software-update-delete');
 
         $softwareUpdate->delete();
         return back();
     }
 
-    public function versions()
-    {
-        $versions = SoftwareUpdate::latest()->paginate(30);
-        return view('panel.software-updates.versions', compact('versions'));
-    }
+//    public function versions()
+//    {
+//        $versions = SoftwareUpdate::latest()->paginate(30);
+//        return view('panel.software-update.versions', compact('versions'));
+//    }
 }

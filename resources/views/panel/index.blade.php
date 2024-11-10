@@ -20,7 +20,21 @@
                 </div>
             </div>
             <!-- end page title -->
-
+            @if(!is_null($softWareUpdate))
+                @if($softWareUpdate->created_at->addDays(3) > now())
+                    <div class="row">
+                        <div class="alert alert-success">
+                            <h3>تغییرات جدید پنل</h3>
+                            <ul>
+                                @foreach(json_decode($softWareUpdate->description) as $item)
+                                    <li>{{$item}}</li>
+                                @endforeach
+                            </ul>
+                            <i>ورژن {{$softWareUpdate->version}}</i>
+                        </div>
+                    </div>
+                @endif
+            @endif
             <div class="row" id="stats">
                 <div class="col-xl-3 col-md-6">
                     <div class="card">
@@ -338,7 +352,7 @@
                                             <tr>
                                                 <td>{{ ++$key }}</td>
                                                 <td>{{ $customer->name }}</td>
-{{--                                                <td>{{ \App\Models\Customer::TYPE[$customer->type] }}</td>--}}
+                                                {{--                                                <td>{{ \App\Models\Customer::TYPE[$customer->type] }}</td>--}}
                                                 <td>{{ \App\Models\Customer::CUSTOMER_TYPE[$customer->customer_type] }}</td>
                                                 <td>{{ $customer->province }}</td>
                                                 <td>{{ $customer->phone1 }}</td>

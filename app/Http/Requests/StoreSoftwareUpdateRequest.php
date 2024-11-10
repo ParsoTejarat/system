@@ -24,16 +24,15 @@ class StoreSoftwareUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'version_number' => 'required',
-            'release_date' => 'required',
-            'description' => 'required',
+            'version' => 'required',
+            'items' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'description.required' => 'فیلد تغییرات الزامی است'
+            'item.required' => 'فیلد تغییرات الزامی است'
         ];
     }
 }

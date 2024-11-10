@@ -90,17 +90,17 @@ Route::get('/', function () {
 });
 
 
-Route::get('test/{id?}', function ($id = null) {
-    return \auth()->loginUsingId($id);
-//    return phpinfo();
-//    event(new SendMessageEvent(1, []));
-});
+//Route::get('test/{id?}', function ($id = null) {
+//    return \auth()->loginUsingId($id);
+////    return phpinfo();
+////    event(new SendMessageEvent(1, []));
+//});
 
 
 //Route::get('/timeline', function () {
 //    return view('panel.timeline');
 //});
-//Route::get('testt/{id}',[IndicatorController::class,'downloadFromIndicator']);
+//Route::get('test/{id}',[IndicatorController::class,'downloadFromIndicator']);
 
 // import excel
 //Route::match(['get','post'],'import-excel', function (Request $request){
@@ -117,6 +117,8 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     //Transfer
     Route::resource('transfers', TransferController::class)->except('show');
     Route::get('transfers/download/{id}', [TransferController::class,'downloadReceipt'])->name('transfers.download');
+
+    Route::resource('/software-update', SoftwareUpdateController::class)->except('show');
 
     //costs
     Route::resource('costs', CostController::class)->except('show');

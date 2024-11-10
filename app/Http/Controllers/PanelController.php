@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ActivityLog;
 use App\Models\Invoice;
 use App\Models\Role;
+use App\Models\SoftwareUpdate;
 use App\Models\User;
 use App\Notifications\SendMessage;
 use Hekmatinasser\Verta\Verta;
@@ -19,7 +20,9 @@ class PanelController extends Controller
 {
     public function index()
     {
-        return view('panel.index');
+        $softWareUpdate = SoftwareUpdate::latest()->first();
+
+        return view('panel.index',compact(['softWareUpdate']));
     }
 
     public function activity($permission)

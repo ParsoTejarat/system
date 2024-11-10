@@ -132,6 +132,13 @@
                                             اطلاعات شرکت</a>
                                     </li>
                                 @endcan
+                                @can('software-update-list')
+                                    @php $active_item = active_sidebar(['software-update','software-update/{software_update}/edit','/software-update/create']); @endphp
+                                    <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                        <a href="{{ route('software-update.index') }}" {{ $active_item ? 'active' : '' }}>
+                                            تغییرات پنل</a>
+                                    </li>
+                                @endcan
                             </ul>
                         </div>
                     </li>
