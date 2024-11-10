@@ -50,7 +50,12 @@ class OrderController extends Controller
         if (auth()->user()->isAdmin() || auth()->user()->isAccountant() || auth()->user()->isCEO()) {
             $orders = $orders->latest()->paginate(30);
         } else {
-            $orders = $orders->where('type', $this->getUserType(auth()->user()))->latest()->paginate(30);
+            $userType = $this->getUserType(auth()->user());
+
+            $orders = $orders->where(function ($query) use ($userType) {
+                $query->where('type', $userType)
+                    ->orWhere('user_id', auth()->id());
+            })->latest()->paginate(30);
         }
 
         $customers = Customer::all(['id', 'name']);
