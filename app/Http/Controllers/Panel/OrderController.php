@@ -31,6 +31,7 @@ class OrderController extends Controller
 
         $orders = Order::query();
 
+
         if ($code = request()->query('code')) {
             $orders->where('code', 'like', '%' . $code . '%');
         }
@@ -49,17 +50,13 @@ class OrderController extends Controller
         if (auth()->user()->isAdmin() || auth()->user()->isAccountant() || auth()->user()->isCEO()) {
             $orders = $orders->latest()->paginate(30);
         } else {
-            $orders = $orders->where('user_id', auth()->id())->latest()->paginate(30);
+            $orders = $orders->where('type', $this->getUserType(auth()->user()))->latest()->paginate(30);
         }
 
         $customers = Customer::all(['id', 'name']);
-        $permissionsId = Permission::whereIn('name', ['partner-tehran-user', 'partner-other-user', 'system-user', 'single-price-user'])->pluck('id');
 
-        $roles_id = Role::whereHas('permissions', function ($q) use ($permissionsId) {
-            $q->whereIn('permission_id', $permissionsId);
-        })->pluck('id');
 
-        return view('panel.orders.index', compact(['orders', 'customers', 'roles_id']));
+        return view('panel.orders.index', compact(['orders', 'customers']));
     }
 
 
@@ -546,5 +543,19 @@ class OrderController extends Controller
         }
         return $sum_total_price;
     }
+
+
+    public function getUserType($user)
+    {
+        $type = '';
+        if ($user->role->name == 'online_sales') {
+            $type = 'online_sale';
+        }
+        if ($user->role->name == 'systematic_sales') {
+            $type = 'setad';
+        }
+        return $type;
+    }
+
 
 }
