@@ -32,7 +32,7 @@
 
 
     </style>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="{{asset('/assets/css/jquery-ui.css')}}">
 @endsection
 @section('content')
     <div class="content">
@@ -75,7 +75,7 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="{{asset('/assets/js/jquery-ui.js')}}"></script>
 
     <script>
         $(document).ready(function () {
