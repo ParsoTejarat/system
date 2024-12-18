@@ -179,10 +179,15 @@ class PermissionSeeder extends Seeder
 //            'supply-request-edit' => 'ویرایش تامین کالا',
 //            'supply-request-delete' => 'حذف تامین کالا',
 
-            'software-update-list' => 'لیست تغییرات نرم افزار',
-            'software-update-create' => 'ایجاد تغییرات نرم افزار',
-            'software-update-edit' => 'ویرایش تغییرات نرم افزار',
-            'software-update-delete' => 'حذف تغییرات نرم افزار',
+//            'software-update-list' => 'لیست تغییرات نرم افزار',
+//            'software-update-create' => 'ایجاد تغییرات نرم افزار',
+//            'software-update-edit' => 'ویرایش تغییرات نرم افزار',
+//            'software-update-delete' => 'حذف تغییرات نرم افزار',
+
+            'reminder-list' => 'لیست یادآورها',
+            'reminder-create' => 'ایجاد یادآور',
+            'reminder-edit' => 'ویرایش یادآور',
+            'reminder-delete' => 'حذف یادآور',
 
 
         ];

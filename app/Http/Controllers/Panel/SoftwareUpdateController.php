@@ -32,13 +32,17 @@ class SoftwareUpdateController extends Controller
 
         $items = explode(',', $request->items);
 
-        SoftwareUpdate::create([
+        $software = SoftwareUpdate::create([
             'version' => $request->version,
             'date' => now(),
             'description' => json_encode($items),
         ]);
 
-        alert()->success('تغییرات نرم افزار با موفقیت افزوده شد','ثبت تغییرات');
+
+        activity_log('software-update-create', __METHOD__, [$request->all(), $software]);
+
+
+        alert()->success('تغییرات نرم افزار با موفقیت افزوده شد', 'ثبت تغییرات');
         return redirect()->route('software-updates.index');
     }
 
@@ -61,18 +65,21 @@ class SoftwareUpdateController extends Controller
         $items = explode(',', $request->items);
 
         $softwareUpdate->update([
-                'version' => $request->version,
-                'date' => now(),
-                'description' => json_encode($items),
-            ]);
+            'version' => $request->version,
+            'date' => now(),
+            'description' => json_encode($items),
+        ]);
 
-        alert()->success('تغییرات نرم افزار با موفقیت ویرایش شد','ویرایش تغییرات');
+        activity_log('software-update-edit', __METHOD__, [$request->all(), $softwareUpdate]);
+
+        alert()->success('تغییرات نرم افزار با موفقیت ویرایش شد', 'ویرایش تغییرات');
         return redirect()->route('software-updates.index');
     }
 
     public function destroy(SoftwareUpdate $softwareUpdate)
     {
         $this->authorize('software-update-delete');
+        activity_log('software-update-delete', __METHOD__, [$softwareUpdate]);
 
         $softwareUpdate->delete();
         return back();

@@ -1,5 +1,39 @@
 @extends('panel.layouts.master')
 @section('title', 'وظایف')
+@section('styles')
+    <style>
+        .drop-hover {
+            background-color: #e9ecef;
+            border: 2px dashed #6c757d;
+            transition: background-color 0.3s ease;
+        }
+
+        .task {
+            cursor: grab;
+            user-select: none;
+            display: inline-block;
+            padding: 5px 10px;
+            transition: transform 0.2s ease;
+            border-radius: 5px;
+            border: 1px solid #d0d0d0;
+            margin: 5px;
+
+        }
+
+        .task:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+
+        .task:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: scale(1.03);
+        }
+
+
+    </style>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+@endsection
 @section('content')
     <div class="content">
         <div class="container-fluid">
@@ -14,117 +48,137 @@
             <!-- end page title -->
 
             <div class="row">
-                <div class="col">
+                <div class="col-6">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="card-title d-flex justify-content-end">
-                                @can('tasks-create')
-                                    <a href="{{ route('tasks.create') }}" class="btn btn-primary">
-                                        <i class="fa fa-plus mr-2"></i>
-                                        ایجاد وظیفه
-                                    </a>
-                                @endcan
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered dataTable dtr-inline text-center"
-                                       style="width: 100%">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>عنوان</th>
-                                        @if(!auth()->user()->isCEO() || !auth()->user()->isItManager() )
-                                            <th>وضعیت</th>
-                                        @endif
-
-                                        <th>ایجاد کننده</th>
-                                        <th>زمان شروع</th>
-                                        <th>زمان پایان</th>
-                                        <th>مشاهده</th>
-                                        @can('tasks-edit')
-                                            <th>ویرایش</th>
-                                        @endcan
-                                        @can('tasks-delete')
-                                            <th>حذف</th>
-                                        @endcan
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {{--                                    @dd($tasks['data'])--}}
-                                    @foreach($tasks['data'] as $key => $task)
-                                        <tr>
-                                            <td>{{ ++$key }}</td>
-                                            <td>{{ $task['title'] }}</td>
-                                            @if(!auth()->user()->isCEO() || !auth()->user()->isItManager() )
-                                                <td>@if($task['status'] == 'doing')
-                                                        <span class="badge bg-warning">در انتظار انجام</span>
-                                                    @else
-                                                        <span class="badge bg-success">انجام شد</span>
-                                                    @endif</td>
-                                            @endif
-                                            <td> {{ $task['creator_id'] == auth()->id() ? 'شما' : $task['creator'] }}</td>
-                                            <td>{{ verta($task['start_at'])->format('Y/m/d') }}</td>
-                                            <td>{{verta( $task['expire_at'])->format('Y/m/d') }}</td>
-                                            <td>
-                                                <a class="btn btn-info btn-floating"
-                                                   href="{{ route('tasks.show', $task['id']) }}">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
-                                            </td>
-                                            @can('tasks-edit')
-                                                <td>
-                                                    <a class="btn btn-warning btn-floating {{ $task['creator_id'] != auth()->id() ? 'disabled' : '' }}"
-                                                       href="{{ route('tasks.edit', $task['id']) }}">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                </td>
-                                            @endcan
-                                            @can('tasks-delete')
-                                                <td>
-                                                    <button class="btn btn-danger btn-floating trashRow"
-                                                            data-url="{{ route('tasks.destroy',$task['id']) }}"
-                                                            data-id="{{ $task['id'] }}" {{ $task['creator_id'] != auth()->id() ? 'disabled' : '' }}>
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                </td>
-                                            @endcan
-                                        </tr>
-                                    @endforeach
-
-
-                                    </tbody>
-                                    <tfoot>
-                                    <tr>
-                                    </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            {{--                            <div class="d-flex justify-content-center">{{ $tasks->appends(request()->all())->links() }}</div>--}}
-
-                            @if(count($tasks['data']) && count($tasks['data']) >= 10)
-                                <div class="d-flex justify-content-center">
-                                    <nav aria-label="Page navigation">
-                                        <ul class="pagination">
-                                            <li class="page-item {{ $tasks['pagination']['prev_page_url'] ? '' : 'disabled' }}">
-                                                <a class="page-link"
-                                                   href="{{ $tasks['pagination']['prev_page_url'] ? '/panel/tasks?url=' . $tasks['pagination']['prev_page_url'] : '#' }}">قبلی</a>
-                                            </li>
-                                            <li class="page-item active" aria-current="page">
-                                                <span class="page-link">صفحه {{ $tasks['pagination']['current_page'] }} از {{ $tasks['pagination']['last_page'] }}</span>
-                                            </li>
-                                            <li class="page-item {{ $tasks['pagination']['next_page_url'] ? '' : 'disabled' }}">
-                                                <a class="page-link"
-                                                   href="{{ $tasks['pagination']['next_page_url'] ? '/panel/tasks?url=' . $tasks['pagination']['next_page_url'] : '#' }}">بعدی</a>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            @endif
+                        <div class="card-header">
+                            <h4>وظایف انجام نشده</h4>
+                        </div>
+                        <div class="card-body" id="uncomplete-section">
+                            <span class="text-info loading" style="display: none">در حال بارگذاری ...</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>وظایف انجام شده</h4>
+                        </div>
+                        <div class="card-body" id="complete-section">
+                            <span class="text-info loading" style="display: none">در حال بارگذاری ...</span>
                         </div>
                     </div>
                 </div>
             </div>
+
+
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // نمایش لودینگ قبل از شروع بارگذاری داده‌ها
+            $('.loading').show();
+
+            // درخواست ایجکس برای دریافت داده‌ها
+            $.ajax({
+                url: "{{env('API_BASE_URL').'get-user-task/'.auth()->id().'/'.env('company_name')}}",
+                method: 'GET',
+                headers: {
+                    'API_KEY': '{{ env('API_KEY_TOKEN_FOR_TICKET') }}'
+                },
+                success: function (response) {
+                    $('.loading').hide();
+
+                    $('#uncomplete-section').empty();
+                    $('#complete-section').empty();
+
+                    response.forEach(function (task) {
+                        var taskElement = $('<div class="task" data-task-id="' + task.id + '">' + task.task + '</div>');
+
+                        if (task.completed_at) {
+                            $('#complete-section').append(taskElement);
+                        } else {
+                            $('#uncomplete-section').append(taskElement);
+                        }
+                    });
+
+                    $('.task').draggable({
+                        revert: "invalid",
+                        zIndex: 1000,
+                        helper: "original",
+                        start: function () {
+                            $(this).css('opacity', '0.5');
+                        },
+                        stop: function () {
+                            $(this).css('opacity', '1');
+                        }
+                    });
+
+                    $('#complete-section').droppable({
+                        accept: "#uncomplete-section .task",
+                        hoverClass: "drop-hover",
+                        drop: function (event, ui) {
+                            var taskId = ui.draggable.attr('data-task-id');
+                            $.ajax({
+                                url: '{{env('API_BASE_URL').'task/update-status'}}',
+                                method: 'POST',
+                                data: {
+                                    _token: '{{ csrf_token() }}',
+                                    status: 'completed',
+                                    task_id: taskId
+                                },
+                                success: function (response) {
+                                    ui.draggable.detach().appendTo('#complete-section').css({
+                                        top: 'auto',
+                                        left: 'auto',
+                                        position: 'relative'
+                                    });
+                                },
+                                error: function () {
+                                    alert('خطا در به‌روزرسانی وضعیت تسک!');
+                                }
+                            });
+                        }
+                    });
+
+                    $('#uncomplete-section').droppable({
+                        accept: "#complete-section .task",
+                        hoverClass: "drop-hover",
+                        drop: function (event, ui) {
+                            var taskId = ui.draggable.attr('data-task-id');
+                            $.ajax({
+                                url: '{{env('API_BASE_URL').'task/update-status'}}',
+                                method: 'POST',
+                                data: {
+                                    _token: '{{ csrf_token() }}',
+                                    status: 'uncompleted',
+                                    task_id: taskId
+                                },
+                                success: function (response) {
+                                    ui.draggable.detach().appendTo('#uncomplete-section').css({
+                                        top: 'auto',
+                                        left: 'auto',
+                                        position: 'relative'
+                                    });
+                                },
+                                error: function () {
+                                    alert('خطا در به‌روزرسانی وضعیت تسک!');
+                                }
+                            });
+                        }
+                    });
+                },
+                error: function () {
+                    $('.loading').hide();
+                    alert('خطا در دریافت داده‌ها');
+                }
+            });
+        });
+    </script>
+
 @endsection
 
 

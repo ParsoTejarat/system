@@ -41,6 +41,7 @@ use App\Http\Controllers\Panel\TransferController;
 use App\Http\Controllers\Panel\UserController;
 use App\Http\Controllers\Panel\WarehouseController;
 use App\Http\Controllers\PanelController;
+use App\Http\Controllers\ReminderController;
 use App\Models\Invoice;
 use App\Models\Packet;
 use App\Models\User;
@@ -90,11 +91,44 @@ Route::get('/', function () {
 });
 
 
-//Route::get('test/{id?}', function ($id = null) {
-//    return \auth()->loginUsingId($id);
-////    return phpinfo();
-////    event(new SendMessageEvent(1, []));
-//});
+Route::get('/label/generator', function () {
+
+
+
+    $barcodes = [];
+    for ($i = 1; $i <= 500; $i++) {
+        $code = rand(100000, 99999999);
+        $barcodes[] = $code;
+    }
+    $barcodes = collect($barcodes);
+//    $html = view('panel.pdf.barcode', compact('barcodes'))->render();
+//
+//    $mpdf = new Mpdf([
+//        'format' => [103, 30],
+//        'margin_left' => 0,
+//        'margin_right' => 0,
+//        'margin_top' => 0,
+//        'margin_bottom' => 0,
+//    ]);
+//
+//    $mpdf->WriteHTML($html);
+//    return $mpdf->Output('barcodes.pdf', 'I');
+
+//    $mpdf = new Mpdf([
+//        'format' => [120, 51],
+//        'orientation' => 'P',
+//
+//    ]);
+//
+//    // افزودن محتوای HTML
+//    $mpdf->WriteHTML($html);
+
+    // خروجی PDF
+//    return $mpdf->Output('labels.pdf', 'D');
+
+
+    return view('panel.pdf.barcode', compact('barcodes'));
+});
 
 
 //Route::get('/timeline', function () {
@@ -116,13 +150,17 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
 
     //Transfer
     Route::resource('transfers', TransferController::class)->except('show');
-    Route::get('transfers/download/{id}', [TransferController::class,'downloadReceipt'])->name('transfers.download');
+    Route::get('transfers/download/{id}', [TransferController::class, 'downloadReceipt'])->name('transfers.download');
 
+    //software-update
     Route::resource('/software-update', SoftwareUpdateController::class)->except('show');
+
+    //Reminder
+    Route::resource('/reminders', ReminderController::class);
 
     //costs
     Route::resource('costs', CostController::class)->except('show');
-    Route::post('costs/export-excel', [CostController::class,'exportExcel'])->name('costs.excel');
+    Route::post('costs/export-excel', [CostController::class, 'exportExcel'])->name('costs.excel');
 
     //orders
     Route::resource('orders', OrderController::class);

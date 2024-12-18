@@ -24,7 +24,6 @@ class CreateCostsTable extends Migration
             $table->string('final_price');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
-
         });
     }
 

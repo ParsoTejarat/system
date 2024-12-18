@@ -170,7 +170,7 @@ class ActivityLog extends Model
         'copy-information' => 'کپی اطلاعات',
         'print-information' => 'پرینت اطلاعات',
         'edit-company-information' => 'ویرایش اطلاعات شرکت',
-        // transfer
+        //transfer
         'transfer-list' => 'لیست ارسال کالاها',
         'transfer-create' => 'ثبت ارسال کالا',
         'transfer-edit' => 'ویرایش ارسال کالا',
@@ -186,6 +186,11 @@ class ActivityLog extends Model
         'software-update-create' => 'ایجاد تغییرات نرم افزار',
         'software-update-edit' => 'ویرایش تغییرات نرم افزار',
         'software-update-delete' => 'حذف تغییرات نرم افزار',
+        //Reminder
+        'reminder-list' => 'لیست یادآورها',
+        'reminder-create' => 'ایجاد یادآور',
+        'reminder-edit' => 'ویرایش یادآور',
+        'reminder-delete' => 'حذف یادآور',
     ];
 
     public function user()

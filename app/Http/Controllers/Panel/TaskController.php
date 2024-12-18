@@ -17,12 +17,12 @@ class TaskController extends Controller
 {
     public function index(Request $request)
     {
-        $this->authorize('tasks-list');
-        $url = $request->query('url');
-        $tasks = $this->getTasks($url);
-//        dd($tasks);
+//        $this->authorize('tasks-list');
+//        $url = $request->query('url');
+//        $tasks = $this->getTasks($url);
+////        dd($tasks);
 
-        return view('panel.tasks.index', compact(['tasks']));
+        return view('panel.tasks.index');
     }
 
     public function create()

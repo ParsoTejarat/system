@@ -139,6 +139,14 @@
                                             تغییرات پنل</a>
                                     </li>
                                 @endcan
+                                @can('reminder-list')
+                                    @php $active_item = active_sidebar(['software-update','software-update/{software_update}/edit','/software-update/create']); @endphp
+                                    <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                        <a href="{{ route('software-update.index') }}" {{ $active_item ? 'active' : '' }}>
+                                            یاد آورها
+                                        </a>
+                                    </li>
+                                @endcan
                             </ul>
                         </div>
                     </li>
