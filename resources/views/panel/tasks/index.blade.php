@@ -84,7 +84,7 @@
 
             // درخواست ایجکس برای دریافت داده‌ها
             $.ajax({
-                url: "{{env('API_BASE_URL').'get-user-task/'.auth()->id().'/'.env('company_name')}}",
+                url: "{{env('API_BASE_URL').'get-user-task/'.auth()->id().'/'.env('COMPANY_NAME')}}",
                 method: 'GET',
                 headers: {
                     'API_KEY': '{{ env('API_KEY_TOKEN_FOR_TICKET') }}'
