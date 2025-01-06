@@ -372,7 +372,7 @@
                                                                 <td>
                                                                     <input type="number" name="other_taxes[]"
                                                                            class="form-control"
-                                                                           min="0" value="{{ $product->tax }}" readonly>
+                                                                           min="0" value="{{ $product->tax }}">
                                                                     <span
                                                                             class="price_with_grouping text-primary">{{ number_format($product->tax) }}</span>
                                                                 </td>
@@ -436,6 +436,7 @@
         var products = [];
         var colors = [];
         var totalTotalInvoice = 0;
+        var is_tax_edited = false;
 
         var form = document.getElementById('invoice_form');
         form.addEventListener('keypress', function (e) {
@@ -513,7 +514,7 @@
                     <span class="price_with_grouping text-primary"></span>
                 </td>
                 <td>
-                    <input type="number" name="other_taxes[]" class="form-control" min="0" value="0" readonly>
+                    <input type="number" name="other_taxes[]" class="form-control" min="0" value="0">
                     <span class="price_with_grouping text-primary"></span>
                 </td>
                 <td>
@@ -548,8 +549,11 @@
                     }
 
                     if (e.type === 'change') {
-                        CalcOtherProductInvoice(this);
+                        if (inputName === 'other_taxes[]') {
+                            is_tax_edited = true;
+                        }
 
+                        CalcOtherProductInvoice(this);
                     }
                 });
             }
@@ -557,6 +561,7 @@
             handleInputChange('other_counts[]');
             handleInputChange('other_prices[]');
             handleInputChange('other_discount_amounts[]');
+            handleInputChange('other_taxes[]');
 
             // end calc the product invoice
 
@@ -589,6 +594,8 @@
             let count = $('#other_products_table input[name="other_counts[]"]')[index].value;
             let price = $('#other_products_table input[name="other_prices[]"]')[index].value;
             let discount_amount = $('#other_products_table input[name="other_discount_amounts[]"]')[index].value;
+            let tax = $('#other_products_table input[name="other_taxes[]"]')[index].value;
+
 
 
             // thousands grouping
@@ -602,6 +609,8 @@
                     'price': price,
                     'count': count,
                     'discount_amount': discount_amount,
+                    'tax': tax,
+                    'is_tax_edited': is_tax_edited,
                 },
                 success: function (res) {
 
@@ -616,6 +625,7 @@
                     updateTableData(index, res);
 
                     $('#btn_form').removeAttr('disabled').text('ثبت فرم');
+                    is_tax_edited = false;
                 },
                 error: function (request, status, error) {
                     //
@@ -729,7 +739,7 @@
                             <span class="price_with_grouping text-primary"></span>
                         </td>
                         <td>
-                            <input type="number" name="other_taxes[]" class="form-control" min="0" value="0" readonly>
+                            <input type="number" name="other_taxes[]" class="form-control" min="0" value="0" >
                             <span class="price_with_grouping text-primary"></span>
                         </td>
                         <td>

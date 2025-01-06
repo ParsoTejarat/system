@@ -170,7 +170,7 @@
                     </div>
                     <div class="invoice-btn-section clearfix d-print-none">
                         <a href="{{route('orders.index')}} " class="btn btn-lg btn-print">
-                            <i class="fa fa-print"></i>بازگشت
+                            بازگشت
                         </a>
                         <a href="javascript:window.print()" class="btn btn-lg btn-download btn-theme">
                             <i class="fa fa-print"></i>چاپ

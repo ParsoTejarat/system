@@ -79,10 +79,8 @@
 
     <script>
         $(document).ready(function () {
-            // نمایش لودینگ قبل از شروع بارگذاری داده‌ها
             $('.loading').show();
 
-            // درخواست ایجکس برای دریافت داده‌ها
             $.ajax({
                 url: "{{env('API_BASE_URL').'get-user-task/'.auth()->id().'/'.env('COMPANY_NAME')}}",
                 method: 'GET',
