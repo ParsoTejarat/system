@@ -33,25 +33,8 @@
                         <div class="card-body">
                             <div class="card-title d-flex justify-content-between align-items-center mb-5">
                                 <div class="w-100">
-                                    <div class="col-12 mb-4 text-center mt-5">
-                                        <h4>درخواست برای</h4>
-                                    </div>
-                                    <div class="btn-group w-100" role="group">
-                                        <input type="radio" id="req_for1" name="req_for" class="btn-check"
-                                               value="pre-invoice"
-                                               form="invoice_form" {{ old('req_for') == 'pre-invoice' || old('req_for') == null ? 'checked' : '' }}>
-                                        <label class="btn btn-outline-primary justify-content-center" for="req_for1">پیش
-                                            فاکتور</label>
-
-                                        <input type="radio" id="req_for2" name="req_for" class="btn-check"
-                                               value="invoice"
-                                               form="invoice_form" {{ old('req_for') == 'invoice' ? 'checked' : '' }}>
-                                        <label class="btn btn-outline-primary justify-content-center" for="req_for2">فاکتور</label>
-
-                                        {{--                                        <input type="radio" id="req_for3" name="req_for" class="btn-check" value="amani-invoice" form="invoice_form" {{ old('req_for') == 'amani-invoice' ? 'checked' : '' }}>--}}
-                                        {{--                                        <label class="btn btn-outline-primary justify-content-center" for="req_for3">فاکتور امانی</label>--}}
-                                    </div>
-                                    <input type="hidden" name="type" value="official" form="invoice_form">
+                                    {{--                                    <input type="hidden" name="type" value="official" form="invoice_form">--}}
+                                    <input type="hidden" name="req_for" value="pre-invoice"  form="invoice_form">
                                 </div>
                             </div>
                             <form action="{{ route('orders.store') }}" method="post" id="invoice_form">
@@ -95,7 +78,7 @@
                                     <div class="alert alert-info">
                                         <i class="fa fa-info-circle font-size-20 align-middle"></i>
                                         <strong>توجه!</strong>
-                                         همکار فروش گرامی قیمت کالا باید به صورت <u>قیمت تمام شده</u>(به همراه مالیات ، ارزش افزوده و...) قرار بگیرد.
+                                        همکار فروش گرامی قیمت کالا باید به صورت <u>قیمت تمام شده</u>(به همراه مالیات ، ارزش افزوده و...) قرار بگیرد.
                                     </div>
                                     <div class="col-12 mt-2 text-center">
                                         <h5>محصولات شرکت</h5>
@@ -169,34 +152,34 @@
                                                                        class="form-control" min="0"
                                                                        value="{{ old('total_prices')[$i] }}" readonly>
                                                             </td>
-{{--                                                            <td>--}}
-{{--                                                                <input type="number" name="discount_amounts[]"--}}
-{{--                                                                       class="form-control"--}}
-{{--                                                                       min="0" value="{{ old('discount_amounts')[$i] }}"--}}
-{{--                                                                       readonly>--}}
-{{--                                                            </td>--}}
-{{--                                                            <td>--}}
-{{--                                                                <input type="number" name="extra_amounts[]"--}}
-{{--                                                                       class="form-control" min="0"--}}
-{{--                                                                       value="{{ old('extra_amounts')[$i] }}" readonly>--}}
-{{--                                                            </td>--}}
-{{--                                                            <td>--}}
-{{--                                                                <input type="number" name="total_prices_with_off[]"--}}
-{{--                                                                       class="form-control"--}}
-{{--                                                                       min="0"--}}
-{{--                                                                       value="{{ old('total_prices_with_off')[$i] }}"--}}
-{{--                                                                       readonly>--}}
-{{--                                                            </td>--}}
-{{--                                                            <td>--}}
-{{--                                                                <input type="number" name="taxes[]" class="form-control"--}}
-{{--                                                                       min="0"--}}
-{{--                                                                       value="{{ old('taxes')[$i] }}" readonly>--}}
-{{--                                                            </td>--}}
-{{--                                                            <td>--}}
-{{--                                                                <input type="number" name="invoice_nets[]"--}}
-{{--                                                                       class="form-control" min="0"--}}
-{{--                                                                       value="{{ old('invoice_nets')[$i] }}" readonly>--}}
-{{--                                                            </td>--}}
+                                                            {{--                                                            <td>--}}
+                                                            {{--                                                                <input type="number" name="discount_amounts[]"--}}
+                                                            {{--                                                                       class="form-control"--}}
+                                                            {{--                                                                       min="0" value="{{ old('discount_amounts')[$i] }}"--}}
+                                                            {{--                                                                       readonly>--}}
+                                                            {{--                                                            </td>--}}
+                                                            {{--                                                            <td>--}}
+                                                            {{--                                                                <input type="number" name="extra_amounts[]"--}}
+                                                            {{--                                                                       class="form-control" min="0"--}}
+                                                            {{--                                                                       value="{{ old('extra_amounts')[$i] }}" readonly>--}}
+                                                            {{--                                                            </td>--}}
+                                                            {{--                                                            <td>--}}
+                                                            {{--                                                                <input type="number" name="total_prices_with_off[]"--}}
+                                                            {{--                                                                       class="form-control"--}}
+                                                            {{--                                                                       min="0"--}}
+                                                            {{--                                                                       value="{{ old('total_prices_with_off')[$i] }}"--}}
+                                                            {{--                                                                       readonly>--}}
+                                                            {{--                                                            </td>--}}
+                                                            {{--                                                            <td>--}}
+                                                            {{--                                                                <input type="number" name="taxes[]" class="form-control"--}}
+                                                            {{--                                                                       min="0"--}}
+                                                            {{--                                                                       value="{{ old('taxes')[$i] }}" readonly>--}}
+                                                            {{--                                                            </td>--}}
+                                                            {{--                                                            <td>--}}
+                                                            {{--                                                                <input type="number" name="invoice_nets[]"--}}
+                                                            {{--                                                                       class="form-control" min="0"--}}
+                                                            {{--                                                                       value="{{ old('invoice_nets')[$i] }}" readonly>--}}
+                                                            {{--                                                            </td>--}}
                                                             <td>
                                                                 <button class="btn btn-danger btn-floating btn_remove"
                                                                         type="button"><i
@@ -472,8 +455,8 @@
             $(document).on('input', '#other_products_table input[name="other_counts[]"], #other_products_table input[name="other_prices[]"]', function () {
                 // بررسی تغییر مقدار
                 // if (this.defaultValue != this.value) {
-                    $('#btn_form').attr('disabled', 'disabled').text('درحال محاسبه...');
-                    CalcOtherProductInvoice(this);
+                $('#btn_form').attr('disabled', 'disabled').text('درحال محاسبه...');
+                CalcOtherProductInvoice(this);
                 // }
             });
 

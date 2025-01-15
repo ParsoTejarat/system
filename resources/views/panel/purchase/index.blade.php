@@ -1,4 +1,4 @@
-    @extends('panel.layouts.master')
+@extends('panel.layouts.master')
 @section('title', 'مهندسی خرید')
 @section('content')
     <div class="content">
@@ -23,7 +23,7 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>عنوان</th>
+                                        <th>شرح کالا</th>
                                         <th>انباردار</th>
                                         <th>وضعیت</th>
                                         <th>تاریخ ثبت</th>
@@ -34,7 +34,7 @@
                                     @foreach($purchases as $key => $purchase)
                                         <tr>
                                             <td>{{ ++$key }}</td>
-                                            <td>{{ $purchase->inventory->title  }}</td>
+                                            <td>{{ $purchase->product->title  }}</td>
                                             <td>{{ $purchase->user->name .' '. $purchase->user->family }}</td>
                                             <td><span
                                                     class=" badge {{$purchase->status =='pending_purchase'?'bg-warning':'bg-success'}}">{{$purchase->status =='pending_purchase'?'در انتظار خرید':'خریداری شده'}}</span>

@@ -74,4 +74,20 @@ class Product extends Model
             return $this->single_price;
         }
     }
+    public function trackingCodes()
+    {
+        return $this->hasMany(TrackingCode::class);
+    }
+
+    public function countValidTrackingCodes()
+    {
+        return $this->trackingCodes()
+            ->whereNull('exit_time')
+            ->count();
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
 }

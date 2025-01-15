@@ -8,8 +8,10 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\PriceHistory;
 use App\Models\Product;
+use App\Models\TrackingCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
@@ -17,17 +19,14 @@ use PDO;
 
 class ProductController extends Controller
 {
-    /**
-     * @var \PDO|null
-     */
-    private $conn;
+
 
     public function index()
     {
         $this->authorize('products-list');
 
         $products = Product::latest()->paginate(30);
-        return view('panel.products.index', compact('products'));
+        return view('panel.products.index', compact(['products']));
     }
 
     public function create()
@@ -48,17 +47,15 @@ class ProductController extends Controller
             'code' => $request->code,
             'sku' => $request->sku,
             'category_id' => $request->category,
-            'system_price' => $request->system_price,
-            'partner_price_tehran' => $request->partner_price_tehran,
-            'partner_price_other' => $request->partner_price_other,
             'single_price' => $request->single_price,
             'creator_id' => auth()->id(),
+            'brand_id' => $request->brand_id,
         ]);
 
         // log
         activity_log('create-product', __METHOD__, [$request->all(), $product]);
 
-        alert()->success('محصول مورد نظر با موفقیت ایجاد شد','ایجاد محصول');
+        alert()->success('محصول مورد نظر با موفقیت ایجاد شد', 'ایجاد محصول');
         return redirect()->route('products.index');
     }
 
@@ -70,8 +67,8 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $this->authorize('products-edit');
-
-        return view('panel.products.edit', compact('product'));
+        $categories = Category::all();
+        return view('panel.products.edit', compact(['product', 'categories']));
     }
 
     public function update(UpdateProductRequest $request, Product $product)
@@ -89,15 +86,12 @@ class ProductController extends Controller
             'title' => $request->title,
             'code' => $request->code,
             'sku' => $request->sku,
-            'category_id' => $request->category,
-            'system_price' => $request->system_price,
-            'partner_price_tehran' => $request->partner_price_tehran,
-            'partner_price_other' => $request->partner_price_other,
             'single_price' => $request->single_price,
             'creator_id' => auth()->id(),
+            'brand_id' => $request->brand_id,
         ]);
 
-        alert()->success('محصول مورد نظر با موفقیت ویرایش شد','ویرایش محصول');
+        alert()->success('محصول مورد نظر با موفقیت ویرایش شد', 'ویرایش محصول');
         return redirect()->route('products.index');
     }
 
@@ -105,8 +99,8 @@ class ProductController extends Controller
     {
         $this->authorize('products-delete');
 
-        if ($product->invoices()->exists()){
-            return response('این محصول در سفارشاتی موجود است',500);
+        if ($product->invoices()->exists()) {
+            return response('این محصول در سفارشاتی موجود است', 500);
         }
 
         // log
@@ -139,7 +133,7 @@ class ProductController extends Controller
     {
         $this->authorize('price-history');
 
-        $products_id = Product::where('title','like', "%$request->title%")->pluck('id');
+        $products_id = Product::where('title', 'like', "%$request->title%")->pluck('id');
         $pricesHistory = PriceHistory::whereIn('product_id', $products_id)->latest()->paginate(30);
 
         return view('panel.prices.history', compact('pricesHistory'));
@@ -150,124 +144,50 @@ class ProductController extends Controller
         return Excel::download(new \App\Exports\ProductsExport, 'products.xlsx');
     }
 
-    public function parso()
+    public function parso(Request $request)
     {
         $this->authorize('parso-products');
 
-        if (\request()->isMethod('get')) {
-            return view('panel.products.parso');
+        $page = $request->input('page', 1);
+        $response = Http::get('https://barmansystem.com/wp-json/custom-api/v1/products', [
+            'page' => $page
+        ]);
+
+        if ($response->successful()) {
+            $products = collect($response->json())->map(function ($item) {
+                return (object)$item;
+            })->all();
+        } else {
+            dd('Error:', $response->status());
         }
 
-        $sku = \request()->sku;
-        $title = \request()->title;
-
-        if (!$sku && !$title) {
-            alert()->error('لطفا یکی از فیلد های عنوان و یا کد را وارد نمایید','خطا');
-            return back();
-        }
-
-        try {
-            $this->connectToDB();
-
-            $sql = "SELECT pt_posts.id, pt_posts.post_date, pt_posts.post_title, pt_posts.post_status, pt_wc_product_meta_lookup.sku, pt_wc_product_meta_lookup.min_price
-            FROM pt_posts
-            INNER JOIN pt_wc_product_meta_lookup
-                ON pt_posts.id = pt_wc_product_meta_lookup.product_id
-            WHERE pt_posts.post_type = 'product' AND pt_posts.post_title LIKE ?";
-
-            $params = ["%$title%"];
-
-            if ($sku) {
-                $sql .= " AND pt_wc_product_meta_lookup.sku = ?";
-                $params[] = $sku;
-            }
-
-            $stmt = $this->conn->prepare($sql);
-
-            foreach ($params as $index => $param) {
-                $stmt->bindValue($index + 1, $param);
-            }
-
-            $stmt->execute();
-            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $product = $stmt->fetch(PDO::FETCH_OBJ);
-
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        } finally {
-            $this->conn = null;
-        }
-
-        return view('panel.products.parso', compact('product'));
-    }
-
-    public function parsoUpdate(Request $request)
-    {
-        $validator = Validator::make($request->all(), ['price' => 'required|numeric']);
-
-        if ($validator->fails()){
-            $errors = $validator->errors();
-            $product = json_decode($request->product);
-            return view('panel.products.parso', compact('errors','product'));
-        }
-
-        $product_id = json_decode($request->product)->id;
-        $price = $request->price;
-
-        try {
-            $this->connectToDB();
-
-            // update in pt_wc_product_meta_lookup
-            $sql = "UPDATE pt_wc_product_meta_lookup SET min_price = ? , max_price = ? WHERE product_id = ?";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindValue(1, $price);
-            $stmt->bindValue(2, $price);
-            $stmt->bindValue(3, $product_id);
-            $stmt->execute();
-
-            // update in pt_postmeta
-            $sql2 = "UPDATE pt_postmeta SET meta_value = ? WHERE post_id = ? AND meta_key = ?";
-            $stmt2 = $this->conn->prepare($sql2);
-            $stmt2->bindValue(1, $price);
-            $stmt2->bindValue(2, $product_id);
-            $stmt2->bindValue(3, '_regular_price');
-            $stmt2->execute();
-
-            alert()->success('قیمت محصول مورد نظر با موفقیت تغییر کرد','تغییر قیمت');
-            return redirect()->route('parso.index');
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        } finally {
-            $this->conn = null;
-        }
-
-        return view('panel.products.parso', compact('product'));
+        return view('panel.products.parso', compact(['products', 'page']));
     }
 
     private function priceHistory($product, $request)
     {
-        if ($request->system_price != $product->system_price){
+        if ($request->system_price != $product->system_price) {
             $product->histories()->create([
                 'price_field' => 'system_price',
                 'price_amount_from' => $product->system_price,
                 'price_amount_to' => $request->system_price,
             ]);
         }
-        if ($request->partner_price_tehran != $product->partner_price_tehran){
+        if ($request->partner_price_tehran != $product->partner_price_tehran) {
             $product->histories()->create([
                 'price_field' => 'partner_price_tehran',
                 'price_amount_from' => $product->partner_price_tehran,
                 'price_amount_to' => $request->partner_price_tehran,
             ]);
         }
-        if ($request->partner_price_other != $product->partner_price_other){
+        if ($request->partner_price_other != $product->partner_price_other) {
             $product->histories()->create([
                 'price_field' => 'partner_price_other',
                 'price_amount_from' => $product->partner_price_other,
                 'price_amount_to' => $request->partner_price_other,
             ]);
         }
-        if ($request->single_price != $product->single_price){
+        if ($request->single_price != $product->single_price) {
             $product->histories()->create([
                 'price_field' => 'single_price',
                 'price_amount_from' => $product->single_price,
@@ -276,21 +196,90 @@ class ProductController extends Controller
         }
     }
 
-    private function connectToDB()
+
+    public function trackingCodeProcess(Request $request)
     {
-        $servername = "localhost";
-        $username = "parso_tejarat";
-        $password = "wrc7QJ9Us";
-        $dbname = "parso_tejarat";
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+            'product_id' => 'required|exists:products,id',
+        ]);
 
-        try {
-            $this->conn = new \PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username, $password);
+        $product = Product::findOrFail($request->product_id);
 
-//            // set the PDO error mode to exception
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch(\PDOException $e) {
-            $message = "Connection failed: " . $e->getMessage();
-            dd($message);
+        $file = $request->file('file');
+        $data = Excel::toArray([], $file);
+
+        if (empty($data) || empty($data[0])) {
+            alert()->error('فایل خالی است.', 'خطا');
+            return back();
+        }
+
+        $rows = $data[0];
+
+        if (strtolower($rows[0][0]) !== 'شناسه رهگیری کالا') {
+            alert()->error('ساختار فایل اکسل نامعتبر است.', 'خطا');
+            return back();
+        }
+
+        $trackingCodes = array_slice(array_column($rows, 0), 1);
+        $trackingCodes = array_filter(array_map('trim', $trackingCodes));
+
+        if (empty($trackingCodes)) {
+            alert()::error('خطا', 'فایل خالی است.');
+            return back();
+        }
+
+        $existingCodes = TrackingCode::whereIn('code', $trackingCodes)
+            ->pluck('code')
+            ->toArray();
+
+        $newCodes = array_diff($trackingCodes, $existingCodes);
+
+        $batchSize = 100;
+        $batches = array_chunk($newCodes, $batchSize);
+
+        foreach ($batches as $batch) {
+            $insertData = array_map(function ($code) use ($product) {
+                return [
+                    'product_id' => $product->id,
+                    'code' => $code,
+                    'exit_time' => null,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }, $batch);
+
+            TrackingCode::insert($insertData);
+        }
+
+        if (!empty($existingCodes)) {
+            alert()->warning('شناسه های زیر قبلاً ثبت شده‌اند:<br>' . implode('<br>', $existingCodes), 'هشدار')->html()->autoclose(10000);
+        }
+
+        if (!empty($newCodes)) {
+            alert()->success('شناسه های زیر با موفقیت ثبت شدند:<br>' . implode('<br>', $newCodes), 'موفقیت')->html()->autoclose(10000);
+        }
+
+        return back();
+    }
+
+    public function parsoUpdatePrice(Request $request)
+    {
+
+        $url = 'https://barmansystem.com/wp-json/custom/v1/update-price';
+
+        $response = Http::asForm()->post($url, [
+            'product_id' => $request->product_id,
+            'price' => $request->price
+        ]);
+
+        if ($response->successful()) {
+            alert()->success('قیمت محصول با موفقیت ویرایش شد.','موفقیت آمیز');
+            return back();
+        } else {
+            return response()->json(['message' => 'Failed to update price'], 500);
         }
     }
+
+
 }

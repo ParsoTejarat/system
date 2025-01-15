@@ -2,17 +2,17 @@
 @switch(request()->website)
     @case('torob')
         @php
-                $title = 'محصولات ترب';
+            $title = 'محصولات ترب';
         @endphp
         @break
     @case('digikala')
         @php
-                $title = 'محصولات دیجیکالا';
+            $title = 'محصولات دیجیکالا';
         @endphp
         @break
     @case('emalls')
         @php
-                $title = 'محصولات ایمالز';
+            $title = 'محصولات ایمالز';
         @endphp
         @break
 @endswitch
@@ -81,6 +81,14 @@
                                     <i class="fa fa-plus mr-2"></i>
                                     ایجاد محصول
                                 </a>
+                            </div>
+                            <div class="row col-3 mb-2">
+                                <form action="" method="get">
+                                    <div class="d-flex align-items-center">
+                                        <input type="text" name="title" class="form-control me-2" placeholder="جستجو بر اساس عنوان محصول">
+                                        <input type="submit" class="btn btn-success" value="جستجو">
+                                    </div>
+                                </form>
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered dataTable dtr-inline text-center">

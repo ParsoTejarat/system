@@ -72,7 +72,7 @@
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#dashboard" data-bs-toggle="collapse" aria-expanded="false" aria-controls="dashboard">
                             <i class="ri-dashboard-line"></i>
-                            <span> داشبورد </span>
+                            <span> عملیات پایه </span>
                             <span class="menu-arrow"></span>
                         </a>
                         <div class="collapse {{ $active_side ? 'show' : '' }}" id="dashboard">
@@ -83,7 +83,7 @@
                                 @can('users-list')
                                     @php $active_item = active_sidebar(['users','users/create','users/{user}/edit']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('users.index') }}" class="{{ $active_item ? 'active' : '' }}">کاربران</a>
+                                        <a href="{{ route('users.index') }}" class="{{ $active_item ? 'active' : '' }}">همکاران</a>
                                     </li>
                                 @endcan
                                 @can('roles-list')
@@ -177,6 +177,13 @@
                                             بندی ها</a>
                                     </li>
                                 @endcan
+                                    @can('brands-list')
+                                        @php $active_item = active_sidebar(['brands','brands/create','brands/{brand}/edit']); @endphp
+                                        <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                            <a href="{{ route('brands.index') }}" {{ $active_item ? 'active' : '' }}>برند
+                                                ها</a>
+                                        </li>
+                                    @endcan
                                 @can('parso-products')
                                     @php $active_item = active_sidebar(['parso-products']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
@@ -207,7 +214,7 @@
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#orders" data-bs-toggle="collapse" aria-expanded="false" aria-controls="orders">
                             <i class="ri-shopping-cart-line"></i>
-                            <span> سفارشات </span>
+                            <span> عملیات فروش </span>
                             <span class="menu-arrow"></span>
                         </a>
                         <div class="collapse {{ $active_side ? 'show' : '' }}" id="orders">
@@ -307,7 +314,7 @@
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#customers" data-bs-toggle="collapse" aria-expanded="false" aria-controls="customers">
                             <i class="ri-group-line"></i>
-                            <span> مشتریان </span>
+                            <span> بارگذاری مشتریان </span>
                             <span class="menu-arrow"></span>
                         </a>
                         <div class="collapse {{ $active_side ? 'show' : '' }}" id="customers">
@@ -340,9 +347,9 @@
                                 <li class="{{ $active_item && request()->website == 'emalls' ? 'menuitem-active' : '' }}">
                                     <a href="{{ route('off-site-products.index', 'emalls') }}" {{ $active_item && request()->website == 'emalls' ? 'active' : '' }}>ایمالز</a>
                                 </li>
-                                <li class="{{ $active_item && request()->website == 'digikala' ? 'menuitem-active' : '' }}">
-                                    <a href="{{ route('off-site-products.index', 'digikala') }}" {{ $active_item && request()->website == 'digikala' ? 'active' : '' }}>دیجیکالا</a>
-                                </li>
+{{--                                <li class="{{ $active_item && request()->website == 'digikala' ? 'menuitem-active' : '' }}">--}}
+{{--                                    <a href="{{ route('off-site-products.index', 'digikala') }}" {{ $active_item && request()->website == 'digikala' ? 'active' : '' }}>دیجیکالا</a>--}}
+{{--                                </li>--}}
                             </ul>
                         </div>
                     </li>
@@ -350,36 +357,51 @@
 
                 {{-- Warehouse --}}
                 @canany(['guarantees-list','warehouses-list'])
-                    @php $active_side = active_sidebar(['inventory','inventory/create','inventory/{inventory}/edit','search/inventory','inventory-reports','inventory-reports/create','inventory-reports/{inventory_report}/edit','warehouses','warehouses/create','warehouses/{warehouse}/edit','search/inventory-reports','guarantees','guarantees/create','guarantees/{guarantee}/edit','categories','categories/create','categories/{category}/edit']); @endphp
+                    @php $active_side = active_sidebar(['inventory','inventory/create','inventory/{inventory}/edit','search/inventory','inventory-reports','inventory-reports/create','inventory-reports/{inventory_report}/edit','warehouses','warehouses/create','warehouses/{warehouse}/edit','search/inventory-reports','guarantees','guarantees/create','guarantees/{guarantee}/edit','exit-remittances','exit-remittances/create','exit-remittances/{exit_remittance}/edit','exit-remittances/{exit_remittance}','out-of-warehouse','out-of-warehouse/{id}','return-back-products']); @endphp
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#warehouse" data-bs-toggle="collapse" aria-expanded="false" aria-controls="warehouse">
                             <i class="ri-home-5-line"></i>
-                            <span> انبار </span>
+                            <span> عملیات انبارداری </span>
                             <span class="menu-arrow"></span>
                         </a>
                         <div class="collapse {{ $active_side ? 'show' : '' }}" id="warehouse">
                             <ul class="nav-second-level">
-                                @can('guarantees-list')
-                                    @php $active_item = active_sidebar(['guarantees','guarantees/create','guarantees/{guarantee}/edit']); @endphp
-                                    <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('guarantees.index') }}" {{ $active_item ? 'active' : '' }}>گارانتی
-                                            ها</a>
-                                    </li>
-                                @endcan
+
                                 @can('warehouses-list')
                                     @php $active_item = active_sidebar(['warehouses','warehouses/create','warehouses/{warehouse}/edit']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('warehouses.index') }}" {{ $active_item ? 'active' : '' }}>انبار
+                                        <a href="{{ route('warehouses.index') }}" {{ $active_item ? 'active' : '' }}>موجودی انبار</a>
+                                    </li>
+                                @endcan
+                                @can('exit-remittance-list')
+                                    @php $active_item = active_sidebar(['exit-remittances','exit-remittances/create','exit-remittances/{exit_remittance}/edit','exit-remittances/{exit_remittance}']); @endphp
+                                    <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                        <a href="{{ route('exit-remittances.index') }}" {{ $active_item ? 'active' : '' }}>حواله
+                                            های خروج</a>
+                                    </li>
+                                @endcan
+                                @can('out-of-warehouse-list')
+                                    @php $active_item = active_sidebar(['out-of-warehouse','out-of-warehouse/{id}']); @endphp
+                                    <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                        <a href="{{ route('outOfStock.index') }}" {{ $active_item ? 'active' : '' }}>خروجی
                                             ها</a>
                                     </li>
                                 @endcan
-                                @can('categories-list')
-                                    @php $active_item = active_sidebar(['categories','categories/create','categories/{category}/edit']); @endphp
+                                @can('return-back-products-list')
+                                    @php $active_item = active_sidebar(['return-back-products']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('categories.index') }}" {{ $active_item ? 'active' : '' }}>دسته
-                                            بندی ها</a>
+                                        <a href="{{ route('showAllReturnBackProduct.index') }}" {{ $active_item ? 'active' : '' }}>
+                                            کالاهای مرجوعی
+                                        </a>
                                     </li>
                                 @endcan
+                                {{--                                @can('guarantees-list')--}}
+                                {{--                                    @php $active_item = active_sidebar(['guarantees','guarantees/create','guarantees/{guarantee}/edit']); @endphp--}}
+                                {{--                                    <li class="{{ $active_item ? 'menuitem-active' : '' }}">--}}
+                                {{--                                        <a href="{{ route('guarantees.index') }}" {{ $active_item ? 'active' : '' }}>گارانتی--}}
+                                {{--                                            ها</a>--}}
+                                {{--                                    </li>--}}
+                                {{--                                @endcan--}}
                                 @if(request()->warehouse_id)
                                     @can('inventory-list')
                                         @php $active_item = active_sidebar(['inventory','inventory/create','inventory/{inventory}/edit','search/inventory']); @endphp

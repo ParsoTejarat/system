@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
 
@@ -12,8 +13,28 @@ class WarehouseController extends Controller
     {
         $this->authorize('warehouses-list');
 
-        $warehouses = Warehouse::paginate(30);
-        return view('panel.warehouses.index', compact('warehouses'));
+        $products = Product::query();
+
+
+        if ($sku = request()->get('sku')) {
+            $products = $products->where('sku', 'like', '%' . $sku . '%');
+        }
+
+        if ($brand_id = request()->get('brand_id')) {
+            $products = $products->where('brand_id', $brand_id);
+        }
+
+        if ($category_id = request()->get('category_id')) {
+            $products = $products->where('category_id', $category_id);
+        }
+
+
+        $products = $products->latest()->withCount(['trackingCodes' => function ($query) {
+            $query->whereNull('exit_time');
+        }])->paginate(30);
+
+
+        return view('panel.warehouses.index', compact(['products']));
     }
 
     public function create()

@@ -31,32 +31,12 @@
                         <div class="card-body">
                             <div class="card-title d-flex justify-content-between align-items-center mb-5">
                                 <div class="w-100">
-                                    @if($order->status != 'invoiced')
-                                        <div class="col-12 mb-4 text-center mt-5">
-                                            <h4>درخواست برای</h4>
-                                        </div>
-                                        <div class="btn-group w-100" role="group">
-                                            <input type="radio" id="req_for1" name="req_for" class="btn-check"
-                                                   value="pre-invoice"
-                                                   form="invoice_form" {{ $order->req_for == 'pre-invoice' && old('req_for') == null || old('req_for') == 'pre-invoice' ? 'checked' : '' }}>
-                                            <label class="btn btn-outline-primary justify-content-center"
-                                                   for="req_for1">پیش فاکتور</label>
-
-                                            <input type="radio" id="req_for2" name="req_for" class="btn-check"
-                                                   value="invoice"
-                                                   form="invoice_form" {{ $order->req_for == 'invoice' || old('req_for') == 'invoice' ? 'checked' : '' }}>
-                                            <label class="btn btn-outline-primary justify-content-center"
-                                                   for="req_for2">فاکتور</label>
-
-                                        </div>
-                                    @else
-                                        <input type="hidden" name="req_for" value="{{ $order->req_for }}"
-                                               form="invoice_form">
-                                    @endif
+                                    <input type="hidden" name="req_for" value="{{ $order->req_for }}"
+                                           form="invoice_form">
                                     <input type="hidden" name="type" value="official" form="invoice_form">
                                 </div>
                             </div>
-                            <form action="{{ route('orders.update',$order->id) }}" method="post" id="invoice_form">
+                            <form action="{{ route('orders.update',$order->id) }}" method="post" id="invoice_form" enctype="multipart/form-data">
                                 @csrf
                                 @method('PATCH')
                                 <div class="row mb-4">
@@ -65,13 +45,13 @@
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="buyer_name">نام شخص حقیقی/حقوقی <span
-                                                    class="text-danger">*</span></label>
+                                                class="text-danger">*</span></label>
                                         <select name="buyer_name" id="buyer_name" class="form-control"
                                                 data-toggle="select2">
                                             <option value="" disabled selected>انتخاب کنید...</option>
                                             @foreach(\App\Models\Customer::all(['id','name','code']) as $customer)
                                                 <option
-                                                        value="{{ $customer->id }}" {{ $order->customer_id == $customer->id ? 'selected' : '' }}>{{ $customer->code.' - '.$customer->name }}</option>
+                                                    value="{{ $customer->id }}" {{ $order->customer_id == $customer->id ? 'selected' : '' }}>{{ $customer->code.' - '.$customer->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('buyer_name')
@@ -90,6 +70,17 @@
                                             <span class="text-info fst-italic">خط بعد Shift + Enter</span>
                                         </div>
                                     </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                                        <label class="form-label" for="payment_doc">رسید پرداخت</label>
+                                        <input type="file" name="payment_doc" id="payment_doc" class="form-control"
+                                               accept="application/pdf,image/png,image/jpg,image/jpeg">
+                                        @if($order->payment_doc)
+                                            <a href="{{ $order->payment_doc }}" target="_blank">دانلود رسید پرداخت</a>
+                                        @endif
+                                        @error('payment_doc')
+                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
 
 
                                     @can('accountant')
@@ -98,11 +89,11 @@
                                             <select name="status" id="status" class="form-control"
                                                     data-toggle="select2">
                                                 <option
-                                                        value="order" {{ $order->status == 'orders' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['orders'] }}</option>
+                                                    value="order" {{ $order->status == 'orders' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['orders'] }}</option>
                                                 <option
-                                                        value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['pending'] }}</option>
+                                                    value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['pending'] }}</option>
                                                 <option
-                                                        value="invoiced" {{ $order->status == 'invoiced' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['invoiced'] }}</option>
+                                                    value="invoiced" {{ $order->status == 'invoiced' ? 'selected' : '' }}>{{ \App\Models\Invoice::STATUS['invoiced'] }}</option>
                                             </select>
                                             @error('status')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -128,7 +119,7 @@
                                     <div class="col-12 mb-3">
                                         <div class="d-flex justify-content-between mb-3">
                                             <button class="btn btn-outline-success" type="button" id="btn_add"><i
-                                                        class="fa fa-plus mr-2"></i> افزودن کالا
+                                                    class="fa fa-plus mr-2"></i> افزودن کالا
                                             </button>
                                         </div>
                                         <div class="overflow-auto">
@@ -160,7 +151,7 @@
                                                                     </option>
                                                                     @foreach(\App\Models\Product::all(['id','title','code']) as $item)
                                                                         <option
-                                                                                value="{{ $item->id }}" {{ $item->id == $product->products ? 'selected' : '' }}>{{ $item->code.' - '.$item->title }}</option>
+                                                                            value="{{ $item->id }}" {{ $item->id == $product->products ? 'selected' : '' }}>{{ $item->code.' - '.$item->title }}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </td>
@@ -168,7 +159,7 @@
                                                                 <select class="form-control" name="colors[]" required>
                                                                     @foreach(\App\Models\Product::COLORS as $key => $value)
                                                                         <option
-                                                                                value="{{ $key }}" {{ $key == $product->colors ? 'selected' : '' }}>{{ $value }}</option>
+                                                                            value="{{ $key }}" {{ $key == $product->colors ? 'selected' : '' }}>{{ $value }}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </td>
@@ -199,7 +190,7 @@
                                                             <td>
                                                                 <button class="btn btn-danger btn-floating btn_remove"
                                                                         type="button"><i
-                                                                            class="fa fa-trash"></i></button>
+                                                                        class="fa fa-trash"></i></button>
                                                             </td>
                                                         </tr>
                                                     @endforeach
@@ -214,7 +205,7 @@
                                     <div class="col-12 mb-3">
                                         <div class="d-flex justify-content-between mb-3">
                                             <button class="btn btn-outline-success" type="button" id="btn_other_add"><i
-                                                        class="fa fa-plus mr-2"></i> افزودن کالا
+                                                    class="fa fa-plus mr-2"></i> افزودن کالا
                                             </button>
                                         </div>
                                         <div class="overflow-auto">
@@ -280,7 +271,7 @@
                                                             <td>
                                                                 <button class="btn btn-danger btn-floating btn_remove"
                                                                         type="button"><i
-                                                                            class="fa fa-trash"></i></button>
+                                                                        class="fa fa-trash"></i></button>
                                                             </td>
                                                         </tr>
                                                     @endforeach
@@ -470,8 +461,8 @@
             // })
             $(document).on('input', '#other_products_table input[name="other_counts[]"], #other_products_table input[name="other_prices[]"]', function () {
                 // بررسی تغییر مقدار
-                    $('#btn_form').attr('disabled', 'disabled').text('درحال محاسبه...');
-                    CalcOtherProductInvoice(this);
+                $('#btn_form').attr('disabled', 'disabled').text('درحال محاسبه...');
+                CalcOtherProductInvoice(this);
             });
 
             // end calc the product invoice

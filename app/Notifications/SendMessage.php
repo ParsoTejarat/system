@@ -20,16 +20,18 @@ class SendMessage extends Notification
 
     private $message;
     private $url;
+    private $title;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(string $message, string $url)
+    public function __construct(string $message, string $url,string $title = 'اطلاعیه جدید')
     {
         $this->message = $message;
         $this->url = $url;
+        $this->title = $title;
     }
 
     /**
@@ -55,6 +57,7 @@ class SendMessage extends Notification
             'id' => $this->id,
             'message' => $this->message,
             'url' => $this->url,
+            'title' => $this->title,
         ];
 
         if ($notifiable->fcm_token) {
@@ -67,7 +70,7 @@ class SendMessage extends Notification
     }
 
     // the new method
-    private function send_firebase_notification($message, $url, $firebaseToken)
+    private function send_firebase_notification($message, $url,$title, $firebaseToken)
     {
         try {
             $credential = new ServiceAccountCredentials(
@@ -89,7 +92,7 @@ class SendMessage extends Notification
                     "token" => $firebaseToken,
                     "webpush" => [
                         "notification" => [
-                            "title" => "",
+                            "title" => $title,
                             "body" => $message,
                             "icon" => asset('assets/images/logo-sm.png')
                         ],

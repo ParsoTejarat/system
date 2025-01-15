@@ -204,7 +204,8 @@
                                 <div class="alert alert-info">
                                     <i class="fa fa-info-circle font-size-20 align-middle"></i>
                                     <strong>توجه!</strong>
-                                  حسابدار گرامی قیمت کالا ها ، به صورت قیمت تمام شده (به همراه مالیات ، ارزش افزوده و ...) محاسبه شده است . در صورت نیاز به اطلاعات بیشتر با واحد فروش ارتباط برقرار کنید.
+                                    حسابدار گرامی قیمت کالا ها ، به صورت قیمت تمام شده (به همراه مالیات ، ارزش افزوده و
+                                    ...) محاسبه شده است . در صورت نیاز به اطلاعات بیشتر با واحد فروش ارتباط برقرار کنید.
                                 </div>
                             @endcan
                             <div class="card-title d-flex justify-content-end">
@@ -297,6 +298,7 @@
                                         <th>#</th>
                                         <th>شناسه سفارش</th>
                                         <th>نوع فروش</th>
+                                        <th>ایجاد شده در</th>
                                         <th>خریدار</th>
                                         <th>درخواست جهت</th>
                                         <th>استان</th>
@@ -342,6 +344,7 @@
                                             @endphp
                                             <td>{!! $highlightedNumber !!}</td>
                                             <td>{{ \App\Models\Customer::CUSTOMER_TYPE[$order->customer->customer_type] }}</td>
+                                            <td>{{ $order->create_in == 'website' ? 'وب سایت':'پرتال جامع'}}</td>
                                             <td>{{ $order->customer->name }}</td>
                                             <td>{{ \App\Models\Invoice::REQ_FOR[$order->req_for] }}</td>
                                             <td>{{ $order->customer->province }}</td>

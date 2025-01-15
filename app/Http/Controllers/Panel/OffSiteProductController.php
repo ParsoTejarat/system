@@ -13,7 +13,14 @@ class OffSiteProductController extends Controller
     {
         $this->authorize('shops');
 
-        $data = OffSiteProduct::where('website', $website)->latest()->paginate(30);
+
+        $data = OffSiteProduct::query();
+
+        if (request()->input('title')){
+            $data->where('title', 'like', '%' . request('title') . '%');
+        }
+
+        $data = $data->where('website', $website)->latest()->paginate(30);
         return view('panel.off-site-products.index', compact('data'));
     }
 

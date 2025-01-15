@@ -183,11 +183,29 @@ class PermissionSeeder extends Seeder
 //            'software-update-create' => 'ایجاد تغییرات نرم افزار',
 //            'software-update-edit' => 'ویرایش تغییرات نرم افزار',
 //            'software-update-delete' => 'حذف تغییرات نرم افزار',
-
-            'reminder-list' => 'لیست یادآورها',
-            'reminder-create' => 'ایجاد یادآور',
-            'reminder-edit' => 'ویرایش یادآور',
-            'reminder-delete' => 'حذف یادآور',
+//
+//            'reminder-list' => 'لیست یادآورها',
+//            'reminder-create' => 'ایجاد یادآور',
+//            'reminder-edit' => 'ویرایش یادآور',
+//            'reminder-delete' => 'حذف یادآور',
+             'brands-list' => 'لیست برند ها',
+            'brands-create' => 'ایجاد برند ها',
+            'brands-edit' => 'ویرایش برند ها',
+            'brands-delete' => 'حذف برند ها',
+            'import-products-id' => 'افزودن شناسه محصولات',
+            'export-excel-inventory' => 'خروجی اکسل انبار',
+            'exit-remittance-list' => 'لیست حواله های فروش',
+            'exit-remittance-create' => 'ایجاد حواله فروش',
+            'exit-remittance-edit' => 'ویرایش حواله فروش',
+            'exit-remittance-delete' => 'حذف حواله فروش',
+            'exit-remittance-excel' => 'خروجی اکسل حواله های فروش',
+            'exit-remittance-out-excel' => 'خروجی اکسل خروجی ها',
+            'return-back-products-excel' => 'خروجی اکسل مرجوعی ها',
+            'return-back-products-list' => 'لیست کالا های مرجوع شده',
+            'return-back-products-create' => 'ثبت کالای مرجوع شده',
+            'out-of-warehouse-list' => 'نمایش خروجی ها',
+            'approved-products-warehouse' => 'ثبت خروجی ها',
+            'online_sale' => 'فروش اینترنتی'
 
 
         ];

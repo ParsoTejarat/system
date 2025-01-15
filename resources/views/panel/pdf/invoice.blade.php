@@ -134,7 +134,7 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <span>کد پستی: 1584745337</span>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span>شماره تلفن: 02188867100</span>
+                        <span>شماره تلفن: 09102097248 / 02188867100</span>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </div>
                 </td>

@@ -2,6 +2,7 @@
 
 use App\Events\SendMessage as SendMessageEvent;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Panel\BrandController;
 use App\Http\Controllers\Panel\BuyOrderController;
 use App\Http\Controllers\Panel\CategoryController;
 
@@ -10,6 +11,7 @@ use App\Http\Controllers\Panel\CompanyInfoController;
 use App\Http\Controllers\Panel\CostController;
 use App\Http\Controllers\Panel\CouponController;
 use App\Http\Controllers\Panel\CustomerController;
+use App\Http\Controllers\Panel\ExitRemittancesController;
 use App\Http\Controllers\Panel\FileManagerController;
 use App\Http\Controllers\Panel\GuaranteeController;
 use App\Http\Controllers\Panel\IndicatorController;
@@ -155,6 +157,28 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     //software-update
     Route::resource('/software-update', SoftwareUpdateController::class)->except('show');
 
+    //warehouse
+    Route::resource('warehouses', WarehouseController::class);
+    Route::resource('exit-remittances', ExitRemittancesController::class);
+    Route::get('exit-remittances/download-pdf/{id}', [ExitRemittancesController::class, 'downloadPDF'])->name('exitRemittances.downloadPDF');
+    Route::get('exit-product-from-warehouse/download-pdf/{id}', [ExitRemittancesController::class, 'downloadPDFExitFromWarehouse'])->name('ExitFromWarehouse.downloadPDF');
+    Route::get('warehouse-stock-download-pdf', [ExitRemittancesController::class, 'wareHouseStockPrinter'])->name('wareHouseStockPrinter.downloadPDF');
+
+
+    Route::post('exit-remittances/approved-exit', [ExitRemittancesController::class, 'approvedExit'])->name('exitRemittances.approvedExit');
+    //Exited-Product
+    Route::get('out-of-warehouse', [ExitRemittancesController::class, 'outOfWarehouse'])->name('outOfStock.index');
+    Route::get('out-of-warehouse/{id}', [ExitRemittancesController::class, 'showOutOfWarehouse'])->name('show.outOfStock.index');
+    //
+    Route::post('store-return-back-product', [ExitRemittancesController::class, 'storeReturnBackProduct'])->name('storeReturnBackProduct.index');
+    Route::get('return-back-products', [ExitRemittancesController::class, 'showAllReturnBackProduct'])->name('showAllReturnBackProduct.index');
+    //excels-export
+    Route::get('categories/{id}/brands', [CategoryController::class, 'getBrandsByCategory'])->name('getBrandsByCategory');
+
+    //end-warehouse
+    //Brands
+    Route::resource('brands', BrandController::class);
+
     //Reminder
     Route::resource('/reminders', ReminderController::class);
 
@@ -224,7 +248,7 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     Route::match(['get', 'post'], 'search/products', [ProductController::class, 'search'])->name('products.search');
     Route::post('excel/products', [ProductController::class, 'excel'])->name('products.excel');
     Route::match(['get', 'post'], 'parso-products', [ProductController::class, 'parso'])->name('parso.index');
-    Route::post('parso-change-product-price', [ProductController::class, 'parsoUpdate'])->name('parso.update');
+    Route::post('parso-products-update-price', [ProductController::class, 'parsoUpdatePrice'])->name('parsoUpdatePrice.edit');
 
     // Invoices
     Route::resource('invoices', InvoiceController::class);

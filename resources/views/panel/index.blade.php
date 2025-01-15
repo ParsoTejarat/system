@@ -6,6 +6,173 @@
         #stats i.fa, i.fab {
             font-size: 30px;
         }
+
+        .card .title {
+            background: transparent;
+            border: none;
+            width: 100%;
+
+        }
+
+        .card .title:focus-visible {
+            outline: none !important;
+        }
+
+        .card .text {
+            background: transparent;
+            border: none;
+            resize: none;
+            width: 100%;
+            height: 180px;
+            text-align: justify;
+        }
+
+        .card .text:focus-visible {
+            outline: none;
+        }
+
+        .title::placeholder {
+            color: white;
+        }
+
+        .sticky-note {
+            background: linear-gradient(145deg, #fffde7, #fff9c4);
+            border: 1px solid #f5e79e;
+            border-radius: 5px;
+            box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.2), inset 0 -2px 4px rgba(255, 255, 255, 0.6); /* سایه طبیعی */
+            padding: 15px;
+            font-size: 14px;
+            line-height: 1.5;
+            position: relative;
+            width: 300px;
+            height: 300px;
+            overflow: hidden;
+            transform: rotate(-1.5deg);
+        }
+
+
+        .sticky-note .title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border: none;
+            background: transparent;
+            width: 100%;
+            outline: none;
+            resize: none;
+        }
+
+
+        .sticky-note .text {
+            border: none;
+            background: transparent;
+            width: 100%;
+            height: calc(100% - 30px);
+            resize: none;
+            outline: none;
+            overflow-y: auto;
+        }
+
+
+        .sticky-note::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            opacity: 0.4;
+            transform: translate(-15px, -15px);
+            z-index: 1;
+        }
+
+        .pin {
+            --pin-color: #d02627;
+            --pin-dark: #9e0608;
+            --pin-light: #fc7e7d;
+
+            position: absolute;
+            left: 10px;
+            top: 6px;
+            width: 60px;
+            height: 50px;
+        }
+
+        .shadow {
+            position: absolute;
+            top: 18px;
+            left: -8px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: radial-gradient(var(--paper-shadow), 20%, rgba(201, 191, 141, 0));
+        }
+
+        .metal {
+            position: absolute;
+            width: 5px;
+            height: 20px;
+            background: linear-gradient(to right, #808080, 40%, #eae8e8, 50%, #808080);
+            border-radius: 0 0 30% 30%;
+            transform: rotate(50deg);
+            transform-origin: bottom left;
+            top: 17px;
+            left: 2px;
+            border-bottom: 1px solid #808080;
+        }
+
+        .bottom-circle {
+            position: absolute;
+            right: 15px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: var(--pin-color);
+            background: radial-gradient(circle at bottom right, var(--pin-light), 25%, var(--pin-dark), 90%, var(--pin-color));
+        }
+
+        /* Barrel */
+        .bottom-circle::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -2px;
+            width: 20px;
+            height: 30px;
+            transform: rotate(55deg);
+            transform-origin: 100% 100%;
+            border-radius: 0 0 40% 40%;
+            background: linear-gradient(
+                to right,
+                var(--pin-dark),
+                30%,
+                var(--pin-color),
+                90%,
+                var(--pin-light)
+            );
+        }
+
+        /* Top circle */
+        .bottom-circle::after {
+            content: "";
+            position: absolute;
+            right: -10px;
+            top: -5px;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle at right,
+                var(--pin-light),
+                30%,
+                var(--pin-color),
+                var(--pin-dark) 80%
+            );
+        }
+
+
     </style>
 @endsection
 @section('content')
@@ -45,8 +212,8 @@
                                 </div>
                                 <div class="text-end">
                                     <h3 class="mb-1 mt-0"><span
-                                            data-plugin="counterup">{{ \App\Models\User::count() }}</span></h3>
-                                    <p class="text-muted mb-0">کاربران</p>
+                                                data-plugin="counterup">{{ \App\Models\User::count() }}</span></h3>
+                                    <p class="text-muted mb-0">همکاران</p>
                                 </div>
                             </div>
                         </div>
@@ -61,7 +228,7 @@
                                 </div>
                                 <div class="text-end">
                                     <h3 class="mb-1 mt-0"><span
-                                            data-plugin="counterup">{{ \App\Models\Customer::count() }}</span></h3>
+                                                data-plugin="counterup">{{ \App\Models\Customer::count() }}</span></h3>
                                     <p class="text-muted mb-0">مشتریان</p>
                                 </div>
                             </div>
@@ -77,7 +244,7 @@
                                 </div>
                                 <div class="text-end">
                                     <h3 class="mb-1 mt-0"><span
-                                            data-plugin="counterup">{{ \App\Models\Product::count() }}</span></h3>
+                                                data-plugin="counterup">{{ \App\Models\Product::count() }}</span></h3>
                                     <p class="text-muted mb-0">محصولات</p>
                                 </div>
                             </div>
@@ -93,10 +260,52 @@
                                 </div>
                                 <div class="text-end">
                                     <h3 class="mb-1 mt-0"><span
-                                            data-plugin="counterup">{{ \App\Models\Invoice::count() }}</span></h3>
+                                                data-plugin="counterup">{{ \App\Models\Invoice::count() }}</span></h3>
                                     <p class="text-muted mb-0">سفارشات</p>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title d-flex justify-content-between align-items-center">
+                                <h5>یادداشت های اخیر</h5>
+                                <a href="/panel/notes" class="btn btn-link">رفتن به همه یادداشت ها</a>
+                            </div>
+
+                            @if(count($notes))
+                                <div class="row">
+                                    @foreach($notes as $note)
+                                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mt-2">
+
+                                            <div class="sticky-note">
+                                                <div class="pin">
+                                                    <div class="shadow"></div>
+                                                    <div class="metal"></div>
+                                                    <div class="bottom-circle"></div>
+                                                </div>
+                                                <input type="text" name="note-title" class="title"
+                                                       value="{{ $note->title }}" data-id="{{ $note->id }}"
+                                                       maxlength="30" placeholder="عنوان یادداشت" disabled>
+                                                <textarea class="text" name="note-text" spellcheck="false"
+                                                          placeholder="متن یادداشت..."
+                                                          disabled>{{ $note->text }}</textarea>
+                                            </div>
+                                        </div>
+
+                                    @endforeach
+                                </div>
+                            @else
+                                <div class="row justify-content-lg-center mb-4" id="list">
+                                    <p class="text-muted text-center">یادداشتی اضافه نکرده اید!</p>
+                                </div>
+                            @endif
+
+
                         </div>
                     </div>
                 </div>
@@ -299,7 +508,7 @@
                                                 <td>{{ $invoice->phone }}</td>
                                                 <td>
                                                 <span
-                                                    class="badge bg-primary d-block">{{ \App\Models\Invoice::STATUS[$invoice->status] }}</span>
+                                                        class="badge bg-primary d-block">{{ \App\Models\Invoice::STATUS[$invoice->status] }}</span>
                                                 </td>
                                                 <td>{{ $invoice->user->fullName() }}</td>
                                                 <td>{{ verta($invoice->created_at)->format('H:i - Y/m/d') }}</td>
@@ -417,13 +626,13 @@
                                                 <td>
                                                     @if($leave->status == 'accept')
                                                         <span
-                                                            class="badge bg-success">{{ \App\Models\Leave::STATUS[$leave->status] }}</span>
+                                                                class="badge bg-success">{{ \App\Models\Leave::STATUS[$leave->status] }}</span>
                                                     @elseif($leave->status == 'reject')
                                                         <span
-                                                            class="badge bg-danger">{{ \App\Models\Leave::STATUS[$leave->status] }}</span>
+                                                                class="badge bg-danger">{{ \App\Models\Leave::STATUS[$leave->status] }}</span>
                                                     @else
                                                         <span
-                                                            class="badge bg-warning">{{ \App\Models\Leave::STATUS[$leave->status] }}</span>
+                                                                class="badge bg-warning">{{ \App\Models\Leave::STATUS[$leave->status] }}</span>
                                                     @endif
                                                 </td>
                                                 <td>{{ verta($leave->created_at)->format('H:i - Y/m/d') }}</td>
@@ -563,56 +772,56 @@
                 {{--                --}}{{--            EndLastOutProduct       --}}
 
                 {{--            LastPurchases        --}}
-                @canany(['ceo','purchase-engineering'])
-                    @php
-                        $title = 'آخرین لیست نیاز ها (5 تای اخیر)';
-                        $purchases =\App\Models\Purchase::latest()->limit(5)->get()
-                    @endphp
-                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="card-title">{{ $title }}</div>
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-bordered dataTable dtr-inline text-center"
-                                           style="width: 100%">
-                                        <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>عنوان</th>
-                                            <th>انباردار</th>
-                                            <th>وضعیت</th>
-                                            <th>تاریخ ثبت</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($purchases as $key => $purchase)
-                                            <tr>
-                                                <td>{{ ++$key }}</td>
-                                                <td>{{ $purchase->inventory->title  }}</td>
-                                                <td>{{ $purchase->user->name .' '. $purchase->user->family }}</td>
-                                                <td>
-                                                    <span
-                                                        class=" badge {{$purchase->status =='pending_purchase'?'bg-warning':'bg-success'}}">
-                                                        {{$purchase->status =='pending_purchase'?'در انتظار خرید':'خریداری شده'}}
-                                                    </span>
-                                                </td>
-                                                <td>{{ verta($purchase->created_at)->format('H:i - Y/m/d') }}</td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                        <tfoot>
-                                        <tr>
-                                        </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                                <div class="text-center">
-                                    <a href="{{ route('warehouses.index') }}" class="btn btn-link">نمایش همه</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endcanany
+{{--                @canany(['ceo','purchase-engineering'])--}}
+{{--                    @php--}}
+{{--                        $title = 'آخرین لیست نیاز ها (5 تای اخیر)';--}}
+{{--                        $purchases =\App\Models\Purchase::latest()->limit(5)->get()--}}
+{{--                    @endphp--}}
+{{--                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">--}}
+{{--                        <div class="card">--}}
+{{--                            <div class="card-body">--}}
+{{--                                <div class="card-title">{{ $title }}</div>--}}
+{{--                                <div class="table-responsive">--}}
+{{--                                    <table class="table table-striped table-bordered dataTable dtr-inline text-center"--}}
+{{--                                           style="width: 100%">--}}
+{{--                                        <thead>--}}
+{{--                                        <tr>--}}
+{{--                                            <th>#</th>--}}
+{{--                                            <th>عنوان</th>--}}
+{{--                                            <th>انباردار</th>--}}
+{{--                                            <th>وضعیت</th>--}}
+{{--                                            <th>تاریخ ثبت</th>--}}
+{{--                                        </tr>--}}
+{{--                                        </thead>--}}
+{{--                                        <tbody>--}}
+{{--                                        @foreach($purchases as $key => $purchase)--}}
+{{--                                            <tr>--}}
+{{--                                                <td>{{ ++$key }}</td>--}}
+{{--                                                <td>{{ $purchase->product->title  }}</td>--}}
+{{--                                                <td>{{ $purchase->user->name .' '. $purchase->user->family }}</td>--}}
+{{--                                                <td>--}}
+{{--                                                    <span--}}
+{{--                                                            class=" badge {{$purchase->status =='pending_purchase'?'bg-warning':'bg-success'}}">--}}
+{{--                                                        {{$purchase->status =='pending_purchase'?'در انتظار خرید':'خریداری شده'}}--}}
+{{--                                                    </span>--}}
+{{--                                                </td>--}}
+{{--                                                <td>{{ verta($purchase->created_at)->format('H:i - Y/m/d') }}</td>--}}
+{{--                                            </tr>--}}
+{{--                                        @endforeach--}}
+{{--                                        </tbody>--}}
+{{--                                        <tfoot>--}}
+{{--                                        <tr>--}}
+{{--                                        </tr>--}}
+{{--                                        </tfoot>--}}
+{{--                                    </table>--}}
+{{--                                </div>--}}
+{{--                                <div class="text-center">--}}
+{{--                                    <a href="{{ route('warehouses.index') }}" class="btn btn-link">نمایش همه</a>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                @endcanany--}}
                 {{--            EndLastPurchases       --}}
             </div>
         </div>
