@@ -61,7 +61,7 @@ class SendMessage extends Notification
         ];
 
         if ($notifiable->fcm_token) {
-            $this->send_firebase_notification($this->message, $this->url, $notifiable->fcm_token);
+            $this->send_firebase_notification($this->message, $this->url,$this->title, $notifiable->fcm_token);
         }
 
         event(new SendMessageEvent($notifiable->id, $data));
