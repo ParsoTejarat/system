@@ -148,18 +148,18 @@ class ProductController extends Controller
     {
         $this->authorize('parso-products');
 
-        $page = $request->input('page', 1);
-        $response = Http::get('https://barmansystem.com/wp-json/custom-api/v1/products', [
-            'page' => $page
-        ]);
+            $page = $request->input('page', 1);
+            $response = Http::get('https://parsotejarat.com/wp-json/custom-api/v1/products', [
+                'page' => $page
+            ]);
 
-        if ($response->successful()) {
-            $products = collect($response->json())->map(function ($item) {
-                return (object)$item;
-            })->all();
-        } else {
-            dd('Error:', $response->status());
-        }
+            if ($response->successful()) {
+                $products = collect($response->json())->map(function ($item) {
+                    return (object)$item;
+                })->all();
+            } else {
+                dd('Error:', $response->status());
+            }
 
         return view('panel.products.parso', compact(['products', 'page']));
     }
@@ -266,7 +266,7 @@ class ProductController extends Controller
     public function parsoUpdatePrice(Request $request)
     {
 
-        $url = 'https://barmansystem.com/wp-json/custom/v1/update-price';
+        $url = 'https://parsotejarat.com/wp-json/custom/v1/update-price';
 
         $response = Http::asForm()->post($url, [
             'product_id' => $request->product_id,

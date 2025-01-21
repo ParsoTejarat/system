@@ -22,69 +22,70 @@
                                 @method('put')
                                 <div class="row">
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
-                                        <label for="title" class="form-label">عنوان محصول <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="title" id="title" value="{{ $product->title }}">
+                                        <label for="title" class="form-label">عنوان محصول <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="title" id="title"
+                                               value="{{ $product->title }}">
                                         @error('title')
-                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
-                                        <label for="sku" class="form-label">کد محصول (sku)<span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="sku" id="sku" value="{{ $product->sku }}">
+                                        <label for="sku" class="form-label">کد محصول (sku)<span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="sku" id="sku"
+                                               value="{{ $product->sku }}">
                                         @error('sku')
-                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
-                                        <label for="code" class="form-label">کد حسابداری <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="code" id="code" value="{{ $product->code }}">
+                                        <label for="code" class="form-label">کد حسابداری <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="code" id="code"
+                                               value="{{ $product->code }}">
                                         @error('code')
-                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
-                                        <label for="category" class="form-label">دسته بندی <span class="text-danger">*</span></label>
-                                        <select class="form-control" name="category" id="category" data-toggle="select2">
+                                        <label for="category" class="form-label">دسته بندی <span
+                                                class="text-danger">*</span></label>
+                                        <select class="form-control" name="category" id="category"
+                                                data-toggle="select2">
                                             @foreach(\App\Models\Category::all() as $category)
-                                                <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                                <option
+                                                    value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('category')
-                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
-                                        <label for="single_price" class="form-label">قیمت تک فروشی (ریال) <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="single_price" id="single_price" value="{{ $product->single_price }}">
+                                        <label for="single_price" class="form-label">قیمت (ریال) <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="single_price" id="single_price"
+                                               value="{{ $product->single_price }}">
                                         <small id="single_price_words" class="text-primary"></small>
                                         @error('single_price')
-                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
-                                        <label for="system_price" class="form-label">قیمت سامانه (ریال) <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="system_price" id="system_price" value="{{ $product->system_price }}">
-                                        <small id="system_price_words" class="text-primary"></small>
-                                        @error('system_price')
-                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        <label for="brand_id" class="form-label">برند <span class="text-danger">*</span></label>
+                                        <select class="form-control" name="brand_id" id="brand_id"
+                                                data-toggle="select2">
+                                            @foreach(\App\Models\Brand::all() as $brand)
+                                                <option
+                                                    value="{{ $brand->id }}" {{ old('brand_id',$product->brand_id) == $brand->id ? 'selected' : '' }}>{{ $brand->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('brand_id')
+                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
-                                        <label for="partner_price_tehran" class="form-label">قیمت همکار - تهران (ریال) <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="partner_price_tehran" id="partner_price_tehran" value="{{ $product->partner_price_tehran }}">
-                                        <small id="partner_price_tehran_words" class="text-primary"></small>
-                                        @error('partner_price_tehran')
-                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
-                                        <label for="partner_price_other" class="form-label">قیمت همکار - شهرستان (ریال) <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="partner_price_other" id="partner_price_other" value="{{ $product->partner_price_other }}">
-                                        <small id="partner_price_other_words" class="text-primary"></small>
-                                        @error('partner_price_other')
-                                            <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+
                                 </div>
                                 <button type="submit" class="btn btn-primary mt-3">ثبت فرم</button>
                             </form>
@@ -104,39 +105,40 @@
             // Number To Words
 
             // when document was ready
-            let system_price = number2Word.numberToWords($('#system_price').val()) + ' ریال '
-            $('#system_price_words').text(system_price)
-
-            let partner_price_tehran = number2Word.numberToWords($('#partner_price_tehran').val()) + ' ریال '
-            $('#partner_price_tehran_words').text(partner_price_tehran)
-
-            let partner_price_other = number2Word.numberToWords($('#partner_price_other').val()) + ' ریال '
-            $('#partner_price_other_words').text(partner_price_other)
-
             let single_price = number2Word.numberToWords($('#single_price').val()) + ' ریال '
             $('#single_price_words').text(single_price)
 
             // when change the inputs
-            $(document).on('keyup', '#system_price', function () {
-                let price = number2Word.numberToWords(this.value) + ' ریال '
-                $('#system_price_words').text(price)
-            })
-
-            $(document).on('keyup', '#partner_price_tehran', function () {
-                let price = number2Word.numberToWords(this.value) + ' ریال '
-                $('#partner_price_tehran_words').text(price)
-            })
-
-            $(document).on('keyup', '#partner_price_other', function () {
-                let price = number2Word.numberToWords(this.value) + ' ریال '
-                $('#partner_price_other_words').text(price)
-            })
 
             $(document).on('keyup', '#single_price', function () {
                 let price = number2Word.numberToWords(this.value) + ' ریال '
                 $('#single_price_words').text(price)
             })
             // end Number To Words
-        })
+
+            $('#category').change(function () {
+                let categoryId = $(this).val();
+                console.log(categoryId)
+                if (categoryId) {
+                    $.ajax({
+                        url: `/panel/categories/${categoryId}/brands`,
+                        type: 'GET',
+                        success: function (data) {
+                            $('#brand_id').empty();
+                            $('#brand_id').append('<option selected disabled>برند را انتخاب کنید</option>');
+                            $.each(data, function (index, brand) {
+                                $('#brand_id').append(`<option value="${brand.id}">${brand.name}</option>`);
+                            });
+                        }
+                    });
+                } else {
+                    $('#brand_id').empty().append('<option value="">ابتدا دسته‌بندی را انتخاب کنید</option>');
+                }
+            });
+
+
+
+
+        });
     </script>
 @endsection
