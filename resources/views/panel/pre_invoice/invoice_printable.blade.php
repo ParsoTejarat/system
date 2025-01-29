@@ -88,6 +88,8 @@
     $sum_total_price_with_off = 0;
     $sum_tax = 0;
     $sum_invoice_net = 0;
+     $holding = \App\Models\Holding::whereId($invoice->holding_id)->first();
+
 
     $i = 1;
 @endphp
@@ -259,13 +261,14 @@
                     </tr>
                     <tr>
                         <td colspan="12">
-                            خواهشمند است مبلغ فاكتور را به شماره شبا IR19-0150-0001-8878-2299-0698-11 نزد بانك سپه شعبه
-                            ميدان منيريه واريز نماييد. با تشكر
+                            خواهشمند است مبلغ فاكتور را به شماره شبا {{$holding->account_number}} نزد بانك {{$holding->bank_name}} شعبه {{$holding->branch_name}} واريز نماييد. با تشكر
                             <br>
                             <br>
-                            آدرس سایت https://parsotejarat.com
+                            آدرس سایت  {{$holding->site_address}}
+
                         </td>
                     </tr>
+
                     <tr>
                         {{--                                <td colspan="12"><strong>تمام اجناس ارائه شده دارای 18 ماه گارانتی از سوی شرکت صنایع ماشین های اداری ماندگار پارس می باشد</strong></td>--}}
                     </tr>

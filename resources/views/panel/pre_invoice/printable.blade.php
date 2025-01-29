@@ -12,6 +12,8 @@
     $sum_invoice_net = 0;
 
     $i = 1;
+     $holding = \App\Models\Holding::whereId($invoice->holding_id)->first();
+//    dd($holding);
 @endphp
 @section('styles')
     <style>
@@ -164,15 +166,15 @@
                             <tr>
                                 <td class="text-center">
                                     <div class="mb-3">
-                                        <span class="me-100">نام شخص حقیقی/حقوقی: بازرگانی پرسو تجارت ایرانیان</span>
-                                        <span class="me-100">شماره اقتصادی: 10103472930</span>
-                                        <span class="me-100">شماره ثبت/شماره ملی: 309754</span>
-                                        <span class="me-100">شناسه ملی: 10103472930</span>
+                                        <span class="me-100">نام شخص حقیقی/حقوقی: {{$holding->name}}</span>
+                                        <span class="me-100">شماره اقتصادی: {{$holding->commercial_code}}</span>
+                                        <span class="me-100">شماره ثبت/شماره ملی: {{$holding->national_code}}</span>
+                                        <span class="me-100">شناسه ملی: {{$holding->national_id}}</span>
                                     </div>
                                     <div>
-                                        <span class="me-100">نشانی: خیابان کریمخان، خیابان ایرانشهر، پلاک 242، طبقه پنجم</span>
-                                        <span class="me-100">کد پستی: 1584745337</span>
-                                        <span class="me-100">شماره تلفن:  09102097248 / 02188867100</span>
+                                        <span class="me-100">نشانی: {{$holding->address}}</span>
+                                        <span class="me-100">کد پستی: {{$holding->zip_code}}</span>
+                                        <span class="me-100">شماره تلفن:  {{$holding->phone_number2??''}} / {{$holding->phone_number1??''}}</span>
                                     </div>
                                 </td>
                             </tr>
@@ -294,10 +296,10 @@
                                 </tr>
                                 <tr>
                                     <td colspan="12">
-                                        خواهشمند است مبلغ فاكتور را به شماره شبا IR19-0150-0001-8878-2299-0698-11 نزد بانك سپه شعبه ميدان منيريه واريز نماييد. با تشكر
+                                        خواهشمند است مبلغ فاكتور را به شماره شبا {{$holding->account_number}} نزد بانك {{$holding->bank_name}} شعبه {{$holding->branch_name}} واريز نماييد. با تشكر
                                         <br>
                                         <br>
-                                        آدرس سایت  https://parsotejarat.com
+                                        آدرس سایت  {{$holding->site_address}}
                                     </td>
                                 </tr>
 
