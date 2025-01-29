@@ -43,6 +43,7 @@ use App\Http\Controllers\Panel\TransferController;
 use App\Http\Controllers\Panel\UserController;
 use App\Http\Controllers\Panel\WarehouseController;
 use App\Http\Controllers\PanelController;
+use App\Http\Controllers\PreInvoiceController;
 use App\Http\Controllers\ReminderController;
 use App\Models\Invoice;
 use App\Models\Packet;
@@ -94,7 +95,6 @@ Route::get('/', function () {
 
 
 Route::get('/label/generator', function () {
-
 
 
     $barcodes = [];
@@ -153,6 +153,10 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     //Transfer
     Route::resource('transfers', TransferController::class)->except('show');
     Route::get('transfers/download/{id}', [TransferController::class, 'downloadReceipt'])->name('transfers.download');
+
+    //PreInvoice
+    Route::resource('/pre-invoices', PreInvoiceController::class);
+    Route::post('/pre-invoices/print-pdf', [PreInvoiceController::class,'print'])->name('pre-invoices.print');
 
     //software-update
     Route::resource('/software-update', SoftwareUpdateController::class)->except('show');

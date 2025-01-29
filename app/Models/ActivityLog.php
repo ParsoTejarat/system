@@ -191,6 +191,17 @@ class ActivityLog extends Model
         'reminder-create' => 'ایجاد یادآور',
         'reminder-edit' => 'ویرایش یادآور',
         'reminder-delete' => 'حذف یادآور',
+        //pre_invoice
+        'list-pre-invoice' => 'لیست پیش فاکتور مشتری',
+        'create-pre-invoice' => 'ایجاد پیش فاکتور مشتری',
+        'edit-pre-invoice' => 'ویرایش پیش فاکتور مشتری',
+        'delete-pre-invoice' => 'حذف پیش فاکتور مشتری',
+        'download-pre-invoice' => 'دانلود پیش فاکتور مشتری',
+        //brands
+        'list-brand' => 'ایجاد برند',
+        'create-brand' => 'ایجاد برند',
+        'edit-brand' => 'ویرایش برند',
+        'delete-brand' => 'حذف برند',
     ];
 
     public function user()

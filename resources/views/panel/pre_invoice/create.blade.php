@@ -29,32 +29,9 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="card-title d-flex justify-content-between align-items-center mb-5">
-                                <div class="w-100">
-                                    <div class="col-12 mb-4 text-center mt-5">
-                                        <h4>درخواست برای</h4>
-                                    </div>
-                                    <div class="btn-group w-100" role="group">
-                                        <input type="radio" id="req_for1" name="req_for" class="btn-check"
-                                               value="pre-invoice"
-                                               form="invoice_form" {{ old('req_for') == 'pre-invoice' || old('req_for') == null ? 'checked' : '' }}>
-                                        <label class="btn btn-outline-primary justify-content-center" for="req_for1">پیش
-                                            فاکتور</label>
 
-                                        <input type="radio" id="req_for2" name="req_for" class="btn-check"
-                                               value="invoice"
-                                               form="invoice_form" {{ old('req_for') == 'invoice' ? 'checked' : '' }}>
-                                        <label class="btn btn-outline-primary justify-content-center" for="req_for2">فاکتور</label>
-
-                                        <input type="radio" id="req_for3" name="req_for" class="btn-check"
-                                               value="amani-invoice"
-                                               form="invoice_form" {{ old('req_for') == 'amani-invoice' ? 'checked' : '' }}>
-                                        <label class="btn btn-outline-primary justify-content-center" for="req_for3">فاکتور
-                                            امانی</label>
-                                    </div>
-                                    <input type="hidden" name="type" value="official" form="invoice_form">
-                                </div>
                             </div>
-                            <form action="{{ route('invoices.store') }}" method="post" id="invoice_form">
+                            <form action="{{ route('pre-invoices.store') }}" method="post" id="invoice_form">
                                 @csrf
                                 <div class="row mb-4">
                                     <div class="col-12 mb-4 text-center">
@@ -167,6 +144,15 @@
                                         @error('description')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                                        <label class="form-label" for="description">شرکت ثبت پیش فاکتور</label>
+                                        <select name="holding_id" id="holding_id" class="form-control" data-toggle="select2">
+                                            @foreach(\App\Models\Holding::all() as $holding)
+                                                <option id="{{$holding->id}}">{{$holding->name}}</option>
+                                            @endforeach
+                                        </select>
+
                                     </div>
                                     <div class="col-12 mb-4 mt-2 text-center">
                                         <hr>
@@ -300,7 +286,8 @@
                                                                        min="0"
                                                                        value="{{ old('other_invoice_nets')[$i] }}"
                                                                        readonly>
-                                                                <span class="price_with_grouping text-primary">{{ number_format(old('other_invoice_nets')[$i]) }}</span>
+                                                                <span
+                                                                    class="price_with_grouping text-primary">{{ number_format(old('other_invoice_nets')[$i]) }}</span>
                                                             </td>
                                                             <td>
                                                                 <button class="btn btn-danger btn-floating btn_remove"
@@ -314,14 +301,9 @@
                                             </table>
                                         </div>
                                         <div class="row mt-3">
-                                            <span class="">مجموع سفارش مشتری (ریال) :<span
-                                                    class="text-primary sum_total_price">{{number_format(old('sum_total_price'))}}</span></span>
-                                            <span class="">مجموع پیش فاکتور با مالیات و ارزش افزوده (ریال) :<span
-                                                    class="text-primary total_invoice">{{number_format(old('total_invoice'))}}</span></span>
-                                            <input type="hidden" class="sum_total_price"
-                                                   value="{{old('sum_total_price')}}" name="sum_total_price">
-                                            <input type="hidden" class="total_invoice"
-                                                   value="{{number_format(old('total_invoice'))}}" name="total_invoice">
+                                            <span class=""> مجموع پیش فاکتور با مالیات و ارزش افزوده (ریال) : <span class="text-info total_invoice"></span></span>
+                                            <input type="hidden" class="sum_total_price" value="{{old('sum_total_price')}}" name="sum_total_price">
+                                            <input type="hidden" class="total_invoice" value="{{number_format(old('total_invoice'))}}" name="total_invoice">
 
                                         </div>
 
@@ -551,62 +533,62 @@
 
 
         $(document).ready(function () {
-            $(document).on('input', '#code', function () {
-                var inputVal = $(this).val().trim();
-                var processDesc = $('#process_desc');
-                if (inputVal === '') {
-                    $('#buyer_name, #economical_number, #national_number, #postal_code, #phone, #address, #province, #city').val('');
-                    $('#other_products_table tbody').empty();
-                    processDesc.empty();
-                    $('.sum_total_price').text('0').val('0');
-                    $('.total_invoice').text('0').val('0');
-                    return;
-                }
-
-                $.ajax({
-                    url: '/panel/get-customer-order/' + $(this).val(),
-                    method: 'GET',
-                    beforeSend: function () {
-                        processDesc.empty();
-                        processDesc.html('در حال پردازش');
-                    },
-                    success: function (response) {
-
-                        handleResponse(response);
-                    },
-                    error: function (xhr, status, error) {
-                        processDesc.hide();
-                        console.error('خطا در ارسال درخواست:', error);
-                    }
-                });
-
-            });
-
-            function handleResponse(response) {
-                var processDesc = $('#process_desc');
-                if (response.status === 'success') {
-                    $('#buyer_name').val(response.data.customer.name)
-                    $('#buyer_id').val(response.data.customer.id)
-                    $('#economical_number').val(response.data.customer.economical_number ?? 0)
-                    $('#national_number').val(response.data.customer.national_number ?? 0)
-                    $('#postal_code').val(response.data.customer.postal_code)
-                    $('#phone').val(response.data.customer.phone1)
-                    $('#address').val(response.data.customer.address1)
-                    $('#province').val(response.data.customer.province).trigger('change');
-                    $('#city').val(response.data.customer.city)
-                    $('.sum_total_price').text(formatNumber(response.data.total_price)).val(response.data.total_price)
-                    $('#other_products_table tbody').empty();
-                    add_products(response.data.order);
-                    processDesc.html("<span class='text-success'>تایید ✓</span>");
-                } else {
-                    $('#buyer_name, #economical_number, #national_number, #postal_code, #phone, #address, #province, #city').val('');
-                    $('.sum_total_price').text('0').val('0');
-                    $('.total_invoice').text('0').val('0');
-                    $('#other_products_table tbody').empty();
-                    processDesc.html("<span class='text-danger'>شناسه پیگیری یافت نشد</span>");
-                }
-
-            }
+                // $(document).on('input', '#code', function () {
+                //     var inputVal = $(this).val().trim();
+                //     var processDesc = $('#process_desc');
+                //     if (inputVal === '') {
+                //         $('#buyer_name, #economical_number, #national_number, #postal_code, #phone, #address, #province, #city').val('');
+                //         $('#other_products_table tbody').empty();
+                //         processDesc.empty();
+                //         $('.sum_total_price').text('0').val('0');
+                //         $('.total_invoice').text('0').val('0');
+                //         return;
+                //     }
+                //
+                //     $.ajax({
+                //         url: '/panel/get-customer-order/' + $(this).val(),
+                //         method: 'GET',
+                //         beforeSend: function () {
+                //             processDesc.empty();
+                //             processDesc.html('در حال پردازش');
+                //         },
+                //         success: function (response) {
+                //
+                //             handleResponse(response);
+                //         },
+                //         error: function (xhr, status, error) {
+                //             processDesc.hide();
+                //             console.error('خطا در ارسال درخواست:', error);
+                //         }
+                //     });
+                //
+                // });
+                //
+                // function handleResponse(response) {
+                //     var processDesc = $('#process_desc');
+                //     if (response.status === 'success') {
+                //         $('#buyer_name').val(response.data.customer.name)
+                //         $('#buyer_id').val(response.data.customer.id)
+                //         $('#economical_number').val(response.data.customer.economical_number ?? 0)
+                //         $('#national_number').val(response.data.customer.national_number ?? 0)
+                //         $('#postal_code').val(response.data.customer.postal_code)
+                //         $('#phone').val(response.data.customer.phone1)
+                //         $('#address').val(response.data.customer.address1)
+                //         $('#province').val(response.data.customer.province).trigger('change');
+                //         $('#city').val(response.data.customer.city)
+                //         $('.sum_total_price').text(formatNumber(response.data.total_price)).val(response.data.total_price)
+                //         $('#other_products_table tbody').empty();
+                //         add_products(response.data.order);
+                //         processDesc.html("<span class='text-success'>تایید ✓</span>");
+                //     } else {
+                //         $('#buyer_name, #economical_number, #national_number, #postal_code, #phone, #address, #province, #city').val('');
+                //         $('.sum_total_price').text('0').val('0');
+                //         $('.total_invoice').text('0').val('0');
+                //         $('#other_products_table tbody').empty();
+                //         processDesc.html("<span class='text-danger'>شناسه پیگیری یافت نشد</span>");
+                //     }
+                //
+                // }
 
 
             function add_products($data) {

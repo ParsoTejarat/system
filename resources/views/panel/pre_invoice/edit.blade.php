@@ -29,33 +29,12 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="card-title d-flex justify-content-between align-items-center mb-5">
-                                <div class="w-100">
-                                    <div class="col-12 mb-4 text-center mt-5">
-                                        <h4>درخواست برای</h4>
-                                    </div>
-                                    <div class="btn-group w-100" role="group">
-                                        <input type="radio" id="req_for1" name="req_for" class="btn-check"
-                                               value="pre-invoice"
-                                               form="invoice_form" {{ old('req_for') == 'pre-invoice' || old('req_for') == null ? 'checked' : '' }}>
-                                        <label class="btn btn-outline-primary justify-content-center" for="req_for1">پیش
-                                            فاکتور</label>
-
-                                        <input type="radio" id="req_for2" name="req_for" class="btn-check"
-                                               value="invoice"
-                                               form="invoice_form" {{ old('req_for') == 'invoice' ? 'checked' : '' }}>
-                                        <label class="btn btn-outline-primary justify-content-center" for="req_for2">فاکتور</label>
-
-                                        <input type="radio" id="req_for3" name="req_for" class="btn-check"
-                                               value="amani-invoice"
-                                               form="invoice_form" {{ old('req_for') == 'amani-invoice' ? 'checked' : '' }}>
-                                        <label class="btn btn-outline-primary justify-content-center" for="req_for3">فاکتور
-                                            امانی</label>
-                                    </div>
-                                    <input type="hidden" name="type" value="official" form="invoice_form">
-                                </div>
+                                {{--                                @dd($invoice)--}}
                             </div>
-                            <form action="{{ route('invoices.store') }}" method="post" id="invoice_form">
+                            <form action="{{ route('pre-invoices.update',$invoice->id) }}" method="post"
+                                  id="invoice_form">
                                 @csrf
+                                @method('PATCH')
                                 <div class="row mb-4">
                                     <div class="col-12 mb-4 text-center">
                                         <h4>مشخصات خریدار</h4>
@@ -63,7 +42,8 @@
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="buyer_name">شناسه سفارش<span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" name="code" value="{{old('code')}}" class="form-control"
+                                        <input type="text" name="code" value="{{old('code',$invoice->invoice_number)}}"
+                                               class="form-control"
                                                id="code"
                                                placeholder="شناسه سفارش را وارد کنید...">
                                         <div class="invalid-feedback text-info d-block" id="process_desc"></div>
@@ -74,7 +54,8 @@
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="buyer_name">نام شخص حقیقی/حقوقی <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" name="buyer_name" value="{{old('buyer_name')}}"
+                                        <input type="text" name="buyer_name"
+                                               value="{{old('buyer_name',$invoice->customer_name)}}"
                                                class="form-control" id="buyer_name">
                                         <input type="hidden" name="buyer_id" id="buyer_id" value="{{old('buyer_id')}}">
                                         @error('buyer_name')
@@ -88,7 +69,8 @@
                                             @endcan
                                         </label>
                                         <input type="text" name="economical_number" class="form-control"
-                                               id="economical_number" value="{{ old('economical_number') }}">
+                                               id="economical_number"
+                                               value="{{ old('economical_number',$invoice->commercial_code) }}">
                                         @error('economical_number')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
@@ -97,7 +79,8 @@
                                         <label class="form-label" for="national_number">شماره ثبت/ملی<span
                                                 class="text-danger">*</span></label>
                                         <input type="text" name="national_number" class="form-control"
-                                               id="national_number" value="{{ old('national_number') }}">
+                                               id="national_number"
+                                               value="{{ old('national_number',$invoice->national_code) }}">
                                         @error('national_number')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
@@ -105,7 +88,7 @@
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="need_no">شماره نیاز</label>
                                         <input type="text" name="need_no" class="form-control" id="need_no"
-                                               value="{{ old('need_no') }}">
+                                               value="{{ old('need_no',$invoice->need_no) }}">
                                         @error('need_no')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
@@ -114,7 +97,7 @@
                                         <label class="form-label" for="postal_code">کد پستی<span
                                                 class="text-danger">*</span></label>
                                         <input type="text" name="postal_code" class="form-control" id="postal_code"
-                                               value="{{ old('postal_code') }}">
+                                               value="{{ old('postal_code',$invoice->zip_code) }}">
                                         @error('postal_code')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
@@ -123,7 +106,7 @@
                                         <label class="form-label" for="phone">شماره تماس<span
                                                 class="text-danger">*</span></label>
                                         <input type="text" name="phone" class="form-control" id="phone"
-                                               value="{{ old('phone') }}">
+                                               value="{{ old('phone',$invoice->phone_number) }}">
                                         @error('phone')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
@@ -135,7 +118,7 @@
                                                 data-toggle="select2">
                                             @foreach(\App\Models\Province::all() as $province)
                                                 <option
-                                                    value="{{ $province->name }}" {{ old('province') == $province->name ? 'selected' : '' }}>{{ $province->name }}</option>
+                                                    value="{{ $province->name }}" {{ old('province',$invoice->province) == $province->name ? 'selected' : '' }}>{{ $province->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('province')
@@ -146,7 +129,7 @@
                                         <label class="form-label" for="city">شهر<span
                                                 class="text-danger">*</span></label>
                                         <input type="text" name="city" class="form-control" id="city"
-                                               value="{{ old('city') }}">
+                                               value="{{ old('city',$invoice->city) }}">
                                         @error('city')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
@@ -154,7 +137,7 @@
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="address">نشانی<span class="text-danger">*</span></label>
                                         <textarea name="address" id="address"
-                                                  class="form-control">{{ old('address') }}</textarea>
+                                                  class="form-control">{{ old('address',$invoice->address) }}</textarea>
                                         @error('address')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
@@ -162,7 +145,7 @@
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="description">توضیحات</label>
                                         <textarea name="description" rows="5" id="description"
-                                                  class="form-control description"></textarea>
+                                                  class="form-control description">{{$invoice->description}}</textarea>
                                         <span class="text-info fst-italic">خط بعد Shift + Enter</span>
                                         @error('description')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
@@ -211,113 +194,154 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                @if(old('other_products'))
-                                                    @foreach(old('other_products') as $i => $otherProduct)
+                                                @php
+                                                    $totalInvoice = 0;
+                                                @endphp
+                                                @if(old('other_products',json_decode($invoice->products)))
+                                                    @foreach(old('other_products',json_decode($invoice->products)) as $i => $otherProduct)
+                                                        {{--                                                        @dd($otherProduct)--}}
                                                         <tr>
                                                             <td>
                                                                 <input type="text" class="form-control"
                                                                        name="other_products[]"
                                                                        placeholder="عنوان کالا"
-                                                                       value="{{ $otherProduct }}" required readonly>
+                                                                       value="{{ $otherProduct->product ?? '' }}"
+                                                                       required >
                                                             </td>
                                                             <td>
+                                                                @php $colors = (array) old('other_colors', []); @endphp
                                                                 <input type="text" class="form-control"
                                                                        name="other_colors[]"
                                                                        placeholder="نام رنگ"
-                                                                       value="{{ old('other_colors')[$i] }}"
-                                                                       required readonly>
+                                                                       value="{{ $colors[$i] ?? ($otherProduct->color ?? '') }}"
+                                                                       required >
                                                             </td>
                                                             <td>
+                                                                @php $counts = (array) old('other_counts', []); @endphp
                                                                 <input type="number" name="other_counts[]"
                                                                        class="form-control" min="1"
-                                                                       value="{{ old('other_counts')[$i] }}" required
-                                                                       readonly>
+                                                                       value="{{ $counts[$i] ?? ($otherProduct->count ?? '1') }}"
+                                                                       required >
                                                             </td>
                                                             <td>
                                                                 <select class="form-control" name="other_units[]"
-                                                                        readonly>
-                                                                    <option value="number">عدد</option>
-                                                                    <option value="pack">بسته</option>
-                                                                    <option value="box">جعبه</option>
-                                                                    <option value="kg">کیلوگرم</option>
-                                                                    <option value="ton">تن</option>
+                                                                >
+                                                                    @php $unit = $otherProduct->unit ?? ''; @endphp
+                                                                    <option
+                                                                        value="number" {{ $unit == 'number' ? 'selected' : '' }}>
+                                                                        عدد
+                                                                    </option>
+                                                                    <option
+                                                                        value="pack" {{ $unit == 'pack' ? 'selected' : '' }}>
+                                                                        بسته
+                                                                    </option>
+                                                                    <option
+                                                                        value="box" {{ $unit == 'box' ? 'selected' : '' }}>
+                                                                        جعبه
+                                                                    </option>
+                                                                    <option
+                                                                        value="kg" {{ $unit == 'kg' ? 'selected' : '' }}>
+                                                                        کیلوگرم
+                                                                    </option>
+                                                                    <option
+                                                                        value="ton" {{ $unit == 'ton' ? 'selected' : '' }}>
+                                                                        تن
+                                                                    </option>
                                                                 </select>
                                                             </td>
+
+                                                            @php
+                                                                $prices = (array) old('other_prices', []);
+                                                                $total_prices = (array) old('other_total_prices', []);
+                                                                $discounts = (array) old('other_discount_amounts', []);
+                                                                $extras = (array) old('other_extra_amounts', []);
+                                                                $total_offs = (array) old('other_total_prices_with_off', []);
+                                                                $taxes = (array) old('other_taxes', []);
+                                                                $invoice_nets = (array) old('other_invoice_nets', []);
+                                                            @endphp
+
                                                             <td>
                                                                 <input type="number" name="other_prices[]"
                                                                        class="form-control" min="0"
-                                                                       value="{{ old('other_prices')[$i] }}" required>
-                                                                <span
-                                                                    class="price_with_grouping text-primary">{{ number_format(old('other_prices')[$i]) }}</span>
+                                                                       value="{{ $prices[$i] ?? ($otherProduct->prices ?? '0') }}"
+                                                                       required>
+                                                                <span class="price_with_grouping text-primary">
+                                                                    {{ number_format($prices[$i] ?? ($otherProduct->prices ?? 0)) }}
+                                                                </span>
                                                             </td>
                                                             <td>
                                                                 <input type="number" name="other_total_prices[]"
-                                                                       class="form-control"
-                                                                       min="0"
-                                                                       value="{{ old('other_total_prices')[$i] }}"
+                                                                       class="form-control" min="0"
+                                                                       value="{{ $total_prices[$i] ?? ($otherProduct->total_prices ?? '0') }}"
                                                                        readonly>
-                                                                <span
-                                                                    class="price_with_grouping text-primary">{{ number_format(old('other_total_prices')[$i])  }}</span>
+                                                                <span class="price_with_grouping text-primary">
+                                                                        {{ number_format($total_prices[$i] ?? ($otherProduct->total_prices ?? 0)) }}
+                                                                    </span>
                                                             </td>
                                                             <td>
                                                                 <input type="number" name="other_discount_amounts[]"
                                                                        class="form-control" min="0"
-                                                                       value="{{ old('other_discount_amounts')[$i] }}"
+                                                                       value="{{ $discounts[$i] ?? ($otherProduct->discount_amounts ?? '0') }}"
                                                                        required>
-                                                                <span
-                                                                    class="price_with_grouping text-primary">{{ number_format(old('other_discount_amounts')[$i]) }}</span>
+                                                                <span class="price_with_grouping text-primary">
+                                                                    {{ number_format($discounts[$i] ?? ($otherProduct->discount_amounts ?? 0)) }}
+                                                                </span>
                                                             </td>
                                                             <td>
                                                                 <input type="number" name="other_extra_amounts[]"
-                                                                       class="form-control"
-                                                                       min="0"
-                                                                       value="{{ old('other_extra_amounts')[$i] }}"
+                                                                       class="form-control" min="0"
+                                                                       value="{{ $extras[$i] ?? ($otherProduct->extra_amounts ?? '0') }}"
                                                                        readonly>
-                                                                <span
-                                                                    class="price_with_grouping text-primary">{{ number_format(old('other_extra_amounts')[$i]) }}</span>
+                                                                <span class="price_with_grouping text-primary">
+                                                                {{ number_format($extras[$i] ?? ($otherProduct->extra_amounts ?? 0)) }}
+                                                            </span>
                                                             </td>
                                                             <td>
                                                                 <input type="number"
                                                                        name="other_total_prices_with_off[]"
                                                                        class="form-control" min="0"
-                                                                       value="{{ old('other_total_prices_with_off')[$i] }}"
+                                                                       value="{{ $total_offs[$i] ?? ($otherProduct->total_prices_with_off ?? '0') }}"
                                                                        readonly>
-                                                                <span
-                                                                    class="price_with_grouping text-primary">{{ number_format(old('other_total_prices_with_off')[$i])}}</span>
-
+                                                                <span class="price_with_grouping text-primary">
+                                                                {{ number_format($total_offs[$i] ?? ($otherProduct->total_prices_with_off ?? 0)) }}
+                                                            </span>
                                                             </td>
                                                             <td>
                                                                 <input type="number" name="other_taxes[]"
                                                                        class="form-control" min="0"
-                                                                       value="{{ old('other_taxes')[$i] }}">
-                                                                <span
-                                                                    class="price_with_grouping text-primary">{{ number_format(old('other_taxes')[$i]) }}</span>
-
+                                                                       value="{{ $taxes[$i] ?? ($otherProduct->taxes ?? '0') }}">
+                                                                <span class="price_with_grouping text-primary">
+                                                                        {{ number_format($taxes[$i] ?? ($otherProduct->taxes ?? 0)) }}
+                                                                    </span>
                                                             </td>
                                                             <td>
                                                                 <input type="number" name="other_invoice_nets[]"
-                                                                       class="form-control"
-                                                                       min="0"
-                                                                       value="{{ old('other_invoice_nets')[$i] }}"
+                                                                       class="form-control" min="0"
+                                                                       value="{{ $invoice_nets[$i] ?? ($otherProduct->invoice_nets ?? '0') }}"
                                                                        readonly>
-                                                                <span class="price_with_grouping text-primary">{{ number_format(old('other_invoice_nets')[$i]) }}</span>
+                                                                <span class="price_with_grouping text-primary">
+                                                                    {{ number_format($invoice_nets[$i] ?? ($otherProduct->invoice_nets ?? 0)) }}
+                                                                </span>
+                                                                @php
+                                                                    $totalInvoice += $otherProduct->invoice_nets;
+                                                                @endphp
                                                             </td>
                                                             <td>
                                                                 <button class="btn btn-danger btn-floating btn_remove"
-                                                                        type="button"><i
-                                                                        class="fa fa-trash"></i></button>
+                                                                        type="button">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </button>
                                                             </td>
                                                         </tr>
+
                                                     @endforeach
                                                 @endif
                                                 </tbody>
                                             </table>
                                         </div>
                                         <div class="row mt-3">
-                                            <span class="">مجموع سفارش مشتری (ریال) :<span
-                                                    class="text-primary sum_total_price">{{number_format(old('sum_total_price'))}}</span></span>
-                                            <span class="">مجموع پیش فاکتور با مالیات و ارزش افزوده (ریال) :<span
-                                                    class="text-primary total_invoice">{{number_format(old('total_invoice'))}}</span></span>
+                                            <span class=""> مجموع پیش فاکتور با مالیات و ارزش افزوده (ریال) :<span
+                                                    class="text-primary total_invoice">{{$totalInvoice }}</span></span>
                                             <input type="hidden" class="sum_total_price"
                                                    value="{{old('sum_total_price')}}" name="sum_total_price">
                                             <input type="hidden" class="total_invoice"
@@ -551,62 +575,62 @@
 
 
         $(document).ready(function () {
-            $(document).on('input', '#code', function () {
-                var inputVal = $(this).val().trim();
-                var processDesc = $('#process_desc');
-                if (inputVal === '') {
-                    $('#buyer_name, #economical_number, #national_number, #postal_code, #phone, #address, #province, #city').val('');
-                    $('#other_products_table tbody').empty();
-                    processDesc.empty();
-                    $('.sum_total_price').text('0').val('0');
-                    $('.total_invoice').text('0').val('0');
-                    return;
-                }
-
-                $.ajax({
-                    url: '/panel/get-customer-order/' + $(this).val(),
-                    method: 'GET',
-                    beforeSend: function () {
-                        processDesc.empty();
-                        processDesc.html('در حال پردازش');
-                    },
-                    success: function (response) {
-
-                        handleResponse(response);
-                    },
-                    error: function (xhr, status, error) {
-                        processDesc.hide();
-                        console.error('خطا در ارسال درخواست:', error);
-                    }
-                });
-
-            });
-
-            function handleResponse(response) {
-                var processDesc = $('#process_desc');
-                if (response.status === 'success') {
-                    $('#buyer_name').val(response.data.customer.name)
-                    $('#buyer_id').val(response.data.customer.id)
-                    $('#economical_number').val(response.data.customer.economical_number ?? 0)
-                    $('#national_number').val(response.data.customer.national_number ?? 0)
-                    $('#postal_code').val(response.data.customer.postal_code)
-                    $('#phone').val(response.data.customer.phone1)
-                    $('#address').val(response.data.customer.address1)
-                    $('#province').val(response.data.customer.province).trigger('change');
-                    $('#city').val(response.data.customer.city)
-                    $('.sum_total_price').text(formatNumber(response.data.total_price)).val(response.data.total_price)
-                    $('#other_products_table tbody').empty();
-                    add_products(response.data.order);
-                    processDesc.html("<span class='text-success'>تایید ✓</span>");
-                } else {
-                    $('#buyer_name, #economical_number, #national_number, #postal_code, #phone, #address, #province, #city').val('');
-                    $('.sum_total_price').text('0').val('0');
-                    $('.total_invoice').text('0').val('0');
-                    $('#other_products_table tbody').empty();
-                    processDesc.html("<span class='text-danger'>شناسه پیگیری یافت نشد</span>");
-                }
-
-            }
+                // $(document).on('input', '#code', function () {
+                //     var inputVal = $(this).val().trim();
+                //     var processDesc = $('#process_desc');
+                //     if (inputVal === '') {
+                //         $('#buyer_name, #economical_number, #national_number, #postal_code, #phone, #address, #province, #city').val('');
+                //         $('#other_products_table tbody').empty();
+                //         processDesc.empty();
+                //         $('.sum_total_price').text('0').val('0');
+                //         $('.total_invoice').text('0').val('0');
+                //         return;
+                //     }
+                //
+                //     $.ajax({
+                //         url: '/panel/get-customer-order/' + $(this).val(),
+                //         method: 'GET',
+                //         beforeSend: function () {
+                //             processDesc.empty();
+                //             processDesc.html('در حال پردازش');
+                //         },
+                //         success: function (response) {
+                //
+                //             handleResponse(response);
+                //         },
+                //         error: function (xhr, status, error) {
+                //             processDesc.hide();
+                //             console.error('خطا در ارسال درخواست:', error);
+                //         }
+                //     });
+                //
+                // });
+                //
+                // function handleResponse(response) {
+                //     var processDesc = $('#process_desc');
+                //     if (response.status === 'success') {
+                //         $('#buyer_name').val(response.data.customer.name)
+                //         $('#buyer_id').val(response.data.customer.id)
+                //         $('#economical_number').val(response.data.customer.economical_number ?? 0)
+                //         $('#national_number').val(response.data.customer.national_number ?? 0)
+                //         $('#postal_code').val(response.data.customer.postal_code)
+                //         $('#phone').val(response.data.customer.phone1)
+                //         $('#address').val(response.data.customer.address1)
+                //         $('#province').val(response.data.customer.province).trigger('change');
+                //         $('#city').val(response.data.customer.city)
+                //         $('.sum_total_price').text(formatNumber(response.data.total_price)).val(response.data.total_price)
+                //         $('#other_products_table tbody').empty();
+                //         add_products(response.data.order);
+                //         processDesc.html("<span class='text-success'>تایید ✓</span>");
+                //     } else {
+                //         $('#buyer_name, #economical_number, #national_number, #postal_code, #phone, #address, #province, #city').val('');
+                //         $('.sum_total_price').text('0').val('0');
+                //         $('.total_invoice').text('0').val('0');
+                //         $('#other_products_table tbody').empty();
+                //         processDesc.html("<span class='text-danger'>شناسه پیگیری یافت نشد</span>");
+                //     }
+                //
+                // }
 
 
             function add_products($data) {

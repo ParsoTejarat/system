@@ -177,13 +177,13 @@
                                             بندی ها</a>
                                     </li>
                                 @endcan
-                                    @can('brands-list')
-                                        @php $active_item = active_sidebar(['brands','brands/create','brands/{brand}/edit']); @endphp
-                                        <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                            <a href="{{ route('brands.index') }}" {{ $active_item ? 'active' : '' }}>برند
-                                                ها</a>
-                                        </li>
-                                    @endcan
+                                @can('brands-list')
+                                    @php $active_item = active_sidebar(['brands','brands/create','brands/{brand}/edit']); @endphp
+                                    <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                        <a href="{{ route('brands.index') }}" {{ $active_item ? 'active' : '' }}>برند
+                                            ها</a>
+                                    </li>
+                                @endcan
                                 @can('parso-products')
                                     @php $active_item = active_sidebar(['parso-products']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
@@ -210,7 +210,7 @@
 
                 {{-- Orders --}}
                 @canany(['invoices-list','buy-orders-list','sale-reports-list','price-requests-list'])
-                    @php $active_side = active_sidebar(['invoices','invoices/create','invoices/{invoice}/edit','setad-fee/{order}/action','search/invoices','setad-fee','setad-fee/create','setad-fee/{setad_fee}/edit','setad-fee/{setad_fee}', 'sale-reports','sale-reports/create','sale-reports/{sale_report}/edit','search/sale-reports','invoice-action/{invoice}','orders-status/{invoice}','price-requests','price-requests/create','price-requests/{price_request}/edit','price-requests/{price_request}','buy-orders','buy-orders/create','buy-orders/{buy_order}/edit','buy-orders/{buy_order}','search/buy-orders','orders','orders/create','orders/{order}/edit','search/orders','order-action/{order}','customer-orders-status/{orders}']); @endphp
+                    @php $active_side = active_sidebar(['invoices','invoices/create','invoices/{invoice}/edit','setad-fee/{order}/action','search/invoices','setad-fee','setad-fee/create','setad-fee/{setad_fee}/edit','setad-fee/{setad_fee}', 'sale-reports','sale-reports/create','sale-reports/{sale_report}/edit','search/sale-reports','invoice-action/{invoice}','orders-status/{invoice}','price-requests','price-requests/create','price-requests/{price_request}/edit','price-requests/{price_request}','buy-orders','buy-orders/create','buy-orders/{buy_order}/edit','buy-orders/{buy_order}','search/buy-orders','orders','orders/create','orders/{order}/edit','search/orders','order-action/{order}','customer-orders-status/{orders}','pre-invoices','pre-invoices/create','pre-invoices/{pre_invoice}/edit','search/pre-invoices']); @endphp
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#orders" data-bs-toggle="collapse" aria-expanded="false" aria-controls="orders">
                             <i class="ri-shopping-cart-line"></i>
@@ -227,6 +227,15 @@
                                         </a>
                                     </li>
                                 @endcan
+                                @can('list-pre-invoice')
+                                    @php $active_item = active_sidebar(['pre-invoices','pre-invoices/create','pre-invoices/{pre_invoice}/edit','search/pre-invoices']); @endphp
+                                    <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                        <a href="{{ route('pre-invoices.index') }}" {{ $active_item ? 'active' : '' }}>
+                                            پیش فاکتور مشتری
+                                        </a>
+                                    </li>
+                                @endcan
+
                                 @can('setad-fee-list')
                                     @php $active_item = active_sidebar(['setad-fee','setad-fee/create','setad-fee/{order}/action','setad-fee/{setad_fee}/edit','setad-fee/{setad_fee}']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
@@ -347,9 +356,9 @@
                                 <li class="{{ $active_item && request()->website == 'emalls' ? 'menuitem-active' : '' }}">
                                     <a href="{{ route('off-site-products.index', 'emalls') }}" {{ $active_item && request()->website == 'emalls' ? 'active' : '' }}>ایمالز</a>
                                 </li>
-{{--                                <li class="{{ $active_item && request()->website == 'digikala' ? 'menuitem-active' : '' }}">--}}
-{{--                                    <a href="{{ route('off-site-products.index', 'digikala') }}" {{ $active_item && request()->website == 'digikala' ? 'active' : '' }}>دیجیکالا</a>--}}
-{{--                                </li>--}}
+                                {{--                                <li class="{{ $active_item && request()->website == 'digikala' ? 'menuitem-active' : '' }}">--}}
+                                {{--                                    <a href="{{ route('off-site-products.index', 'digikala') }}" {{ $active_item && request()->website == 'digikala' ? 'active' : '' }}>دیجیکالا</a>--}}
+                                {{--                                </li>--}}
                             </ul>
                         </div>
                     </li>
@@ -370,7 +379,8 @@
                                 @can('warehouses-list')
                                     @php $active_item = active_sidebar(['warehouses','warehouses/create','warehouses/{warehouse}/edit']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                        <a href="{{ route('warehouses.index') }}" {{ $active_item ? 'active' : '' }}>موجودی انبار</a>
+                                        <a href="{{ route('warehouses.index') }}" {{ $active_item ? 'active' : '' }}>موجودی
+                                            انبار</a>
                                     </li>
                                 @endcan
                                 @can('exit-remittance-list')

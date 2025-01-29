@@ -206,8 +206,11 @@ class PermissionSeeder extends Seeder
 //            'out-of-warehouse-list' => 'نمایش خروجی ها',
 //            'approved-products-warehouse' => 'ثبت خروجی ها',
 //            'online_sale' => 'فروش اینترنتی'
-
-
+//            'list-pre-invoice' => 'لیست پیش فاکتور مشتری',
+//            'create-pre-invoice' => 'ایجاد پیش فاکتور مشتری',
+//            'edit-pre-invoice' => 'ویرایش پیش فاکتور مشتری',
+//            'delete-pre-invoice' => 'حذف پیش فاکتور مشتری',
+//            'download-pre-invoice' => 'دانلود پیش فاکتور مشتری',
         ];
 
         foreach ($items as $key => $item) {
