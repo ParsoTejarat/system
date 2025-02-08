@@ -77,9 +77,9 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('test/{id}',function ($id){
-     return auth()->loginUsingId($id);
-});
+//Route::get('test/{id}',function ($id){
+//     return auth()->loginUsingId($id);
+//});
 
 
 Route::get('/label/generator', function () {
