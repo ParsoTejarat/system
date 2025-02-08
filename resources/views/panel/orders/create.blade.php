@@ -33,8 +33,25 @@
                         <div class="card-body">
                             <div class="card-title d-flex justify-content-between align-items-center mb-5">
                                 <div class="w-100">
-                                    {{--                                    <input type="hidden" name="type" value="official" form="invoice_form">--}}
-                                    <input type="hidden" name="req_for" value="pre-invoice"  form="invoice_form">
+                                    <div class="col-12 mb-4 text-center mt-5">
+                                        <h4>درخواست برای</h4>
+                                    </div>
+                                    <div class="btn-group w-100" role="group">
+                                        <input type="radio" id="req_for1" name="req_for" class="btn-check"
+                                               value="pre-invoice"
+                                               form="invoice_form" {{ old('req_for') == 'pre-invoice' || old('req_for') == null ? 'checked' : '' }}>
+                                        <label class="btn btn-outline-primary justify-content-center" for="req_for1">پیش
+                                            فاکتور</label>
+
+                                        <input type="radio" id="req_for2" name="req_for" class="btn-check"
+                                               value="invoice"
+                                               form="invoice_form" {{ old('req_for') == 'invoice' ? 'checked' : '' }}>
+                                        <label class="btn btn-outline-primary justify-content-center" for="req_for2">فاکتور</label>
+
+                                        {{--                                        <input type="radio" id="req_for3" name="req_for" class="btn-check" value="amani-invoice" form="invoice_form" {{ old('req_for') == 'amani-invoice' ? 'checked' : '' }}>--}}
+                                        {{--                                        <label class="btn btn-outline-primary justify-content-center" for="req_for3">فاکتور امانی</label>--}}
+                                    </div>
+                                    <input type="hidden" name="type" value="official" form="invoice_form">
                                 </div>
                             </div>
                             <form action="{{ route('orders.store') }}" method="post" id="invoice_form">

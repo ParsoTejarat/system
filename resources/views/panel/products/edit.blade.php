@@ -31,7 +31,7 @@
                                         @enderror
                                     </div>
                                     <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
-                                        <label for="sku" class="form-label">کد محصول (sku)<span
+                                        <label for="sku" class="form-label">کد (sku)<span
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="sku" id="sku"
                                                value="{{ $product->sku }}">
@@ -45,6 +45,14 @@
                                         <input type="text" class="form-control" name="code" id="code"
                                                value="{{ $product->code }}">
                                         @error('code')
+                                        <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="mb-2 col-xl-3 col-lg-3 col-md-3">
+                                        <label for="code" class="form-label">شناسه کالا <i>(اختیاری)</i></label>
+                                        <input type="text" class="form-control" name="product_barcode" id="product_barcode"
+                                               value="{{ old('product_barcode',$product->product_barcode) }}">
+                                        @error('product_barcode')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>

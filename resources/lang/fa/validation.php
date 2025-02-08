@@ -172,7 +172,7 @@ return [
         'system_price' => 'قیمت سامانه',
         'partner_price_tehran' => 'قیمت همکار - تهران',
         'partner_price_other' => 'قیمت همکار - شهرستان',
-        'single_price' => 'قیمت تک فروشی',
+        'single_price' => 'قیمت',
         'printer_name' => 'نام پرینتر',
         'printer_model' => 'مدل پرینتر',
         'buyer_name' => 'نام شخص حقیقی/حقوقی',
@@ -220,6 +220,7 @@ return [
         'gender' => 'جنسیت',
         'g-recaptcha-response' => 'کپچا گوگل',
         'customer_type' => 'نوع مشتری',
+        'brand_id' => 'برند',
     ],
 
 ];

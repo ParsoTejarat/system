@@ -151,6 +151,17 @@
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                                        <label class="form-label" for="holding_id">شرکت ثبت پیش فاکتور</label>
+                                        <select name="holding_id" id="holding_id" class="form-control"
+                                                data-toggle="select2">
+                                            @foreach(\App\Models\Holding::all() as $holding)
+                                                <option
+                                                    value="{{$holding->id}}" {{$holding->id == $invoice->holding_id?'selected':''}}>{{$holding->name}}</option>
+                                            @endforeach
+                                        </select>
+
+                                    </div>
                                     <div class="col-12 mb-4 mt-2 text-center">
                                         <hr>
                                         <h4>مشخصات کالا یا خدمات مورد معامله</h4>
@@ -206,7 +217,7 @@
                                                                        name="other_products[]"
                                                                        placeholder="عنوان کالا"
                                                                        value="{{ $otherProduct->product ?? '' }}"
-                                                                       required >
+                                                                       required>
                                                             </td>
                                                             <td>
                                                                 @php $colors = (array) old('other_colors', []); @endphp
@@ -214,14 +225,14 @@
                                                                        name="other_colors[]"
                                                                        placeholder="نام رنگ"
                                                                        value="{{ $colors[$i] ?? ($otherProduct->color ?? '') }}"
-                                                                       required >
+                                                                       required>
                                                             </td>
                                                             <td>
                                                                 @php $counts = (array) old('other_counts', []); @endphp
                                                                 <input type="number" name="other_counts[]"
                                                                        class="form-control" min="1"
                                                                        value="{{ $counts[$i] ?? ($otherProduct->count ?? '1') }}"
-                                                                       required >
+                                                                       required>
                                                             </td>
                                                             <td>
                                                                 <select class="form-control" name="other_units[]"

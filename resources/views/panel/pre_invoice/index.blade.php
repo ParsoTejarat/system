@@ -19,7 +19,7 @@
                         <div class="card-body">
 
                             <div class="card-title d-flex justify-content-end">
-                                @can('order-create')
+                                @can('create-pre-invoice')
                                     <a href="{{ route('pre-invoices.create') }}" class="btn btn-primary">
                                         <i class="fa fa-plus mr-2"></i>
                                         ایجاد پیش فاکتور
@@ -45,10 +45,10 @@
                                     <th>همکار</th>
                                     <th>تاریخ ایجاد</th>
                                     <th>مشاهده سفارش</th>
-                                    @can('customer-order-edit')
+                                    @can('edit-pre-invoice')
                                         <th>ویرایش</th>
                                     @endcan
-                                    @can('customer-order-delete')
+                                    @can('delete-pre-invoice')
                                         <th>حذف</th>
                                     @endcan
                                 </tr>
@@ -71,7 +71,7 @@
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                         </td>
-                                        @can('customer-order-edit')
+                                        @can('edit-pre-invoice')
                                             <td>
                                                 <a class="btn btn-warning btn-floating"
                                                    href="{{ route('pre-invoices.edit', $invoice->id) }}">
@@ -79,7 +79,7 @@
                                                 </a>
                                             </td>
                                         @endcan
-                                        @can('customer-order-delete')
+                                        @can('delete-pre-invoice')
                                             <td>
                                                 <button class="btn btn-danger btn-floating trashRow"
                                                         data-url="{{ route('pre-invoices.destroy',$invoice->id) }}"

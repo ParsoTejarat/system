@@ -88,6 +88,7 @@
                                         @can('import-products-id')
                                             <th>افزودن شناسه رهگیری</th>
                                         @endcan
+                                        <th>خروجی اکسل موجودی ها</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -106,9 +107,12 @@
                                                        data-bs-toggle="modal"
                                                        data-bs-target="#importExcel"
                                                        data-id="{{$product->id}}"
-                                                       class="btn importExcel btn-success fa fa-file-excel mr-2 btn-floating"></a>
+                                                       class="btn importExcel btn-primary fa fa-upload mr-2 btn-floating"></a>
                                                 </td>
                                             @endcan
+                                            <td>
+                                                <a href="/panel/export-tracking-code/{{$product->id}}" class="btn importExcel btn-success fa fa-file-excel mr-2 btn-floating {{$product->tracking_codes_count == 0 ? 'disabled' :''}}"></a>
+                                            </td>
 
                                         </tr>
                                     @endforeach

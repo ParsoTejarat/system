@@ -32,6 +32,7 @@
                                         <th>#</th>
                                         <th>برند</th>
                                         <th>نام لاتین</th>
+                                        <th>دسته بندی ها</th>
                                         <th>تاریخ ایجاد</th>
                                         @can('brands-edit')
                                             <th>ویرایش</th>
@@ -47,6 +48,11 @@
                                             <td>{{ ++$key }}</td>
                                             <td>{{ $brand->name }}</td>
                                             <td>{{ $brand->name_en }}</td>
+                                            <td>
+                                                @foreach($brand->categories as $category)
+                                                  <span class="badge bg-primary">{{$category->name}}</span>
+                                                @endforeach
+                                            </td>
                                             <td>{{ verta($brand->created_at)->format('H:i - Y/m/d') }}</td>
                                             @can('brands-edit')
                                                 <td>

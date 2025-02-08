@@ -142,6 +142,7 @@ class OffSiteProductController extends Controller
         $pattern = '/\/p\/([^\/]+)/';
         preg_match($pattern, $offSiteProduct->url, $matches);
         $id = $matches[1];
+        dd($id);
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://api.torob.com/v4/base-product/sellers/?prk=$id");

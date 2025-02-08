@@ -1,11 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Panel;
 
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Exception;
 use App\Http\Requests\PreInvoiceRequest;
+use App\Models\Holding;
 use App\Models\PreInvoice;
 use Illuminate\Http\Request;
+use Mpdf\Mpdf;
 use PDF as PDF;
+
 
 class PreInvoiceController extends Controller
 {
@@ -150,19 +155,76 @@ class PreInvoiceController extends Controller
 //        dd($request->invoice_id);
 
         $invoice = PreInvoice::whereId($request->invoice_id)->first();
-        $pdf = PDF::loadView('panel.pre_invoice.invoice_printable', ['invoice' => $invoice], [], [
-            'format' => 'A3',
-            'orientation' => 'L',
-            'margin_left' => 2,
-            'margin_right' => 2,
-            'margin_top' => 2,
-            'margin_bottom' => 0,
-        ]);
+        $company = Holding::where('id', $invoice->holding_id)->first();
+        $folder = 'customer_pre_invoices';
 
-        return response($pdf->output(), 200)
-            ->header('Content-Type', 'application/pdf')
-            ->header('Content-Disposition', 'attachment; filename="pre_invoice_' . make_slug(verta(now())) . '.pdf"');
+        try {
+            $pdf = PDF::loadView('panel.pre_invoice.invoice_printable', ['invoice' => $invoice], [], [
+                'format' => 'A3',
+                'orientation' => 'L',
+                'margin_left' => 2,
+                'margin_right' => 2,
+                'margin_top' => 2,
+                'margin_bottom' => 0,
+            ]);
+
+            $tempPdfPath = storage_path('app/public/temp_invoice.pdf');
+            $pdf->save($tempPdfPath);
+
+            $mpdf = new Mpdf([
+                'tempDir' => storage_path('app/mpdf-temp'),
+                'format' => 'A3',
+            ]);
+
+            $pageCount = $mpdf->SetSourceFile($tempPdfPath);
+            $imagePath = public_path($company->stamp);
+
+            list($imgWidth, $imgHeight) = getimagesize($imagePath);
+            $imgWidthMm = $imgWidth * 0.264583;
+            $imgHeightMm = $imgHeight * 0.264583;
+
+            $x = 350 - $imgWidthMm;
+            $y = 220 - $imgHeightMm;
+
+            for ($i = 1; $i <= $pageCount; $i++) {
+                $templateId = $mpdf->ImportPage($i);
+                $mpdf->AddPage('L');
+                $mpdf->UseTemplate($templateId);
+
+                if ($i == $pageCount) {
+                    $mpdf->Image($imagePath, $x, $y, $imgWidthMm, $imgHeightMm);
+                }
+            }
+
+            $filename = make_slug(time()) . '-processed.pdf';
+            $outputPdfPath = storage_path('app/public/' . $filename);
+
+            $mpdf->Output($outputPdfPath, 'F');
+
+            unlink($tempPdfPath);
+
+            return response()->download($outputPdfPath, $filename)->deleteFileAfterSend(true);
+
+        } catch (Exception $e) {
+            alert()->warning('خطا در ایجاد PDF', 'خطا');
+            return redirect()->to(route('invoices.index'));
+        }
 
 
+
+
+
+//        $pdf = PDF::loadView('panel.pre_invoice.invoice_printable', ['invoice' => $invoice], [], [
+//            'format' => 'A3',
+//            'orientation' => 'L',
+//            'margin_left' => 2,
+//            'margin_right' => 2,
+//            'margin_top' => 2,
+//            'margin_bottom' => 0,
+//        ]);
+//
+//        return response($pdf->output(), 200)
+//            ->header('Content-Type', 'application/pdf')
+//            ->header('Content-Disposition', 'attachment; filename="pre_invoice_' . make_slug(verta(now())) . '.pdf"');
     }
 }

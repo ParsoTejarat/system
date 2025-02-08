@@ -30,7 +30,7 @@ class PreInvoiceRequest extends FormRequest
             'national_number' => 'required',
             'need_no' => 'required',
             'postal_code' => 'required',
-            'phone' => 'required|string|regex:/^09[0-9]{9}$/',
+            'phone' => 'required',
             'province' => 'required|string|max:255',
             'city' => 'required|string|max:255',
             'address' => 'required|string|max:500',

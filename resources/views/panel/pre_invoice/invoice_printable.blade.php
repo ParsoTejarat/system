@@ -97,7 +97,7 @@
     <table>
         <tr>
             <td style="width: 700px">
-                <img src="{{ public_path('/assets/images/header-logo.png') }}" style="width: 15rem;">
+                <img src="{{ public_path($holding->logo_path) }}" style="width: 15rem;">
             </td>
             <td>
                 <span style="font-size: 25px">پیش فاکتور فروش کالا و خدمات</span>
@@ -122,21 +122,21 @@
             <tr>
                 <td>
                     <div>
-                        <span>نام شخص حقیقی/حقوقی: بازرگانی پرسو تجارت ایرانیان</span>
+                        <span>نام شخص حقیقی/حقوقی: {{$holding->name}}</span>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span>شماره اقتصادی: 10103472930</span>
+                        <span>شماره اقتصادی: {{$holding->commercial_code}}</span>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span>شماره ثبت/شماره ملی: 309754</span>
+                        <span>شماره ثبت/شماره ملی: شماره ثبت/شماره ملی: {{$holding->national_code}}</span>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span>شناسه ملی: 10103472930</span>
+                        <span>شناسه ملی: {{$holding->national_id}}</span>
                     </div>
                     <div style="height: 2rem">&nbsp;</div>
                     <div>
-                        <span>نشانی: خیابان کریمخان، خیابان ایرانشهر، پلاک 242، طبقه پنجم</span>
+                        <span>نشانی: {{$holding->address}}</span>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span>کد پستی: 1584745337</span>
+                        <span>کد پستی: {{$holding->zip_code}}</span>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span>شماره تلفن: 09102097248 / 02188867100</span>
+                        <span>شماره تلفن:  {{$holding->phone_number2??''}} / {{$holding->phone_number1??''}}</span>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </div>
                 </td>

@@ -140,7 +140,7 @@
             <div class="card-title">
                 <div class="row">
                     <div class="col-4">
-                        <img src="/assets/images/header-logo.png" style="width: 15rem;">
+                        <img src="\{{$holding->logo_path}}" style="width: 15rem;">
                     </div>
                     <div class="col-3 text-end">
                         <h3>پیش فاکتور فروش کالا و خدمات</h3>
@@ -305,7 +305,7 @@
 
                                 <tr>
                                     <td colspan="6" id="seller_sign_sec">
-                                        <img src="{{ asset('/assets/images/stamp.png') }}" class="stamp">
+                                        <img src="{{ asset($holding->stamp) }}" class="stamp">
                                         <small>مهر و امضای فروشنده</small>
                                     </td>
                                     <td colspan="6"><small>مهر و امضای خریدار</small></td>

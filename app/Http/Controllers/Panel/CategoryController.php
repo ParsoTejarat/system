@@ -80,4 +80,12 @@ class CategoryController extends Controller
             return response('محصولاتی با این دسته بندی وجود دارند',500);
         }
     }
+
+
+    public function getBrandsByCategory($categoryId)
+    {
+        $category = \App\Models\Category::findOrFail($categoryId);
+        return response()->json($category->brands);
+    }
+
 }

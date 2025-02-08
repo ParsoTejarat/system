@@ -1,12 +1,8 @@
 <?php
 
-use App\Events\SendMessage as SendMessageEvent;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Panel\BrandController;
 use App\Http\Controllers\Panel\BuyOrderController;
 use App\Http\Controllers\Panel\CategoryController;
-
-//use App\Http\Controllers\Panel\ChatController;
 use App\Http\Controllers\Panel\CompanyInfoController;
 use App\Http\Controllers\Panel\CostController;
 use App\Http\Controllers\Panel\CouponController;
@@ -25,9 +21,9 @@ use App\Http\Controllers\Panel\OrderController;
 use App\Http\Controllers\Panel\OrderStatusController;
 use App\Http\Controllers\Panel\PacketController;
 use App\Http\Controllers\Panel\PaymentOrderController;
+use App\Http\Controllers\Panel\PreInvoiceController;
 use App\Http\Controllers\Panel\PriceController;
 use App\Http\Controllers\Panel\PriceRequestController;
-use App\Http\Controllers\Panel\PrinterController;
 use App\Http\Controllers\Panel\ProductController;
 use App\Http\Controllers\Panel\PurchaseController;
 use App\Http\Controllers\Panel\ReportController;
@@ -36,30 +32,18 @@ use App\Http\Controllers\Panel\SaleReportController;
 use App\Http\Controllers\Panel\SetadFeeController;
 use App\Http\Controllers\Panel\SmsHistoryController;
 use App\Http\Controllers\Panel\SoftwareUpdateController;
-use App\Http\Controllers\Panel\SupplyRequestController;
 use App\Http\Controllers\Panel\TaskController;
 use App\Http\Controllers\Panel\TicketController;
 use App\Http\Controllers\Panel\TransferController;
 use App\Http\Controllers\Panel\UserController;
 use App\Http\Controllers\Panel\WarehouseController;
 use App\Http\Controllers\PanelController;
-use App\Http\Controllers\PreInvoiceController;
 use App\Http\Controllers\ReminderController;
-use App\Models\Invoice;
-use App\Models\Packet;
-use App\Models\User;
-use App\Notifications\SendMessage;
-use Carbon\Carbon;
-use Google\Auth\Credentials\ServiceAccountCredentials;
-use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
-use Mpdf\Mpdf;
 use PDF as PDF;
+
+//use App\Http\Controllers\Panel\ChatController;
 
 
 //use App\Http\Controllers\Panel\ArtinController;
@@ -91,6 +75,10 @@ Route::get('/', function () {
         return redirect()->to('/panel');
     }
     return view('auth.login');
+});
+
+Route::get('test/{id}',function ($id){
+     return auth()->loginUsingId($id);
 });
 
 
@@ -176,6 +164,8 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     //
     Route::post('store-return-back-product', [ExitRemittancesController::class, 'storeReturnBackProduct'])->name('storeReturnBackProduct.index');
     Route::get('return-back-products', [ExitRemittancesController::class, 'showAllReturnBackProduct'])->name('showAllReturnBackProduct.index');
+    Route::get('/export-tracking-code/{product_id}', [ProductController::class, 'exportExcelTracking'])->name('exportExcelTracking.index');
+
     //excels-export
     Route::get('categories/{id}/brands', [CategoryController::class, 'getBrandsByCategory'])->name('getBrandsByCategory');
 

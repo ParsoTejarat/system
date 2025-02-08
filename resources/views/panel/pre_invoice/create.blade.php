@@ -146,10 +146,10 @@
                                         @enderror
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
-                                        <label class="form-label" for="description">شرکت ثبت پیش فاکتور</label>
+                                        <label class="form-label" for="holding_id">شرکت ثبت پیش فاکتور</label>
                                         <select name="holding_id" id="holding_id" class="form-control" data-toggle="select2">
                                             @foreach(\App\Models\Holding::all() as $holding)
-                                                <option id="{{$holding->id}}">{{$holding->name}}</option>
+                                                <option value="{{$holding->id}}">{{$holding->name}}</option>
                                             @endforeach
                                         </select>
 

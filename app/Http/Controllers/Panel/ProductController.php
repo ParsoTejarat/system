@@ -33,8 +33,14 @@ class ProductController extends Controller
     {
         $this->authorize('products-create');
 
+        $oldBrandId = old('brand_id');
+        $oldBrand = null;
+
+        if ($oldBrandId) {
+            $oldBrand = \App\Models\Brand::find($oldBrandId);
+        }
         $categories = Category::all();
-        return view('panel.products.create', compact('categories'));
+        return view('panel.products.create', compact(['categories', 'oldBrand']));
     }
 
     public function store(StoreProductRequest $request)
@@ -46,6 +52,7 @@ class ProductController extends Controller
             'title' => $request->title,
             'code' => $request->code,
             'sku' => $request->sku,
+            'product_barcode' => $request->product_barcode,
             'category_id' => $request->category,
             'single_price' => $request->single_price,
             'creator_id' => auth()->id(),
@@ -86,6 +93,8 @@ class ProductController extends Controller
             'title' => $request->title,
             'code' => $request->code,
             'sku' => $request->sku,
+            'category_id' => $request->category,
+            'product_barcode' => $request->product_barcode,
             'single_price' => $request->single_price,
             'creator_id' => auth()->id(),
             'brand_id' => $request->brand_id,
@@ -279,6 +288,11 @@ class ProductController extends Controller
         } else {
             return response()->json(['message' => 'Failed to update price'], 500);
         }
+    }
+
+    public function exportExcelTracking($product_id)
+    {
+        return Excel::download(new \App\Exports\ProductsExportTracking($product_id), 'products_SN.xlsx');
     }
 
 
