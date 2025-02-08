@@ -9,7 +9,8 @@
         #other_products_table input, #other_products_table select {
             width: auto;
         }
-        .description{
+
+        .description {
 
         }
     </style>
@@ -80,7 +81,9 @@
                                     <div class="row mb-4">
                                         <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                             <label class="form-label" for="description">توضیحات بیشتر</label>
-                                            <textarea  name="description" id="description" class="description form-control" rows="10">{{ old('description') }}</textarea>
+                                            <textarea name="description" id="description"
+                                                      class="description form-control"
+                                                      rows="10">{{ old('description') }}</textarea>
                                             @error('description')
                                             <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                             @enderror
@@ -95,7 +98,8 @@
                                     <div class="alert alert-info">
                                         <i class="fa fa-info-circle font-size-20 align-middle"></i>
                                         <strong>توجه!</strong>
-                                        همکار فروش گرامی قیمت کالا باید به صورت <u>قیمت تمام شده</u>(به همراه مالیات ، ارزش افزوده و...) قرار بگیرد.
+                                        همکار فروش گرامی قیمت کالا باید به صورت <u>قیمت تمام شده</u>(به همراه مالیات ،
+                                        ارزش افزوده و...) قرار بگیرد.
                                     </div>
                                     <div class="col-12 mt-2 text-center">
                                         <h5>محصولات شرکت</h5>
@@ -131,9 +135,9 @@
                                                                         ..................... انتخاب کنید
                                                                         .....................
                                                                     </option>
-                                                                    @foreach(\App\Models\Product::all(['id','title','code']) as $item)
+                                                                    @foreach(\App\Models\Product::all(['id','title']) as $item)
                                                                         <option
-                                                                            value="{{ $item->id }}" {{ $item->id == $productId ? 'selected' : '' }}>{{ $item->code.' - '.$item->title }}</option>
+                                                                            value="{{ $item->id }}" {{ $item->id == $productId ? 'selected' : '' }}>{{ $item->title }}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </td>
@@ -162,12 +166,16 @@
                                                             <td>
                                                                 <input type="number" name="prices[]"
                                                                        class="form-control" min="0"
-                                                                       value="{{ old('prices')[$i] }}" readonly>
+                                                                       value="{{ old('prices')[$i] }}">
+                                                                <span
+                                                                    class="total_price_with_grouping text-primary"></span>
                                                             </td>
                                                             <td>
                                                                 <input type="number" name="total_prices[]"
                                                                        class="form-control" min="0"
                                                                        value="{{ old('total_prices')[$i] }}" readonly>
+                                                                <span
+                                                                    class="total_price_with_grouping text-primary"></span>
                                                             </td>
                                                             {{--                                                            <td>--}}
                                                             {{--                                                                <input type="number" name="discount_amounts[]"--}}
@@ -267,7 +275,8 @@
                                                                 <input type="number" name="other_prices[]"
                                                                        class="form-control" min="0"
                                                                        value="{{ old('other_prices')[$i] }}" required>
-                                                                <span class="price_with_grouping text-primary">{{ number_format(old('other_prices')[$i]) }}</span>
+                                                                <span
+                                                                    class="price_with_grouping text-primary">{{ number_format(old('other_prices')[$i]) }}</span>
                                                             </td>
                                                             <td>
                                                                 <input type="number" name="other_total_prices[]"
@@ -275,7 +284,8 @@
                                                                        min="0"
                                                                        value="{{ old('other_total_prices')[$i] }}"
                                                                        readonly>
-                                                                <span class="total_price_with_grouping text-primary">{{number_format(old('other_total_prices')[$i])}}</span>
+                                                                <span
+                                                                    class="total_price_with_grouping text-primary">{{number_format(old('other_total_prices')[$i])}}</span>
                                                             </td>
 
                                                             <td>
@@ -331,7 +341,7 @@
         var colors_options_html = '';
 
         $.each(products, function (i, item) {
-            products_options_html += `<option value="${item.id}">${item.code} - ${item.title}</option>`
+            products_options_html += `<option value="${item.id}">${item.title}</option>`
         })
 
         $.each(colors, function (i, item) {
@@ -367,10 +377,12 @@
                     </select>
                 </td>
                 <td>
-                    <input type="number" name="prices[]" class="form-control" min="0" value="0" readonly>
+                    <input type="number" name="prices[]" class="form-control" min="0" value="0" >
+                    <span class="total_price_with_grouping text-primary"></span>
                 </td>
                 <td>
                     <input type="number" name="total_prices[]" class="form-control" min="0" value="0" readonly>
+                    <span class="total_price_with_grouping text-primary"></span>
                 </td>
                 <td>
                     <button class="btn btn-danger btn-floating btn_remove" type="button"><i class="fa fa-trash"></i></button>
@@ -432,15 +444,11 @@
                 $('#btn_form').attr('disabled', 'disabled').text('درحال محاسبه. ..');
                 CalcProductInvoice(this)
             })
-            $(document).on('keyup', '#products_table input[name="counts[]"]', function () {
-                if (this.defaultValue != this.value) {
-                    $('#btn_form').attr('disabled', 'disabled').text('درحال محاسبه...');
-                }
-            });
-            $(document).on('change', '#products_table input[name="counts[]"]', function () {
+            $(document).on('input', '#products_table input[name="counts[]"], #products_table input[name="prices[]"]', function () {
                 $('#btn_form').attr('disabled', 'disabled').text('درحال محاسبه...');
-                CalcProductInvoice(this)
-            })
+                process_price(this);
+            });
+
             // $(document).on('keyup', '#other_products_table input[name="other_counts[]"]', function (e) {
             //     if (e.originalEvent && e.originalEvent.explicitOriginalTarget) {
             //         if (e.originalEvent.explicitOriginalTarget.defaultValue != this.value) {
@@ -514,7 +522,11 @@
                 },
                 success: function (res) {
                     $('#products_table input[name="prices[]"]')[index].value = res.data.price;
+                    $($('#products_table input[name="prices[]"]')[index]).siblings()[0].innerText = res.data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
                     $('#products_table input[name="total_prices[]"]')[index].value = res.data.total_price;
+                    $($('#products_table input[name="total_prices[]"]')[index]).siblings()[0].innerText = res.data.total_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
                     $('#btn_form').removeAttr('disabled').text('ثبت فرم');
                 },
                 error: function (request, status, error) {
@@ -533,7 +545,7 @@
             $($('#other_products_table input[name="other_prices[]"]')[index]).siblings()[0].innerText = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             // $($('#other_products_table input[name="other_discount_amounts[]"]')[index]).siblings()[0].innerText = discount_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-            total = price *count;
+            total = price * count;
             $('#other_products_table input[name="other_prices[]"]')[index].value = price;
             $('#other_products_table input[name="other_total_prices[]"]')[index].value = total;
             $($('#other_products_table input[name="other_total_prices[]"]')[index]).siblings()[0].innerText = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -541,7 +553,23 @@
             $('#btn_form').removeAttr('disabled').text('ثبت فرم');
 
         }
-        $('.description').keydown(function(e) {
+
+        function process_price(changeable) {
+            // console.log("1")
+            var index = $(changeable).parent().parent().index()
+            let count = $('#products_table input[name="counts[]"]')[index].value;
+            let price = $('#products_table input[name="prices[]"]')[index].value;
+            var total = 0;
+            total = price * count;
+            $('#products_table input[name="prices[]"]')[index].value = price;
+            $($('#products_table input[name="prices[]"]')[index]).siblings()[0].innerText = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            $('#products_table input[name="total_prices[]"]')[index].value = total;
+            $($('#products_table input[name="total_prices[]"]')[index]).siblings()[0].innerText = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+            $('#btn_form').removeAttr('disabled').text('ثبت فرم');
+        }
+
+        $('.description').keydown(function (e) {
             if (e.key === 'Enter' && e.shiftKey) {
                 e.preventDefault();
                 const cursorPos = this.selectionStart;
