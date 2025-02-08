@@ -177,7 +177,7 @@ class PreInvoiceController extends Controller
             ]);
 
             $pageCount = $mpdf->SetSourceFile($tempPdfPath);
-            $imagePath = public_path($company->stamp);
+            $imagePath = public_path(str_replace('\\', '/', $company->stamp));
 
             list($imgWidth, $imgHeight) = getimagesize($imagePath);
             $imgWidthMm = $imgWidth * 0.264583;
