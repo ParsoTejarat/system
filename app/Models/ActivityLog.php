@@ -198,7 +198,7 @@ class ActivityLog extends Model
         'delete-pre-invoice' => 'حذف پیش فاکتور مشتری',
         'download-pre-invoice' => 'دانلود پیش فاکتور مشتری',
         //brands
-        'list-brand' => 'ایجاد برند',
+        'list-brand' => 'لیست برند',
         'create-brand' => 'ایجاد برند',
         'edit-brand' => 'ویرایش برند',
         'delete-brand' => 'حذف برند',

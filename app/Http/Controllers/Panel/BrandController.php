@@ -40,6 +40,7 @@ class BrandController extends Controller
         $brand->name_en = $request->name_en;
         $brand->save();
         $brand->categories()->sync($request->categories);
+        activity_log('create-brand', __METHOD__, [$request->all(),$brand]);
         alert()->success('برند با موفقیت اضافه شود.', 'موفقیت آمیز');
         return redirect()->route('brands.index');
     }
@@ -70,6 +71,7 @@ class BrandController extends Controller
         $brand->save();
         $brand->categories()->sync($request->categories);
         alert()->success('برند با موفقیت ویرایش شود.', 'موفقیت آمیز');
+        activity_log('edit-brand', __METHOD__, [$request->all(),$brand]);
         return redirect()->route('brands.index');
     }
 
@@ -83,8 +85,10 @@ class BrandController extends Controller
             alert()->error('این برند به دارای کالا است و قابل حذف نمی‌باشد.', 'خطا');
             return redirect()->route('brands.index');
         }
+        $brand->categories()->detach();
 
         $brand->delete();
+        activity_log('delete-brand', __METHOD__, [$brand]);
 
         alert()->success('برند با موفقیت حذف شد.', 'موفقیت آمیز');
         return redirect()->route('brands.index');
