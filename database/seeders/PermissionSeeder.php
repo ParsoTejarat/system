@@ -192,7 +192,12 @@ class PermissionSeeder extends Seeder
 //            'brands-create' => 'ایجاد برند ها',
 //            'brands-edit' => 'ویرایش برند ها',
 //            'brands-delete' => 'حذف برند ها',
-//            'import-products-id' => 'افزودن شناسه محصولات',
+//            'import-products-id' =
+
+
+
+
+
 //            'export-excel-inventory' => 'خروجی اکسل انبار',
 //            'exit-remittance-list' => 'لیست حواله های فروش',
 //            'exit-remittance-create' => 'ایجاد حواله فروش',

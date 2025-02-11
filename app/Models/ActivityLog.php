@@ -202,6 +202,27 @@ class ActivityLog extends Model
         'create-brand' => 'ایجاد برند',
         'edit-brand' => 'ویرایش برند',
         'delete-brand' => 'حذف برند',
+
+        //import-products-id
+        'import-products-id' => 'افزودن شناسه محصولات',
+
+        //exit-remittance
+        'exit-remittance-list' => 'لیست حواله های فروش',
+        'exit-remittance-create' => 'ایجاد حواله فروش',
+        'exit-remittance-edit' => 'ویرایش حواله فروش',
+        'exit-remittance-delete' => 'حذف حواله فروش',
+        'exit-remittance-excel' => 'خروجی اکسل حواله های فروش',
+        'export-excel-inventory' => 'خروجی اکسل انبار',
+        'exit-remittance-out-excel' => 'خروجی اکسل خروجی ها',
+        'return-back-products-excel' => 'خروجی اکسل مرجوعی ها',
+        'return-back-products-list' => 'لیست کالا های مرجوع شده',
+        'return-back-products-create' => 'ثبت کالای مرجوع شده',
+        'out-of-warehouse-list' => 'نمایش خروجی ها',
+        'approved-products-warehouse' => 'ثبت خروجی ها',
+
+
+
+
     ];
 
     public function user()
