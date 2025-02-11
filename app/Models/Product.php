@@ -15,6 +15,16 @@ class Product extends Model
         'black' => 'مشکی',
         'white' => 'سفید',
         'gray' => 'طوسی',
+        'metal' => 'نقره ای',
+        'yellow' => 'زرد',
+        'purple' => 'بنفش',
+        'red' => 'قرمز',
+        'green' => 'سبز',
+        'blue' => 'آبی',
+        'pink' => 'صورتی',
+
+        'RGB' => 'RGB',
+        'no_color' => 'بدون رنگ',
     ];
 
     const UNITS = [

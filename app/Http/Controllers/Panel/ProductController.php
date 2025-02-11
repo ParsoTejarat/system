@@ -96,7 +96,6 @@ class ProductController extends Controller
             'category_id' => $request->category,
             'product_barcode' => $request->product_barcode,
             'single_price' => $request->single_price,
-            'creator_id' => auth()->id(),
             'brand_id' => $request->brand_id,
         ]);
 
