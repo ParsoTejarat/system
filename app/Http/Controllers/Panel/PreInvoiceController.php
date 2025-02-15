@@ -75,7 +75,7 @@ class PreInvoiceController extends Controller
         activity_log('create-pre-invoice', __METHOD__, [$request->all(), $preInvoice]);
         alert()->success('فایل پیش فاکتور با موفقیت اضافه شد.', 'موفقیت آمیز');
 
-        return redirect()->route('pre-invoice.index');
+        return redirect()->route('pre-invoices.index');
 
 
     }
