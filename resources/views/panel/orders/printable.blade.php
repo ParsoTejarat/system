@@ -49,7 +49,8 @@
                                     <div class="invoice-number mb-30">
                                         <h4 class="inv-title-1 mb-3">مشخصات مشتری</h4>
                                         <h2 class="name mb-10">نام شخص حقیقی/حقوقی : {{$order->customer->name}}</h2>
-                                        <h3 class="name mb-10">نوع فروش : {{\App\Models\Customer::CUSTOMER_TYPE[$order->customer->customer_type]}}</h3>
+                                        <h3 class="name mb-10">نوع فروش
+                                            : {{\App\Models\Customer::CUSTOMER_TYPE[$order->customer->customer_type]}}</h3>
                                         <p class="invo-addr-1">
                                             شماره ثبت/ملی : {{$order->customer->national_number}} <br/>
                                             کد پستی : {{$order->customer->postal_code}} <br/>
@@ -103,7 +104,12 @@
                                             </td>
 
                                             <td class="pl0">
-                                                {{ isset($product->products) ? \App\Models\Product::whereId($product->products)->first()->title : ($product->other_products ?? 'N/A') }}                                            </td>
+                                                @if(isset($product->products))
+                                                    {{ \App\Models\Product::whereId($product->products)->first()->title ?? 'N/A' }}
+                                                @else
+                                                    {{ $product->other_products ?? 'N/A' }}
+                                                @endif
+                                            </td>
 
                                             @php
                                                 $units = isset($product->units) ? (\App\Models\Product::UNITS[$product->units] ?? 'N/A') : (\App\Models\Product::UNITS[$product->other_units] ?? 'N/A');

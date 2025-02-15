@@ -190,11 +190,21 @@
                                                             </td>
                                                             <td>
                                                                 <select class="form-control" name="units[]">
-                                                                    <option value="number">عدد</option>
-                                                                    <option value="pack">بسته</option>
-                                                                    <option value="box">جعبه</option>
-                                                                    <option value="kg">کیلوگرم</option>
-                                                                    <option value="ton">تن</option>
+                                                                    <option value="number" {{$product->units == 'number'?'selected':''}}>
+                                                                        عدد
+                                                                    </option>
+                                                                    <option value="pack" {{$product->units == 'pack'?'selected':''}}>
+                                                                        بسته
+                                                                    </option>
+                                                                    <option value="box" {{$product->units == 'box'?'selected':''}}>
+                                                                        جعبه
+                                                                    </option>
+                                                                    <option value="kg" {{$product->units == 'kg'?'selected':''}}>
+                                                                        کیلوگرم
+                                                                    </option>
+                                                                    <option value="ton" {{$product->units == 'ton'?'selected':''}}>
+                                                                        تن
+                                                                    </option>
                                                                 </select>
                                                             </td>
                                                             <td>
@@ -269,11 +279,11 @@
                                                             </td>
                                                             <td>
                                                                 <select class="form-control" name="other_units[]">
-                                                                    <option value="number">عدد</option>
-                                                                    <option value="pack">بسته</option>
-                                                                    <option value="box">جعبه</option>
-                                                                    <option value="kg">کیلوگرم</option>
-                                                                    <option value="ton">تن</option>
+                                                                    <option value="number" {{$product->other_units=='number'?'selected':''}}>عدد</option>
+                                                                    <option value="pack" {{$product->other_units=='pack'?'selected':''}}>بسته</option>
+                                                                    <option value="box" {{$product->other_units=='box'?'selected':''}}>جعبه</option>
+                                                                    <option value="kg" {{$product->other_units=='kg'?'selected':''}}>کیلوگرم</option>
+                                                                    <option value="ton" {{$product->other_units=='ton'?'selected':''}}>تن</option>
                                                                 </select>
                                                             </td>
                                                             <td>
