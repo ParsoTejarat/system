@@ -10,9 +10,19 @@
             $title = 'محصولات دیجیکالا';
         @endphp
         @break
+    @case('royzkala')
+        @php
+            $title = 'محصولات رویزکالا';
+        @endphp
+        @break
     @case('emalls')
         @php
             $title = 'محصولات ایمالز';
+        @endphp
+        @break
+    @case('ariaprint')
+        @php
+            $title = 'محصولات آریا پرینت';
         @endphp
         @break
 @endswitch
@@ -77,7 +87,8 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="card-title d-flex justify-content-end">
-                                <a href="{{ route('off-site-products.create', request()->website) }}" class="btn btn-primary">
+                                <a href="{{ route('off-site-products.create', request()->website) }}"
+                                   class="btn btn-primary">
                                     <i class="fa fa-plus mr-2"></i>
                                     ایجاد محصول
                                 </a>
@@ -85,7 +96,8 @@
                             <div class="row col-3 mb-2">
                                 <form action="" method="get">
                                     <div class="d-flex align-items-center">
-                                        <input type="text" name="title" class="form-control me-2" placeholder="جستجو بر اساس عنوان محصول">
+                                        <input type="text" name="title" class="form-control me-2"
+                                               placeholder="جستجو بر اساس عنوان محصول">
                                         <input type="submit" class="btn btn-success" value="جستجو">
                                     </div>
                                 </form>
@@ -97,11 +109,17 @@
                                         <th>#</th>
                                         <th>عنوان محصول</th>
                                         <th>تاریخ ایجاد</th>
-                                        <th>مشاهده قیمت فروشندگان</th>
+                                        @if(request()->website == 'royzkala' || request()->website == 'ariaprint')
+                                            <th>مشاهده قیمت</th>
+                                        @else
+                                            <th>مشاهده قیمت فروشندگان</th>
+                                        @endif
                                         @if(request()->website == 'torob' || request()->website == 'emalls')
                                             <th>میانگین قیمت</th>
                                         @endif
-                                        <th>تاریخچه قیمت</th>
+                                        @if(request()->website != 'royzkala' &&  request()->website != 'ariaprint')
+                                            <th>تاریخچه قیمت</th>
+                                        @endif
                                         <th>ویرایش</th>
                                         <th>حذف</th>
                                     </tr>
@@ -120,18 +138,23 @@
                                             </td>
                                             @if(request()->website == 'torob' || request()->website == 'emalls')
                                                 <td>
-                                                    <button class="btn btn-info btn-floating btn_avg_price" data-bs-toggle="modal"
+                                                    <button class="btn btn-info btn-floating btn_avg_price"
+                                                            data-bs-toggle="modal"
                                                             data-bs-target="#avgPriceModal" data-id="{{ $item->id }}">
                                                         <i class="fa fa-eye"></i>
                                                     </button>
                                                 </td>
                                             @endif
-                                            <td>
-                                                <button class="btn btn-info btn-floating btn_price_history" data-bs-toggle="modal"
-                                                        data-bs-target="#priceHistoryModal" data-id="{{ $item->id }}">
-                                                    <i class="fa fa-eye"></i>
-                                                </button>
-                                            </td>
+                                            @if(request()->website != 'royzkala' && request()->website != 'ariaprint')
+                                                <td>
+                                                    <button class="btn btn-info btn-floating btn_price_history"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#priceHistoryModal" data-id="{{ $item->id }}">
+                                                        <i class="fa fa-eye"></i>
+                                                    </button>
+                                                </td>
+                                            @endif
+
                                             <td>
                                                 <a class="btn btn-warning btn-floating"
                                                    href="{{ route('off-site-products.edit', $item->id) }}">
@@ -154,7 +177,8 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-center">{{ $data->appends(request()->all())->links() }}</div>
+                            <div
+                                class="d-flex justify-content-center">{{ $data->appends(request()->all())->links() }}</div>
                         </div>
                     </div>
                 </div>
