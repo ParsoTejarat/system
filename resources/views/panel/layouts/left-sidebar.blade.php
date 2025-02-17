@@ -356,9 +356,9 @@
                                 <li class="{{ $active_item && request()->website == 'emalls' ? 'menuitem-active' : '' }}">
                                     <a href="{{ route('off-site-products.index', 'emalls') }}" {{ $active_item && request()->website == 'emalls' ? 'active' : '' }}>ایمالز</a>
                                 </li>
-                                {{--                                <li class="{{ $active_item && request()->website == 'digikala' ? 'menuitem-active' : '' }}">--}}
-                                {{--                                    <a href="{{ route('off-site-products.index', 'digikala') }}" {{ $active_item && request()->website == 'digikala' ? 'active' : '' }}>دیجیکالا</a>--}}
-                                {{--                                </li>--}}
+                                <li class="{{ $active_item && request()->website == 'digikala' ? 'menuitem-active' : '' }}">
+                                    <a href="{{ route('off-site-products.index', 'digikala') }}" {{ $active_item && request()->website == 'digikala' ? 'active' : '' }}>دیجیکالا</a>
+                                </li>
                             </ul>
                         </div>
                     </li>

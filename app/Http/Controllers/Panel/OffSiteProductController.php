@@ -225,17 +225,45 @@ class OffSiteProductController extends Controller
     private function digikala($url)
     {
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+
+        $options = [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTPHEADER => [
+                'User-Agent: MyApp/1.0',
+                'Accept: application/json',
+            ],
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYHOST => 2,
+        ];
+
+        curl_setopt_array($ch, $options);
 
         $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            $error_msg = curl_error($ch);
+            curl_close($ch);
+            return null;
+        }
+
         curl_close($ch);
+
+        if (empty($response)) {
+            return null;
+        }
+
         $res = json_decode($response);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return null;
+        }
+
         $data = $res->data->product;
 
-        return view('panel.off-site-products.digikala', compact('data'));
+        return view('panel.off-site-products.digikala', compact(['data']));
     }
 
     private function emalls($url)
