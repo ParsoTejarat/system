@@ -93,6 +93,7 @@
                                     </thead>
                                     <tbody>
                                     @foreach($products as $product)
+                                        @dd($product)
                                         <tr class="{{ $product->tracking_codes_count == 0 ? 'supply-zero' : ($product->tracking_codes_count < 10 && $product->tracking_codes_count > 0 ? 'supply-less' : '') }}">
                                             <td>{{ $loop->index+1 }}</td>
                                             <td>{{ $product->sku }}</td>
