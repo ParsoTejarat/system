@@ -40,17 +40,20 @@
                             <form action="{{ route('products.search') }}" method="get" id="search_form"></form>
                             <div class="row mb-3">
                                 <div class="col-xl-2 xl-lg-2 col-md-3 col-sm-12 mt-2">
-                                    <input type="text" name="code" class="form-control" placeholder="کد محصول" value="{{ request()->code ?? null }}" form="search_form">
+                                    <input type="text" name="code" class="form-control" placeholder="کد محصول"
+                                           value="{{ request()->code ?? null }}" form="search_form">
                                 </div>
                                 <div class="col-xl-3 xl-lg-3 col-md-4 col-sm-12 mt-2">
-                                    <input type="text" name="title" class="form-control" placeholder="عنوان محصول" value="{{ request()->title ?? null }}" form="search_form">
+                                    <input type="text" name="title" class="form-control" placeholder="عنوان محصول"
+                                           value="{{ request()->title ?? null }}" form="search_form">
                                 </div>
                                 <div class="col-xl-2 xl-lg-2 col-md-3 col-sm-12 mt-2">
                                     <button type="submit" class="btn btn-primary" form="search_form">جستجو</button>
                                 </div>
                             </div>
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered dataTable dtr-inline text-center" style="width: 100%">
+                                <table class="table table-striped table-bordered dataTable dtr-inline text-center"
+                                       style="width: 100%">
                                     <thead>
                                     <tr>
                                         <th>#</th>
@@ -58,6 +61,7 @@
                                         <th>کد sku</th>
                                         <th>کد حسابداری</th>
                                         <th>دسته بندی</th>
+                                        <th>برند</th>
                                         <th>قیمت تک فروشی</th>
                                         <th>تاریخ ایجاد</th>
                                         @can('products-edit')
@@ -76,7 +80,8 @@
                                             <td>{{ $product->sku }}</td>
                                             <td>{{ $product->code }}</td>
                                             <td>{{ $product->category->name }}</td>
-                                            <td>{{ number_format($product->single_price / 10) }} تومان </td>
+                                            <td>{{ $product->brand->name ??'-'}}</td>
+                                            <td>{{ number_format($product->single_price / 10) }} تومان</td>
                                             <td>{{ verta($product->created_at)->format('H:i - Y/m/d') }}</td>
                                             @can('products-edit')
                                                 <td>
@@ -104,7 +109,8 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-center">{{ $products->appends(request()->all())->links() }}</div>
+                            <div
+                                class="d-flex justify-content-center">{{ $products->appends(request()->all())->links() }}</div>
                         </div>
                     </div>
                 </div>
