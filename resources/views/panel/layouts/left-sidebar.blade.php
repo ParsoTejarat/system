@@ -344,38 +344,46 @@
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#shops" data-bs-toggle="collapse" aria-expanded="false" aria-controls="shops">
                             <i class="ri-store-3-line"></i>
-                            <span> فروشگاه ها </span>
+                            <span>فروشگاه ها</span>
                             <span class="menu-arrow"></span>
                         </a>
                         <div class="collapse {{ $active_side ? 'show' : '' }}" id="shops">
                             @php $active_item = active_sidebar(['off-site-products/{website}','off-site-product/{off_site_product}','off-site-product-create/{website}','off-site-products/{off_site_product}/edit']); @endphp
                             <ul class="nav-second-level">
-
                                 <li class="{{ $active_item && request()->website == 'torob' ? 'menuitem-active' : '' }}">
-                                 <a href="{{ route('off-site-products.index', 'torob') }}" {{ $active_item && request()->website == 'torob' ? 'active' : '' }}>
-                                     <img src=" https://mpsystem.ir/assets/media/image/shop-logo/torob.svg" style="width: 1.5rem">
-                                     ترب
-                                 </a>
+                                    <a href="{{ route('off-site-products.index', 'torob') }}" {{ $active_item && request()->website == 'torob' ? 'active' : '' }}>
+                                        <img src=" https://mpsystem.ir/assets/media/image/shop-logo/torob.svg"
+                                             style="width: 1.5rem">
+                                        ترب
+                                    </a>
                                 </li>
                                 <li class="{{ $active_item && request()->website == 'emalls' ? 'menuitem-active' : '' }}">
                                     <a href="{{ route('off-site-products.index', 'emalls') }}" {{ $active_item && request()->website == 'emalls' ? 'active' : '' }}>
-                                        <img src=" https://mpsystem.ir/assets/media/image/shop-logo/emalls.png" style="width: 1.5rem">
-                                        ایمالز</a>
+                                        <img src=" https://mpsystem.ir/assets/media/image/shop-logo/emalls.png"
+                                             style="width: 1.5rem">
+                                        ایمالز
+                                    </a>
                                 </li>
                                 <li class="{{ $active_item && request()->website == 'digikala' ? 'menuitem-active' : '' }}">
                                     <a href="{{ route('off-site-products.index', 'digikala') }}" {{ $active_item && request()->website == 'digikala' ? 'active' : '' }}>
-                                        <img src=" https://mpsystem.ir/assets/media/image/shop-logo/digikala.png" style="width: 1.5rem">
-                                        دیجیکالا</a>
+                                        <img src=" https://mpsystem.ir/assets/media/image/shop-logo/digikala.png"
+                                             style="width: 1.5rem">
+                                        دیجیکالا
+                                    </a>
                                 </li>
                                 <li class="{{ $active_item && request()->website == 'royzkala' ? 'menuitem-active' : '' }}">
                                     <a href="{{ route('off-site-products.index', 'royzkala') }}" {{ $active_item && request()->website == 'royzkala' ? 'active' : '' }}>
-                                        <img src=" https://mpsystem.ir/assets/media/image/shop-logo/royzkala.png" style="width: 1.5rem">
-                                        رویزکالا</a>
+                                        <img src=" https://mpsystem.ir/assets/media/image/shop-logo/royzkala.png"
+                                             style="width: 1.5rem">
+                                        رویز کالا
+                                    </a>
                                 </li>
                                 <li class="{{ $active_item && request()->website == 'ariaprint' ? 'menuitem-active' : '' }}">
                                     <a href="{{ route('off-site-products.index', 'ariaprint') }}" {{ $active_item && request()->website == 'ariaprint' ? 'active' : '' }}>
-                                        <img src=" https://mpsystem.ir/assets/media/image/shop-logo/ariaprint.png" style="width: 1.5rem">
-                                        آریا پرینت</a>
+                                        <img src=" https://mpsystem.ir/assets/media/image/shop-logo/ariaprint.png"
+                                             style="width: 1.5rem">
+                                        آریا پرینت
+                                    </a>
                                 </li>
                             </ul>
                         </div>
