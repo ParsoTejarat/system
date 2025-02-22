@@ -28,7 +28,8 @@
                                     <tr>
                                         <th>عنوان انبار: مرکزی</th>
                                         <th>عنوان تحویل گیرنده : {{$exitRemittance->customer->name}}</th>
-                                        <th> تاریخ ثبت : {{verta($exitRemittance->created_at)->format('H:i   %Y/%m/%d')}}</th>
+                                        <th> تاریخ ثبت
+                                            : {{verta($exitRemittance->created_at)->format('H:i   %Y/%m/%d')}}</th>
                                     </tr>
                                     </thead>
                                 </table>
@@ -65,7 +66,7 @@
                                     @endforeach
                                     <tr>
                                         <td colspan="8" class="text-start"><span
-                                                class="text-start fw-bold"> مجموع : {{$sum}}</span></td>
+                                                    class="text-start fw-bold"> مجموع : {{$sum}}</span></td>
                                     </tr>
                                     </tbody>
 
@@ -74,7 +75,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-4">
-                                    <form action="{{route('exitRemittances.approvedExit')}}" method="post" enctype="multipart/form-data">
+                                    <form action="{{route('exitRemittances.approvedExit')}}" method="post"
+                                          enctype="multipart/form-data">
                                         @csrf
                                         <div class="mt-2">
                                             <label>
@@ -85,7 +87,8 @@
                                             <input type="file" name="file_excel" accept=".xlsx, .xls"
                                                    class="form-control mt-2">
                                             <input type="hidden" name="sum_count" value="{{$sum}}">
-                                            <input type="hidden" name="exit_remittance_id" value="{{$exitRemittance->id}}">
+                                            <input type="hidden" name="exit_remittance_id"
+                                                   value="{{$exitRemittance->id}}">
                                             @error('file_excel')
                                             <span class="text-danger">{{$message}}</span>
                                             <br>
@@ -110,8 +113,14 @@
                                     <br>
                                     <br>
                                     <br>
-                                    <a href="{{route('exitRemittances.downloadPDF',$exitRemittance->id)}}" class="btn btn-outline-danger mt-2 float-end"> <span class=" fa fa-file-pdf"></span> پرینت حواله</a>
-
+                                    <a href="{{route('exitRemittances.downloadPDF',$exitRemittance->id)}}"
+                                       class="btn btn-outline-danger mt-2 float-end"> <span
+                                                class=" fa fa-file-pdf"></span> پرینت حواله</a>
+                                    @if($exitRemittance->order->action)
+                                        <a class="btn btn-outline-danger mt-2 float-end"
+                                           href="{{$exitRemittance->order->action->factor_file}}" download> <span
+                                                    class=" fa fa-file-pdf"></span> پرینت فاکتور فروش </a>
+                                    @endif
                                 </div>
                             </div>
 

@@ -392,7 +392,7 @@
 
                 {{-- Warehouse --}}
                 @canany(['guarantees-list','warehouses-list'])
-                    @php $active_side = active_sidebar(['inventory','inventory/create','inventory/{inventory}/edit','search/inventory','inventory-reports','inventory-reports/create','inventory-reports/{inventory_report}/edit','warehouses','warehouses/create','warehouses/{warehouse}/edit','search/inventory-reports','guarantees','guarantees/create','guarantees/{guarantee}/edit','exit-remittances','exit-remittances/create','exit-remittances/{exit_remittance}/edit','exit-remittances/{exit_remittance}','out-of-warehouse','out-of-warehouse/{id}','return-back-products']); @endphp
+                    @php $active_side = active_sidebar(['inventory','inventory/create','inventory/{inventory}/edit','search/inventory','inventory-reports','inventory-reports/create','inventory-reports/{inventory_report}/edit','warehouses','warehouses/create','warehouses/{warehouse}/edit','search/inventory-reports','guarantees','guarantees/create','guarantees/{guarantee}/edit','exit-remittances','exit-remittances/create','exit-remittances/{exit_remittance}/edit','exit-remittances/{exit_remittance}','out-of-warehouse','out-of-warehouse/{id}','return-back-products','warehouses/{warehouse}']); @endphp
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#warehouse" data-bs-toggle="collapse" aria-expanded="false" aria-controls="warehouse">
                             <i class="ri-home-5-line"></i>
@@ -403,7 +403,7 @@
                             <ul class="nav-second-level">
 
                                 @can('warehouses-list')
-                                    @php $active_item = active_sidebar(['warehouses','warehouses/create','warehouses/{warehouse}/edit']); @endphp
+                                    @php $active_item = active_sidebar(['warehouses','warehouses/create','warehouses/{warehouse}/edit','warehouses/{warehouse}']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
                                         <a href="{{ route('warehouses.index') }}" {{ $active_item ? 'active' : '' }}>موجودی
                                             انبار</a>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\TrackingCode;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
 
@@ -57,13 +58,15 @@ class WarehouseController extends Controller
         // log
         activity_log('create-warehouse', __METHOD__, [$request->all(), $warehouse]);
 
-        alert()->success('انبار با موفقیت ایجاد شد','ایجاد انبار');
+        alert()->success('انبار با موفقیت ایجاد شد', 'ایجاد انبار');
         return redirect()->route('warehouses.index');
     }
 
-    public function show(Warehouse $warehouse)
+    public function show($id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $trackingCodes = $product->trackingCodes()->whereNull('exit_time')->get();
+        return view('panel.warehouses.show', compact(['product', 'trackingCodes']));
     }
 
     public function edit(Warehouse $warehouse)
@@ -86,7 +89,7 @@ class WarehouseController extends Controller
             'name' => $request->name
         ]);
 
-        alert()->success('انبار با موفقیت ویرایش شد','ویرایش انبار');
+        alert()->success('انبار با موفقیت ویرایش شد', 'ویرایش انبار');
         return redirect()->route('warehouses.index');
     }
 
@@ -94,14 +97,21 @@ class WarehouseController extends Controller
     {
         $this->authorize('warehouses-delete');
 
-        if (!$warehouse->inventories()->exists()){
+        if (!$warehouse->inventories()->exists()) {
             // log
             activity_log('delete-warehouse', __METHOD__, $warehouse);
 
             $warehouse->delete();
-            return back();
-        }else{
-            return response('پیش از حذف ابتدا کالاهای موجود در این انبار را انتقال دهید',500);
+
+        } else {
+            return response('پیش از حذف ابتدا کالاهای موجود در این انبار را انتقال دهید', 500);
         }
+    }
+
+    public function deleteCode($id)
+    {
+        $trackingCode = TrackingCode::findOrFail($id);
+        $trackingCode->delete();
+        return back();
     }
 }

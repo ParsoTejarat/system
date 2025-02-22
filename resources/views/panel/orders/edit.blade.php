@@ -232,87 +232,87 @@
                                             </table>
                                         </div>
                                     </div>
-                                    <div class="col-12 mt-4 text-center">
-                                        <h5>محصولات دیگر</h5>
-                                    </div>
-                                    <div class="col-12 mb-3">
-                                        <div class="d-flex justify-content-between mb-3">
-                                            <button class="btn btn-outline-success" type="button" id="btn_other_add"><i
-                                                    class="fa fa-plus mr-2"></i> افزودن کالا
-                                            </button>
-                                        </div>
-                                        <div class="overflow-auto">
-                                            <table class="table table-bordered table-striped text-center"
-                                                   id="other_products_table">
-                                                <thead>
-                                                <tr>
-                                                    <th>کالا</th>
-                                                    <th>رنگ</th>
-                                                    <th>تعداد</th>
-                                                    <th>واحد اندازه گیری</th>
-                                                    <th>مبلغ واحد (ریال)</th>
-                                                    <th>مبلغ کل (ریال)</th>
-                                                    <th>حذف</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @if(!is_null(json_decode($order->products)))
-                                                    @foreach(json_decode($order->products)->other_products as  $product)
-                                                        <tr>
-                                                            <td>
-                                                                <input type="text" class="form-control"
-                                                                       name="other_products[]"
-                                                                       placeholder="عنوان کالا"
-                                                                       value="{{ $product->other_products }}" required>
-                                                            </td>
-                                                            <td>
-                                                                <input type="text" class="form-control"
-                                                                       name="other_colors[]"
-                                                                       placeholder="نام رنگ"
-                                                                       value="{{ $product->other_colors  }}"
-                                                                       required>
-                                                            </td>
-                                                            <td>
-                                                                <input type="number" name="other_counts[]"
-                                                                       class="form-control" min="1"
-                                                                       value="{{ $product->other_counts }}" required>
-                                                            </td>
-                                                            <td>
-                                                                <select class="form-control" name="other_units[]">
-                                                                    <option value="number" {{$product->other_units=='number'?'selected':''}}>عدد</option>
-                                                                    <option value="pack" {{$product->other_units=='pack'?'selected':''}}>بسته</option>
-                                                                    <option value="box" {{$product->other_units=='box'?'selected':''}}>جعبه</option>
-                                                                    <option value="kg" {{$product->other_units=='kg'?'selected':''}}>کیلوگرم</option>
-                                                                    <option value="ton" {{$product->other_units=='ton'?'selected':''}}>تن</option>
-                                                                </select>
-                                                            </td>
-                                                            <td>
-                                                                <input type="number" name="other_prices[]"
-                                                                       class="form-control" min="0"
-                                                                       value="{{ $product->other_prices }}" required>
-                                                                <span class="price_with_grouping text-primary">{{ number_format($product->other_prices) }}</span>
-                                                            </td>
-                                                            <td>
-                                                                <input type="number" name="other_total_prices[]"
-                                                                       class="form-control"
-                                                                       min="0"
-                                                                       value="{{ $product->other_total_prices }}"
-                                                                       readonly>
-                                                                <span class="price_with_grouping text-primary">{{ number_format($product->other_total_prices) }}</span>
-                                                            </td>
+{{--                                    <div class="col-12 mt-4 text-center">--}}
+{{--                                        <h5>محصولات دیگر</h5>--}}
+{{--                                    </div>--}}
+{{--                                    <div class="col-12 mb-3">--}}
+{{--                                        <div class="d-flex justify-content-between mb-3">--}}
+{{--                                            <button class="btn btn-outline-success" type="button" id="btn_other_add"><i--}}
+{{--                                                    class="fa fa-plus mr-2"></i> افزودن کالا--}}
+{{--                                            </button>--}}
+{{--                                        </div>--}}
+{{--                                        <div class="overflow-auto">--}}
+{{--                                            <table class="table table-bordered table-striped text-center"--}}
+{{--                                                   id="other_products_table">--}}
+{{--                                                <thead>--}}
+{{--                                                <tr>--}}
+{{--                                                    <th>کالا</th>--}}
+{{--                                                    <th>رنگ</th>--}}
+{{--                                                    <th>تعداد</th>--}}
+{{--                                                    <th>واحد اندازه گیری</th>--}}
+{{--                                                    <th>مبلغ واحد (ریال)</th>--}}
+{{--                                                    <th>مبلغ کل (ریال)</th>--}}
+{{--                                                    <th>حذف</th>--}}
+{{--                                                </tr>--}}
+{{--                                                </thead>--}}
+{{--                                                <tbody>--}}
+{{--                                                @if(!is_null(json_decode($order->products)))--}}
+{{--                                                    @foreach(json_decode($order->products)->other_products as  $product)--}}
+{{--                                                        <tr>--}}
+{{--                                                            <td>--}}
+{{--                                                                <input type="text" class="form-control"--}}
+{{--                                                                       name="other_products[]"--}}
+{{--                                                                       placeholder="عنوان کالا"--}}
+{{--                                                                       value="{{ $product->other_products }}" required>--}}
+{{--                                                            </td>--}}
+{{--                                                            <td>--}}
+{{--                                                                <input type="text" class="form-control"--}}
+{{--                                                                       name="other_colors[]"--}}
+{{--                                                                       placeholder="نام رنگ"--}}
+{{--                                                                       value="{{ $product->other_colors  }}"--}}
+{{--                                                                       required>--}}
+{{--                                                            </td>--}}
+{{--                                                            <td>--}}
+{{--                                                                <input type="number" name="other_counts[]"--}}
+{{--                                                                       class="form-control" min="1"--}}
+{{--                                                                       value="{{ $product->other_counts }}" required>--}}
+{{--                                                            </td>--}}
+{{--                                                            <td>--}}
+{{--                                                                <select class="form-control" name="other_units[]">--}}
+{{--                                                                    <option value="number" {{$product->other_units=='number'?'selected':''}}>عدد</option>--}}
+{{--                                                                    <option value="pack" {{$product->other_units=='pack'?'selected':''}}>بسته</option>--}}
+{{--                                                                    <option value="box" {{$product->other_units=='box'?'selected':''}}>جعبه</option>--}}
+{{--                                                                    <option value="kg" {{$product->other_units=='kg'?'selected':''}}>کیلوگرم</option>--}}
+{{--                                                                    <option value="ton" {{$product->other_units=='ton'?'selected':''}}>تن</option>--}}
+{{--                                                                </select>--}}
+{{--                                                            </td>--}}
+{{--                                                            <td>--}}
+{{--                                                                <input type="number" name="other_prices[]"--}}
+{{--                                                                       class="form-control" min="0"--}}
+{{--                                                                       value="{{ $product->other_prices }}" required>--}}
+{{--                                                                <span class="price_with_grouping text-primary">{{ number_format($product->other_prices) }}</span>--}}
+{{--                                                            </td>--}}
+{{--                                                            <td>--}}
+{{--                                                                <input type="number" name="other_total_prices[]"--}}
+{{--                                                                       class="form-control"--}}
+{{--                                                                       min="0"--}}
+{{--                                                                       value="{{ $product->other_total_prices }}"--}}
+{{--                                                                       readonly>--}}
+{{--                                                                <span class="price_with_grouping text-primary">{{ number_format($product->other_total_prices) }}</span>--}}
+{{--                                                            </td>--}}
 
-                                                            <td>
-                                                                <button class="btn btn-danger btn-floating btn_remove"
-                                                                        type="button"><i
-                                                                        class="fa fa-trash"></i></button>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                @endif
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+{{--                                                            <td>--}}
+{{--                                                                <button class="btn btn-danger btn-floating btn_remove"--}}
+{{--                                                                        type="button"><i--}}
+{{--                                                                        class="fa fa-trash"></i></button>--}}
+{{--                                                            </td>--}}
+{{--                                                        </tr>--}}
+{{--                                                    @endforeach--}}
+{{--                                                @endif--}}
+{{--                                                </tbody>--}}
+{{--                                            </table>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
                                 </div>
                                 <button class="btn btn-primary" type="submit" id="btn_form">ثبت فرم</button>
                             </form>

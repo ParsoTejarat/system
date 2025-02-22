@@ -119,6 +119,11 @@
                                         <span class="fa fa-file-pdf"></span>
                                         پرینت برگه خروج
                                     </a>
+                                    @if($exitRemittance->order->action)
+                                        <a class="btn btn-outline-danger float-end"
+                                           href="{{$exitRemittance->order->action->factor_file}}" download>
+                                            <span class="fa fa-file-pdf"></span>پرینت فاکتور فروش</a>
+                                    @endif
                                 </div>
                                 <div class="col-auto">
                                     <a href="/panel/out-of-warehouse" class="btn btn-secondary">بازگشت</a>

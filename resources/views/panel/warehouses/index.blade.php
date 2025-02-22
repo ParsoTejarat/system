@@ -86,6 +86,7 @@
                                         <th>موجودی کالا</th>
                                         <th>تاریخ ایجاد</th>
                                         @can('import-products-id')
+                                            <th>نمایش جزئیات</th>
                                             <th>افزودن شناسه رهگیری</th>
                                         @endcan
                                         <th>خروجی اکسل موجودی ها</th>
@@ -103,6 +104,10 @@
                                             <td>{{ verta($product->created_at)->format('H:i - Y/m/d') }}</td>
                                             @can('import-products-id')
                                                 <td>
+                                                    <a href="{{route('warehouses.show',$product->id)}}"
+                                                       class="btn importExcel btn-info fa fa-eye mr-2 btn-floating {{$product->tracking_codes_count == 0 ? 'disabled' :''}}"></a>
+                                                </td>
+                                                <td>
                                                     <a href="#"
                                                        data-bs-toggle="modal"
                                                        data-bs-target="#importExcel"
@@ -111,7 +116,8 @@
                                                 </td>
                                             @endcan
                                             <td>
-                                                <a href="/panel/export-tracking-code/{{$product->id}}" class="btn importExcel btn-success fa fa-file-excel mr-2 btn-floating {{$product->tracking_codes_count == 0 ? 'disabled' :''}}"></a>
+                                                <a href="/panel/export-tracking-code/{{$product->id}}"
+                                                   class="btn importExcel btn-success fa fa-file-excel mr-2 btn-floating {{$product->tracking_codes_count == 0 ? 'disabled' :''}}"></a>
                                             </td>
 
                                         </tr>
@@ -124,7 +130,7 @@
                                 </table>
                             </div>
                             <div
-                                class="d-flex justify-content-center">{{ $products->appends(request()->all())->links() }}</div>
+                                    class="d-flex justify-content-center">{{ $products->appends(request()->all())->links() }}</div>
                         </div>
                     </div>
                 </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Panel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBuyOrderRequest;
 use App\Http\Requests\StoreOrderRequest;
+use App\Models\Analysis;
 use App\Models\Customer;
 use App\Models\CustomerOrderStatus;
 use App\Models\ExitRemittance;
@@ -28,8 +29,6 @@ class OrderController extends Controller
 
     public function index()
     {
-
-
         $this->authorize('customer-order-list');
 
         $orders = Order::query();
@@ -92,6 +91,7 @@ class OrderController extends Controller
         $order->create_in = 'automation';
         $order->products = json_encode($invoiceData);
         $order->save();
+        $this->addToAnalysis($order);
 
 
         $order->order_status()->updateOrCreate(
@@ -170,8 +170,18 @@ class OrderController extends Controller
         // log
         activity_log('delete-orders', __METHOD__, $order);
 
-        $order->delete();
-        return back();
+
+        try {
+            // ابتدا تلاش برای حذف
+            if ($order->delete()) {
+                alert()->success('سفارش مورد نظر با موفقیت حذف شد', 'حذف سفارش');
+            } else {
+                return response('امکان حذف این سفارش وجود ندارد.', 500);
+            }
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response('امکان حذف این سفارش وجود ندارد.', 500);
+        }
+
     }
 
     private function sortData($request)
@@ -231,7 +241,7 @@ class OrderController extends Controller
 
         $status = $request->status;
 
-        if ($request->website_factor == "true"){
+        if ($request->website_factor == "true") {
 
             $request->validate(['factor_file' => 'required|mimes:pdf|max:5000']);
 
@@ -291,9 +301,7 @@ class OrderController extends Controller
             alert()->success("فایل فاکتور آپلود شد ", "موفقیت آمیز");
 
 
-
-        }
-        else{
+        } else {
             if ($request->has('send_to_accountant')) {
                 if (!$request->has('confirm')) {
                     alert()->error('لطفا تیک تایید پیش فاکتور را بزنید', 'عدم تایید');
@@ -319,7 +327,7 @@ class OrderController extends Controller
                 $url = route('order.action', $invoice->id);
                 $notif_message = "پیش فاکتور سفارش {$invoice->customer->name} مورد تایید قرار گرفت";
                 $accountants = User::whereIn('role_id', $roles_id)->get();
-                Notification::send($accountants, new SendMessage($notif_message, $url,$title));
+                Notification::send($accountants, new SendMessage($notif_message, $url, $title));
 
                 $invoice->order_status()->updateOrCreate(
                     ['status' => 'awaiting_confirm_by_sales_manager'],
@@ -442,9 +450,6 @@ class OrderController extends Controller
             );
             alert()->success($message, $title);
         }
-
-
-
 
 
         return back();
@@ -645,7 +650,6 @@ class OrderController extends Controller
     }
 
 
-
     public function calculateTotal($products)
     {
         $sum_total_price = 0;
@@ -766,6 +770,7 @@ class OrderController extends Controller
 
         Notification::send($managers, new SendMessage($message, $url, $title));
     }
+
     private function send_notif_to_salesmanger(Order $order, $code)
     {
         $roles_id = Role::whereHas('permissions', function ($q) {
@@ -780,6 +785,25 @@ class OrderController extends Controller
         Notification::send($managers, new SendMessage($message, $url, $title));
     }
 
+
+    private function addToAnalysis($order)
+    {
+        foreach (json_decode($order->products)->products as $product) {
+            $findProduct = Product::find($product->products);
+            $analysis = new Analysis();
+            $analysis->user_id = auth()->id();
+            $analysis->order_id = $order->id;
+            $analysis->customer_id = $order->customer_id;
+            $analysis->request_for = $order->req_for;
+            $analysis->product_id = $findProduct->id;
+            $analysis->brand_id = $findProduct->brand_id;
+            $analysis->category_id = $findProduct->category_id;
+            $analysis->count = $product->counts;
+            $analysis->inventory = $findProduct->trackingCodes()->whereNull('exit_time')->count();
+            $analysis->save();
+        }
+
+    }
 
 }
 

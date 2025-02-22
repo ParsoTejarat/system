@@ -14,8 +14,8 @@ class DropUniqueFromProductsTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropUnique(['code']);
-            $table->string('product_barcode')->unique()->nullable()->comment('شناسه کالا');
+//            $table->dropUnique(['code']);
+//            $table->string('product_barcode')->unique()->nullable()->comment('شناسه کالا');
         });
     }
 
@@ -27,8 +27,8 @@ class DropUniqueFromProductsTable extends Migration
     public function down()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn('product_barcode');
-            $table->unique('code');
+//            $table->dropColumn('product_barcode');
+//            $table->unique('code');
         });
     }
 }
