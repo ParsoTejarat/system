@@ -29,7 +29,7 @@ class CreateAnalysesTable extends Migration
             $table->foreign('customer_id')->references('id')->on('customers');
             $table->foreign('product_id')->references('id')->on('products');
             $table->foreign('brand_id')->references('id')->on('brands');
-            $table->foreign('category_id')->references('id')->on('users');
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->timestamps();
         });
     }
