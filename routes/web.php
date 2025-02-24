@@ -161,6 +161,8 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     Route::get('exit-product-from-warehouse/download-pdf/{id}', [ExitRemittancesController::class, 'downloadPDFExitFromWarehouse'])->name('ExitFromWarehouse.downloadPDF');
     Route::get('warehouse-stock-download-pdf', [ExitRemittancesController::class, 'wareHouseStockPrinter'])->name('wareHouseStockPrinter.downloadPDF');
 
+    Route::post('import-tracking-excel-file', [ProductController::class, 'trackingCodeProcess'])->name('tracking.product.import.excel');
+
 
     Route::post('exit-remittances/approved-exit', [ExitRemittancesController::class, 'approvedExit'])->name('exitRemittances.approvedExit');
     //Exited-Product
