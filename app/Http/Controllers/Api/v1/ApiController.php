@@ -116,7 +116,7 @@ class ApiController extends Controller
 
 
         $order = \App\Models\Order::create([
-            'description' => 'خرید از سایت',
+            'description' => 'خرید از طریق بارمان سیستم انجام شده است. جهت دریافت اطلاعات تکمیلی به سایت پرسو تجارت مراجعه شود.',
             'type' => 'private',
             'req_for' => 'invoice',
             'code' => $this->generateCode(),
@@ -138,10 +138,10 @@ class ApiController extends Controller
         })->get();
 
         if ($data['created_in'] == 'website') {
-            $notif_message = 'یک سفارش از سایت بارمان سیستم دریافت گردید';
+            $notif_message = 'یک سفارش از سایت پرسو تجارت دریافت گردید';
             $notif_title = 'سفارش از سایت';
         } else {
-            $notif_message = 'یک سفارش از اپلیکیشن بارمان سیستم دریافت گردید';
+            $notif_message = 'یک سفارش از سایت پرسو تجارت دریافت گردید';
             $notif_title = 'سفارش از اپلیکیشن';
         }
 
