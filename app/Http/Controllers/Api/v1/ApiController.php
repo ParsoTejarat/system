@@ -20,7 +20,7 @@ class ApiController extends Controller
 {
     public function createInvoice(Request $request)
     {
-        Log::log($request->all());
+
 //
 //        $validator = Validator::make($request->all(),[
 //            'created_in' => 'required',
