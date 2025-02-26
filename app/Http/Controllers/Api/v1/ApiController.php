@@ -79,7 +79,7 @@ class ApiController extends Controller
             ]);
         } else {
             Log::error('Validation errors: Here The else Code' . $customer);
-            Customer::create([
+            $customer = Customer::create([
                 'phone1' => $data['phone'],
                 'user_id' => $single_price_user->id,
                 'name' => $data['first_name'] . ' ' . $data['last_name'],
