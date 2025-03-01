@@ -31,3 +31,5 @@ Route::post('/send-notification-to-user', [TicketController::class, 'appSendNoti
 
 Route::post('get-reports', [ReportsController::class, 'getReports']);
 Route::post('get-report-desc/{id}', [ReportsController::class, 'getReportDesc']);
+
+Route::get('get-users', [ApiController::class, 'getUsers']);

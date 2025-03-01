@@ -24,7 +24,6 @@ class ApiController extends Controller
     public function createOrder(Request $request)
     {
 
-
         Log::info('response:', $request->all());
         $validator = Validator::make($request->all(), [
             'first_name' => 'required',
@@ -36,7 +35,7 @@ class ApiController extends Controller
             'address_1' => 'required',
             'postal_code' => 'required',
             'payment_type' => 'required',
-            'items' => 'required|array|min:1',
+            'items' => 'required',
             'items.*.quantity' => 'required|integer|min:1',
             'items.*.total' => 'required|numeric|min:0',
         ]);
@@ -55,7 +54,6 @@ class ApiController extends Controller
         })->pluck('id');
 
         $single_price_user = User::whereIn('role_id', $role_id)->latest()->first();
-
 
 
         $customer = Customer::where('phone1', 'like', '%' . $data['phone'] . '%')->first();
@@ -116,7 +114,7 @@ class ApiController extends Controller
 
 
         $order = \App\Models\Order::create([
-            'description' => 'خرید از طریق بارمان سیستم انجام شده است. جهت دریافت اطلاعات تکمیلی به سایت پرسو تجارت مراجعه شود.',
+            'description' => 'خرید از طریق سایت پرسو تجارت انجام شده است. جهت دریافت اطلاعات تکمیلی به سایت پرسو تجارت و یا واحد فروش مراجعه شود.',
             'type' => 'private',
             'req_for' => 'invoice',
             'code' => $this->generateCode(),
@@ -185,4 +183,22 @@ class ApiController extends Controller
 
         Notification::send($accountants, new SendMessage($message, $url, $title));
     }
+
+    public function getUsers()
+    {
+        $users = User::with('role')->get();
+
+        $data = $users->map(function ($user) {
+            return [
+                'name' => $user->name,
+                'family' => $user->family,
+                'role' => $user->role->label ?? null,
+                'company' => 'parso_tejarat',
+                'company_id' => '1',
+            ];
+        });
+
+        return response()->json($data);
+    }
+
 }
