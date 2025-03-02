@@ -335,7 +335,7 @@
                 data: {
                     ticket_id: {{$ticket->id}},
                     company_user_id: {{auth()->id()}},
-                    company:@json(env('company_name'))
+                    company:@json(env('COMPANY_NAME'))
                 },
                 dataType: "json",
                 success: function (response) {

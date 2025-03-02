@@ -82,7 +82,7 @@
 @section('scripts')
     <script>
         var loading = $('.loading');
-        var company_name = @json(env('company_name'));
+        var company_name = @json(env('COMPANY_NAME'));
         $(document).ready(function () {
             $('#file').on('change', function () {
                 $('#file_preview').removeClass('d-none')

@@ -99,7 +99,7 @@ class TicketController extends Controller
         $ticket_id = [
             'ticket_id' => $data,
             'auth_id' => auth()->id(),
-            'company' => env('company_name'),
+            'company' => env('COMPANY_NAME'),
         ];
 
         try {
