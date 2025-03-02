@@ -271,6 +271,7 @@
 
     <script>
         $(document).ready(function () {
+            $('.chat-body-messages').animate({scrollTop: $('.chat-body-messages')[0].scrollHeight}, 500);
             $('#file').on('change', function () {
                 $('#file_lbl').text(this.files[0].name);
                 $('input[name="text"]').removeAttr('required');
