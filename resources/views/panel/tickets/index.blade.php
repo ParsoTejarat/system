@@ -77,7 +77,7 @@
                                             @can('tickets-delete')
                                                 <td>
                                                     <button class="btn btn-danger btn-floating trashRow"
-                                                            data-url="{{ url(env('api_base_url') . 'tickets/' . $ticket['id']) }}"
+                                                            data-url="{{ url(env('API_BASE_URL') . 'tickets/' . $ticket['id']) }}"
                                                             data-id="{{ $ticket['id'] }}">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
