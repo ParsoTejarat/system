@@ -71,7 +71,10 @@
                                 title: 'left-gap',
                                 content: 'left-gap',
                             }
-                        })
+                        }).then(() => {
+                            location.reload();
+                        });
+
                     },
                     error: function (jqXHR, exception) {
                         Swal.fire({

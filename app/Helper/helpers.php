@@ -223,18 +223,22 @@ function getCompany($data)
         case "parso":
             $company = 'پرسو تجارت ایرانیان';
             break;
-        case "adaktejarat":
-            $company = 'آداک تجارت خورشید قشم';
-            break;
         case "barman":
             $company = 'بارمان سیستم سرزمین پارس';
             break;
-        case "sayman":
-            $company = 'فناوران رایانه سایمان داده';
+        case "adaktejarat":
+            $company = 'آداک تجارت خورشید قشم';
             break;
         case "adakhamrah":
             $company = 'آداک همراه خورشید قشم';
             break;
+        case 'mandegarpars':
+            echo "ماشین های اداری ماندگار پارس";
+            break;
+        case "sayman":
+            $company = 'فناوران رایانه سایمان داده';
+            break;
+
         case "adakpetro":
             $company = 'آداک پترو خورشید قشم';
             break;

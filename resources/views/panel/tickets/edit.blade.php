@@ -3,240 +3,397 @@
 @section('styles')
     <!-- lightbox -->
     <link rel="stylesheet" href="/vendors/lightbox/magnific-popup.css" type="text/css">
-
     <style>
         .fa-check-double, .fa-check {
             color: green !important;
         }
 
-        .fe-paperclip {
-            font-size: large;
+        body {
+            overflow: hidden !important;
+            margin-top: 20px;
         }
 
-        .fe-paperclip span {
-            font-size: xx-small;
+        .chat-body-messages {
+            background-image: url({{ asset('https://mpsystem.ir/assets/media/image/chat.jpg') }});
+            padding: 10px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .btn.btn-outline-light {
+            background-color: transparent !important;
+            border: none;
+            color: #fff;
+        }
+
+        .message-text {
+            font-size: 13px !important;
+            color: #fff;
+        }
+
+        .fa-check {
+            color: #bbb !important;
+        }
+
+        /* استایل بابل پیام */
+        .message-item {
+            background-color: rgba(34, 112, 127, 0.58) !important;
+            backdrop-filter: blur(6.9px);
+            border-radius: 5px !important;
+            padding: 10px;
+            display: inline-block; /* محدود کردن به اندازه محتوا */
+            max-width: 70%; /* حداکثر عرض پیام */
+            margin-bottom: 10px;
+        }
+
+        .message-time {
+            font-size: 0.65rem !important;
+            color: #8a8a8a !important;
+            margin-left: 30px;
+        }
+
+        .outgoing-message {
+            background-color: rgba(151, 151, 152, 0.48) !important;
+            backdrop-filter: blur(6.9px);
+        }
+
+        .fa-check-double {
+            color: #34b7f1;
+        }
+
+        img {
+            max-width: 200px !important;
+        }
+
+        .message-content {
+            padding: 0px 8px;
+        }
+
+        .fa-check, .fa-check-double {
+            font-size: 0.65rem !important;
+        }
+
+        .chat-app {
+            height: 85vh;
+        }
+
+        .chat-body-messages {
+            height: 70vh !important;
+            overflow-y: auto !important;
+        }
+
+        .message-items {
+            min-height: min-content; /* اطمینان از رشد صحیح محتوا */
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* تراز کردن پیام‌ها به سمت چپ یا راست */
+        .message-item:not(.outgoing-message) {
+            align-self: flex-start;
+        }
+
+        .outgoing-message {
+            align-self: flex-end;
+        }
+
+        #chatForm {
+            input {
+                border: none;
+                margin: 5px;
+            }
+        }
+
+        .fa-spinner {
+            display: inline-block;
+        }
+
+        .fa-spin {
+            animation: fa-spin 1s infinite linear;
+        }
+
+        @keyframes fa-spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
         }
     </style>
 @endsection
+
 @section('content')
-    <div class="content">
-        <div class="container-fluid">
-            <!-- start page title -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="page-title-box">
-                        <h4 class="page-title">مشاهده تیکت</h4>
+    <div class="card mt-3 chat-app-wrapper">
+        <div class="row d-flex chat-app">
+            <div class="col-xl-12 mt-1 col-md-12 chat-body">
+                <div class="card-body py-2 px-3 border-bottom border-light">
+                    <div class="d-flex py-1">
+                        <img src="/assets/images/users/avatar.png" class="me-2 rounded-circle" height="36"
+                             alt="Brandon Smith">
+                        <div class="flex-1">
+                            <h5 class="mt-0 mb-0 font-15">
+{{--                                                                @dd($ticket)--}}
+                                <a href="javascript:void(0)" class="text-reset">
+                                    @if(auth()->id() == $ticket->sender->company_user_id)
+                                        {{ $ticket->receiver->name.' '.$ticket->receiver->family }}
+
+                                    @else
+                                        {{ $ticket->sender->name.' '.$ticket->sender->family }}
+                                        {{--                                                @dd("test")--}}
+                                    @endif
+                                </a>
+                            </h5>
+                        </div>
+                        <div id="tooltip-container">
+                            <div>
+                                @if($ticket->status == 'closed')
+                                    <span class="badge bg-success me-2">بسته شده</span>
+                                @else
+                                    <span class="badge bg-warning me-2">درحال بررسی</span>
+                                @endif
+                                <button type="button" data-bs-toggle="dropdown"
+                                        class="btn btn-sm btn-primary btn-floating" aria-expanded="true">
+                                    <i class="fa fa-cog"></i>
+                                </button>
+                                <div class="dropdown">
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            @if($ticket->status == 'closed')
+                                                <a class="dropdown-item"
+                                                   href="{{ route('ticket.changeStatus', $ticket->id) }}">درحال
+                                                    بررسی</a>
+                                            @else
+                                                <a class="dropdown-item"
+                                                   href="{{ route('ticket.changeStatus', $ticket->id) }}">بسته
+                                                    شده</a>
+                                            @endif
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- end page title -->
-
-            <div class="row">
-                <!-- chat area -->
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body py-2 px-3 border-bottom border-light">
-                            <div class="d-flex py-1">
-                                <img src="/assets/images/users/avatar.png" class="me-2 rounded-circle" height="36"
-                                     alt="Brandon Smith">
-                                <div class="flex-1">
-                                    <h5 class="mt-0 mb-0 font-15">
-                                        <a href="javascript:void(0)" class="text-reset">
-                                            @if(auth()->id() == $ticket['sender']['company_user_id'])
-                                                {{ $ticket['receiver']['name'].' '.$ticket['receiver']['family'] }}
-
-
-                                            @else
-                                                {{ $ticket['sender']['name'].' '.$ticket['sender']['family']}}
-                                                {{--                                                @dd("test")--}}
-                                            @endif
-                                        </a>
-                                    </h5>
-                                </div>
-                                <div id="tooltip-container">
-                                    <div>
-                                        @if($ticket['status'] == 'closed')
-                                            <span class="badge bg-success me-2">بسته شده</span>
-                                        @else
-                                            <span class="badge bg-warning me-2">درحال بررسی</span>
+                <div class="chat-body-messages">
+                    <div class="message-items">
+                        @foreach($ticket->messages as $message)
+                            @if($message->user_id == auth()->id())
+                                <div id="message-{{ $message->id }}"
+                                     class="message-item {{ $message->file ? 'message-item-media' : '' }}">
+                                    <div class="message-content">
+                                        @if($message->text)
+                                            <div class="message-text">{{ $message->text }}</div>
                                         @endif
-                                        <button type="button" data-bs-toggle="dropdown"
-                                                class="btn btn-sm btn-primary btn-floating" aria-expanded="true">
-                                            <i class="fa fa-cog"></i>
-                                        </button>
-                                        <div class="dropdown">
-                                            <ul class="dropdown-menu">
-                                                <li>
-                                                    @if($ticket['status'] == 'closed')
-                                                        <a class="dropdown-item"
-                                                           href="{{ route('ticket.changeStatus', $ticket['id']) }}">درحال
-                                                            بررسی</a>
-                                                    @else
-                                                        <a class="dropdown-item"
-                                                           href="{{ route('ticket.changeStatus', $ticket['id']) }}">بسته
-                                                            شده</a>
-                                                    @endif
-                                                </li>
-                                            </ul>
+                                        @includeWhen($message->file, 'panel.partials.file-message')
+                                        <div
+                                            class="message-meta row @if($message->file) justify-content-between m-2 @else justify-content-between @endif px-1">
+                                            <span class="message-time">
+                                                {{ verta($message->created_at)->format('H:i - Y/m/d') }}
+                                            </span>
+                                            @if($message->read_at)
+                                                <i class="status-read fa fa-check-double"></i>
+                                            @else
+                                                <i class="status-sent fa fa-check"></i>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <ul class="conversation-list chat-app-conversation" data-simplebar
-                                style="max-height: 460px">
-
-                                @foreach($ticket['messages'] as $message)
-                                    @php
-                                        $file = json_decode($message['file']);
-                                    @endphp
-                                    {{--                                    @dd(auth()->id(),$message['user']['company_user_id'])--}}
-                                    @if(auth()->id() == $message['user']['company_user_id'])
-                                        <li class="clearfix" @if($loop->last) id="last_message" @endif>
-                                            <div class="chat-avatar">
-                                                @if($message['read_at'])
-                                                    <i class="fa fa-check-double"></i>
-                                                @else
-                                                    <i class="fa fa-check"></i>
-                                                @endif
-                                            </div>
-                                            <div class="conversation-text">
-                                                <div class="ctext-wrap text-start">
-                                                    <i>{{ $message['user']['name'].' '. $message['user']['family'] }}</i>
-                                                    <p>{!! nl2br(e($message['text'])) !!}</p>
-                                                    <hr class="my-0 mt-2">
-                                                    <i class="text-muted">{{ verta($message['created_at'])->timezone('Asia/Tehran')->format('H:i - Y/m/d') }}</i>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        {{--                                    @dd($file)--}}
-                                        @if($file)
-
-                                            <li class="clearfix">
-                                                <div class="card mt-2 mb-1 shadow-none border text-start">
-                                                    <div class="p-2">
-                                                        <a href="{{ env('API_PATH_URL').$file->path }}"
-                                                           download="{{env('API_PATH_URL'). $file->path }}"
-                                                           target="_blank">
-                                                            <div class="row align-items-center">
-                                                                <div class="col-auto">
-                                                                    <div class="avatar-sm">
-                                                                    <span
-                                                                            class="avatar-title bg-primary rounded">{{ $file->type }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col ps-0" dir="ltr">
-                                                                    <a href="javascript:void(0);"
-                                                                       class="text-muted fw-medium">{{ $file->name }}</a>
-                                                                    <p class="mb-0">{{ formatBytes($file->size) }}</p>
-                                                                </div>
-                                                                <div class="col-auto">
-                                                                    <a href="{{ env('API_PATH_URL').$file->path }}"
-                                                                       download="{{env('API_PATH_URL'). $file->path }}"
-                                                                       class="btn btn-link btn-lg text-muted">
-                                                                        <i class="ri-download-fill"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-
-                                                </div>
-
-                                            </li>
-
-                                        @endif
-                                    @else
-                                        <li class="clearfix odd" @if($loop->last) id="last_message" @endif>
-                                            <div class="conversation-text">
-                                                <div class="ctext-wrap text-start">
-                                                    <i>{{ $message['user']['name'].' '. $message['user']['family'] }}</i>
-                                                    <p>{!! nl2br(e($message['text'])) !!}</p>
-                                                    <hr class="my-0 mt-2">
-                                                    <i class="text-muted">{{ verta($message['created_at'])->format('H:i - Y/m/d') }}</i>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        @if($file)
-                                            <li class="clearfix odd">
-                                                <div class="card mt-2 mb-1 shadow-none border text-start"
-                                                     style="background: #f1f5f7">
-                                                    <div class="p-2">
-                                                        <div class="row align-items-center">
-                                                            <div class="col-auto">
-                                                                <div class="avatar-sm">
-                                                                    <span
-                                                                            class="avatar-title bg-primary rounded">{{ $file->type }}</span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col ps-0" dir="ltr">
-                                                                <a href="javascript:void(0);"
-                                                                   class="text-muted fw-medium">{{ $file->name }}</a>
-                                                                <p class="mb-0">{{ formatBytes($file->size) }}</p>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <a href="{{env('API_PATH_URL'). $file->path }}"
-                                                                   download="{{env('API_PATH_URL'). $file->path }}"
-                                                                   class="btn btn-link btn-lg text-muted">
-                                                                    <i class="ri-download-fill"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        @endif
+                            @else
+                                <div id="message-{{ $message->id }}"
+                                     class="message-item outgoing-message {{ $message->file ? 'message-item-media' : '' }}">
+                                    @if($message->text)
+                                        <div
+                                            class="message-text @if($message->file) p-2 @endif">{{ $message->text }}</div>
                                     @endif
-                                @endforeach
-                            </ul>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="mt-2 bg-light p-3 rounded">
-                                        <form action="{{ route('tickets.update', $ticket['id']) }}" method="post"
-                                              enctype="multipart/form-data">
-                                            @csrf
-                                            @method('PUT')
-                                            <input type="file" name="file" class="d-none" id="file">
-                                            <div class="row">
-                                                <div class="col mb-2 mb-sm-0">
-                                                    <input type="text" name="text" class="form-control border-0"
-                                                           placeholder="پیام خود را وارد کنید" required>
-                                                </div>
-                                                <div class="col-sm-auto">
-                                                    <div class="btn-group">
-                                                        <label class="btn btn-light" for="file" id="file_lbl" dir="ltr">
-                                                            <i class="fe-paperclip"></i>
-                                                        </label>
-                                                        <div class="d-grid">
-                                                            <button type="submit" class="btn btn-success chat-send">
-                                                                <i class='fe-send'></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
+                                    @includeWhen($message->file, 'panel.partials.file-message')
+                                    <div
+                                        class="message-meta row @if($message->file) justify-content-center m-2 @else justify-content-between @endif px-1">
+                                        <span class="message-time">
+                                            {{ verta($message->created_at)->format('H:i - Y/m/d') }}
+                                        </span>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            @endif
+                        @endforeach
                     </div>
                 </div>
+                <div class="chat-body-footer">
+                    <!-- فرم ارسال پیام با AJAX -->
+                    <form id="chatForm" action="{{ url(env('API_BASE_URL') . 'tickets/'. $ticket->id) }}" method="post"
+                          enctype="multipart/form-data" class="d-flex align-items-center px-3">
+                        @csrf
+                        @method('PUT')
+                        <input type="text" name="text" class="form-control" placeholder="پیام ..." required
+                               autocomplete="off">
+                        <input type="hidden" value="{{$ticket->id}}" name="ticket_id">
+                        <input type="hidden" value="{{auth()->id()}}" name="sender_id">
+                        <input type="hidden" value="{{env('COMPANY_NAME')}}" name="company">
+                        <div class="d-flex ml-3">
+                            <button type="submit" class="mx-2 btn btn-primary btn-floating">
+                                <i class="fa fa-paper-plane"></i>
+                            </button>
+                            <div class="dropup">
+                                <button type="button" data-bs-toggle="dropdown"
+                                        class=" btn btn-success btn-floating">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <div class="dropdown-menu-body">
+                                        <ul>
+                                            <li>
+                                                <label class="dropdown-item" for="file">
+                                                    <i class="icon fa fa-file"></i>
+                                                    <span id="file_lbl">فایل</span>
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <input type="file" name="file" class="d-none" id="file">
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-
         </div>
-        @endsection
-        @section('scripts')
-            <script>
-                $(document).ready(function () {
-                    $('*').animate({
-                        scrollTop: $("#last_message").offset().top
-                    }, 0);
-                    $('#file').on('change', function () {
-                        $('#file_lbl').attr('title', this.files[0].name).html(`<i class="fe-paperclip"><span class="badge bg-danger">1</span></i>`)
-                        $('input[name="text"]').removeAttr('required')
-                    });
+    </div>
+@endsection
+
+
+
+@section('scripts')
+    <!-- begin::lightbox -->
+    <script src="/vendors/lightbox/jquery.magnific-popup.min.js"></script>
+    <script src="/assets/js/examples/lightbox.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#file').on('change', function () {
+                $('#file_lbl').text(this.files[0].name);
+                $('input[name="text"]').removeAttr('required');
+            });
+            $('#chatForm').on('submit', function (e) {
+                e.preventDefault();
+
+
+                var formData = new FormData(this);
+                var url = $(this).attr('action');
+
+                // افزودن پیام موقت با آیکون در حال ارسال
+                var tempMessageId = 'temp-' + Date.now();
+                var tempMessage = `<div class="message-item" id="${tempMessageId}">
+                            <div class="message-content">
+                                <div class="message-text">${$('input[name="text"]').val()}</div>
+                               <div class="message-meta d-flex align-items-center justify-content-between">
+                                    <span class="message-time">در حال ارسال...</span>
+                                    <i class="fa fa-spinner fa-spin"></i>
+                                    </div>
+
+                                    </div>
+                                    </div>`;
+                $('.message-items').append(tempMessage);
+                $('.chat-body-messages').animate({scrollTop: $('.chat-body-messages')[0].scrollHeight}, 500);
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    },
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.message_html) {
+                            // جایگزینی پیام موقت با پیام اصلی
+                            $(`#${tempMessageId}`).replaceWith(response.message_html);
+                            setTimeout(() => {
+                                const container = $('.chat-body-messages')[0];
+                                // اسکرول به پایین با محاسبه دقیق
+                                container.scrollTop = container.scrollHeight;
+                            }, 50);
+                        }
+                        $('#chatForm')[0].reset();
+                        $('#file_lbl').text('فایل');
+                    },
+                    error: function () {
+                        $(`#${tempMessageId} .message-meta`).html('<span class="text-danger">ارسال ناموفق</span>');
+                    }
                 });
-            </script>
+            });
+
+        });
+
+        function updateReadStatus() {
+            $.ajax({
+                url: "{{ env('api_base_url') . 'tickets/getReadMessages' }}",
+                type: "POST",
+                data: {
+                    ticket_id: {{$ticket->id}},
+                    company_user_id: {{auth()->id()}},
+                    company:@json(env('company_name'))
+                },
+                dataType: "json",
+                success: function (response) {
+                    if (response.read_messages && response.read_messages.length > 0) {
+                        response.read_messages.forEach(function (id) {
+
+                            var messageDiv = $('#message-' + id);
+                            var icon = messageDiv.find('.status-sent');
+
+
+                            if (icon.length) {
+                                icon.removeClass('fa-check').addClass('fa-check-double status-read');
+                            }
+                        });
+                    }
+                },
+                error: function () {
+                    console.log('خطا در بروزرسانی وضعیت خوانده شدن پیام‌ها');
+                }
+            });
+        }
+
+        function fetchNewMessages() {
+            // گرفتن آخرین پیام نمایش داده شده
+            var lastMessage = $('.message-item').last();
+            var lastId = lastMessage.attr('id') ? lastMessage.attr('id').replace('message-', '') : 0;
+            var ticket_id = {{$ticket->id}};
+            $.ajax({
+                url: "{{env('API_BASE_URL') . 'tickets/' . $ticket->id . '/new-messages'}}",
+                type: "GET",
+                data: {
+                    ticket_id: ticket_id,
+                    last_id: lastId,
+                    auth_id: {{auth()->id()}},
+                    company: @json(env('COMPANY_NAME')),
+                },
+                dataType: "json",
+                success: function (response) {
+                    if (response.new_messages) {
+                        console.log(response)
+                        var newMessages = $(response.new_messages);
+                        newMessages.each(function () {
+                            var messageId = $(this).attr('id');
+                            if (!$('#' + messageId).length) { // اگر پیام با این id وجود نداشته باشد
+                                $('.message-items').append($(this));
+                            }
+                        });
+                        updateReadStatus();
+                        $('.chat-body-messages').animate({scrollTop: $('.chat-body-messages')[0].scrollHeight}, 500);
+                    }
+                },
+                error: function () {
+                    console.log("خطا در دریافت پیام‌های جدید");
+                }
+            });
+        }
+
+        // هر ۵ ثانیه یک بار اجرا شود
+        setInterval(fetchNewMessages, 5000);
+    </script>
 @endsection

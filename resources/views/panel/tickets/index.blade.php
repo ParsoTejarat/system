@@ -31,8 +31,9 @@
                                     <tr>
                                         <th>#</th>
                                         <th>فرستنده</th>
+                                        <th>از شرکت</th>
+                                        <th>به شرکت</th>
                                         <th>گیرنده</th>
-                                        <th>شرکت</th>
                                         <th>عنوان تیکت</th>
                                         <th>شماره تیکت</th>
                                         <th>وضعیت</th>
@@ -46,12 +47,15 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+
                                     @foreach($ticketsData['data'] as $key =>  $ticket)
+{{--                                        @dd($ticket)--}}
                                         <tr>
                                             <td>{{ ++$key }}</td>
                                             <td>{{ $ticket['sender_name'] }}</td>
-                                            <td>{{ $ticket['receiver_name'] }}</td>
                                             <td>{{ getCompany($ticket["company_sender"]) }}</td>
+                                            <td>{{ getCompany($ticket["company_receiver"]) }}</td>
+                                            <td>{{ $ticket['receiver_name'] }}</td>
                                             <td>{{ $ticket['title']}}</td>
                                             <td>{{ $ticket['code'] }}</td>
                                             <td>
@@ -73,7 +77,7 @@
                                             @can('tickets-delete')
                                                 <td>
                                                     <button class="btn btn-danger btn-floating trashRow"
-                                                            data-url="{{ route('tickets.destroy',$ticket['id']) }}"
+                                                            data-url="{{ url(env('api_base_url') . 'tickets/' . $ticket['id']) }}"
                                                             data-id="{{ $ticket['id'] }}">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
@@ -113,6 +117,40 @@
             </div>
         </div>
     </div>
+
 @endsection
+{{--@section('scripts')--}}
+{{--    <script>--}}
+{{--        $(document).ready(function () {--}}
+{{--            $('.trashRow').on('click', function (e) {--}}
+{{--                e.preventDefault();--}}
+{{--                let url = $(this).data('url');--}}
+{{--                let ticketId = $(this).data('id');--}}
+
+
+{{--                $.ajax({--}}
+{{--                    url: url,--}}
+{{--                    type: 'DELETE',--}}
+{{--                    data: {--}}
+{{--                        _token: "{{ csrf_token() }}"--}}
+{{--                    },--}}
+{{--                    success: function(response) {--}}
+
+{{--                        let table = $('.dataTable').DataTable();--}}
+
+{{--                        let row = $('button[data-id="' + ticketId + '"]').closest('tr');--}}
+
+{{--                        table.row(row).remove().draw();--}}
+{{--                    }   ,--}}
+{{--                    error: function (xhr) {--}}
+{{--                        console.error("خطا در حذف تیکت:", xhr.responseText);--}}
+{{--                    }--}}
+{{--                });--}}
+
+{{--            });--}}
+{{--        });--}}
+
+{{--    </script>--}}
+{{--@endsection--}}
 
 

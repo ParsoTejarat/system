@@ -19,12 +19,13 @@ class Ticket extends Model
 
     const COMPANIES = [
         'parso' => 'پرسو تجارت ایرانیان',
-        'barman' => 'بارمان سیستم',
+        'barman' => 'بارمان سیستم سرزمین پارس',
         'adaktejarat' => 'آداک تجارت خورشید قشم',
         'adakhamrah' => 'آداک همراه خورشید قشم',
+        'mandegarpars' => 'ماشین های اداری ماندگار پارس',
         'adakpetro' => 'آداک پترو خورشید قشم',
         'adaksanat' => 'آداک صنعت خورشید قشم',
-        'sayman' => 'سایمان داده',
+        'sayman' => 'فناوران رایانه سایمان داده',
     ];
 
     public function sender()
