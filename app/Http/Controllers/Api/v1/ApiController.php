@@ -216,7 +216,7 @@ class ApiController extends Controller
         $url = route('tickets.index');
         Notification::send($users, new SendMessage($message, $url, $title));
 
-        Log::info("Request Data", json_encode($users));
+        Log::info("Request Data", $users->toArray());
 
         return response()->json(['message' => 'Job ایجاد شد'], 201);
     }
