@@ -136,7 +136,7 @@
 @endsection
 
 @section('content')
-    <div class="card mt-3 chat-app-wrapper">
+    <div class="card mt-5 chat-app-wrapper">
         <div class="row d-flex chat-app">
             <div class="col-xl-12 mt-1 col-md-12 chat-body">
                 <div class="card-body py-2 px-3 border-bottom border-light">
@@ -148,12 +148,12 @@
                                 <a href="javascript:void(0)" class="text-reset">
                                     @if(auth()->id() == $ticket->sender->company_user_id)
                                         {{ $ticket->receiver->name.' '.$ticket->receiver->family }}
-{{--                                        <br>--}}
-{{--                                        <span>{{ getCompany($ticket->receiver->company_name) }}</span>--}}
+                                        <br>
+                                        <span>{{ getCompany($ticket->receiver->company_name) }}</span>
                                     @else
                                         {{ $ticket->sender->name.' '.$ticket->sender->family }}
-{{--                                        <br>--}}
-{{--                                        <span>{{ getCompany($ticket->sender->company_name) }}</span>--}}
+                                        <br>
+                                        <span>{{ getCompany($ticket->sender->company_name) }}</span>
                                     @endif
                                 </a>
                             </h5>
