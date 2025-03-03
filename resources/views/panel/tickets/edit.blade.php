@@ -4,8 +4,11 @@
     <!-- lightbox -->
     <link rel="stylesheet" href="/vendors/lightbox/magnific-popup.css" type="text/css">
     <style>
-        .fa-check-double, .fa-check {
-            color: green !important;
+        /* حذف گلوله در لیست‌ها */
+        ul li {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
         }
 
         body {
@@ -27,18 +30,28 @@
             color: #fff;
         }
 
+        /* فونت پیام‌ها */
         .message-text {
-            font-size: 13px !important;
+            font-size: 14px !important;
+            line-height: 1.6;
             color: #fff;
         }
 
+        /* رنگ آیکن‌ها */
         .fa-check {
-            color: #bbb !important;
+            color: #00ff2d !important; /* تیک تکی */
+        }
+        .fa-check-double {
+            color: #34b7f1 !important; /* تیک دوتایی */
         }
 
-        /* استایل بابل پیام */
+        /* پیام دریافتی */
         .message-item {
-            background-color: rgba(34, 112, 127, 0.58) !important;
+            background: linear-gradient(
+                135deg,
+                rgba(34,112,127,0.8),
+                rgba(60,180,150,0.8)
+            ) !important;
             backdrop-filter: blur(6.9px);
             border-radius: 5px !important;
             padding: 10px;
@@ -49,17 +62,18 @@
 
         .message-time {
             font-size: 0.65rem !important;
-            color: #8a8a8a !important;
+            color: #ffd600 !important;
             margin-left: 30px;
         }
 
+        /* پیام ارسالی */
         .outgoing-message {
-            background-color: rgba(151, 151, 152, 0.48) !important;
+            background: linear-gradient(
+                135deg,
+                rgba(34,112,127,0.4),
+                rgba(60,180,150,0.4)
+            ) !important;
             backdrop-filter: blur(6.9px);
-        }
-
-        .fa-check-double {
-            color: #34b7f1;
         }
 
         img {
@@ -68,10 +82,6 @@
 
         .message-content {
             padding: 0px 8px;
-        }
-
-        .fa-check, .fa-check-double {
-            font-size: 0.65rem !important;
         }
 
         .chat-app {
@@ -84,7 +94,7 @@
         }
 
         .message-items {
-            min-height: min-content; /* اطمینان از رشد صحیح محتوا */
+            min-height: min-content;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -99,11 +109,9 @@
             align-self: flex-end;
         }
 
-        #chatForm {
-            input {
-                border: none;
-                margin: 5px;
-            }
+        #chatForm input {
+            border: none;
+            margin: 5px;
         }
 
         .fa-spinner {
@@ -123,6 +131,7 @@
             }
         }
     </style>
+
 @endsection
 
 @section('content')
