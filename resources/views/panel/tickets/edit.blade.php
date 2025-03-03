@@ -116,6 +116,7 @@
 
         .fa-spinner {
             display: inline-block;
+            color: white;
         }
 
         .fa-spin {

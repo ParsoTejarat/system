@@ -4,6 +4,7 @@
 @if(in_array($file->type, ['jpg','jpeg','png','webp','svg','gif']))
     <ul class="w-100">
         <li class="flex-column justify-content-center align-items-center w-100">
+            <br>
             <a href="{{ env('API_PATH_URL').$file->path }}">
                 <img src="{{ env('API_PATH_URL').$file->path }}" alt="image" class="w-100 p-2">
                 <span>{{ $file->name }}</span>
