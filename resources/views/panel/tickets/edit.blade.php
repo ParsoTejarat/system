@@ -149,11 +149,11 @@
                                     @if(auth()->id() == $ticket->sender->company_user_id)
                                         {{ $ticket->receiver->name.' '.$ticket->receiver->family }}
                                         <br>
-                                        <span>{{ getCompany($ticket->receiver->company) }}</span>
+                                        <span>{{ getCompany($ticket->receiver->company_name) }}</span>
                                     @else
                                         {{ $ticket->sender->name.' '.$ticket->sender->family }}
                                         <br>
-                                        <span>{{ getCompany($ticket->sender->company) }}</span>
+                                        <span>{{ getCompany($ticket->sender->company_name) }}</span>
                                     @endif
                                 </a>
                             </h5>
