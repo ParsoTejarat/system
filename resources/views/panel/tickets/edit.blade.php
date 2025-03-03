@@ -41,6 +41,7 @@
         .fa-check {
             color: #00ff2d !important; /* تیک تکی */
         }
+
         .fa-check-double {
             color: #34b7f1 !important; /* تیک دوتایی */
         }
@@ -49,8 +50,8 @@
         .message-item {
             background: linear-gradient(
                 135deg,
-                rgba(34,112,127,0.8),
-                rgba(60,180,150,0.8)
+                rgba(34, 112, 127, 0.8),
+                rgba(60, 180, 150, 0.8)
             ) !important;
             backdrop-filter: blur(6.9px);
             border-radius: 5px !important;
@@ -70,8 +71,8 @@
         .outgoing-message {
             background: linear-gradient(
                 135deg,
-                rgba(34,112,127,0.4),
-                rgba(60,180,150,0.4)
+                rgba(34, 112, 127, 0.4),
+                rgba(60, 180, 150, 0.4)
             ) !important;
             backdrop-filter: blur(6.9px);
         }
@@ -148,12 +149,10 @@
                                 <a href="javascript:void(0)" class="text-reset">
                                     @if(auth()->id() == $ticket->sender->company_user_id)
                                         {{ $ticket->receiver->name.' '.$ticket->receiver->family }}
-                                        <br>
-                                        <span>{{ getCompany($ticket->receiver->company_name) }}</span>
+                                        <div class="mt-2 ">{{ getCompany($ticket->receiver->company_name) }}</div>
                                     @else
                                         {{ $ticket->sender->name.' '.$ticket->sender->family }}
-                                        <br>
-                                        <span>{{ getCompany($ticket->sender->company_name) }}</span>
+                                        <div class="mt-2 ">{{ getCompany($ticket->sender->company_name) }}</div>
                                     @endif
                                 </a>
                             </h5>
