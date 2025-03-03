@@ -28,18 +28,13 @@ class TicketJob implements ShouldQueue
 
     public function handle()
     {
-        Log::info('Job دریافت شد:', ['data' => $this->userData]);
+        $userId = $this->userData['user_id'];
+        $title = $this->userData['title'];
+        $message = $this->userData['message'];
 
-        Log::info('$data', ['data' =>$data]);
-        $users = User::whereIn('id', [$data->user_id])->get();
-        Log::info('$users', ['data' =>$users]);
-        $title = $data->title;
-        Log::info('$title', ['data' =>$title]);
-        $message = $data->message;
-        Log::info('$message', ['data' =>$message]);
-        $url = route('tickets.index');
-
-        Notification::send($users, new SendMessage($message, $url, $title));
+        Log::info("User ID: " . $userId);
+        Log::info("Title: " . $title);
+        Log::info("Message: " . $message);
 
 
 
