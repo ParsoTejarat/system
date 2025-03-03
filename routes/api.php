@@ -25,6 +25,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('order-create', [ApiController::class, 'createOrder']);
 Route::post('get-invoice-products', [ApiController::class, 'getInvoiceProducts']);
 
+Route::post('create-ticket-job', [ApiController::class, 'createTicketJob']);
+
 
 Route::post('/send-notification-to-user', [TicketController::class, 'appSendNotification']);
 

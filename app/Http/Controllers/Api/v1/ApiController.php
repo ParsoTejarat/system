@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\TicketJob;
 use App\Models\BotUser;
 use App\Models\Customer;
 use App\Models\Factor;
@@ -199,6 +200,12 @@ class ApiController extends Controller
         });
 
         return response()->json($data);
+    }
+
+    public function createTicketJob(Request $request)
+    {
+        TicketJob::dispatch($request->all());
+        return response()->json(['message' => 'Job ایجاد شد'], 201);
     }
 
 }
