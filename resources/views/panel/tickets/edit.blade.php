@@ -145,14 +145,15 @@
                              alt="Brandon Smith">
                         <div class="flex-1">
                             <h5 class="mt-0 mb-0 font-15">
-{{--                                                                @dd($ticket)--}}
                                 <a href="javascript:void(0)" class="text-reset">
                                     @if(auth()->id() == $ticket->sender->company_user_id)
                                         {{ $ticket->receiver->name.' '.$ticket->receiver->family }}
-
+                                        <br>
+                                        <span>{{ getCompany($ticket->receiver->company) }}</span>
                                     @else
                                         {{ $ticket->sender->name.' '.$ticket->sender->family }}
-                                        {{--                                                @dd("test")--}}
+                                        <br>
+                                        <span>{{ getCompany($ticket->sender->company) }}</span>
                                     @endif
                                 </a>
                             </h5>
