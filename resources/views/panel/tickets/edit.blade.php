@@ -14,7 +14,7 @@
         }
 
         .chat-body-messages {
-            background-image: url({{ asset('https://mpsystem.ir/assets/media/image/chat.jpg') }});
+            background-image: url({{ asset('/assets/images/background.jpg') }});
             padding: 10px;
             background-size: cover;
             background-repeat: no-repeat;
