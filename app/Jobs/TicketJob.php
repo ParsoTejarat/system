@@ -29,7 +29,7 @@ class TicketJob implements ShouldQueue
     public function handle()
     {
         Log::info('Job دریافت شد:', ['data' => $this->userData]);
-        $data = (object) $this->userData->data;
+
         Log::info('$data', ['data' =>$data]);
         $users = User::whereIn('id', [$data->user_id])->get();
         Log::info('$users', ['data' =>$users]);
