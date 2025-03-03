@@ -142,7 +142,7 @@
 @endsection
 
 @section('content')
-    <div class="card mt-5 chat-app-wrapper">
+    <div class="card mt-3 chat-app-wrapper">
         <div class="row d-flex chat-app">
             <div class="col-xl-12 mt-1 col-md-12 chat-body">
                 <div class="card-body py-2 px-3 border-bottom border-light">
