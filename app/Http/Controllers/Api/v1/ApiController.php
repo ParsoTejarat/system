@@ -204,16 +204,18 @@ class ApiController extends Controller
 
     public function createTicketJob(Request $request)
     {
-//        TicketJob::dispatch($request->all());
         Log::info("start");
-        Log::info("start",$request->all());
-//        $userId = $this->userData['user_id'];
-//        $title = $this->userData['title'];
-//        $message = $this->userData['message'];
-//
-//        Log::info("User ID: " . $userId);
-//        Log::info("Title: " . $title);
-//        Log::info("Message: " . $message);
+
+        Log::info("Request Data", $request->all());
+
+        $userId = $request->input('user_id');
+        $title = $request->input('title');
+        $message = $request->input('message');
+
+        Log::info("User ID: " . $userId);
+        Log::info("Title: " . $title);
+        Log::info("Message: " . $message);
+
         Log::info("end");
         return response()->json(['message' => 'Job ایجاد شد'], 201);
     }
