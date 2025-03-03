@@ -124,6 +124,11 @@
             animation: fa-spin 1s infinite linear;
         }
 
+        .company_name {
+            font-size: .8rem;
+            margin-top: 0.75rem !important;
+        }
+
         @keyframes fa-spin {
             from {
                 transform: rotate(0deg);
@@ -149,10 +154,10 @@
                                 <a href="javascript:void(0)" class="text-reset">
                                     @if(auth()->id() == $ticket->sender->company_user_id)
                                         {{ $ticket->receiver->name.' '.$ticket->receiver->family }}
-                                        <div class="mt-2 ">{{ getCompany($ticket->receiver->company_name) }}</div>
+                                        <div class="company_name">{{ getCompany($ticket->receiver->company_name) }}</div>
                                     @else
                                         {{ $ticket->sender->name.' '.$ticket->sender->family }}
-                                        <div class="mt-2 ">{{ getCompany($ticket->sender->company_name) }}</div>
+                                        <div class="company_name">{{ getCompany($ticket->sender->company_name) }}</div>
                                     @endif
                                 </a>
                             </h5>
