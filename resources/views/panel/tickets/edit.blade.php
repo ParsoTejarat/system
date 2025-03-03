@@ -190,7 +190,7 @@
                 <div class="chat-body-messages">
                     <div class="message-items">
                         @foreach($ticket->messages as $message)
-                            @if($message->user_id == auth()->id())
+                            @if($message->user->company_user_id == auth()->id())
                                 <div id="message-{{ $message->id }}"
                                      class="message-item {{ $message->file ? 'message-item-media' : '' }}">
                                     <div class="message-content">
