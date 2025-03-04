@@ -16,15 +16,34 @@
             margin-top: 20px;
         }
 
+        /* پس زمینه چت با مات شدن */
         .chat-body-messages {
             background-image: url({{ asset('/assets/images/background.jpg') }});
             padding: 10px;
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
-
+            position: relative;
         }
 
+        .chat-body-messages::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            filter: blur(10px); /* مقدار بلور را تغییر دهید */
+            z-index: 0;
+        }
+
+        .message-items {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* دکمه‌های بدون پس‌زمینه */
         .btn.btn-outline-light {
             background-color: transparent !important;
             border: none;
@@ -78,6 +97,7 @@
             backdrop-filter: blur(6.9px);
         }
 
+        /* استایل تصویر */
         img {
             max-width: 200px !important;
         }
@@ -95,6 +115,7 @@
             overflow-y: auto !important;
         }
 
+        /* نمایش پیام‌ها به صورت ستونی */
         .message-items {
             min-height: min-content;
             display: flex;
@@ -116,6 +137,7 @@
             margin: 5px;
         }
 
+        /* استایل آیکون لودینگ */
         .fa-spinner {
             display: inline-block;
             color: white;
@@ -138,6 +160,7 @@
                 transform: rotate(360deg);
             }
         }
+
     </style>
 
 @endsection
