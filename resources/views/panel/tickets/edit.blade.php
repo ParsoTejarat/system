@@ -17,25 +17,26 @@
         }
 
         /* پس زمینه چت با مات شدن */
-        .chat-body-messages {
-            background-image: url({{ asset('/assets/images/background.jpg') }});
-            padding: 10px;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            position: relative;
-        }
-
-        .chat-body-messages::before {
-            content: "";
+        .chat-body-wrapper {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: inherit;
-            filter: blur(3px);
-            z-index: 0;
+            background-image: url({{ asset('/assets/images/background.jpg') }});
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            filter: blur(5px); /* میزان تاری */
+            z-index: -1; /* پایین‌تر از محتوا */
+        }
+
+        .chat-body-messages {
+            position: relative;
+            padding: 10px;
+            background: transparent; /* حذف پس‌زمینه تکراری */
+            overflow-y: auto;
+            height: 70vh;
         }
 
         .message-items {
@@ -216,6 +217,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="chat-body-wrapper"></div>
                 <div class="chat-body-messages">
                     <div class="message-items">
                         @foreach($ticket->messages as $message)
