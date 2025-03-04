@@ -22,6 +22,7 @@
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
+
         }
 
         .btn.btn-outline-light {
@@ -153,10 +154,10 @@
                             <h5 class="mt-0 mb-0 font-15">
                                 <a href="javascript:void(0)" class="text-reset">
                                     @if(auth()->id() == $ticket->sender->company_user_id)
-                                        {{ $ticket->receiver->name.' '.$ticket->receiver->family }}
+                                        {{ $ticket->receiver->name.' '.$ticket->receiver->family }}-{{$ticket->receiver->role_name}}
                                         <div class="company_name">{{ getCompany($ticket->receiver->company_name) }}</div>
                                     @else
-                                        {{ $ticket->sender->name.' '.$ticket->sender->family }}
+                                        {{ $ticket->sender->name.' '.$ticket->sender->family }}-{{$ticket->receiver->role_name}}
                                         <div class="company_name">{{ getCompany($ticket->sender->company_name) }}</div>
                                     @endif
                                 </a>
