@@ -90,13 +90,13 @@ if (!function_exists('upload_file_factor')) {
                 $imgWidthMm = $imgWidth * 0.264583;
                 $imgHeightMm = $imgHeight * 0.264583;
 
-            if ($paperFormat == 'A4'){
-                $x = 280 - $imgWidthMm;
-                $y = 180 - $imgHeightMm;
-            }else{
-                $x = 350 - $imgWidthMm;
-                $y = 220 - $imgHeightMm;
-            }
+                if ($paperFormat == 'A4') {
+                    $x = 280 - $imgWidthMm;
+                    $y = 180 - $imgHeightMm;
+                } else {
+                    $x = 350 - $imgWidthMm;
+                    $y = 220 - $imgHeightMm;
+                }
 
 
                 for ($i = 1; $i <= $pageCount; $i++) {
@@ -303,7 +303,7 @@ if (!function_exists('convert_number_to_words')) {
     }
 }
 
-if (!function_exists('getPaperSizeFromPdf')){
+if (!function_exists('getPaperSizeFromPdf')) {
     function getPaperSizeFromPdf($pdfFile)
     {
         $inputPdfPath = $pdfFile->getPathName();
@@ -324,7 +324,7 @@ if (!function_exists('getPaperSizeFromPdf')){
 
         $A3Width = 420;
         $A3Height = 297;
-        $A4Width =  297;
+        $A4Width = 297;
         $A4Height = 210;
 
         if ($width >= $A3Width || $height >= $A3Height) { // ابعاد A3
@@ -336,7 +336,7 @@ if (!function_exists('getPaperSizeFromPdf')){
 }
 
 
-if (!function_exists('calculateTotal')){
+if (!function_exists('calculateTotal')) {
     function calculateTotal($order)
     {
         $products = json_decode($order->products);
@@ -357,19 +357,14 @@ if (!function_exists('calculateTotal')){
     }
 }
 
-if (!function_exists('calculateTotalInvoice')){
+if (!function_exists('calculateTotalInvoice')) {
     function calculateTotalInvoice($products)
     {
 //        dd($products);
         $sum_total = 0;
-
-
-
-            foreach ($products as $product) {
-
-                $sum_total += $product->invoice_net;
-            }
-
+        foreach ($products as $product) {
+            $sum_total += $product->invoice_net;
+        }
         return $sum_total;
     }
 }
@@ -379,7 +374,7 @@ if (!function_exists('formatBytes')) {
         $base = log($size, 1024);
         $suffixes = array('', 'K', 'M', 'G', 'T');
 
-        return round(pow(1024, $base - floor($base)), $precision) .' '. $suffixes[floor($base)];
+        return round(pow(1024, $base - floor($base)), $precision) . ' ' . $suffixes[floor($base)];
     }
 }
 

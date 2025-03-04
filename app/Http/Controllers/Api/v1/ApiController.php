@@ -185,33 +185,12 @@ class ApiController extends Controller
         Notification::send($accountants, new SendMessage($message, $url, $title));
     }
 
-    public function getUsers()
-    {
-        $users = User::with('role')->get();
-
-        $data = $users->map(function ($user) {
-            return [
-                'name' => $user->name,
-                'family' => $user->family,
-                'role' => $user->role->label ?? null,
-                'company' => 'parso_tejarat',
-                'company_id' => '1',
-            ];
-        });
-
-        return response()->json($data);
-    }
 
     public function createTicketJob(Request $request)
     {
-        Log::info("start");
-
-        Log::info("Request Data", $request->all());
-
         $userId = $request->input('user_id');
         $title = $request->input('title');
         $message = $request->input('message');
-
         $users = User::whereIn('id', [$userId])->get();
         $url = route('tickets.index');
         Notification::send($users, new SendMessage($message, $url, $title));
