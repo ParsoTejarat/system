@@ -76,7 +76,7 @@
                                             @endcan
                                             @can('tickets-delete')
                                                 <td>
-                                                    @if($ticket->company_sender_id == auth()->id())
+                                                    @if($ticket['company_sender_id'] == auth()->id())
                                                         <button class="btn btn-danger btn-floating trashRow"
                                                                 data-url="{{ url(env('API_BASE_URL') . 'tickets/' . $ticket['id']) }}"
                                                                 data-id="{{ $ticket['id'] }}">
