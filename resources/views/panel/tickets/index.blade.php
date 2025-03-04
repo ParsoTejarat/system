@@ -76,11 +76,18 @@
                                             @endcan
                                             @can('tickets-delete')
                                                 <td>
-                                                    <button class="btn btn-danger btn-floating trashRow"
-                                                            data-url="{{ url(env('API_BASE_URL') . 'tickets/' . $ticket['id']) }}"
-                                                            data-id="{{ $ticket['id'] }}">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
+                                                    @if($ticket)
+                                                        @dd($ticket)
+                                                        <button class="btn btn-danger btn-floating trashRow"
+                                                                data-url="{{ url(env('API_BASE_URL') . 'tickets/' . $ticket['id']) }}"
+                                                                data-id="{{ $ticket['id'] }}">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    @else
+                                                        <button class="btn btn-danger btn-floating trashRow disabled" disabled>
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    @endif
                                                 </td>
                                             @endcan
                                         </tr>
