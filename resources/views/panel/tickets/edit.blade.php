@@ -34,7 +34,7 @@
             width: 100%;
             height: 100%;
             background: inherit;
-            filter: blur(10px); /* مقدار بلور را تغییر دهید */
+            filter: blur(3px);
             z-index: 0;
         }
 
