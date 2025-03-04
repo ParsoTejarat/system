@@ -238,7 +238,6 @@ function getCompany($data)
         case "sayman":
             $company = 'فناوران رایانه سایمان داده';
             break;
-
         case "adakpetro":
             $company = 'آداک پترو خورشید قشم';
             break;
