@@ -16,7 +16,6 @@ class WarehouseController extends Controller
 
         $products = Product::query();
 
-
         if ($sku = request()->get('sku')) {
             $products = $products->where('sku', 'like', '%' . $sku . '%');
         }
@@ -29,10 +28,12 @@ class WarehouseController extends Controller
             $products = $products->where('category_id', $category_id);
         }
 
-
-        $products = $products->latest()->withCount(['trackingCodes' => function ($query) {
-            $query->whereNull('exit_time');
-        }])->paginate(30);
+        $products = $products->latest()
+            ->withCount(['trackingCodes' => function ($query) {
+                $query->whereNull('exit_time');
+            }])
+            ->orderBy('tracking_codes_count', 'desc')
+            ->paginate(30);
 
 
         return view('panel.warehouses.index', compact(['products']));
