@@ -62,7 +62,7 @@
                 </table>
             </div>
             @if($page > 1)
-                <a href="{{ route('barman.index', ['page' => $page - 1]) }}" class="btn btn-primary">صفحه قبلی</a>
+                <a href="{{ route('parso.index', ['page' => $page - 1]) }}" class="btn btn-primary">صفحه قبلی</a>
                 <a class="btn btn-primary">{{$page}}</a>
             @endif
 
