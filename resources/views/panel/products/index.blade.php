@@ -109,8 +109,7 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            <div
-                                class="d-flex justify-content-center">{{ $products->appends(request()->all())->links() }}</div>
+                            <div class="d-flex justify-content-center">{{ $products->appends(request()->all())->links() }}</div>
                         </div>
                     </div>
                 </div>
