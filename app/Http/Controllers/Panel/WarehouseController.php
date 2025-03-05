@@ -28,8 +28,7 @@ class WarehouseController extends Controller
             $products = $products->where('category_id', $category_id);
         }
 
-        $products = $products->latest()
-            ->withCount(['trackingCodes' => function ($query) {
+        $products = $products->withCount(['trackingCodes' => function ($query) {
                 $query->whereNull('exit_time');
             }])
             ->orderBy('tracking_codes_count', 'desc')
