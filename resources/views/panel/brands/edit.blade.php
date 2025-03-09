@@ -34,7 +34,7 @@
                                         <label for="slug" class="form-label">نام انگلیسی<span
                                                 class="text-danger">*</span></label>
                                         <input type="text" name="name_en" class="form-control" id="name_en"
-                                               value="{{ old('name_en',$brand->name) }}"
+                                               value="{{ old('name_en',$brand->name_en) }}"
                                                placeholder="مثال :HP ">
                                         @error('name_en')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
