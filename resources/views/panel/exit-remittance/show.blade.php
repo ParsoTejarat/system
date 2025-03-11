@@ -115,11 +115,16 @@
                                     <br>
                                     <a href="{{route('exitRemittances.downloadPDF',$exitRemittance->id)}}"
                                        class="btn btn-outline-danger mt-2 float-end"> <span
-                                                class=" fa fa-file-pdf"></span> پرینت حواله</a>
+                                                class=" fa fa-file-pdf"></span> پرینت حواله اتوماسیون</a>
                                     @if($exitRemittance->order->action)
                                         <a class="btn btn-outline-danger mt-2 float-end"
                                            href="{{$exitRemittance->order->action->factor_file}}" download> <span
-                                                    class=" fa fa-file-pdf"></span> پرینت فاکتور فروش </a>
+                                                    class=" fa fa-file-pdf"></span>پرینت فاکتور فروش</a>
+                                    @endif
+                                    @if($exitRemittance->order->action->exit_file)
+                                        <a class="btn btn-outline-danger mt-2 float-end"
+                                           href="{{$exitRemittance->order->action->exit_file}}" download> <span
+                                                class=" fa fa-file-pdf"></span>پرینت برگه خروج حسابداری</a>
                                     @endif
                                 </div>
                             </div>

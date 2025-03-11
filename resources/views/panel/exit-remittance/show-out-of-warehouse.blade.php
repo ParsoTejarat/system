@@ -117,12 +117,17 @@
                                 <div class="col-auto">
                                     <a href="{{route('ExitFromWarehouse.downloadPDF',$exitRemittance->id)}}" class="btn btn-danger">
                                         <span class="fa fa-file-pdf"></span>
-                                        پرینت برگه خروج
+                                        پرینت برگه خروج اتوماسیون
                                     </a>
                                     @if($exitRemittance->order->action)
                                         <a class="btn btn-outline-danger float-end"
                                            href="{{$exitRemittance->order->action->factor_file}}" download>
                                             <span class="fa fa-file-pdf"></span>پرینت فاکتور فروش</a>
+                                    @endif
+                                    @if($exitRemittance->order->action->exit_file)
+                                        <a class="btn btn-outline-danger float-end"
+                                           href="{{$exitRemittance->order->action->exit_file}}" download> <span
+                                                class=" fa fa-file-pdf"></span>پرینت حواله خروج حسابداری</a>
                                     @endif
                                 </div>
                                 <div class="col-auto">
