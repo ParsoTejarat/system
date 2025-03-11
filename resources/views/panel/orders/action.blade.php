@@ -64,6 +64,30 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="exitFileResetModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exitFileResetModal">تایید حذف</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن">
+                            <i class="ti-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>می خواهید فایل خروج انبار را حذف و مجدد بارگذاری کنید؟</h6>
+                        <form action="{{ route('order.exit.action.delete', $order->action->id) }}" method="post"
+                              id="exitFileResetModal">
+                            @csrf
+                            @method('put')
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">لغو</button>
+                        <button type="submit" class="btn btn-danger" form="deleteFactorAction">حذف</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     @endif
     {{--  endIF --}}
     <div class="content">
@@ -120,9 +144,10 @@
                             @csrf
 
                             @if($order->action)
-                                @if($order->action->factor_file)
-                                    <div class="row">
-                                        <div class="col">
+                                <div class="row">
+                                    @if($order->action->factor_file)
+
+                                        <div class="col-3">
                                             <a href="{{ $order->action->factor_file }}"
                                                class="btn btn-primary mt-3"
                                                download="{{ $order->action->factor_file }}">
@@ -137,35 +162,58 @@
                                                 </a>
                                             @endcan
                                         </div>
-                                    </div>
 
-                                @endif
+                                    @endif
+                                    @if($order->action->exit_file)
+
+                                        <div class="col-3">
+                                            <a href="{{ $order->action->exit_file }}"
+                                               class="btn btn-primary mt-3"
+                                               download="{{ $order->action->exit_file }}">
+                                                <i class="fa fa-file-pdf mr-2"></i>
+                                                دانلود فایل خروجی انبار
+                                            </a>
+                                            @can('accountant')
+                                                <a href="#exitFileResetModal" class="nav-link"
+                                                   data-bs-toggle="modal">
+                                                    <i class="fa fa-times mr-2 text-danger"></i>
+                                                    حذف و بارگذاری مجدد فایل
+                                                </a>
+                                            @endcan
+
+                                        </div>
+
+                                    @endif
+                                </div>
                             @else
                                 <div class="col-xl-5 col-lg-5 col-md-3 col-sm-12 mt-5">
-                                   <div class="row">
-                                       <input type="hidden"
-                                              value="{{$order->req_for == 'invoice' ? 'true':'false'}}"
-                                              name="website_factor">
+                                    <div class="row">
+                                        <input type="hidden"
+                                               value="{{$order->req_for == 'invoice' ? 'true':'false'}}"
+                                               name="website_factor">
 
-                                       <div class="col-6">
-                                           <label for="factor_file">فایل فاکتور (PDF)<span class="text-danger">*</span></label>
-                                           <input type="file" name="factor_file" class="form-control" id="factor_file" accept="application/pdf" value="{{ old('factor_file') }}">
-                                           @error('factor_file')
-                                           <div class="invalid-feedback d-block">{{ $message }}</div>
-                                           @enderror
-                                       </div>
+                                        <div class="col-6">
+                                            <label for="factor_file">فایل فاکتور (PDF)<span class="text-danger">*</span></label>
+                                            <input type="file" name="factor_file" class="form-control" id="factor_file"
+                                                   accept="application/pdf" value="{{ old('factor_file') }}">
+                                            @error('factor_file')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                            @enderror
+                                        </div>
 
-                                       <div class="col-6">
-                                           <label for="exit_file">فایل خروج سپیدار (PDF)<span class="text-danger">*</span></label>
-                                           <input type="file" name="exit_file" class="form-control" id="exit_file" accept="application/pdf" value="{{ old('exit_file') }}">
-                                           @error('exit_file')
-                                           <div class="invalid-feedback d-block">{{ $message }}</div>
-                                           @enderror
-                                       </div>
+                                        <div class="col-6">
+                                            <label for="exit_file">فایل خروج انبار (PDF)<span
+                                                    class="text-danger">*</span></label>
+                                            <input type="file" name="exit_file" class="form-control" id="exit_file"
+                                                   accept="application/pdf" value="{{ old('exit_file') }}">
+                                            @error('exit_file')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                            @enderror
+                                        </div>
 
-                                   </div>
+                                    </div>
 
-                                    <input type="submit" value="ارسال فاکتور و برگه خروج" class="btn btn-primary mt-2">
+                                    <input type="submit"  value="ارسال فاکتور و برگه خروج" class="btn btn-primary mt-2">
 
                                 </div>
 
@@ -318,6 +366,25 @@
                                                 </div>
                                             </div>
                                         @endif
+                                        @if($order->action->exit_file)
+                                            <div class="row">
+                                                <div class="col">
+                                                    <a href="{{ $order->action->exit_file }}"
+                                                       class="btn btn-primary mt-3"
+                                                       download="{{ $order->action->exit_file }}">
+                                                        <i class="fa fa-file-pdf mr-2"></i>
+                                                      دانلود فایل خروجی انبار
+                                                    </a>
+                                                    @can('accountant')
+                                                        <a href="#exitFileResetModal" class="nav-link"
+                                                           data-bs-toggle="modal">
+                                                            <i class="fa fa-times mr-2 text-danger"></i>
+                                                            حذف و بارگذاری مجدد فایل
+                                                        </a>
+                                                    @endcan
+                                                </div>
+                                            </div>
+                                        @endif
                                         @cannot('accountant')
                                             @if(!$order->action->confirm && $order->action->status != 'factor')
                                                 <div class="custom-control custom-checkbox mt-5">
@@ -366,7 +433,7 @@
                                                     @error('factor_file')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                     @enderror
-                                                    <label for="exit_file" class="mt-2">فایل خروج سپیدار (PDF)<span
+                                                    <label for="exit_file" class="mt-2">فایل خروج انبار (PDF)<span
                                                             class="text-danger">*</span></label>
                                                     <input type="file" name="exit_file" class="form-control"
                                                            id="exit_file"
@@ -391,7 +458,7 @@
                                                 @enderror
                                             </div>
                                             <div class="form-group">
-                                                <label for="exit_file" class="mt-2">فایل خروج سپیدار (PDF)<span
+                                                <label for="exit_file" class="mt-2">فایل خروج انبار (PDF)<span
                                                         class="text-danger">*</span></label>
                                                 <input type="file" name="exit_file" class="form-control"
                                                        id="exit_file"
@@ -445,6 +512,12 @@
 @section('scripts')
     <script>
         $(document).ready(function () {
+
+            $("form").on("submit", function () {
+                $("input[type='submit']").prop("disabled", true).val("درحال پردازش  ...");
+                $("button[type='submit']").prop("disabled", true). text("درحال پردازش...");
+            });
+
             var status = $("input[name='status']").val();
             @if(!old('status'))
             show_section(status);

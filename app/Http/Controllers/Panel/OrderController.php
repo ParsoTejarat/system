@@ -253,7 +253,6 @@ class OrderController extends Controller
             $file_exit = upload_file_exit($request->exit_file, 'Action/Exits');
 
 
-
             $invoice->update(['status' => 'invoiced']);
             $invoice->action()->updateOrCreate([
                 'order_id' => $invoice->id
@@ -502,6 +501,7 @@ class OrderController extends Controller
 
         $orderAction->update([
             'factor_file' => null,
+            'exit_file' => null,
             'sent_to_warehouse' => 0
         ]);
 
@@ -510,6 +510,26 @@ class OrderController extends Controller
         }
 
         alert()->success('فایل فاکتور مورد نظر حذف شد', 'حذف فاکتور');
+        return back();
+    }
+
+    public function deleteExitFile(OrderAction $orderAction)
+    {
+        activity_log('delete-exit_file-file', __METHOD__, $orderAction);
+
+        unlink(public_path($orderAction->exit_file));
+
+        $orderAction->update([
+            'exit_file' => null,
+            'factor_file' => null,
+        ]);
+
+        if ($orderAction->status == 'factor') {
+            $orderAction->delete();
+        }
+
+
+        alert()->success('فایل خروج انبار مورد نظر حذف شد', 'حذف خروج انبار');
         return back();
     }
 
