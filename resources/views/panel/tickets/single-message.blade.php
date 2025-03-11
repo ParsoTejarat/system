@@ -8,7 +8,7 @@
 
             <div class="message-meta">
                             <span class="message-time">
-                                {{ verta($message->created_at)->format('H:i - Y/m/d') }}
+                                {{ verta($message->created_at)->timezone('Asia/Tehran')->format('H:i - Y/m/d') }}
                             </span>
                 @if($message->read_at)
                     <i class="status-read fa fa-check-double"></i>
@@ -26,7 +26,7 @@
         @includeWhen($message->file, 'panel.partials.file-message')
         <div class="message-meta row @if($message->file) justify-content-center m-2 @else justify-content-between @endif px-2">
                             <span class="message-time">
-                                {{ verta($message->created_at)->format('H:i - Y/m/d') }}
+                                {{ verta($message->created_at)->timezone('Asia/Tehran')->format('H:i - Y/m/d') }}
                             </span>
         </div>
     </div>

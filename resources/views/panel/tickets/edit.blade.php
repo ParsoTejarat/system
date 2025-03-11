@@ -154,10 +154,12 @@
                             <h5 class="mt-0 mb-0 font-15">
                                 <a href="javascript:void(0)" class="text-reset">
                                     @if(auth()->id() == $ticket->sender->company_user_id)
-                                        {{ $ticket->receiver->name.' '.$ticket->receiver->family }} - {{$ticket->receiver->role_name}}
+                                        {{ $ticket->receiver->name.' '.$ticket->receiver->family }}
+                                        - {{$ticket->receiver->role_name}}
                                         <div class="company_name">{{ getCompany($ticket->receiver->company_name) }}</div>
                                     @else
-                                        {{ $ticket->sender->name.' '.$ticket->sender->family }} - {{$ticket->receiver->role_name}}
+                                        {{ $ticket->sender->name.' '.$ticket->sender->family }}
+                                        - {{$ticket->receiver->role_name}}
                                         <div class="company_name">{{ getCompany($ticket->sender->company_name) }}</div>
                                     @endif
                                 </a>
@@ -195,6 +197,7 @@
                 </div>
                 <div class="chat-body-messages">
                     <div class="message-items">
+
                         @foreach($ticket->messages as $message)
                             @if($message->user->company_user_id == auth()->id())
                                 <div id="message-{{ $message->id }}"
@@ -207,7 +210,7 @@
                                         <div
                                             class="message-meta row @if($message->file) justify-content-between m-2 @else justify-content-between @endif px-1">
                                             <span class="message-time">
-                                                {{ verta($message->created_at)->format('H:i - Y/m/d') }}
+                                                {{  Verta::instance($message->created_at)->timezone('Asia/Tehran')->format('H:i Y/m/d')}}
                                             </span>
                                             @if($message->read_at)
                                                 <i class="status-read fa fa-check-double"></i>
@@ -218,6 +221,7 @@
                                     </div>
                                 </div>
                             @else
+
                                 <div id="message-{{ $message->id }}"
                                      class="message-item outgoing-message {{ $message->file ? 'message-item-media' : '' }}">
                                     @if($message->text)
@@ -228,7 +232,7 @@
                                     <div
                                         class="message-meta row @if($message->file) justify-content-center m-2 @else justify-content-between @endif px-1">
                                         <span class="message-time">
-                                            {{ verta($message->created_at)->format('H:i - Y/m/d') }}
+                                            {{ Verta::instance($message->created_at)->timezone('Asia/Tehran')->format('H:i Y/m/d')}}
                                         </span>
                                     </div>
                                 </div>
