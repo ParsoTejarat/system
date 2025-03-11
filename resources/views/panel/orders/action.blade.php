@@ -78,93 +78,105 @@
             </div>
         </div>
     </div>
-{{--    @dd($order)--}}
+    {{--    @dd($order)--}}
     @if($order->req_for == 'invoice')
-    <div class="row">
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <div class="w-100 text-center">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="w-100 text-center">
 
-                        <h5 class="text-success mt-3">ارسال فاکتور به انبار دار و همکار فروش
+                            <h5 class="text-success mt-3">ارسال فاکتور به انبار دار و همکار فروش
+                                @if($order->action)
+                                    @if($order->action->factor_file)
+                                        <span class="text-success"> - ارسال به انبار برای خروج</span>
+                                    @endif
+                                @endif
+                            </h5>
+
+
+                        </div>
+                        @cannot('accountant')
+                            <div class="alert alert-info mt-5">
+                                <i class="fa fa-info-circle font-size-20 align-middle"></i>
+                                <strong>توجه!</strong>
+                                همکار فروش گرامی فایل فاکتور را پس از دانلود بررسی کنید در صورت مغایرت با واحد حسابداری
+                                ارتباط برقرار کنید.
+                            </div>
+                        @endcannot
+                        @can('accountant')
+                            <div class="alert alert-info mt-5">
+                                <i class="fa fa-info-circle font-size-20 align-middle"></i>
+                                <strong>توجه!</strong>
+                                حسابدار گرامی ابتدا فایل فاکتور را پس از
+                                ایجاد
+                                بررسی کرده ، سپس به بارگذاری آن اقدام کنید. در صورت وجود
+                                مغایرت با واحد فروش ارتباط برقرار کنید.
+                            </div>
+                        @endcan
+                        <form method="post" action="{{ route('order.action.store', $order->id) }}"
+                              enctype="multipart/form-data">
+
+                            @csrf
+
                             @if($order->action)
                                 @if($order->action->factor_file)
-                                    <span class="text-success"> - ارسال به انبار برای خروج</span>
-                                @endif
-                            @endif
-                        </h5>
-
-
-                    </div>
-                    @cannot('accountant')
-                        <div class="alert alert-info mt-5">
-                            <i class="fa fa-info-circle font-size-20 align-middle"></i>
-                            <strong>توجه!</strong>
-                            همکار فروش گرامی  فایل فاکتور را پس از دانلود بررسی کنید در صورت مغایرت با واحد حسابداری ارتباط برقرار کنید.
-                        </div>
-                    @endcannot
-                    @can('accountant')
-                        <div class="alert alert-info mt-5">
-                            <i class="fa fa-info-circle font-size-20 align-middle"></i>
-                            <strong>توجه!</strong>
-                            حسابدار گرامی ابتدا فایل فاکتور را پس از
-                            ایجاد
-                            بررسی کرده ، سپس به بارگذاری آن اقدام کنید. در صورت وجود
-                            مغایرت با واحد فروش ارتباط برقرار کنید.
-                        </div>
-                    @endcan
-                    <form method="post" action="{{ route('order.action.store', $order->id) }}"
-                          enctype="multipart/form-data">
-
-                        @csrf
-
-                        @if($order->action)
-                            @if($order->action->factor_file)
-                                <div class="row">
-                                    <div class="col">
-                                        <a href="{{ $order->action->factor_file }}"
-                                           class="btn btn-primary mt-3"
-                                           download="{{ $order->action->factor_file }}">
-                                            <i class="fa fa-file-pdf mr-2"></i>
-                                            دانلود فایل فاکتور
-                                        </a>
-                                        @can('accountant')
-                                            <a href="#factorResetModal" class="nav-link"
-                                               data-bs-toggle="modal">
-                                                <i class="fa fa-times mr-2 text-danger"></i>
-                                                حذف و بارگذاری مجدد فایل
+                                    <div class="row">
+                                        <div class="col">
+                                            <a href="{{ $order->action->factor_file }}"
+                                               class="btn btn-primary mt-3"
+                                               download="{{ $order->action->factor_file }}">
+                                                <i class="fa fa-file-pdf mr-2"></i>
+                                                دانلود فایل فاکتور
                                             </a>
-                                        @endcan
+                                            @can('accountant')
+                                                <a href="#factorResetModal" class="nav-link"
+                                                   data-bs-toggle="modal">
+                                                    <i class="fa fa-times mr-2 text-danger"></i>
+                                                    حذف و بارگذاری مجدد فایل
+                                                </a>
+                                            @endcan
+                                        </div>
                                     </div>
+
+                                @endif
+                            @else
+                                <div class="col-xl-5 col-lg-5 col-md-3 col-sm-12 mt-5">
+                                   <div class="row">
+                                       <input type="hidden"
+                                              value="{{$order->req_for == 'invoice' ? 'true':'false'}}"
+                                              name="website_factor">
+
+                                       <div class="col-6">
+                                           <label for="factor_file">فایل فاکتور (PDF)<span class="text-danger">*</span></label>
+                                           <input type="file" name="factor_file" class="form-control" id="factor_file" accept="application/pdf" value="{{ old('factor_file') }}">
+                                           @error('factor_file')
+                                           <div class="invalid-feedback d-block">{{ $message }}</div>
+                                           @enderror
+                                       </div>
+
+                                       <div class="col-6">
+                                           <label for="exit_file">فایل خروج سپیدار (PDF)<span class="text-danger">*</span></label>
+                                           <input type="file" name="exit_file" class="form-control" id="exit_file" accept="application/pdf" value="{{ old('exit_file') }}">
+                                           @error('exit_file')
+                                           <div class="invalid-feedback d-block">{{ $message }}</div>
+                                           @enderror
+                                       </div>
+
+                                   </div>
+
+                                    <input type="submit" value="ارسال فاکتور و برگه خروج" class="btn btn-primary mt-2">
+
                                 </div>
 
                             @endif
-                        @else
-                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 mt-5">
-                                <input type="hidden"
-                                       value="{{$order->req_for == 'invoice' ? 'true':'false'}}"
-                                       name="website_factor">
-
-                                <label for="factor_file">فایل فاکتور (PDF)<span
-                                        class="text-danger">*</span></label>
-                                <input type="file" name="factor_file" class="form-control"
-                                       id="factor_file"
-                                       accept="application/pdf">
-                                @error('factor_file')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                                <input type="submit" value="ارسال فاکتور" class="btn  btn-primary mt-2">
-
-                            </div>
-
-                        @endif
 
 
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     @endif
 
     @if($order->req_for == 'pre-invoice')
@@ -210,9 +222,8 @@
                                         <div class="w-100 text-center">
                                             @if($order->action->sent_to_warehouse)
                                                 <h5 class="text-success mt-3">ارسال تاییدیه - ارسال فاکتور به
-                                                    انبار
-                                                    توسط
-                                                    حسابداری</h5>
+                                                    انبار توسط حسابداری
+                                                </h5>
                                             @else
                                                 <h5 class="text-success mt-3">ارسال تاییدیه - <span
                                                         class="text-warning">در انتظار صدور فاکتور و خروج انبار </span>
@@ -355,6 +366,14 @@
                                                     @error('factor_file')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                     @enderror
+                                                    <label for="exit_file" class="mt-2">فایل خروج سپیدار (PDF)<span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="file" name="exit_file" class="form-control"
+                                                           id="exit_file"
+                                                           accept="application/pdf">
+                                                    @error('exit_file')
+                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                         @endif
@@ -371,6 +390,16 @@
                                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
+                                            <div class="form-group">
+                                                <label for="exit_file" class="mt-2">فایل خروج سپیدار (PDF)<span
+                                                        class="text-danger">*</span></label>
+                                                <input type="file" name="exit_file" class="form-control"
+                                                       id="exit_file"
+                                                       accept="application/pdf">
+                                            </div>
+                                            @error('exit_file')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     @endif
                                 @endcan
@@ -411,12 +440,6 @@
         </div>
 
     @endif
-
-
-
-
-
-
 
 @endsection
 @section('scripts')

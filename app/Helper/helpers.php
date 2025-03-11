@@ -136,6 +136,68 @@ if (!function_exists('upload_file_factor')) {
     }
 }
 
+if (!function_exists('upload_file_exit')) {
+    function upload_file_exit($file, $folder)
+    {
+        if ($file) {
+            try {
+                $pdfFile = $file;
+                $inputPdfPath = $pdfFile->getPathName();
+
+                $outputPdfTempPath = storage_path('app/public/temp-processed-pdf.pdf');
+                $imagePath = public_path('assets/images/parso_mohr_emza.png');
+
+                $mpdf = new Mpdf([
+                    'tempDir' => storage_path('app/mpdf-temp'),
+                ]);
+
+                $pageCount = $mpdf->SetSourceFile($inputPdfPath);
+
+                list($imgWidth, $imgHeight) = getimagesize($imagePath);
+                $imgWidthMm = $imgWidth * 0.264583;
+                $imgHeightMm = $imgHeight * 0.264583;
+
+                // تنظیمات صفحه A4 عمودی
+                $pageWidth = 210; // میلی‌متر
+                $pageHeight = 297; // میلی‌متر
+                $x = $pageWidth - $imgWidthMm - 50; // 10 میلی‌متر فاصله از لبه راست
+                $y = $pageHeight - $imgHeightMm - 50; // 10 میلی‌متر فاصله از لبه پایین
+
+                for ($i = 1; $i <= $pageCount; $i++) {
+                    $templateId = $mpdf->ImportPage($i);
+                    $mpdf->AddPage('P'); // تغییر به حالت عمودی
+                    $mpdf->UseTemplate($templateId);
+
+                    if ($i == $pageCount) {
+                        $mpdf->Image($imagePath, $x, $y, $imgWidthMm, $imgHeightMm);
+                    }
+                }
+
+                $mpdf->Output($outputPdfTempPath, 'F');
+
+                $year = Carbon::now()->year;
+                $month = Carbon::now()->month;
+                $uploadPath = public_path("/uploads/{$folder}/{$year}/{$month}/");
+
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0777, true);
+                }
+
+                $filename = time() . '-processed.pdf';
+                $finalPath = $uploadPath . $filename;
+                rename($outputPdfTempPath, $finalPath);
+
+                return "/uploads/{$folder}/{$year}/{$month}/" . $filename;
+            } catch (Exception $e) {
+                alert()->warning('خطا در آپلود فایل', 'خطا');
+                return redirect()->to(route('invoices.index'));
+            }
+
+
+        }
+    }
+}
+
 
 if (!function_exists('formatBytes')) {
     function formatBytes($bytes, $precision = 2)

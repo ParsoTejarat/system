@@ -243,16 +243,23 @@ class OrderController extends Controller
 
         if ($request->website_factor == "true") {
 
-            $request->validate(['factor_file' => 'required|mimes:pdf|max:5000']);
 
-            $file = upload_file_factor($request->factor_file, 'Action/Factors');
+            $request->validate([
+                'factor_file' => 'required|mimes:pdf|max:5000',
+                'exit_file' => 'required|mimes:pdf|max:5000',
+            ]);
+
+            $file_factor = upload_file_factor($request->factor_file, 'Action/Factors');
+            $file_exit = upload_file_exit($request->exit_file, 'Action/Exits');
+
 
 
             $invoice->update(['status' => 'invoiced']);
             $invoice->action()->updateOrCreate([
                 'order_id' => $invoice->id
             ], [
-                'factor_file' => $file,
+                'factor_file' => $file_factor,
+                'exit_file' => $file_exit,
                 'status' => 'factor',
                 'sent_to_warehouse' => 1
             ]);
@@ -338,14 +345,19 @@ class OrderController extends Controller
 
             } elseif ($request->has('send_to_warehouse')) {
 
-                $request->validate(['factor_file' => 'required|mimes:pdf|max:5000']);
+                $request->validate([
+                    'factor_file' => 'required|mimes:pdf|max:5000',
+                    'exit_file' => 'required|mimes:pdf|max:5000',
+                ]);
 
-                $file = upload_file_factor($request->factor_file, 'Action/Factors');
+                $file_factor = upload_file_factor($request->factor_file, 'Action/Factors');
+                $file_exit = upload_file_exit($request->exit_file, 'Action/Exits');
 
                 $invoice->action()->updateOrCreate([
                     'order_id' => $invoice->id
                 ], [
-                    'factor_file' => $file,
+                    'factor_file' => $file_factor,
+                    'exit_file' => $file_exit,
                     'sent_to_warehouse' => 1
                 ]);
 
@@ -376,7 +388,9 @@ class OrderController extends Controller
             } else {
 
                 if ($status == 'invoice') {
-                    $request->validate(['invoice_file' => 'required|mimes:pdf|max:5000']);
+                    $request->validate([
+                        'invoice_file' => 'required|mimes:pdf|max:5000',
+                    ]);
 
 
                     $file = upload_file_factor($request->invoice_file, 'Action/Invoices');
@@ -403,14 +417,20 @@ class OrderController extends Controller
                     Notification::send($sales_manager, new SendMessage($notif_message, $url, $title));
                     //end send notif
                 } else {
-                    $request->validate(['factor_file' => 'required|mimes:pdf|max:5000']);
+                    $request->validate([
+                        'factor_file' => 'required|mimes:pdf|max:5000',
+                        'exit_file' => 'required|mimes:pdf|max:5000',
+                    ]);
 
-                    $file = upload_file_factor($request->factor_file, 'Action/Factors');
+                    $factor_file = upload_file_factor($request->factor_file, 'Action/Factors');
+                    $file_exit = upload_file_exit($request->exit_file, 'Action/Exits');
+
                     $invoice->action()->updateOrCreate([
                         'order_id' => $invoice->id
                     ], [
                         'status' => $status,
-                        'factor_file' => $file,
+                        'factor_file' => $factor_file,
+                        'exit_file' => $file_exit,
                         'sent_to_warehouse' => 1
                     ]);
 

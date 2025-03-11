@@ -221,6 +221,8 @@ return [
         'g-recaptcha-response' => 'کپچا گوگل',
         'customer_type' => 'نوع مشتری',
         'brand_id' => 'برند',
+        'exit_file' => ' فایل خروج انبار',
+
     ],
 
 ];
