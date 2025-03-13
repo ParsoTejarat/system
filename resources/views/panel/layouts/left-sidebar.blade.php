@@ -227,14 +227,7 @@
                                         </a>
                                     </li>
                                 @endcan
-                                    @can('customer-order-list')
-                                        @php $active_item = active_sidebar(['orders','orders/create','orders/{order}/edit','search/orders','order-action/{orders}','customer-orders-status/{orders}','order-action/{order}']); @endphp
-                                        <li class="{{ $active_item ? 'menuitem-active' : '' }}">
-                                            <a href="{{ route('orders.index') }}" {{ $active_item ? 'active' : '' }}>
-                                                سفارشات مشتری
-                                            </a>
-                                        </li>
-                                    @endcan
+
                                     @php
                                         $roles = [
                                             'free_sale' => 'درخواست فروش آزاد',
