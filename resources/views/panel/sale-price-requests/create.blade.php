@@ -1,0 +1,291 @@
+@extends('panel.layouts.master')
+@section('styles')
+    <style>
+        table tbody tr td input {
+            text-align: center;
+        }
+
+
+        .btn_remove {
+            cursor: pointer;
+        }
+
+        #btn_add{
+            margin-top: 30px
+        }
+
+
+
+
+    </style>
+
+    <!-- Clockpicker -->
+    <link rel="stylesheet" href="/vendors/clockpicker/bootstrap-clockpicker.min.css" type="text/css">
+    <!-- Datepicker -->
+    <link rel="stylesheet" href="/vendors/datepicker/daterangepicker.css">
+    <link rel="stylesheet" href="/vendors/datepicker-jalali/bootstrap-datepicker.min.css">
+
+    <style>
+
+    </style>
+@endsection
+@section('title', 'ایجاد ' . (in_array(auth()->user()->role->name, [
+    'systematic_sales', 'internet_sale', 'free_sale',
+    'industrial_sale', 'global_sale', 'organization_sale'
+])
+    ? ' درخواست ' . auth()->user()->role->label
+    : 'درخواست های فروش'))
+@section('content')
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title d-flex justify-content-between align-items-center mb-4">
+                <h6>ثبت {{ in_array(auth()->user()->role->name, [
+                                'systematic_sales', 'internet_sale', 'free_sale',
+                                'industrial_sale', 'global_sale', 'organization_sale'
+                            ])
+                                ? ' درخواست ' . auth()->user()->role->label
+                                : 'درخواست های فروش' }}</h6>
+                <button type="button" class="btn btn-success" id="btn_add">
+                    <i class="fa fa-plus me-2"></i>
+                    افزودن کالا
+                </button>
+            </div>
+            <form action="{{ route('sale_price_requests.store') }}" method="post" id="store_form">
+                @csrf
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <div class="row mb-4">
+                            <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                                <label for="customer">مشتری حقیقی/حقوقی<span class="text-danger">*</span></label>
+                                <select name="customer" id="customer"  data-toggle="select2" class="form-select">
+                                    <option value="" disabled selected>انتخاب کنید...</option>
+                                    @foreach(\App\Models\Customer::all(['id','name','code']) as $customer)
+                                        <option value="{{ $customer->id }}" {{ old('customer') == $customer->id ? 'selected' : '' }}>{{ $customer->code.' - '.$customer->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('customer')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                                <label for="payment_type">نوع پرداختی</label>
+                                <select class="form-select"  data-toggle="select2" name="payment_type" id="payment_type">
+                                    @foreach(\App\Models\Order::Payment_Type as $key => $value)
+                                        <option value="{{ $key }}" {{ old('payment_type') == $key ? 'selected' : '' }}>{{ $value }}</option>
+                                    @endforeach
+                                </select>
+                                @error('payment_type')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+{{--                            @can('systematic_sales')--}}
+                            <div class="col-xl-2 col-lg-2 col-md-3 mb-4">
+                                <label for="date" class="form-label">تاریخ موعد<span class="text-danger">*</span></label>
+                                <input type="text" name="date" autocomplete="off" class="form-control date-picker-shamsi-list" id="date" value="{{ old('date') }}">
+                                @error('date')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-3 mb-4 clock-sec">
+                                <label class="form-label">ساعت موعد<span class="text-danger">*</span></label>
+                                <div class="input-group clockpicker" data-autoclose="true">
+                                        <span class="input-group-text">
+                                            <i class="fa fa-clock"></i>
+                                        </span>
+                                    <input type="text" autocomplete="off" name="hour" class="form-control text-start" value="{{ old('hour') }}" dir="ltr">
+                                </div>
+                                @error('hour')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-3 mb-4">
+                                <label for="need_no" class="form-label">شماره نیاز<span class="text-danger">*</span></label>
+                                <input type="text" name="need_no" autocomplete="off" class="form-control" id="need_no" value="{{ old('need_no') }}">
+                                @error('need_no')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+{{--                            @endcan--}}
+                        </div>
+                        <table class="table table-striped table-bordered text-center" id="products_table">
+                            <thead class="table-primary">
+                            <tr>
+                                <th>عنوان کالا</th>
+                                <th>تعداد</th>
+                                <th>قیمت(ریال)</th>
+                                <th>حذف</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <select class="form-select"  data-toggle="select2" name="products[]" required>
+                                        <option value="" disabled selected>انتخاب کنید</option>
+                                        @foreach($products as $item)
+                                            <option value="{{ $item->id }}">{{ $item->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td><input type="number" class="form-control" name="counts[]" min="1" required></td>
+                                <td><input type="number" class="form-control price-input" name="product_price[]" required>
+                                    <div class="formatted-price mt-2 fw-bold"></div>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn_remove"><i class="fa fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="2" class="text-center fw-bold">مجموع قیمت(ریال):</td>
+                                <td colspan="2" id="total_price" class="fw-bold"></td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="col-12 row mb-4">
+                        <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
+                            <label class="form-label" for="description">توضیحات</label>
+                            <textarea name="description" id="description" class="form-control" rows="4">{{ old('description') }}</textarea>
+                            @error('description')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary mt-3" type="submit">ثبت فرم</button>
+            </form>
+        </div>
+    </div>
+@endsection
+@section('scripts')
+    <script src="/vendors/datepicker-jalali/bootstrap-datepicker.min.js"></script>
+    <script src="/vendors/datepicker-jalali/bootstrap-datepicker.fa.min.js"></script>
+    <script src="/vendors/datepicker/daterangepicker.js"></script>
+    <script src="/assets/js/examples/datepicker.js"></script>
+    <script src="/vendors/clockpicker/bootstrap-clockpicker.min.js"></script>
+    <script src="/assets/js/examples/clockpicker.js"></script>
+    <script>
+        $(document).ready(function () {
+
+                $('.clockpicker').clockpicker();
+
+            $('#submit_button').on('click', function () {
+                let button = $(this);
+                let dots = 0;
+                // غیرفعال کردن دکمه
+                button.prop('disabled', true).text('در حال ارسال');
+                // ایجاد افکت چشمک‌زن و تغییر نقطه‌ها
+                let interval = setInterval(() => {
+                    dots = (dots + 1) % 4; // مقدار 0 تا 3
+                    let text = 'در حال ارسال' + '.'.repeat(dots);
+                    button.text(text).fadeOut(3000).fadeIn(3000); // افکت چشمک زدن
+                }, 6000);
+                // ارسال فرم به صورت خودکار
+                button.closest('form').submit();
+                // متوقف کردن افکت بعد از ارسال (اختیاری، چون صفحه معمولاً رفرش می‌شود)
+                setTimeout(() => clearInterval(interval), 10000);
+            });
+        });
+        $(document).ready(function () {
+            var products = [];
+            var products_options_html = '';
+            @foreach($products as $product)
+            products.push({
+                "id": "{{ $product->id }}",
+                "title": "{{ $product->title }}",
+            });
+            @endforeach
+            $.each(products, function (i, item) {
+                products_options_html += `<option value="${item.id}">${item.title }</option>`;
+            });
+            $('#store_form').on('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                }
+            });
+            $('#submit_button').on('click', function () {
+                let button = $(this);
+                // تغییر متن و غیر فعال کردن دکمه
+                button.prop('disabled', true).text('در حال ارسال...');
+                // ارسال فرم به صورت خودکار
+                button.closest('form').submit();
+            });
+            // Format price input and display formatted price below
+            $(document).on('input', '.price-input', function () {
+                let value = $(this).val().replace(/,/g, ''); // حذف کاماهای موجود
+                if (!isNaN(value) && value.trim() !== '') {
+                    let formattedValue = new Intl.NumberFormat('fa-IR').format(value);
+                    $(this).next('.formatted-price').text(formattedValue);
+                } else {
+                    $(this).next('.formatted-price').text('');
+                }
+                calculateTotalPrice();
+            });
+            // When count input changes, recalculate total
+            $(document).on('input', 'input[name="counts[]"]', function () {
+                calculateTotalPrice();
+            });
+            // Add new row
+            $(document).on('click', '#btn_add', function () {
+                $('#products_table tbody').append(`
+                <tr>
+                    <td>
+                        <select class="js-example-basic-single" name="products[]" required>
+                            <option value="" disabled selected>انتخاب کنید</option>
+                            ${products_options_html}
+                        </select>
+                    </td>
+                    <td><input type="number" class="form-control" name="counts[]" min="1" value="1" required></td>
+                    <td>
+                        <input type="number" class="form-control price-input" name="product_price[]" value="0" required>
+                        <div class="formatted-price" style="margin-top: 5px; font-weight: bold;"></div>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger btn-floating btn_remove">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                `);
+                $('.js-example-basic-single').select2();
+                calculateTotalPrice();
+            });
+            // Remove row
+            $(document).on('click', '.btn_remove', function () {
+                $(this).closest('tr').remove();
+                calculateTotalPrice();
+            });
+            // تابع محاسبه مجموع قیمت
+            function calculateTotalPrice() {
+                let total = 0;
+                $('#products_table tbody tr').each(function () {
+                    let count = parseFloat($(this).find('input[name="counts[]"]').val()) || 0;
+                    let price = parseFloat($(this).find('input[name="product_price[]"]').val().replace(/,/g, '')) || 0;
+                    total += count * price;
+                });
+                // دریافت هزینه ارسال در صورتی که فیلد موجود باشد
+                let shippingCost = 0;
+                let shippingValue = $('#shipping_cost').val();
+                if(shippingValue !== undefined && shippingValue !== null){
+                    shippingCost = parseFloat(shippingValue.replace(/,/g, '')) || 0;
+                }
+                total += shippingCost;
+                $('#total_price').text(new Intl.NumberFormat('fa-IR').format(total));
+                $('#price_input').val(total);
+            }
+            // محاسبه اولیه در صورت وجود داده‌های پیش‌فرض
+            calculateTotalPrice();
+        });
+        $(document).on('input', '#shipping_cost', function () {
+            let value = $(this).val().replace(/,/g, ''); // حذف کاماهای موجود
+            if (!isNaN(value) && value.trim() !== '') {
+                let formattedValue = new Intl.NumberFormat('fa-IR').format(value);
+                $('#shipping_cost_formatted').text(formattedValue + ' ریال ');
+            } else {
+                $('#shipping_cost_formatted').text('');
+            }
+            calculateTotalPrice();
+        });
+    </script>
+@endsection

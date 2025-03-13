@@ -227,6 +227,38 @@
                                         </a>
                                     </li>
                                 @endcan
+                                    @can('customer-order-list')
+                                        @php $active_item = active_sidebar(['orders','orders/create','orders/{order}/edit','search/orders','order-action/{orders}','customer-orders-status/{orders}','order-action/{order}']); @endphp
+                                        <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                            <a href="{{ route('orders.index') }}" {{ $active_item ? 'active' : '' }}>
+                                                سفارشات مشتری
+                                            </a>
+                                        </li>
+                                    @endcan
+                                    @php
+                                        $roles = [
+                                            'free_sale' => 'درخواست فروش آزاد',
+                                            'global_sale' => 'درخواست فروش سراسری',
+                                            'systematic_sales' => 'درخواست فروش ستاد',
+                                            'organization_sale' => 'درخواست فروش سازمانی',
+                                            'industrial_sale' => 'درخواست فروش صنعتی'
+                                        ];
+                                        $userRole = auth()->user()->role->name;
+                                    @endphp
+
+                                    @if(array_key_exists($userRole, $roles))
+                                        <li>
+                                            <a class="{{ active_sidebar(['sale_price_requests', 'sale_price_requests/action/*', 'sale_price_requests/create', 'sale_price_requests/*/edit', 'sale_price_requests/*', 'sale_price_requests/{sale_price_request}']) ? 'active' : '' }}"
+                                               href="{{ url('/panel/sale_price_requests?type=' . urlencode($userRole)) }}">{{ $roles[$userRole] }}</a>
+                                        </li>
+                                    @elseif(in_array($userRole, ['ceo', 'admin', 'sales-manager']))
+                                        @foreach($roles as $key => $label)
+                                            <li>
+                                                <a class="{{ (request()->query('type') == $key) || (request()->is('panel/sale_price_requests/action/*','sale_price_requests/{sale_price_request}') && request()->query('type') == $key) ? 'active' : '' }}"
+                                                   href="{{ url('/panel/sale_price_requests?type=' . urlencode($key)) }}">{{ $label }}</a>
+                                            </li>
+                                        @endforeach
+                                    @endif
                                 @can('list-pre-invoice')
                                     @php $active_item = active_sidebar(['pre-invoices','pre-invoices/create','pre-invoices/{pre_invoice}/edit','search/pre-invoices']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">

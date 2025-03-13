@@ -216,6 +216,8 @@ class PermissionSeeder extends Seeder
 //            'edit-pre-invoice' => 'ویرایش پیش فاکتور مشتری',
 //            'delete-pre-invoice' => 'حذف پیش فاکتور مشتری',
 //            'download-pre-invoice' => 'دانلود پیش فاکتور مشتری',
+            'sale-price-requests-create' => 'درخواست فروش',
+
         ];
 
         foreach ($items as $key => $item) {

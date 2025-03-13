@@ -247,6 +247,7 @@ class InvoiceController extends Controller
         $data = [
             'price' => $price,
             'total_price' => $total_price,
+            'inventory' => $product->countValidTrackingCodes(),
             'discount_amount' => $discount_amount,
             'extra_amount' => $extra_amount,
             'total_price_with_off' => $total_price_with_off,

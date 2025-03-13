@@ -28,6 +28,7 @@ use App\Http\Controllers\Panel\ProductController;
 use App\Http\Controllers\Panel\PurchaseController;
 use App\Http\Controllers\Panel\ReportController;
 use App\Http\Controllers\Panel\RoleController;
+use App\Http\Controllers\Panel\SalePriceRequestController;
 use App\Http\Controllers\Panel\SaleReportController;
 use App\Http\Controllers\Panel\SetadFeeController;
 use App\Http\Controllers\Panel\SmsHistoryController;
@@ -124,6 +125,9 @@ Route::get('/label/generator', function () {
     return view('panel.pdf.barcode', compact('barcodes'));
 });
 
+Route::get('create-role',function (){
+   return \App\Models\Role::where('name','online_sales')->first();
+});
 
 //Route::get('/timeline', function () {
 //    return view('panel.timeline');
@@ -160,6 +164,14 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     Route::get('exit-remittances/download-pdf/{id}', [ExitRemittancesController::class, 'downloadPDF'])->name('exitRemittances.downloadPDF');
     Route::get('exit-product-from-warehouse/download-pdf/{id}', [ExitRemittancesController::class, 'downloadPDFExitFromWarehouse'])->name('ExitFromWarehouse.downloadPDF');
     Route::get('warehouse-stock-download-pdf', [ExitRemittancesController::class, 'wareHouseStockPrinter'])->name('wareHouseStockPrinter.downloadPDF');
+
+
+    Route::resource('sale_price_requests', SalePriceRequestController::class);
+    Route::get('sale_price_requests/action/{sale_price_request}', [SalePriceRequestController::class, 'action'])->name('sale_price_requests.action');
+    Route::post('sale_price_requests/actionStore', [SalePriceRequestController::class, 'actionStore'])->name('sale_price_requests.actionStore');
+    Route::post('/sale_price_requests/actionResult', [SalePriceRequestController::class, 'actionResult'])->name('sale_price_requests.actionResult');
+    Route::post('export_sale_price_requests', [SalePriceRequestController::class, 'export'])->name('export_sale_price_requests');
+
 
     Route::post('import-tracking-excel-file', [ProductController::class, 'trackingCodeProcess'])->name('tracking.product.import.excel');
 
