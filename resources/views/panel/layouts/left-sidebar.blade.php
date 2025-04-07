@@ -210,7 +210,7 @@
 
                 {{-- Orders --}}
                 @canany(['invoices-list','buy-orders-list','sale-reports-list','price-requests-list'])
-                    @php $active_side = active_sidebar(['invoices','invoices/create','invoices/{invoice}/edit','setad-fee/{order}/action','search/invoices','setad-fee','setad-fee/create','setad-fee/{setad_fee}/edit','setad-fee/{setad_fee}', 'sale-reports','sale-reports/create','sale-reports/{sale_report}/edit','search/sale-reports','invoice-action/{invoice}','orders-status/{invoice}','price-requests','price-requests/create','price-requests/{price_request}/edit','price-requests/{price_request}','buy-orders','buy-orders/create','buy-orders/{buy_order}/edit','buy-orders/{buy_order}','search/buy-orders','orders','orders/create','orders/{order}/edit','search/orders','order-action/{order}','customer-orders-status/{orders}','pre-invoices','pre-invoices/create','pre-invoices/{pre_invoice}/edit','search/pre-invoices']); @endphp
+                    @php $active_side = active_sidebar(['invoices','invoices/create','invoices/{invoice}/edit','setad-fee/{order}/action','search/invoices','setad-fee','setad-fee/create','setad-fee/{setad_fee}/edit','setad-fee/{setad_fee}', 'sale-reports','sale-reports/create','sale-reports/{sale_report}/edit','search/sale-reports','invoice-action/{invoice}','orders-status/{invoice}','price-requests','price-requests/create','price-requests/{price_request}/edit','price-requests/{price_request}','buy-orders','buy-orders/create','buy-orders/{buy_order}/edit','buy-orders/{buy_order}','search/buy-orders','orders','orders/create','orders/{order}/edit','search/orders','order-action/{order}','customer-orders-status/{orders}','pre-invoices','pre-invoices/create','pre-invoices/{pre_invoice}/edit','search/pre-invoices','sale_price_requests', 'sale_price_requests/action/*','sale_price_requests/action/{sale_price_request}', 'sale_price_requests/create', 'sale_price_requests/*/edit', 'sale_price_requests/*', 'sale_price_requests/{sale_price_request}']); @endphp
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#orders" data-bs-toggle="collapse" aria-expanded="false" aria-controls="orders">
                             <i class="ri-shopping-cart-line"></i>
@@ -228,30 +228,30 @@
                                     </li>
                                 @endcan
 
-                                    @php
-                                        $roles = [
-                                            'free_sale' => 'درخواست فروش آزاد',
-                                            'global_sale' => 'درخواست فروش سراسری',
-                                            'systematic_sales' => 'درخواست فروش ستاد',
-                                            'organization_sale' => 'درخواست فروش سازمانی',
-                                            'industrial_sale' => 'درخواست فروش صنعتی'
-                                        ];
-                                        $userRole = auth()->user()->role->name;
-                                    @endphp
-
-                                    @if(array_key_exists($userRole, $roles))
-                                        <li>
-                                            <a class="{{ active_sidebar(['sale_price_requests', 'sale_price_requests/action/*', 'sale_price_requests/create', 'sale_price_requests/*/edit', 'sale_price_requests/*', 'sale_price_requests/{sale_price_request}']) ? 'active' : '' }}"
-                                               href="{{ url('/panel/sale_price_requests?type=' . urlencode($userRole)) }}">{{ $roles[$userRole] }}</a>
+                                @php
+                                    $roles = [
+                                        'free_sale' => 'درخواست فروش آزاد',
+                                        'global_sale' => 'درخواست فروش سراسری',
+                                        'systematic_sales' => 'درخواست فروش ستاد',
+                                        'organization_sale' => 'درخواست فروش سازمانی',
+                                        'industrial_sale' => 'درخواست فروش صنعتی'
+                                    ];
+                                    $userRole = auth()->user()->role->name;
+                                @endphp
+                                @php $active_item = active_sidebar(['sale_price_requests', 'sale_price_requests/action/*', 'sale_price_requests/create', 'sale_price_requests/*/edit', 'sale_price_requests/*', 'sale_price_requests/{sale_price_request}']); @endphp
+                                @if(array_key_exists($userRole, $roles))
+                                    <li class="{{$active_item ? 'menuitem-active' : ''}}">
+                                        <a
+                                            href="{{ url('/panel/sale_price_requests?type=' . urlencode($userRole)) }}">{{ $roles[$userRole] }}</a>
+                                    </li>
+                                @elseif(in_array($userRole, ['ceo', 'admin', 'sales-manager']))
+                                    @foreach($roles as $key => $label)
+                                        <li class="{{ (request()->query('type') == $key) || (request()->is('panel/sale_price_requests/action/*','sale_price_requests/{sale_price_request}') && request()->query('type') == $key) ? 'menuitem-active' : '' }}">
+                                            <a
+                                                href="{{ url('/panel/sale_price_requests?type=' . urlencode($key)) }}">{{ $label }}</a>
                                         </li>
-                                    @elseif(in_array($userRole, ['ceo', 'admin', 'sales-manager']))
-                                        @foreach($roles as $key => $label)
-                                            <li>
-                                                <a class="{{ (request()->query('type') == $key) || (request()->is('panel/sale_price_requests/action/*','sale_price_requests/{sale_price_request}') && request()->query('type') == $key) ? 'active' : '' }}"
-                                                   href="{{ url('/panel/sale_price_requests?type=' . urlencode($key)) }}">{{ $label }}</a>
-                                            </li>
-                                        @endforeach
-                                    @endif
+                                    @endforeach
+                                @endif
                                 @can('list-pre-invoice')
                                     @php $active_item = active_sidebar(['pre-invoices','pre-invoices/create','pre-invoices/{pre_invoice}/edit','search/pre-invoices']); @endphp
                                     <li class="{{ $active_item ? 'menuitem-active' : '' }}">
@@ -316,7 +316,7 @@
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#packets" data-bs-toggle="collapse" aria-expanded="false" aria-controls="packets">
                             <i class="ri-truck-line"></i>
-                            <span> بسته های ارسالی </span>
+                            <span>بسته های ارسالی</span>
                             <span class="menu-arrow"></span>
                         </a>
                         <div class="collapse {{ $active_side ? 'show' : '' }}" id="packets">
@@ -341,6 +341,14 @@
                         @endcan
                     </li>
                 @endcan
+
+
+
+
+
+
+
+
 
                 {{-- Customers --}}
                 @can('customers-list')
@@ -416,8 +424,8 @@
                 @endcan
 
                 {{-- Warehouse --}}
-                @canany(['guarantees-list','warehouses-list'])
-                    @php $active_side = active_sidebar(['inventory','inventory/create','inventory/{inventory}/edit','search/inventory','inventory-reports','inventory-reports/create','inventory-reports/{inventory_report}/edit','warehouses','warehouses/create','warehouses/{warehouse}/edit','search/inventory-reports','guarantees','guarantees/create','guarantees/{guarantee}/edit','exit-remittances','exit-remittances/create','exit-remittances/{exit_remittance}/edit','exit-remittances/{exit_remittance}','out-of-warehouse','out-of-warehouse/{id}','return-back-products','warehouses/{warehouse}']); @endphp
+                @canany(['warehouses-list'])
+                    @php $active_side = active_sidebar(['inventory','inventory/create','inventory/{inventory}/edit','search/inventory','inventory-reports','inventory-reports/create','inventory-reports/{inventory_report}/edit','warehouses','warehouses/create','warehouses/{warehouse}/edit','search/inventory-reports','exit-remittances','exit-remittances/create','exit-remittances/{exit_remittance}/edit','exit-remittances/{exit_remittance}','out-of-warehouse','out-of-warehouse/{id}','return-back-products','warehouses/{warehouse}']); @endphp
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#warehouse" data-bs-toggle="collapse" aria-expanded="false" aria-controls="warehouse">
                             <i class="ri-home-5-line"></i>
@@ -487,6 +495,36 @@
                         </div>
                     </li>
                 @endcanany
+
+                @can('guarantees-list')
+                    @php $active_side = active_sidebar(['guarantees','guarantees/create','guarantees/{guarantee}/edit','guarantees/{guarantee}']); @endphp
+                    <li class="{{ $active_side ? 'menuitem-active' : '' }}">
+                        <a href="#guarantees" data-bs-toggle="collapse" aria-expanded="false" aria-controls="packets">
+                            <i class="ri-shield-star-fill"></i>
+                            <span>گارانتی ها</span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse {{ $active_side ? 'show' : '' }}" id="guarantees">
+                            <ul class="nav-second-level">
+                                @php $active_item = active_sidebar(['guarantees','guarantees/create','guarantees/{guarantee}/edit','guarantees/{guarantee}']); @endphp
+                                <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                    <a href="{{ route('guarantees.index') }}" {{ $active_item ? 'active' : '' }}>
+                                        لیست گارانتی ها
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                @endcan
+
+
+                {{--                                @can('guarantees-list')--}}
+                {{--                                    @php $active_item = active_sidebar(['guarantees','guarantees/create','guarantees/{guarantee}/edit']); @endphp--}}
+                {{--                                    <li class="{{ $active_item ? 'menuitem-active' : '' }}">--}}
+                {{--                                        <a href="{{ route('guarantees.index') }}" {{ $active_item ? 'active' : '' }}>گارانتی--}}
+                {{--                                            ها</a>--}}
+                {{--                                    </li>--}}
+                {{--                                @endcan--}}
 
                 {{-- Tickets & Supports --}}
                 @canany(['tickets-list','sms-histories'])

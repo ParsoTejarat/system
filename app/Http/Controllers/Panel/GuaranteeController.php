@@ -6,18 +6,30 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreGuaranteeRequest;
 use App\Http\Requests\UpdateGuaranteeRequest;
 use App\Models\Guarantee;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\Role;
+use App\Models\User;
+use App\Notifications\SendMessage;
+use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class GuaranteeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('guarantees-list');
 
         // expire the guarantees where expired_at < now
-        Guarantee::where('status', 'active')->where('expired_at', '<', now())->update(['status' => 'expired']);
+        Guarantee::where('status', 'active')->where('expire_time', '<', now())->update(['status' => 'expired']);
 
-        $guarantees = Guarantee::latest()->paginate(30);
+        $guarantees = Guarantee::query()
+            ->serialNumber($request->serial_number)
+            ->status($request->status)
+            ->latest()
+            ->paginate(30);
+
         return view('panel.guarantees.index', compact('guarantees'));
     }
 
@@ -25,57 +37,69 @@ class GuaranteeController extends Controller
     {
         $this->authorize('guarantees-create');
 
-        $serial = 'PT'.random_int(10000000, 99999999);
-        return view('panel.guarantees.create', compact('serial'));
+        return view('panel.guarantees.create');
     }
 
     public function store(StoreGuaranteeRequest $request)
     {
         $this->authorize('guarantees-create');
 
-        $guarantee = Guarantee::create([
-            'serial' => $request->serial_number,
-            'period' => $request->period,
-            'status' => $request->status,
-            'activated_at' => $request->status == 'active' ? now() : null,
-            'expired_at' => $request->status == 'active' ? now()->addMonths($request->period) : null,
-        ]);
+        $guarantee = new Guarantee();
+        $guarantee->product_id = $request->product;
+        $guarantee->user_id = auth()->id();
+        $guarantee->serial_number = $request->serial_number;
+        $guarantee->product_identifier = $request->product_identifier;
+        $guarantee->tracking_code = $request->tracking_code;
+        $guarantee->status = 'active';
+        $guarantee->importing_company = $request->importing_company;
+        $guarantee->start_time = now();
+        $guarantee->expire_time = now()->addMonths($request->period);
+        $guarantee->save();
+        $this->send_notif_to_accountants_store($guarantee->product_id, $guarantee->serial_number);
+
 
         // log
         activity_log('create-guarantee', __METHOD__, [$request->all(), $guarantee]);
 
-        alert()->success('گارانتی جدید با موفقیت ایجاد شد','ایجاد گارانتی');
+        alert()->success('گارانتی با موفقیت ثبت شد', 'ثبت گارانتی');
         return redirect()->route('guarantees.index');
     }
 
     public function show(Guarantee $guarantee)
     {
-        //
+        return view('panel.guarantees.show', compact('guarantee'));
     }
 
     public function edit(Guarantee $guarantee)
     {
         $this->authorize('guarantees-edit');
 
-        return view('panel.guarantees.edit', compact('guarantee'));
+        return view('panel.guarantees.edit', compact(['guarantee']));
     }
 
     public function update(UpdateGuaranteeRequest $request, Guarantee $guarantee)
     {
         $this->authorize('guarantees-edit');
 
+
+        $expire_time = Verta::parse($request->expire_time)->toCarbon()->toDateString();
+
+        $guarantee->product_id = $request->product;
+        $guarantee->serial_number = $request->serial_number;
+        $guarantee->product_identifier = $request->product_identifier;
+        $guarantee->tracking_code = $request->tracking_code;
+        $guarantee->importing_company = $request->importing_company;
+        $guarantee->period = $request->period;
+        $guarantee->status = $request->status;
+        $guarantee->expire_time = $expire_time;
+
+        $guarantee->save();
+
         // log
+        $this->send_notif_to_accountants($guarantee->product_id);
         activity_log('edit-guarantee', __METHOD__, [$request->all(), $guarantee]);
 
-        $guarantee->update([
-            'serial' => $request->serial_number,
-            'period' => $request->period,
-            'status' => $request->status,
-            'activated_at' => $guarantee->activated_at == null ? ($request->status == 'active' ? now() : null) : $guarantee->activated_at,
-            'expired_at' => $guarantee->expired_at == null ? ($request->status == 'active' ? now()->addMonths($request->period) : null) : $guarantee->expired_at,
-        ]);
-
-        alert()->success('گارانتی با موفقیت ویرایش شد','ویرایش گارانتی');
+        alert()->success('گارانتی با موفقیت ویرایش شد', 'ویرایش گارانتی');
         return redirect()->route('guarantees.index');
     }
 
@@ -90,33 +114,51 @@ class GuaranteeController extends Controller
         return back();
     }
 
-    public function serialCheck(Request $request)
+    public function print(Guarantee $guarantee)
     {
-        $serial = 'PT'.$request->serial;
+        return view('panel.guarantees.printable', compact(['guarantee']));
+    }
 
-        $guarantee = Guarantee::where('serial', $serial)->whereIn('status', ['active', 'inactive'])->first();
+//    public function serialCheck(Request $request)
+//    {
+//        $serial = 'PT' . $request->serial;
+//
+//        $guarantee = Guarantee::where('serial', $serial)->whereIn('status', ['active', 'inactive'])->first();
+//
+//        if ($guarantee) {
+//            if (!$guarantee->inventory_report) {
+//                $error = false;
+//                $message = 'سریال گارانتی معتبر است';
+//            } elseif ($guarantee->inventory_report->id == $request->inventory_report_id) {
+//                $error = false;
+//                $message = 'سریال گارانتی معتبر است';
+//            } else {
+//                $error = true;
+//                $message = 'سریال گارانتی معتبر نیست';
+//            }
+//        } else {
+//            $error = true;
+//            $message = 'سریال گارانتی معتبر نیست';
+//        }
+//
+//        $data = [
+//            'error' => $error,
+//            'message' => $message,
+//        ];
+//
+//        return response()->json(['data' => $data]);
+//    }
+    private function send_notif_to_accountants_store(Product $product, $code)
+    {
+        $roles_id = Role::whereHas('permissions', function ($q) {
+            $q->where('name', ['accountant', 'warehouse-keeper']);
+        })->pluck('id');
+        $accountants = User::where('id', '!=', auth()->id())->whereIn('role_id', $roles_id)->get();
 
-        if ($guarantee){
-            if (!$guarantee->inventory_report){
-                $error = false;
-                $message = 'سریال گارانتی معتبر است';
-            }elseif($guarantee->inventory_report->id == $request->inventory_report_id){
-                $error = false;
-                $message = 'سریال گارانتی معتبر است';
-            }else{
-                $error = true;
-                $message = 'سریال گارانتی معتبر نیست';
-            }
-        }else{
-            $error = true;
-            $message = 'سریال گارانتی معتبر نیست';
-        }
+        $url = route('guarantees.index');
+        $title = "ثبت گارانتی";
+        $message = "محصول " . $product->title . " به سریال " . $code . " گارانتی شد.";
 
-        $data = [
-            'error' => $error,
-            'message' => $message,
-        ];
-
-        return response()->json(['data' => $data]);
+        Notification::send($accountants, new SendMessage($message, $url, $title));
     }
 }

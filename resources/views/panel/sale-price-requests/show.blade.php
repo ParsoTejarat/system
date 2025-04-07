@@ -13,16 +13,20 @@
     </style>
 @endsection
 @section('content')
+    <div class="card card-title w-100 px-2">
+        <h4>
+            لیست
+            {{ in_array(auth()->user()->role->name, [
+                'systematic_sales', 'internet_sale', 'free_sale',
+                'industrial_sale', 'global_sale', 'organization_sale'
+            ])
+                ? ' درخواست ' . auth()->user()->role->label
+                : 'درخواست های فروش' }}
+        </h4>
+    </div>
     <div class="card">
         <div class="card-body">
             <div class="card-title d-flex justify-content-between align-items-center mb-4">
-                <h6>{{ in_array(auth()->user()->role->name, [
-                        'systematic_sales', 'internet_sale', 'free_sale',
-                        'industrial_sale', 'global_sale', 'organization_sale'
-                    ])
-                        ? ' درخواست ' . auth()->user()->role->label
-                        : 'درخواست های فروش' }}   </h6>
-
                 @if($sale_price_request->type == 'systematic_sales' && in_array($sale_price_request->status, ['winner','lose']))
                     <div class="col-xl-3 col-lg-3 col-md-3 mb-4">
                         <label for="final_result">نتیجه نهایی:</label>
@@ -96,10 +100,9 @@
                             @endif
                         </div>
                         <table class="table table-striped table-bordered text-center">
-                            <thead class="bg-primary text-light">
+                            <thead class="table-primary">
                             <tr>
-                                <th>عنوان کالا</th>
-                                <th>مدل</th>
+                                <th colspan="2">عنوان کالا</th>
                                 <th>دسته‌بندی</th>
                                 <th>تعداد</th>
                                 <th>قیمت پیشنهادی کارشناس فروش(ریال)</th>
@@ -110,7 +113,7 @@
                             @foreach(json_decode($sale_price_request->products) as $index => $item)
 {{--                                @dd($index , $item)--}}
                                 <tr>
-                                    <td>
+                                    <td  colspan="2">
                                         <input class="form-control readonly" type="text"
                                                name="product_name[{{ $index }}]" value="{{ $item->product_name }}"
                                                readonly>

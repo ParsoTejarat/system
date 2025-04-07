@@ -10,10 +10,15 @@
 @endsection
 @section('content')
     <div class="card">
+        <div class="card-title d-flex justify-content-between align-items-center mx-2">
+            <h5 class="">تایید درخواست</h5>
+        </div>
+    </div>
+
+    <div class="card">
+
         <div class="card-body">
-            <div class="card-title d-flex justify-content-between align-items-center mb-4">
-                <h6>تایید درخواست</h6>
-            </div>
+
             <form action="{{ route('sale_price_requests.actionStore') }}" method="post">
                 @csrf
                 <input type="hidden" value="{{$sale_price_request->id}}" name="sale_id">
@@ -54,20 +59,20 @@
                                            value="{{$sale_price_request->need_no}}">
                                 </div>
                             @endif
-                            @if($sale_price_request->type !== 'setad_sale')
-                                <div class="col-xl-2 col-lg-2 col-md-3 mb-4">
-                                    <label for="shipping_cost">هزینه ارسال(ریال)</label>
-                                    <input type="text" name="shipping_cost" class="form-control" autocomplete="off"
-                                           value="{{$sale_price_request->shipping_cost}}" id="shipping_cost">
-                                    <div id="shipping_cost_formatted" style="margin-top: 5px; font-weight: bold;"></div>
-                                </div>
-                            @endif
+                            {{--                            @if($sale_price_request->type !== 'setad_sale')--}}
+                            {{--                                <div class="col-xl-2 col-lg-2 col-md-3 mb-4">--}}
+                            {{--                                    <label for="shipping_cost">هزینه ارسال(ریال)</label>--}}
+                            {{--                                    <input type="text" name="shipping_cost" class="form-control" autocomplete="off"--}}
+                            {{--                                           value="{{$sale_price_request->shipping_cost}}" id="shipping_cost">--}}
+                            {{--                                    <div id="shipping_cost_formatted" style="margin-top: 5px; font-weight: bold;"></div>--}}
+                            {{--                                </div>--}}
+                            {{--                            @endif--}}
                         </div>
                         <table id="products_table" class="table table-striped table-bordered text-center">
                             <thead>
                             <tr>
                                 <th>عنوان کالا</th>
-                                <th>مدل</th>
+{{--                                <th>مدل</th>--}}
                                 <th>دسته‌بندی</th>
                                 <th>تعداد</th>
                                 {{-- <th>قیمت پیشنهادی سیستم</th> --}}
@@ -83,11 +88,11 @@
                                                name="product_name[{{ $index }}]" value="{{ $item->product_name }}"
                                                readonly autocomplete="off">
                                     </td>
-                                    <td>
-                                        <input class="form-control readonly" type="text"
-                                               name="product_model[{{ $index }}]" value="{{ $item->product_model }}"
-                                               readonly autocomplete="off">
-                                    </td>
+                                    {{--                                    <td>--}}
+                                    {{--                                        <input class="form-control readonly" type="text"--}}
+                                    {{--                                               name="product_model[{{ $index }}]" value="{{ $item->product_model }}"--}}
+                                    {{--                                               readonly autocomplete="off">--}}
+                                    {{--                                    </td>--}}
                                     <td>
                                         <input class="form-control readonly" type="text"
                                                name="category_name[{{ $index }}]" value="{{ $item->category_name }}"
@@ -98,7 +103,8 @@
                                                value="{{ $item->count }}" readonly autocomplete="off">
                                     </td>
                                     <td>
-                                        <input class="form-control readonly" type="text" name="product_price[{{ $index }}]"
+                                        <input class="form-control readonly" type="text"
+                                               name="product_price[{{ $index }}]"
                                                value="{{ isset($item->product_price) ? number_format($item->product_price) : "بدون قیمت" }}"
                                                readonly autocomplete="off">
                                     </td>
@@ -116,7 +122,7 @@
                                     <?php
                                     // محاسبه اولیه قیمت کارشناس (برای نمایش ثابت)
                                     $total_expert_price = 0;
-                                    foreach(json_decode($sale_price_request->products) as $item2) {
+                                    foreach (json_decode($sale_price_request->products) as $item2) {
                                         $total_expert_price += isset($item2->product_price) ? $item2->product_price * $item2->count : 0;
                                     }
                                     $total_expert_price += $sale_price_request->shipping_cost;
@@ -255,6 +261,7 @@
             $('#manager_total_price').text(new Intl.NumberFormat('fa-IR').format(total));
             $('#final_price_input').val(total);
         }
+
         $(document).on('input', 'input[name^="final_price"], #shipping_cost', function () {
             calculateTotalPrice();
         });

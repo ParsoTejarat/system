@@ -1,31 +1,6 @@
 @extends('panel.layouts.master')
-@section('title', 'ویرایش گارانتی')
-@section('styles')
-    <style>
-        .btn_remove {
-            cursor: pointer;
-        }
-    </style>
+@section('title', 'نمایش گارانتی')
 
-
-
-    <!-- Clockpicker -->
-    <link rel="stylesheet" href="/vendors/clockpicker/bootstrap-clockpicker.min.css" type="text/css">
-    <!-- Datepicker -->
-    <link rel="stylesheet" href="/vendors/datepicker/daterangepicker.css">
-    <link rel="stylesheet" href="/vendors/datepicker-jalali/bootstrap-datepicker.min.css">
-
-    <style>
-        .btn_remove {
-            cursor: pointer;
-        }
-
-        #btn_add {
-            margin-top: 30px
-        }
-    </style>
-
-@endsection
 @section('content')
     <div class="content">
         <div class="container-fluid">
@@ -33,7 +8,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
-                        <h4 class="page-title">ویرایش گارانتی</h4>
+                        <h4 class="page-title">نمایش گارانتی</h4>
                     </div>
                 </div>
             </div>
@@ -43,14 +18,14 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('guarantees.update', $guarantee->id) }}" method="post">
+{{--                            <form action="{{ route('guarantees.update', $guarantee->id) }}" method="post">--}}
                                 @csrf
                                 @method('PUT')
                                 <div class="row">
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="product">محصول<span class="text-danger">*</span></label>
                                         <select name="product" id="product_id" class="form-control"
-                                                data-toggle="select2">
+                                                 readonly>
                                             <option selected disabled>انتخاب کنید...</option>
                                             @foreach(\App\Models\Product::all() as $product)
                                                 <option
@@ -68,7 +43,7 @@
                                         <label class="form-label" for="serial_number">شماره سریال<span
                                                 class="text-danger">*</span></label>
                                         <input type="text" name="serial_number" class="form-control" id="serial_number"
-                                               value="{{ old('serial_number', $guarantee->serial_number) }}">
+                                               value="{{ old('serial_number', $guarantee->serial_number) }}" readonly>
                                         @error('serial_number')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
@@ -79,7 +54,8 @@
                                                 class="text-danger">*</span></label>
                                         <input type="text" name="product_identifier" class="form-control"
                                                id="product_identifier"
-                                               value="{{ old('product_identifier', $guarantee->product_identifier) }}">
+                                               value="{{ old('product_identifier', $guarantee->product_identifier) }}"
+                                               readonly>
                                         @error('product_identifier')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
@@ -88,7 +64,7 @@
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="tracking_code">شناسه رهگیری کالا</label>
                                         <input type="text" name="tracking_code" class="form-control" id="tracking_code"
-                                               value="{{ old('tracking_code', $guarantee->tracking_code) }}">
+                                               value="{{ old('tracking_code', $guarantee->tracking_code) }}" readonly>
                                         @error('tracking_code')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
@@ -96,7 +72,8 @@
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="tracking_code">شرکت وارد کننده</label>
                                         <input type="text" name="importing_company" class="form-control"
-                                               id="importing_company" value="{{$guarantee->importing_company}}">
+                                               id="importing_company" value="{{$guarantee->importing_company}}"
+                                               readonly>
                                         @error('importing_company')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
@@ -104,7 +81,8 @@
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="period">مدت گارانتی<span
                                                 class="text-danger">*</span></label>
-                                        <select name="period" class="form-control" id="period" data-toggle="select2">
+                                        <select name="period" class="form-control" id="period"
+                                                readonly>
                                             @foreach(\App\Models\Guarantee::PERIOD as $key => $value)
                                                 <option
                                                     value="{{ $key }}" {{ old('period', $guarantee->period) == $key ? 'selected' : '' }}>
@@ -120,7 +98,8 @@
                                     <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
                                         <label class="form-label" for="status">وضعیت<span
                                                 class="text-danger">*</span></label>
-                                        <select name="status" class="form-control" id="status" data-toggle="select2">
+                                        <select name="status" class="form-control" id="status"
+                                                readonly>
                                             @foreach(\App\Models\Guarantee::STATUS as $key => $value)
 
                                                 <option
@@ -137,7 +116,10 @@
                                         <label class="form-label" for="status">تاریخ انقضاء
                                             <span class="text-danger">*</span>
                                         </label>
-                                        <input type="text" class="form-control date-picker-shamsi-list" name="expire_time" id="expire_time" value="{{ verta($guarantee->expire_time)->format('Y/m/d') }}" required>
+                                        <input type="text" class="form-control date-picker-shamsi-list"
+                                               name="expire_time" id="expire_time"
+                                               value="{{ verta($guarantee->expire_time)->format('Y/m/d') }}" required
+                                               readonly>
                                         @error('expire_time')
                                         <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                         @enderror
@@ -145,8 +127,11 @@
                                 </div>
 
 
-                                <button class="btn btn-primary" type="submit">ویرایش گارانتی</button>
-                            </form>
+                                <a href="{{ url()->previous()}}" class="btn btn-secondary">بازگشت</a>
+                                <a href="{{ route('guarantees.print', $guarantee->id)}}" class="btn btn-primary">چاپ
+                                    <i class="fa fa-print"></i>
+                                </a>
+{{--                            </form>--}}
                         </div>
                     </div>
                 </div>
@@ -154,11 +139,4 @@
         </div>
     </div>
 @endsection
-@section('scripts')
-    <script src="/vendors/datepicker-jalali/bootstrap-datepicker.min.js"></script>
-    <script src="/vendors/datepicker-jalali/bootstrap-datepicker.fa.min.js"></script>
-    <script src="/vendors/datepicker/daterangepicker.js"></script>
-    <script src="/assets/js/examples/datepicker.js"></script>
-    <script src="/vendors/clockpicker/bootstrap-clockpicker.min.js"></script>
-    <script src="/assets/js/examples/clockpicker.js"></script>
-@endsection
+

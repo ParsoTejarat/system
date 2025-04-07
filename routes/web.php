@@ -373,7 +373,8 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     Route::get('app-versions', [SoftwareUpdateController::class, 'versions'])->name('app.versions');
 
     // Guarantees
-    Route::resource('guarantees', GuaranteeController::class)->except('show');
+    Route::resource('guarantees', GuaranteeController::class);
+    Route::get('guarantees/{guarantee}/print', [GuaranteeController::class,'print'])->name('guarantees.print');
     Route::post('serial-check', [GuaranteeController::class, 'serialCheck'])->name('serial.check');
 
     // Order Statuses

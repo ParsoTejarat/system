@@ -63,7 +63,7 @@ class ProductsExportTracking implements FromCollection, WithMapping, WithHeading
     {
         return [
             'A' => 'شرح کالا',
-            'B' => 'شناسه رهگیری S/N',
+            'B' => 'سریال کالا S/N',
         ];
     }
 

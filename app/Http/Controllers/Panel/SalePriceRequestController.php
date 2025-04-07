@@ -7,6 +7,7 @@ use App\Http\Requests\StoreSalePriceRequest;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Role;
 use App\Models\SalePriceRequest;
 use App\Models\User;
 use App\Notifications\SendMessage;
@@ -80,6 +81,7 @@ class SalePriceRequestController extends Controller
         }
         SalePriceRequest::create($data);
 //        $customer = Customer::find($request->customer);
+        $this->send_notification(auth()->id());
         alert()->success('درخواست فروش با موفقیت ثبت شد', 'ثبت درخواست فروش');
         return redirect(url('/panel/sale_price_requests?type=' . auth()->user()->role->name));
     }
@@ -106,7 +108,7 @@ class SalePriceRequestController extends Controller
 
     public function edit(SalePriceRequest $sale_price_request)
     {
-        $products = \App\Models\Product::with(['category', 'productModels'])->where('status', '=', 'approved')->get();
+        $products = \App\Models\Product::with(['category'])->get();
 
         $items = collect(json_decode($sale_price_request->items))->map(function ($item) {
             $price = DB::table('price_list')
@@ -131,12 +133,11 @@ class SalePriceRequestController extends Controller
         $items = [];
 
         foreach ($request->products as $key => $productId) {
-            $product = Product::with('category', 'productModels')->find($productId);
+            $product = Product::with('category')->find($productId);
             if ($product) {
                 $items[] = [
                     'product_id' => $product->id,
                     'product_name' => $product->title,
-                    'product_model' => $product->productModels->slug,
                     'category_name' => $product->category->slug,
                     'product_price' => $request->product_price[$key],
                     'count' => $request->counts[$key],
@@ -157,7 +158,6 @@ class SalePriceRequestController extends Controller
             'code' => $this->generateCode(),
             'payment_type' => $request->payment_type,
             'need_no' => $request->need_no,
-            'shipping_cost' => $request->shipping_cost,
 //          'type' => auth()->user()->role->name
         ]);
 
@@ -197,13 +197,13 @@ class SalePriceRequestController extends Controller
         $sale_price_request = SalePriceRequest::findOrfail($request->sale_id);
         $items = [];
         $OrderItems = [];
+
         foreach (json_decode($sale_price_request->products, true) as $key => $item) {
             $product = Product::with('category')->find($item['product_id']);
             if ($product) {
                 $items[] = [
                     'product_id' => $product->id,
                     'product_name' => $product->title,
-                    'product_model' => $product->productModels->slug,
                     'category_name' => $product->category->slug,
                     'count' => $request->count[$key],
                     'final_price' => str_replace(',', '', $request->final_price[$key] ?? 0),
@@ -220,7 +220,11 @@ class SalePriceRequestController extends Controller
                 ];
             }
         }
-//        $this->newOrder($request, $sale_price_request, $OrderItems);
+        $data = [
+            'products' => $OrderItems,
+            'other_products' => [],
+        ];
+        $this->newOrder($request, $sale_price_request, $data);
         // تعیین وضعیت بر اساس نوع درخواست
         $status = $sale_price_request->type == 'systematic_sales' ? 'accepted' : 'finished';
         $sale_price_request->update([
@@ -229,7 +233,7 @@ class SalePriceRequestController extends Controller
             'status' => $status,
             'price' => $request->price,
             'description' => $request->description,
-            'shipping_cost' => $request->shipping_cost,
+//            'shipping_cost' => $request->shipping_cost,
         ]);
         // notification sent to ceo
 
@@ -248,7 +252,25 @@ class SalePriceRequestController extends Controller
 
     }
 
-
+    public function newOrder($request,  $sale_price_request, $OrderItems)
+    {
+        $order = new Order();
+        $order->description = $request->description;
+        $order->type = 'systematic_sales';
+        $order->req_for = 'pre-invoice';
+//        $order->payment_type = $sale_price_request->payment_type;
+        $order->code = $sale_price_request->code;
+        $order->user_id = $sale_price_request->user->id;
+        $order->customer_id = $sale_price_request->customer->id;
+//        $order->shipping_cost = $sale_price_request->shipping_cost;
+        $order->create_in = 'automation';
+        $order->products = json_encode($OrderItems);
+        $order->save();
+        $order->order_status()->updateOrCreate(
+            ['status' => 'register'],
+            ['orders' => 1, 'status' => 'register']
+        );
+    }
 
     public function actionResult(Request $request, SalePriceRequest $sale_price_request)
     {
@@ -293,14 +315,6 @@ class SalePriceRequestController extends Controller
     }
 
 
-
-
-
-
-
-
-
-
     public function destroy(SalePriceRequest $sale_price_request)
     {
 //        $this->authorize('sale-price-requests-delete');
@@ -329,6 +343,24 @@ class SalePriceRequestController extends Controller
     }
 
 
+    private function send_notification($id)
+    {
+        $user = User::find($id);
+
+        $roles_id = Role::whereHas('permissions', function ($q) {
+            $q->whereIn('name', ['ceo', 'sale-manager', 'admin']);
+        })->pluck('id');
+
+        $accountants = User::where('id', '!=', auth()->id())
+            ->whereIn('role_id', $roles_id)
+            ->get();
+
+        $url = route('sale_price_requests.index');
+        $title = "درخواست فروش";
+        $message = "درخواست فروش همکار '{$user->fullName()}' ثبت شد";
+
+        Notification::send($accountants, new SendMessage($message, $url, $title));
+    }
 
 
 

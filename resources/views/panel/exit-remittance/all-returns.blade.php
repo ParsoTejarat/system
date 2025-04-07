@@ -42,7 +42,7 @@
                                                class="form-control">
                                     </div>
                                     <div class="col-3">
-                                        <label for="order">شناسه رهگیری</label>
+                                        <label for="order">سریال کالا</label>
                                         <input type="text" name="tracking_code"
                                                value="{{old('tracking_code',request()->get('tracking_code'))}}"
                                                class="form-control">
@@ -60,7 +60,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>شناسه سفارش</th>
-                                        <th>شناسه رهگیری کالا</th>
+                                        <th>سریال کالا</th>
                                         <th>شرح کالا</th>
                                         <th>همکار ثبت مرجوعی</th>
                                         <th>تاریخ مرجوعی</th>
@@ -109,7 +109,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="returnModalLabel">
-                        علت مرجوعی کالا به شناسه رهگیری <span id="tracking_code_section"></span>
+                        علت مرجوعی کالا به شماره سریال <span id="tracking_code_section"></span>
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="بستن"></button>

@@ -22,6 +22,10 @@ class Order extends Model
         'amani-invoice' => 'فاکتور امانی',
     ];
 
+    const Payment_Type = [
+      'cash' => 'نقدی',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

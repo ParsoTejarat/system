@@ -6,38 +6,38 @@
     ? ' درخواست ' . auth()->user()->role->label
     : 'درخواست های فروش'))
 @section('content')
+    <div class="card card-title w-100 px-2">
+        <h4>
+            لیست
+            {{ in_array(auth()->user()->role->name, [
+                'systematic_sales', 'internet_sale', 'free_sale',
+                'industrial_sale', 'global_sale', 'organization_sale'
+            ])
+                ? ' درخواست ' . auth()->user()->role->label
+                : 'درخواست های فروش' }}
+        </h4>
+    </div>
     <div class="card">
         <div class="card-body">
-            <div class="card-title d-flex justify-content-between align-items-center">
-                <h6>
-                    لیست
+            <div class="d-flex justify-content-end mt-3">
+                <form action="{{ route('export_sale_price_requests') }}" method="post" id="excel_form">
+                    @csrf
+                </form>
+                {{--                    <button class="btn btn-success me-2" form="excel_form">--}}
+                {{--                        <i class="fa fa-file-excel me-2"></i>--}}
+                {{--                        دریافت اکسل--}}
+                {{--                    </button>--}}
+                {{--                    @can('sale-price-requests-create')--}}
+                <a href="{{ route('sale_price_requests.create') }}" class="btn btn-primary mb-2">
+                    <i class="fa fa-plus me-2"></i>
                     {{ in_array(auth()->user()->role->name, [
                         'systematic_sales', 'internet_sale', 'free_sale',
                         'industrial_sale', 'global_sale', 'organization_sale'
                     ])
                         ? ' درخواست ' . auth()->user()->role->label
-                        : 'درخواست های فروش' }}
-                </h6>
-                <div class="d-flex justify-content-end mt-3">
-                    <form action="{{ route('export_sale_price_requests') }}" method="post" id="excel_form">
-                        @csrf
-                    </form>
-{{--                    <button class="btn btn-success me-2" form="excel_form">--}}
-{{--                        <i class="fa fa-file-excel me-2"></i>--}}
-{{--                        دریافت اکسل--}}
-{{--                    </button>--}}
-                    @can('sale-price-requests-create')
-                        <a href="{{ route('sale_price_requests.create') }}" class="btn btn-primary">
-                            <i class="fa fa-plus me-2"></i>
-                            {{ in_array(auth()->user()->role->name, [
-                                'systematic_sales', 'internet_sale', 'free_sale',
-                                'industrial_sale', 'global_sale', 'organization_sale'
-                            ])
-                                ? ' درخواست ' . auth()->user()->role->label
-                                : 'درخواست فروش' }}
-                        </a>
-                    @endcan
-                </div>
+                        : 'درخواست فروش' }}
+                </a>
+                {{--                    @endcan--}}
             </div>
             <div class="modal fade" id="actionResultModal" tabindex="-1" aria-labelledby="actionResultModalLabel"
                  aria-hidden="true">
@@ -113,13 +113,13 @@
                             $daysLeft = \Carbon\Carbon::parse($today)->diffInDays(\Carbon\Carbon::parse($paymentDueGregorian), false);
                         @endphp
                         <tr class="@if($saleprice_request->status == 'accepted')
-                table-success
-            @elseif($daysLeft <= 0 && !in_array($saleprice_request->status, ['accepted','winner','finished']))
-                table-danger
-            @elseif($daysLeft > 0 && $daysLeft <= 2 && !in_array($saleprice_request->status, ['accepted','winner','lose']))
-                table-warning
-            @else
-            @endif">
+                                    table-success
+                                @elseif($daysLeft <= 0 && !in_array($saleprice_request->status, ['accepted','winner','finished']))
+                                    table-danger
+                                @elseif($daysLeft > 0 && $daysLeft <= 2 && !in_array($saleprice_request->status, ['accepted','winner','lose']))
+                                    table-warning
+                                @else
+                                @endif">
                             <td>{{ ++$key }}</td>
                             <td>{{$saleprice_request->code}}</td>
                             <td>{{ $saleprice_request->user->name . ' ' . $saleprice_request->user->family }}</td>
@@ -182,15 +182,15 @@
                                 </td>
                                 <td>
                                     @if($saleprice_request->status == 'accepted')
-                                        @can('Organ')
+{{--                                        @can('systematic_sales')--}}
                                             <button class="btn btn-primary btn-floating btn-action-result"
                                                     data-id="{{ $saleprice_request->id }}">
                                                 <i class="fa fa-atom"></i>
                                             </button>
-                                        @else
-                                            <span
-                                                class="badge bg-warning">منتظر نتیجه</span>
-                                        @endcan
+{{--                                        @else--}}
+{{--                                            <span--}}
+{{--                                                class="badge bg-warning">منتظر نتیجه</span>--}}
+{{--                                        @endcan--}}
                                     @elseif(in_array($saleprice_request->status,['pending','rejected']))
                                         <span
                                             class="badge bg-warning">{{ \App\Models\SalePriceRequest::STATUS['pending'] }}</span>
@@ -268,25 +268,25 @@
             $('#rowId').val(rowId); // مقداردهی به فیلد مخفی
             $('#actionResultModal').modal('show'); // نمایش Modal
         });
-        {{--$('#saveActionResult').on('click', function () {--}}
-        {{--    const data = $('#actionResultForm').serialize(); // سریال‌سازی اطلاعات فرم--}}
-        {{--    console.log(data);--}}
-        {{--    $.ajax({--}}
-        {{--        url: "{{ url('/setad_price_requests/actionResult') }}",--}}
-        {{--        type: 'POST',--}}
-        {{--        data: data,--}}
-        {{--        success: function (response) {--}}
-        {{--            $('#actionResultModal').modal('hide'); // بستن Modal--}}
-        {{--            alert('نتیجه با موفقیت ذخیره شد.');--}}
-        {{--            // رفرش یا به‌روزرسانی جدول--}}
-        {{--            location.reload();--}}
-        {{--        },--}}
-        {{--        error: function (xhr, status, error) {--}}
-        {{--            console.error('Error:', error);--}}
-        {{--            alert('خطایی رخ داد. لطفاً دوباره تلاش کنید.');--}}
-        {{--        }--}}
-        {{--    });--}}
-        {{--});--}}
+        $('#saveActionResult').on('click', function () {
+            const data = $('#actionResultForm').serialize(); // سریال‌سازی اطلاعات فرم
+            console.log(data);
+            $.ajax({
+                url: "{{ url('/sale_price_requests/actionResult') }}",
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    $('#actionResultModal').modal('hide'); // بستن Modal
+                    alert('نتیجه با موفقیت ذخیره شد.');
+                    // رفرش یا به‌روزرسانی جدول
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('خطایی رخ داد. لطفاً دوباره تلاش کنید.');
+                }
+            });
+        });
 
     </script>
 @endsection

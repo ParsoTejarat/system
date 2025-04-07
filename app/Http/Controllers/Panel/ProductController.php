@@ -224,7 +224,7 @@ class ProductController extends Controller
 
         $rows = $data[0];
 
-        if (strtolower($rows[0][0]) !== 'شناسه رهگیری کالا') {
+        if (strtolower($rows[0][0]) !== 'سریال کالا') {
             alert()->error('ساختار فایل اکسل نامعتبر است.', 'خطا');
             return back();
         }

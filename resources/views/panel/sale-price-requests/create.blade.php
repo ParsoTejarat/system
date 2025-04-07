@@ -13,10 +13,6 @@
         #btn_add{
             margin-top: 30px
         }
-
-
-
-
     </style>
 
     <!-- Clockpicker -->
@@ -25,9 +21,6 @@
     <link rel="stylesheet" href="/vendors/datepicker/daterangepicker.css">
     <link rel="stylesheet" href="/vendors/datepicker-jalali/bootstrap-datepicker.min.css">
 
-    <style>
-
-    </style>
 @endsection
 @section('title', 'ایجاد ' . (in_array(auth()->user()->role->name, [
     'systematic_sales', 'internet_sale', 'free_sale',
@@ -131,7 +124,7 @@
                                     <div class="formatted-price mt-2 fw-bold"></div>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-danger btn_remove"><i class="fa fa-trash"></i></button>
+                                    <button type="button" class="btn btn-danger btn-floating btn_remove"><i class="fa fa-trash"></i></button>
                                 </td>
                             </tr>
                             </tbody>

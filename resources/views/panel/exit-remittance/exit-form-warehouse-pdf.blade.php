@@ -156,7 +156,7 @@
             <thead>
             <tr class="title-sec">
                 <th>ردیف</th>
-                <th>شناسه رهگیری کالا</th>
+                <th>سریال کالا</th>
                 <th>شرح کالا</th>
             </tr>
             </thead>

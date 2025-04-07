@@ -11,20 +11,48 @@ class Guarantee extends Model
 
     protected $guarded = [];
 
+
     const STATUS = [
-        'inactive' => 'غیرفعال',
+        'pending' => 'در انتظار فعال سازی',
         'active' => 'فعال',
-        'voided' => 'باطل شده',
+        'inactive' => 'غیرفعال',
         'expired' => 'منقضی شده',
+        'voided' => 'باطل شده',
     ];
 
     const PERIOD = [
-        '12' => '12 ماهه',
+        '18' => '18 ماهه',
         '24' => '24 ماهه',
     ];
 
-    public function inventory_report()
+    public function product()
     {
-        return $this->hasOne(InventoryReport::class);
+        return $this->belongsTo(Product::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+    public function scopeStatus($query, $status)
+    {
+        if ($status) {
+            $query->where('status', $status);
+        }
+    }
+
+    public function scopeSerialNumber($query, $serial)
+    {
+        if ($serial) {
+            $query->where('serial_number', 'LIKE', "%{$serial}%");
+        }
+    }
+
+
 }

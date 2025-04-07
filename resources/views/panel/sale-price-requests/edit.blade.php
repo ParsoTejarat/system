@@ -1,6 +1,6 @@
     @extends('panel.layouts.master')
     @section('title', 'ویرایش ' . (in_array(auth()->user()->role->name, [
-        'setad_sale', 'internet_sale', 'free_sale',
+        'systematic_sales', 'internet_sale', 'free_sale',
         'industrial_sale', 'global_sale', 'organization_sale'
     ])
         ? ' درخواست ' . auth()->user()->role->label
@@ -10,14 +10,30 @@
             table tbody tr td input {
                 text-align: center;
             }
+
+
+            .btn_remove {
+                cursor: pointer;
+            }
+
+            #btn_add{
+                margin-top: 30px
+            }
         </style>
+
+        <!-- Clockpicker -->
+        <link rel="stylesheet" href="/vendors/clockpicker/bootstrap-clockpicker.min.css" type="text/css">
+        <!-- Datepicker -->
+        <link rel="stylesheet" href="/vendors/datepicker/daterangepicker.css">
+        <link rel="stylesheet" href="/vendors/datepicker-jalali/bootstrap-datepicker.min.css">
+
     @endsection
     @section('content')
         <div class="card">
             <div class="card-body">
                 <div class="card-title d-flex justify-content-between align-items-center mb-4">
                     <h6>ویرایش {{ in_array(auth()->user()->role->name, [
-                                    'setad_sale', 'internet_sale', 'free_sale',
+                                    'systematic_sales', 'internet_sale', 'free_sale',
                                     'industrial_sale', 'global_sale', 'organization_sale'
                                 ])
                                     ? ' درخواست ' . auth()->user()->role->label
@@ -27,15 +43,16 @@
                         افزودن کالا
                     </button>
                 </div>
+{{--                @dd($sale_price_request)--}}
                 <form action="{{ route('sale_price_requests.update',$sale_price_request->id) }}" method="post">
                     @csrf
                     @method('PUT')
                     <div class="form-row">
                         <div class="col-12 mb-3">
                             <div class="col-12 row mb-4">
-                                <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
-                                    <label class="form-label" for="customer">مشتری حقیقی/حقوقی<span class="text-danger">*</span></label>
-                                    <select name="customer" id="customer" class="js-example-basic-single  select2-hidden-accessible" data-select2-id="1">
+                                <div class="col-xl-3 col-lg-3 col-md-3 mb-4">
+                                    <label class="form-label m-0" for="customer">مشتری حقیقی/حقوقی<span class="text-danger">*</span></label>
+                                    <select name="customer" id="customer" class="js-example-basic-single" data-toggle="select2">
                                         <option value="" disabled selected>انتخاب کنید...</option>
                                         @foreach(\App\Models\Customer::all(['id','name','code']) as $customer)
                                             <option value="{{ $customer->id }}" {{ $sale_price_request->customer_id == $customer->id ? 'selected' : '' }}>
@@ -47,7 +64,7 @@
                                     <div class="invalid-feedback text-danger d-block">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="col-xl-3 col-lg-3 col-md-3 mb-3">
+                                <div class="col-xl-3 col-lg-3 col-md-3 mb-4">
                                     <label for="payment_type">نوع پرداختی</label>
                                     <select class="form-control" name="payment_type" id="payment_type">
                                         @foreach(\App\Models\Order::Payment_Type as $key => $value)
@@ -60,7 +77,7 @@
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                @can('setad_sale')
+{{--                                @can('systematic_sales')--}}
                                     <div class="col-xl-2 col-lg-2 col-md-3 mb-4">
                                         <label for="date">تاریخ موعد<span class="text-danger">*</span></label>
                                         <input type="text" name="date" autocomplete="off" class="form-control date-picker-shamsi-list" id="date" value="{{ $sale_price_request->date }}">
@@ -72,16 +89,24 @@
                                         <label>ساعت موعد<span class="text-danger">*</span></label>
                                         <div class="input-group clockpicker-autoclose-demo">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    <i class="fa fa-clock-o"></i>
+                                                <span class="input-group-text w-100 h-100">
+                                                    <i class="fa fa-clock"></i>
                                                 </span>
                                             </div>
                                             <input type="text" autocomplete="off" name="hour" class="form-control text-left" value="{{ $sale_price_request->hour }}" dir="ltr">
                                         </div>
+
                                         @error('hour')
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
+
+
+
+
+
+
+
                                     <div class="col-xl-2 col-lg-2 col-md-3 mb-4">
                                         <label for="need_no">شماره نیاز<span class="text-danger">*</span></label>
                                         <input type="text" name="need_no" autocomplete="off" class="form-control" id="need_no" value="{{ $sale_price_request->need_no }}">
@@ -89,20 +114,20 @@
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                @endcan
-                                @cannot('setad_sale')
-                                    <div class="col-xl-2 col-lg-2 col-md-3 mb-4">
-                                        <label for="shipping_cost">هزینه ارسال(ریال)</label>
-                                        <input type="text" name="shipping_cost" autocomplete="off" class="form-control" id="shipping_cost" value="{{ $sale_price_request->shipping_cost }}">
-                                        <div id="shipping_cost_formatted" style="margin-top: 5px; font-weight: bold;"></div>
-                                        @error('shipping_cost')
-                                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                @endcannot
+{{--                                @endcan--}}
+{{--                                @cannot('systematic_sales')--}}
+{{--                                    <div class="col-xl-2 col-lg-2 col-md-3 mb-4">--}}
+{{--                                        <label for="shipping_cost">هزینه ارسال(ریال)</label>--}}
+{{--                                        <input type="text" name="shipping_cost" autocomplete="off" class="form-control" id="shipping_cost" value="{{ $sale_price_request->shipping_cost }}">--}}
+{{--                                        <div id="shipping_cost_formatted" style="margin-top: 5px; font-weight: bold;"></div>--}}
+{{--                                        @error('shipping_cost')--}}
+{{--                                        <div class="invalid-feedback d-block">{{ $message }}</div>--}}
+{{--                                        @enderror--}}
+{{--                                    </div>--}}
+{{--                                @endcannot--}}
                             </div>
                             <table class="table table-striped table-bordered text-center" id="products_table">
-                                <thead class="bg-primary">
+                                <thead class="table-primary">
                                 <tr>
                                     <th>عنوان کالا</th>
                                     <th>تعداد</th>
@@ -114,10 +139,10 @@
                                 @foreach(json_decode($sale_price_request->products) as $product)
                                     <tr>
                                         <td>
-                                            <select class="js-example-basic-single" name="products[]" required>
+                                            <select class="js-example-basic-single" name="products[]" required data-toggle="select2">
                                                 @foreach($products as $item)
                                                     <option value="{{ $item->id }}" {{ $item->id == $product->product_id ? 'selected' : '' }}>
-                                                        {{ $item->category->slug . ' - ' . $item->title . ' - ' . $item->productModels->slug }}
+                                                        {{ $item->category->slug . ' - ' . $item->title  }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -169,6 +194,12 @@
         </div>
     @endsection
     @section('scripts')
+        <script src="/vendors/datepicker-jalali/bootstrap-datepicker.min.js"></script>
+        <script src="/vendors/datepicker-jalali/bootstrap-datepicker.fa.min.js"></script>
+        <script src="/vendors/datepicker/daterangepicker.js"></script>
+        <script src="/assets/js/examples/datepicker.js"></script>
+        <script src="/vendors/clockpicker/bootstrap-clockpicker.min.js"></script>
+        <script src="/assets/js/examples/clockpicker.js"></script>
         <script>
             // رویداد تغییر فیلد هزینه ارسال
             $(document).on('input', '#shipping_cost', function () {
@@ -205,12 +236,11 @@
                     "id": "{{ $product->id }}",
                     "title": "{{ $product->title }}",
                     "categorySlug": "{{ $product->category->slug }}",
-                    "modelSlug": "{{ $product->productModels->slug }}"
                 });
                 @endforeach
 
                 $.each(products, function (i, item) {
-                    products_options_html += `<option value="${item.id}">${item.categorySlug + ' - ' + item.title + ' - ' + item.modelSlug}</option>`;
+                    products_options_html += `<option value="${item.id}">${item.categorySlug + ' - ' + item.title}</option>`;
                 });
 
                 $('#store_form').on('keydown', function (e) {
@@ -286,8 +316,8 @@
                     });
 
                     // اضافه کردن هزینه ارسال
-                    let shippingCost = parseFloat($('#shipping_cost').val().replace(/,/g, '')) || 0;
-                    total += shippingCost;
+                    // let shippingCost = parseFloat($('#shipping_cost').val().replace(/,/g, '')) || 0;
+                    // total += shippingCost;
 
                     // نمایش مجموع
                     $('#price').text(new Intl.NumberFormat('fa-IR').format(total));

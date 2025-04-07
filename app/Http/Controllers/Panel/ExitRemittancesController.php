@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\ExitRemittance;
+use App\Models\Guarantee;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Purchase;
@@ -192,7 +193,7 @@ class ExitRemittancesController extends Controller
 
         $rows = $data[0];
 
-        if (strtolower($rows[0][0]) !== 'شناسه رهگیری کالا') {
+        if (strtolower($rows[0][0]) !== 'سریال کالا') {
             alert()->error('ساختار فایل اکسل نامعتبر است.', 'خطا');
             return back();
         }
@@ -244,13 +245,16 @@ class ExitRemittancesController extends Controller
             return back();
         }
 
+        $exit_remittance = ExitRemittance::whereId($request->exit_remittance_id)->first();
 
         foreach ($existingTrackingCodes as $trackingCode) {
+            $this->addGuarantee($trackingCode, $exit_remittance->order_id);
             $trackingCode->exit_time = now();
             $trackingCode->save();
+
         }
 
-        $exit_remittance = ExitRemittance::whereId($request->exit_remittance_id)->first();
+
         $exit_remittance->update([
             'tracking_codes' => json_encode($existingTrackingCodes),
             'exit_time' => now(),
@@ -427,6 +431,42 @@ class ExitRemittancesController extends Controller
             ->header('Content-Type', 'application/pdf')
             ->header('Content-Disposition', 'attachment; filename="warehouse-' . verta() . '.pdf"');
 
+    }
+
+
+    public function addGuarantee($data, $order_id)
+    {
+//        dd($data->product->title);
+        $guarantee = new Guarantee();
+        $guarantee->product_id = $data->product_id;
+        $guarantee->user_id = auth()->id();
+        $guarantee->order_id = $order_id;
+        $guarantee->serial_number = $data->code;
+        $guarantee->product_identifier = $data->product->product_barcode ?? null;
+        $guarantee->tracking_code = null;
+        $guarantee->status = 'pending';
+        $guarantee->importing_company = 'پرسو تجارت ایرانیان';
+        $guarantee->start_time = now();
+        $guarantee->expire_time = now()->addMonths(18);
+        $guarantee->save();
+        $this->send_notif_to_for_guarrantee($data->code, $data->product->title);
+
+
+//        foreach ()
+    }
+
+    private function send_notif_to_for_guarrantee($code, $product_name)
+    {
+        $roles_id = Role::whereHas('permissions', function ($q) {
+            $q->where('name', 'warehouse-keeper');
+        })->pluck('id');
+        $managers = User::where('id', '!=', auth()->id())->whereIn('role_id', $roles_id)->get();
+
+        $url = url('/');
+        $title = "در انتظار ثبت گارانتی";
+        $message = "محصول " . $product_name . " به سریال " . $code . " در انتظار فعال سازی گارانتی قرار گرفت.";
+
+        Notification::send($managers, new SendMessage($message, $url, $title));
     }
 
 }

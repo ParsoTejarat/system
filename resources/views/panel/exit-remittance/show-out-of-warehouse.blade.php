@@ -87,7 +87,7 @@
                                             <tr>
                                                 <th>ردیف</th>
                                                 <th>شرح کالا</th>
-                                                <th>شناسه رهگیری</th>
+                                                <th>سریال کالا</th>
                                                 <th>اقدام</th>
                                             </tr>
                                             </thead>
@@ -147,7 +147,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="returnModalLabel">
-                        ثبت مرجوعی کالا به شناسه رهگیری <span id="tracking_code_section"></span>
+                        ثبت مرجوعی کالا به شماره سریال  <span id="tracking_code_section"></span>
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="بستن"></button>

@@ -23,7 +23,7 @@ class SalePriceRequest extends Model
         'free_sale' => 'فروش آزاد',
         'global_sale' => 'فروش سراسری',
         'industrial_sale' => 'فروش صنعتی',
-        'setad_sale' => 'فروش ستاد',
+        'systematic_sales' => 'فروش ستاد',
         'organization_sale' => 'فروش سازمانی'
     ];
     public function customer()

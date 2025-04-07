@@ -17,7 +17,21 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <div class="card-title d-flex justify-content-end">
+                            <div class="card-title d-flex justify-content-between align-items-center">
+
+                                <form action="" method="GET" class="d-flex" style="gap: 8px;">
+                                    <input type="text" name="serial_number" class="form-control" placeholder="شماره سریال..." value="{{ request('serial_number') ?? '' }}">
+
+                                    <select name="status" class="form-control">
+                                        <option value="" disabled selected>وضعیت را انتخاب کنید</option>
+                                        @foreach(App\Models\Guarantee::STATUS as $key => $label)
+                                            <option value="{{ $key }}" {{ request('status') == $key ? 'selected' : '' }}>{{ $label }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    <button type="submit" class="btn btn-success">جست‌وجو</button>
+                                </form>
+
                                 @can('guarantees-create')
                                     <a href="{{ route('guarantees.create') }}" class="btn btn-primary">
                                         <i class="fa fa-plus me-2"></i>
@@ -31,11 +45,15 @@
                                     <tr>
                                         <th>#</th>
                                         <th>شماره سریال</th>
+                                        <th>شماره سفارش مشتری</th>
+                                        <th>شرح کالا</th>
                                         <th>مدت گارانتی</th>
                                         <th>تاریخ فعالسازی</th>
                                         <th>تاریخ انقضا</th>
                                         <th>وضعیت</th>
-                                        <th>تاریخ ایجاد</th>
+                                        <th>تاریخ ثبت</th>
+                                        <th>نمایش</th>
+                                        <th>چاپ</th>
                                         @can('guarantees-edit')
                                             <th>ویرایش</th>
                                         @endcan
@@ -48,22 +66,51 @@
                                     @foreach($guarantees as $key => $guarantee)
                                         <tr>
                                             <td>{{ ++$key }}</td>
-                                            <td>{{ $guarantee->serial }}</td>
+                                            <td>{{ $guarantee->serial_number }}</td>
+                                            <td>
+
+                                                @if($guarantee->order && $guarantee->order->code)
+                                                    <a href="/panel/orders?code={{ $guarantee->order->code }}">{{ $guarantee->order->code }}</a>
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
+
+                                            <td>{{ $guarantee->product->title }}</td>
                                             <td>{{ \App\Models\Guarantee::PERIOD[$guarantee->period] }}</td>
-                                            <td>{{ $guarantee->activated_at ? verta($guarantee->activated_at)->format('Y/m/d') : '---' }}</td>
-                                            <td>{{ $guarantee->expired_at ? verta($guarantee->expired_at)->format('Y/m/d') : '---' }}</td>
+                                            <td>{{ $guarantee->start_time ? verta($guarantee->start_time)->format('Y/m/d') : '---' }}</td>
+                                            <td>{{ $guarantee->expire_time ? verta($guarantee->expire_time)->format('Y/m/d') : '---' }}</td>
                                             <td>
                                                 @if($guarantee->status == 'active')
-                                                    <span class="badge bg-success">{{ \App\Models\Guarantee::STATUS[$guarantee->status] }}</span>
+                                                    <span
+                                                        class="badge bg-success">{{ \App\Models\Guarantee::STATUS[$guarantee->status] }}</span>
+                                                @elseif($guarantee->status == 'pending')
+                                                    <span
+                                                        class="badge bg-secondary">{{ \App\Models\Guarantee::STATUS[$guarantee->status] }}</span>
                                                 @elseif($guarantee->status == 'inactive')
-                                                    <span class="badge bg-warning">{{ \App\Models\Guarantee::STATUS[$guarantee->status] }}</span>
+                                                    <span
+                                                        class="badge bg-warning">{{ \App\Models\Guarantee::STATUS[$guarantee->status] }}</span>
                                                 @elseif($guarantee->status == 'expired')
-                                                    <span class="badge bg-danger">{{ \App\Models\Guarantee::STATUS[$guarantee->status] }}</span>
+                                                    <span
+                                                        class="badge bg-danger">{{ \App\Models\Guarantee::STATUS[$guarantee->status] }}</span>
                                                 @else
-                                                    <span class="badge bg-danger">{{ \App\Models\Guarantee::STATUS[$guarantee->status] }}</span>
+                                                    <span
+                                                        class="badge bg-danger">{{ \App\Models\Guarantee::STATUS[$guarantee->status] }}</span>
                                                 @endif
                                             </td>
                                             <td>{{ verta($guarantee->created_at)->format('H:i - Y/m/d') }}</td>
+                                            <td>
+                                                <a class="btn btn-info btn-floating"
+                                                   href="{{ route('guarantees.show', $guarantee->id) }}">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-primary btn-floating"
+                                                   href="{{ route('guarantees.print', $guarantee->id) }}">
+                                                    <i class="fa fa-print"></i>
+                                                </a>
+                                            </td>
                                             @can('guarantees-edit')
                                                 <td>
                                                     <a class="btn btn-warning btn-floating"
@@ -90,7 +137,8 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-center">{{ $guarantees->appends(request()->all())->links() }}</div>
+                            <div
+                                class="d-flex justify-content-center">{{ $guarantees->appends(request()->all())->links() }}</div>
                         </div>
                     </div>
                 </div>
