@@ -53,6 +53,7 @@ class GuaranteeController extends Controller
         $guarantee->product_identifier = $request->product_identifier;
         $guarantee->tracking_code = $request->tracking_code;
         $guarantee->status = 'active';
+        $guarantee->period = 18;
         $guarantee->importing_company = $request->importing_company;
         $guarantee->start_time = now();
         $guarantee->expire_time = now()->addMonths($request->period);
