@@ -445,6 +445,7 @@ class ExitRemittancesController extends Controller
         $guarantee->product_identifier = $data->product->product_barcode ?? null;
         $guarantee->tracking_code = null;
         $guarantee->status = 'pending';
+        $guarantee->period = 18;
         $guarantee->importing_company = 'پرسو تجارت ایرانیان';
         $guarantee->start_time = now();
         $guarantee->expire_time = now()->addMonths(18);
