@@ -812,7 +812,7 @@ class OrderController extends Controller
 
         $url = route('invoices.edit', $order->id);
         $title = "سفارش مشتری";
-        $message = "یک سفارش توسط همکار {$order->user->fullName()} جهت " . Order::REQ_FOR[$order->request_for] . " برای مشتری {$order->customer->name} ثبت شد";
+        $message = "یک سفارش توسط همکار {$order->user->fullName()} جهت " . Order::REQ_FOR[$order->req_for] . " برای مشتری {$order->customer->name} ثبت شد";
 
 
         Notification::send($accountants, new SendMessage($message, $url, $title));
@@ -840,7 +840,7 @@ class OrderController extends Controller
         $managers = User::where('id', '!=', auth()->id())->whereIn('role_id', $roles_id)->get();
 
         $url = route('invoices.edit', $order->id);
-        $message = "یک سفارش توسط همکار {$order->user->fullName()} جهت " . Order::REQ_FOR[$order->request_for] . " برای مشتری {$order->customer->name} ثبت شد";
+        $message = "یک سفارش توسط همکار {$order->user->fullName()} جهت " . Order::REQ_FOR[$order->req_for] . " برای مشتری {$order->customer->name} ثبت شد";
 
 
         Notification::send($managers, new SendMessage($message, $url));
@@ -856,7 +856,7 @@ class OrderController extends Controller
 
         $url = route('invoices.edit', $order->id);
         $title = "ویرایش سفارش مشتری";
-        $message = "سفارش مشتری {$order->customer->name} جهت " . Order::REQ_FOR[$order->request_for] . " توسط همکار {$order->user->fullName()} ویرایش شد";
+        $message = "سفارش مشتری {$order->customer->name} جهت " . Order::REQ_FOR[$order->req_for] . " توسط همکار {$order->user->fullName()} ویرایش شد";
 
 
         Notification::send($accountants, new SendMessage($message, $url, $title));
