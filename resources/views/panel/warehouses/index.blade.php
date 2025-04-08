@@ -99,7 +99,14 @@
                                             <td>{{ $product->sku }}</td>
                                             <td>{{ $product->title }}</td>
                                             <td>{{ $product->category->name??'بدون دسته بندی!' }}</td>
-                                            <td>{{ $product->brand->name??'بدون برند' }}{{$product->brand->name_en??''}}</td>
+                                            <td>
+                                                @if($product->brand)
+                                                    {{ $product->brand->name }}({{$product->brand->name_en??''}})
+                                                @else
+                                                    بدون برند
+                                                @endif
+
+                                            </td>
                                             <td>{{ $product->tracking_codes_count }}</td>
                                             <td>{{ verta($product->created_at)->format('H:i - Y/m/d') }}</td>
                                             @can('import-products-id')
@@ -130,7 +137,7 @@
                                 </table>
                             </div>
                             <div
-                                    class="d-flex justify-content-center">{{ $products->appends(request()->all())->links() }}</div>
+                                class="d-flex justify-content-center">{{ $products->appends(request()->all())->links() }}</div>
                         </div>
                     </div>
                 </div>
