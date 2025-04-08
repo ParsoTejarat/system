@@ -57,6 +57,7 @@ class GuaranteeController extends Controller
         $guarantee->start_time = now();
         $guarantee->expire_time = now()->addMonths($request->period);
         $guarantee->save();
+
         $this->send_notif_to_accountants_store($guarantee->product_id, $guarantee->serial_number);
 
 
@@ -150,8 +151,9 @@ class GuaranteeController extends Controller
 //
 //        return response()->json(['data' => $data]);
 //    }
-    private function send_notif_to_accountants_store(Product $product, $code)
+    private function send_notif_to_accountants_store($product, $code)
     {
+        $product = Product::find($product);
         $roles_id = Role::whereHas('permissions', function ($q) {
             $q->where('name', ['accountant', 'warehouse-keeper']);
         })->pluck('id');
