@@ -169,19 +169,17 @@ class OrderController extends Controller
         $this->authorize('customer-order-delete');
 
         // log
-        activity_log('delete-orders', __METHOD__, $order);
-
-
-        try {
-            // ابتدا تلاش برای حذف
-            if ($order->delete()) {
-                alert()->success('سفارش مورد نظر با موفقیت حذف شد', 'حذف سفارش');
-            } else {
-                return response('امکان حذف این سفارش وجود ندارد.', 500);
-            }
-        } catch (\Illuminate\Database\QueryException $e) {
-            return response('امکان حذف این سفارش وجود ندارد.', 500);
+        if ($order->exitRemittances()->exists()) {
+            return response('این سفارش فاکتور شده و قابل حذف نیست.', 500);
         }
+
+        $analyses = Analysis::where('order_id', $order->id)->first();
+        if ($analyses) {
+            $analyses->delete();
+        }
+        $order->delete();
+        activity_log('delete-orders', __METHOD__, $order);
+        alert()->success('سفارش مورد نظر با موفقیت حذف شد', 'حذف سفارش');
 
     }
 
