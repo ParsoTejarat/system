@@ -806,7 +806,7 @@ class OrderController extends Controller
     private function send_notif_to_accountants(Order $order)
     {
         $roles_id = Role::whereHas('permissions', function ($q) {
-            $q->where('name', 'accountant');
+            $q->whereIn('name', ['accountant', 'ceo', 'sales-manager']);
         })->pluck('id');
         $accountants = User::where('id', '!=', auth()->id())->whereIn('role_id', $roles_id)->get();
 
