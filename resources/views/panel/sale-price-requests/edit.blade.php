@@ -77,7 +77,7 @@
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
                                 </div>
-{{--                                @can('systematic_sales')--}}
+                                @can('systematic_sales')
                                     <div class="col-xl-2 col-lg-2 col-md-3 mb-4">
                                         <label for="date">تاریخ موعد<span class="text-danger">*</span></label>
                                         <input type="text" name="date" autocomplete="off" class="form-control date-picker-shamsi-list" id="date" value="{{ $sale_price_request->date }}">
@@ -100,13 +100,6 @@
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
-
-
-
-
-
-
-
                                     <div class="col-xl-2 col-lg-2 col-md-3 mb-4">
                                         <label for="need_no">شماره نیاز<span class="text-danger">*</span></label>
                                         <input type="text" name="need_no" autocomplete="off" class="form-control" id="need_no" value="{{ $sale_price_request->need_no }}">
@@ -114,7 +107,7 @@
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
-{{--                                @endcan--}}
+                                @endcan
 {{--                                @cannot('systematic_sales')--}}
 {{--                                    <div class="col-xl-2 col-lg-2 col-md-3 mb-4">--}}
 {{--                                        <label for="shipping_cost">هزینه ارسال(ریال)</label>--}}

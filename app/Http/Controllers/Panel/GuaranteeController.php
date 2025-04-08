@@ -14,6 +14,8 @@ use App\Notifications\SendMessage;
 use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GuaranteeController extends Controller
 {
@@ -160,5 +162,17 @@ class GuaranteeController extends Controller
         $message = "محصول " . $product->title . " به سریال " . $code . " گارانتی شد.";
 
         Notification::send($accountants, new SendMessage($message, $url, $title));
+    }
+
+    public function guaranteesExport(Request $request)
+    {
+        $ids = $request->input('ids', []);
+
+        if (empty($ids)) {
+            alert()->error('شماره سریالی انتخاب نشده است','خطا');
+            return back();
+        }
+
+        return Excel::download(new \App\Exports\GuaranteesExport($ids), 'Guarantees' . '_' . Str::slug(verta()->now()) . '.xlsx');
     }
 }

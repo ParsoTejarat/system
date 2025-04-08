@@ -27,17 +27,17 @@
                 {{--                        <i class="fa fa-file-excel me-2"></i>--}}
                 {{--                        دریافت اکسل--}}
                 {{--                    </button>--}}
-                {{--                    @can('sale-price-requests-create')--}}
-                <a href="{{ route('sale_price_requests.create') }}" class="btn btn-primary mb-2">
-                    <i class="fa fa-plus me-2"></i>
-                    {{ in_array(auth()->user()->role->name, [
-                        'systematic_sales', 'internet_sale', 'free_sale',
-                        'industrial_sale', 'global_sale', 'organization_sale'
-                    ])
-                        ? ' درخواست ' . auth()->user()->role->label
-                        : 'درخواست فروش' }}
-                </a>
-                {{--                    @endcan--}}
+                @can('sale-price-requests-create')
+                    <a href="{{ route('sale_price_requests.create') }}" class="btn btn-primary mb-2">
+                        <i class="fa fa-plus me-2"></i>
+                        {{ in_array(auth()->user()->role->name, [
+                            'systematic_sales', 'internet_sale', 'free_sale',
+                            'industrial_sale', 'global_sale', 'organization_sale'
+                        ])
+                            ? ' درخواست ' . auth()->user()->role->label
+                            : 'درخواست فروش' }}
+                    </a>
+                @endcan
             </div>
             <div class="modal fade" id="actionResultModal" tabindex="-1" aria-labelledby="actionResultModalLabel"
                  aria-hidden="true">
@@ -106,10 +106,9 @@
                     <tbody>
                     @foreach($saleprice_requests as $key => $saleprice_request )
                         @php
-                            $paymentDue = verta($saleprice_request->date); // تاریخ هجری شمسی
+                            $paymentDue = verta($saleprice_request->date);
                             $paymentDueGregorian = $paymentDue->toCarbon()->format('Y-m-d');
                             $today = verta(now())->format('Y-m-d');
-                            // محاسبه تفاوت تاریخ‌ها به روز
                             $daysLeft = \Carbon\Carbon::parse($today)->diffInDays(\Carbon\Carbon::parse($paymentDueGregorian), false);
                         @endphp
                         <tr class="@if($saleprice_request->status == 'accepted')
@@ -131,7 +130,7 @@
                                     {{$saleprice_request->acceptor->name . ' ' . $saleprice_request->acceptor->family}}
                                 @elseif($saleprice_request->status == 'pending')
                                     <span
-                                        class="badge bg-warning">{{ \App\Models\SalePriceRequest::STATUS['pending'] }}</span>
+                                            class="badge bg-warning">{{ \App\Models\SalePriceRequest::STATUS['pending'] }}</span>
                                 @else
                                     نامشخص
                                 @endif
@@ -139,22 +138,22 @@
                             <td>
                                 @if($saleprice_request->status == 'accepted')
                                     <span
-                                        class="badge bg-success">{{ \App\Models\SalePriceRequest::STATUS['accepted'] }}</span>
+                                            class="badge bg-success">{{ \App\Models\SalePriceRequest::STATUS['accepted'] }}</span>
                                 @elseif($saleprice_request->status == 'rejected')
                                     <span
-                                        class="badge bg-danger">{{ \App\Models\SalePriceRequest::STATUS['rejected'] }}</span>
+                                            class="badge bg-danger">{{ \App\Models\SalePriceRequest::STATUS['rejected'] }}</span>
                                 @elseif($saleprice_request->status == 'winner')
                                     <span
-                                        class="badge bg-success">{{ \App\Models\SalePriceRequest::STATUS['winner'] }}</span>
+                                            class="badge bg-success">{{ \App\Models\SalePriceRequest::STATUS['winner'] }}</span>
                                 @elseif($saleprice_request->status == 'lose')
                                     <span
-                                        class="badge bg-danger">{{ \App\Models\SalePriceRequest::STATUS['lose'] }}</span>
+                                            class="badge bg-danger">{{ \App\Models\SalePriceRequest::STATUS['lose'] }}</span>
                                 @elseif($saleprice_request->status == 'finished')
                                     <span
-                                        class="badge bg-info">{{ \App\Models\SalePriceRequest::STATUS['finished'] }}</span>
+                                            class="badge bg-info">{{ \App\Models\SalePriceRequest::STATUS['finished'] }}</span>
                                 @else
                                     <span
-                                        class="badge bg-warning">{{ \App\Models\SalePriceRequest::STATUS['pending'] }}</span>
+                                            class="badge bg-warning">{{ \App\Models\SalePriceRequest::STATUS['pending'] }}</span>
                                 @endif
                             </td>
                             @if(request()->query('type') === 'systematic_sales')
@@ -164,10 +163,10 @@
                                 <td>
                                     @if($saleprice_request->status == 'winner')
                                         <span
-                                            class="badge bg-success">{{ \App\Models\SalePriceRequest::STATUS['winner'] }}</span>
+                                                class="badge bg-success">{{ \App\Models\SalePriceRequest::STATUS['winner'] }}</span>
                                     @elseif($saleprice_request->status == 'lose')
                                         <span
-                                            class="badge bg-danger">{{ \App\Models\SalePriceRequest::STATUS['lose'] }}</span>
+                                                class="badge bg-danger">{{ \App\Models\SalePriceRequest::STATUS['lose'] }}</span>
                                     @elseif(in_array($saleprice_request->status, ['pending','accepted','finished']))
                                         @if($daysLeft<0)
                                             {{$daysLeft * -1}} روز گذشته
@@ -182,27 +181,27 @@
                                 </td>
                                 <td>
                                     @if($saleprice_request->status == 'accepted')
-{{--                                        @can('systematic_sales')--}}
-                                            <button class="btn btn-primary btn-floating btn-action-result"
-                                                    data-id="{{ $saleprice_request->id }}">
-                                                <i class="fa fa-atom"></i>
-                                            </button>
-{{--                                        @else--}}
-{{--                                            <span--}}
-{{--                                                class="badge bg-warning">منتظر نتیجه</span>--}}
-{{--                                        @endcan--}}
+                                                                                @can('systematic_sales')
+                                        <button class="btn btn-primary btn-floating btn-action-result"
+                                                data-id="{{ $saleprice_request->id }}">
+                                            <i class="fa fa-atom"></i>
+                                        </button>
+                                        @else
+                                            <span
+                                                class="badge bg-warning">منتظر نتیجه</span>
+                                        @endcan
                                     @elseif(in_array($saleprice_request->status,['pending','rejected']))
                                         <span
-                                            class="badge bg-warning">{{ \App\Models\SalePriceRequest::STATUS['pending'] }}</span>
+                                                class="badge bg-warning">{{ \App\Models\SalePriceRequest::STATUS['pending'] }}</span>
                                     @elseif($saleprice_request->status == 'winner')
                                         <span
-                                            class="badge bg-success">{{ \App\Models\SalePriceRequest::STATUS['winner'] }}</span>
+                                                class="badge bg-success">{{ \App\Models\SalePriceRequest::STATUS['winner'] }}</span>
                                     @elseif($saleprice_request->status == 'lose')
                                         <span
-                                            class="badge bg-danger">{{ \App\Models\SalePriceRequest::STATUS['lose'] }}</span>
+                                                class="badge bg-danger">{{ \App\Models\SalePriceRequest::STATUS['lose'] }}</span>
                                     @elseif($saleprice_request->status == 'finished')
                                         <span
-                                            class="badge bg-info">{{ \App\Models\SalePriceRequest::STATUS['finished'] }}</span>
+                                                class="badge bg-info">{{ \App\Models\SalePriceRequest::STATUS['finished'] }}</span>
                                     @else
                                         نامشخص
                                     @endif
@@ -243,10 +242,10 @@
                             @can('sale-price-requests-delete')
                                 <td>
                                     <button
-                                        class="btn btn-danger btn-floating trashRow @if(auth()->id() != $saleprice_request->user->id && !in_array(auth()->user()->role->name, ['admin', 'office-manager', 'ceo'])) disabled @endif"
-                                        data-url="{{ route('sale_price_requests.destroy', $saleprice_request->id) }}"
-                                        data-id="{{ $saleprice_request->id }}"
-                                        @if(auth()->id() != $saleprice_request->user->id && !in_array(auth()->user()->role->name, ['admin', 'office-manager', 'ceo'])) disabled @endif>
+                                            class="btn btn-danger btn-floating trashRow @if(auth()->id() != $saleprice_request->user->id && !in_array(auth()->user()->role->name, ['admin', 'office-manager', 'ceo'])) disabled @endif"
+                                            data-url="{{ route('sale_price_requests.destroy', $saleprice_request->id) }}"
+                                            data-id="{{ $saleprice_request->id }}"
+                                            @if(auth()->id() != $saleprice_request->user->id && !in_array(auth()->user()->role->name, ['admin', 'office-manager', 'ceo'])) disabled @endif>
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>
@@ -257,7 +256,7 @@
                 </table>
             </div>
             <div
-                class="d-flex justify-content-center">{{ $saleprice_requests->appends(request()->all())->links() }}</div>
+                    class="d-flex justify-content-center">{{ $saleprice_requests->appends(request()->all())->links() }}</div>
         </div>
     </div>
 @endsection

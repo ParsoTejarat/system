@@ -376,6 +376,7 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     Route::resource('guarantees', GuaranteeController::class);
     Route::get('guarantees/{guarantee}/print', [GuaranteeController::class,'print'])->name('guarantees.print');
     Route::post('serial-check', [GuaranteeController::class, 'serialCheck'])->name('serial.check');
+    Route::post('guarantees-export', [GuaranteeController::class, 'guaranteesExport'])->name('guarantees.export');
 
     // Order Statuses
     Route::get('orders-status/{invoice}', [OrderStatusController::class, 'index'])->name('orders-status.index');

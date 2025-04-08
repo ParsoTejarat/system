@@ -501,7 +501,7 @@
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#guarantees" data-bs-toggle="collapse" aria-expanded="false" aria-controls="packets">
                             <i class="ri-shield-star-fill"></i>
-                            <span>گارانتی ها</span>
+                            <span>مدیریت گارانتی ها</span>
                             <span class="menu-arrow"></span>
                         </a>
                         <div class="collapse {{ $active_side ? 'show' : '' }}" id="guarantees">

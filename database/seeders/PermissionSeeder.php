@@ -216,7 +216,14 @@ class PermissionSeeder extends Seeder
 //            'edit-pre-invoice' => 'ویرایش پیش فاکتور مشتری',
 //            'delete-pre-invoice' => 'حذف پیش فاکتور مشتری',
 //            'download-pre-invoice' => 'دانلود پیش فاکتور مشتری',
-//            'sale-price-requests-create' => 'درخواست فروش',
+
+//            'sale-price-requests-list' => 'لیست درخواست های فروش',
+            'sale-price-requests-create' => 'ایجاد درخواست فروش',
+//            'sale-price-requests-edit' => 'ویرایش درخواست فروش',
+//            'sale-price-requests-delete' => 'حذف درخواست فروش',
+//            'sale-price-requests-action' => 'تایید درخواست فروش',
+//            'systematic_sales' => 'فروش سامانه ستاد',
+
 
 
         ];

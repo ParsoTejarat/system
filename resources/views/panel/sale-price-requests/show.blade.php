@@ -90,14 +90,14 @@
                                        value="{{ \App\Models\SalePriceRequest::TYPE[$sale_price_request->type]}}"
                                        disabled>
                             </div>
-                            @if($sale_price_request->type !== 'systematic_sales')
-                                <div class="col-xl-2 col-lg-2 col-md-3 mb-4">
-                                    <label for="shipping_cost">هزینه ارسال(ریال)</label>
-                                    <input type="text" name="shipping_cost" class="form-control" id="shipping_cost"
-                                           value="{{ number_format($sale_price_request->shipping_cost) }}"
-                                           disabled>
-                                </div>
-                            @endif
+{{--                            @if($sale_price_request->type !== 'systematic_sales')--}}
+{{--                                <div class="col-xl-2 col-lg-2 col-md-3 mb-4">--}}
+{{--                                    <label for="shipping_cost">هزینه ارسال(ریال)</label>--}}
+{{--                                    <input type="text" name="shipping_cost" class="form-control" id="shipping_cost"--}}
+{{--                                           value="{{ number_format($sale_price_request->shipping_cost) }}"--}}
+{{--                                           disabled>--}}
+{{--                                </div>--}}
+{{--                            @endif--}}
                         </div>
                         <table class="table table-striped table-bordered text-center">
                             <thead class="table-primary">
@@ -202,7 +202,7 @@
                     </div>
                 </div>
             </form>
-            <a href="{{ route('sale_price_requests.index') }}" class="btn btn-secondary">
+            <a href="{{ route('sale_price_requests.index', ['type' => $sale_price_request->type]) }}" class="btn btn-secondary">
                 بازگشت
             </a>
         </div>

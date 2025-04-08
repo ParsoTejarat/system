@@ -47,7 +47,7 @@
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
-                            @if($sale_price_request->type == 'setad_sale')
+                            @if($sale_price_request->type == 'systematic_sales')
                                 <div class="col-xl-2 col-lg-2 col-md-3 mb-4">
                                     <label for="date">مهلت پرداخت</label>
                                     <input type="text" class="form-control readonly" readonly

@@ -17,32 +17,46 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <div class="card-title d-flex justify-content-between align-items-center">
+                            <div class="card-title d-flex justify-content-between align-items-center flex-wrap">
 
-                                <form action="" method="GET" class="d-flex" style="gap: 8px;">
-                                    <input type="text" name="serial_number" class="form-control" placeholder="شماره سریال..." value="{{ request('serial_number') ?? '' }}">
+                                {{-- فرم جست‌وجو سمت راست --}}
+                                <div class="d-flex" style="gap: 8px;">
+                                    <form action="" method="GET" class="d-flex" style="gap: 8px;">
+                                        <input type="text" name="serial_number" class="form-control" placeholder="شماره سریال..." value="{{ request('serial_number') ?? '' }}">
 
-                                    <select name="status" class="form-control">
-                                        <option value="" disabled selected>وضعیت را انتخاب کنید</option>
-                                        @foreach(App\Models\Guarantee::STATUS as $key => $label)
-                                            <option value="{{ $key }}" {{ request('status') == $key ? 'selected' : '' }}>{{ $label }}</option>
-                                        @endforeach
-                                    </select>
+                                        <select name="status" class="form-control">
+                                            <option value="" disabled selected>وضعیت را انتخاب کنید</option>
+                                            @foreach(App\Models\Guarantee::STATUS as $key => $label)
+                                                <option value="{{ $key }}" {{ request('status') == $key ? 'selected' : '' }}>{{ $label }}</option>
+                                            @endforeach
+                                        </select>
 
-                                    <button type="submit" class="btn btn-success">جست‌وجو</button>
-                                </form>
+                                        <button type="submit" class="btn btn-success">جست‌وجو</button>
+                                    </form>
+                                </div>
 
-                                @can('guarantees-create')
-                                    <a href="{{ route('guarantees.create') }}" class="btn btn-primary">
-                                        <i class="fa fa-plus me-2"></i>
-                                        ایجاد گارانتی
-                                    </a>
-                                @endcan
+                                {{-- دکمه‌ها سمت چپ --}}
+                                <div class="d-flex" style="gap: 8px;">
+                                    @can('guarantees-create')
+                                        <a href="{{ route('guarantees.create') }}" class="btn btn-primary">
+                                            <i class="fa fa-plus me-2"></i>
+                                            ایجاد گارانتی
+                                        </a>
+                                    @endcan
+                                    <button class="btn btn-success" id="export-excel-btn"  disabled>
+                                        <i class="fa fa-file-excel me-2"></i>
+                                        خروجی اکسل
+                                    </button>
+                                </div>
+
                             </div>
+
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered dataTable dtr-inline text-center">
                                     <thead>
                                     <tr>
+                                    <tr>
+                                        <th><input type="checkbox" class="form-check-input" id="select-all"></th>
                                         <th>#</th>
                                         <th>شماره سریال</th>
                                         <th>شماره سفارش مشتری</th>
@@ -65,6 +79,9 @@
                                     <tbody>
                                     @foreach($guarantees as $key => $guarantee)
                                         <tr>
+                                            <td>
+                                                <input type="checkbox" class="row-checkbox form-check-input" value="{{ $guarantee->id }}">
+                                            </td>
                                             <td>{{ ++$key }}</td>
                                             <td>{{ $guarantee->serial_number }}</td>
                                             <td>
@@ -145,4 +162,53 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+        <script>
+            $(document).ready(function () {
+                $('#select-all').on('change', function () {
+                    $('.row-checkbox').prop('checked', this.checked).trigger('change');
+                });
+
+                $('.row-checkbox').on('change', function () {
+                    let selected = $('.row-checkbox:checked').length;
+                    $('#export-excel-btn').prop('disabled', selected === 0);
+                });
+
+                $('#export-excel-btn').on('click', function (e) {
+                    e.preventDefault();
+
+                    let ids = $('.row-checkbox:checked').map(function () {
+                        return $(this).val();
+                    }).get();
+
+                    if (ids.length === 0) return;
+
+                    let form = $('<form>', {
+                        action: '{{ route('guarantees.export') }}',
+                        method: 'POST'
+                    });
+
+                    form.append($('<input>', {
+                        type: 'hidden',
+                        name: '_token',
+                        value: '{{ csrf_token() }}'
+                    }));
+
+                    ids.forEach(id => {
+                        form.append($('<input>', {
+                            type: 'hidden',
+                            name: 'ids[]',
+                            value: id
+                        }));
+                    });
+
+                    form.appendTo('body').submit();
+                });
+            });
+
+
+
+        </script>
+
 @endsection
