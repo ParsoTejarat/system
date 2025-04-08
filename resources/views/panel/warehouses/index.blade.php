@@ -63,7 +63,7 @@
                                         <select name="brand_id" id="brand_id" data-toggle="select2">
                                             <option selected disabled>انتخاب کنید...</option>
                                             @foreach(\App\Models\Brand::all() as $brand)
-                                                <option value="{{$brand->id}}">{{$brand->name}}</option>
+                                                <option value="{{$brand->id}}">{{$brand->name}}({{$brand->name_en}})</option>
                                             @endforeach
                                         </select>
                                     </div>
