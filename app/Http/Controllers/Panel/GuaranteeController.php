@@ -100,7 +100,7 @@ class GuaranteeController extends Controller
         $guarantee->save();
 
         // log
-        $this->send_notif_to_accountants_update($guarantee->product_id);
+        $this->send_notif_to_accountants_update($guarantee->product_id, $guarantee->serial_number);
         activity_log('edit-guarantee', __METHOD__, [$request->all(), $guarantee]);
 
         alert()->success('گارانتی با موفقیت ویرایش شد', 'ویرایش گارانتی');
