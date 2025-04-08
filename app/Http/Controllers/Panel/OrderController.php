@@ -158,6 +158,7 @@ class OrderController extends Controller
         $order->save();
 
         activity_log('edit-orders', __METHOD__, [$request->all(), $order]);
+        $this->edit_customer_order_notification($order);
         alert()->success('سفارش مورد نظر با موفقیت ویرایش شد', 'ویرایش سفارش');
         return redirect()->route('orders.edit', $order->id);
     }
@@ -534,48 +535,6 @@ class OrderController extends Controller
     }
 
 
-    private function send_notif_to_accountants(Order $order)
-    {
-        $roles_id = Role::whereHas('permissions', function ($q) {
-            $q->where('name', 'accountant');
-        })->pluck('id');
-        $accountants = User::where('id', '!=', auth()->id())->whereIn('role_id', $roles_id)->get();
-
-        $url = route('invoices.edit', $order->id);
-        $title = "سفارش مشتری";
-        $message = "سفارش '{$order->customer->name}' ثبت شد";
-
-        Notification::send($accountants, new SendMessage($message, $url, $title));
-    }
-
-    private function send_notif_to_accountants_for_payment_doc(Order $order)
-    {
-        $roles_id = Role::whereHas('permissions', function ($q) {
-            $q->where('name', 'accountant');
-        })->pluck('id');
-        $accountants = User::where('id', '!=', auth()->id())->whereIn('role_id', $roles_id)->get();
-
-        $url = route('invoices.edit', $order->id);
-        $message = "رسید پرداخت سفارش مشتری به شماره " . $order->code . " آپلود شد.";
-        $title = "رسید پرداخت";
-
-        Notification::send($accountants, new SendMessage($message, $url, $title));
-    }
-
-    private function send_notif_to_sales_manager(Order $order)
-    {
-        $roles_id = Role::whereHas('permissions', function ($q) {
-            $q->where('name', 'sales-manager');
-        })->pluck('id');
-        $managers = User::where('id', '!=', auth()->id())->whereIn('role_id', $roles_id)->get();
-
-        $url = route('invoices.edit', $order->id);
-        $message = "سفارش '{$order->customer->name}' ثبت شد";
-
-        Notification::send($managers, new SendMessage($message, $url));
-    }
-
-
     public function excel()
     {
         return Excel::download(new \App\Exports\OrderExport, 'orders.xlsx');
@@ -797,6 +756,26 @@ class OrderController extends Controller
         return $newCode;
     }
 
+
+    private function addToAnalysis($order)
+    {
+        foreach (json_decode($order->products)->products as $product) {
+            $findProduct = Product::find($product->products);
+            $analysis = new Analysis();
+            $analysis->user_id = auth()->id();
+            $analysis->order_id = $order->id;
+            $analysis->customer_id = $order->customer_id;
+            $analysis->request_for = $order->req_for;
+            $analysis->product_id = $findProduct->id;
+            $analysis->brand_id = $findProduct->brand_id;
+            $analysis->category_id = $findProduct->category_id;
+            $analysis->count = $product->counts;
+            $analysis->inventory = $findProduct->trackingCodes()->whereNull('exit_time')->count();
+            $analysis->save();
+        }
+
+    }
+
     private function send_notif_to_storekeeper(Order $order, $code)
     {
         $roles_id = Role::whereHas('permissions', function ($q) {
@@ -820,30 +799,71 @@ class OrderController extends Controller
 
         $url = url('/');
         $title = "حواله خروج";
-        $message = "حواله خروج به شناسه " . $code . " برای شناسه مشتری " . $order->code . " ثبت گردید.";
+        $message = "حواله خروج به شناسه {$code} برای مشتری {$order->customer->name} به شناسه {$order->code} ثبت گردید.";
+
 
         Notification::send($managers, new SendMessage($message, $url, $title));
     }
 
-
-    private function addToAnalysis($order)
+    private function send_notif_to_accountants(Order $order)
     {
-        foreach (json_decode($order->products)->products as $product) {
-            $findProduct = Product::find($product->products);
-            $analysis = new Analysis();
-            $analysis->user_id = auth()->id();
-            $analysis->order_id = $order->id;
-            $analysis->customer_id = $order->customer_id;
-            $analysis->request_for = $order->req_for;
-            $analysis->product_id = $findProduct->id;
-            $analysis->brand_id = $findProduct->brand_id;
-            $analysis->category_id = $findProduct->category_id;
-            $analysis->count = $product->counts;
-            $analysis->inventory = $findProduct->trackingCodes()->whereNull('exit_time')->count();
-            $analysis->save();
-        }
+        $roles_id = Role::whereHas('permissions', function ($q) {
+            $q->where('name', 'accountant');
+        })->pluck('id');
+        $accountants = User::where('id', '!=', auth()->id())->whereIn('role_id', $roles_id)->get();
 
+        $url = route('invoices.edit', $order->id);
+        $title = "سفارش مشتری";
+        $message = "یک سفارش توسط همکار {$order->user->fullName()} جهت " . Order::REQ_FOR[$order->request_for] . " برای مشتری {$order->customer->name} ثبت شد";
+
+
+        Notification::send($accountants, new SendMessage($message, $url, $title));
     }
+
+    private function send_notif_to_accountants_for_payment_doc(Order $order)
+    {
+        $roles_id = Role::whereHas('permissions', function ($q) {
+            $q->where('name', 'accountant');
+        })->pluck('id');
+        $accountants = User::where('id', '!=', auth()->id())->whereIn('role_id', $roles_id)->get();
+
+        $url = route('invoices.edit', $order->id);
+        $message = "رسید پرداخت مشتری {$order->customer->name} به شماره {$order->code} توسط همکار {$order->user->fullName()} آپلود شد.";
+        $title = "رسید پرداخت";
+
+        Notification::send($accountants, new SendMessage($message, $url, $title));
+    }
+
+    private function send_notif_to_sales_manager(Order $order)
+    {
+        $roles_id = Role::whereHas('permissions', function ($q) {
+            $q->where('name', 'sales-manager');
+        })->pluck('id');
+        $managers = User::where('id', '!=', auth()->id())->whereIn('role_id', $roles_id)->get();
+
+        $url = route('invoices.edit', $order->id);
+        $message = "یک سفارش توسط همکار {$order->user->fullName()} جهت " . Order::REQ_FOR[$order->request_for] . " برای مشتری {$order->customer->name} ثبت شد";
+
+
+        Notification::send($managers, new SendMessage($message, $url));
+    }
+
+
+    private function edit_customer_order_notification(Order $order)
+    {
+        $roles_id = Role::whereHas('permissions', function ($q) {
+            $q->whereIn('name', ['accountant', 'ceo', 'sales-manager']);
+        })->pluck('id');
+        $accountants = User::where('id', '!=', auth()->id())->whereIn('role_id', $roles_id)->get();
+
+        $url = route('invoices.edit', $order->id);
+        $title = "ویرایش سفارش مشتری";
+        $message = "سفارش مشتری {$order->customer->name} جهت " . Order::REQ_FOR[$order->request_for] . " توسط همکار {$order->user->fullName()} ویرایش شد";
+
+
+        Notification::send($accountants, new SendMessage($message, $url, $title));
+    }
+
 
 }
 
