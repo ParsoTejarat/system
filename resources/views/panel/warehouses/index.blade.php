@@ -101,7 +101,7 @@
                                             <td>{{ $product->category->name??'بدون دسته بندی!' }}</td>
                                             <td>
                                                 @if($product->brand)
-                                                    {{ $product->brand->name }}({{$product->brand->name_en??''}})
+                                                    {{ $product->brand->name }} ({{$product->brand->name_en??''}})
                                                 @else
                                                     بدون برند
                                                 @endif
