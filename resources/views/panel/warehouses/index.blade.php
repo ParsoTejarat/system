@@ -99,7 +99,7 @@
                                             <td>{{ $product->sku }}</td>
                                             <td>{{ $product->title }}</td>
                                             <td>{{ $product->category->name??'بدون دسته بندی!' }}</td>
-                                            <td>{{ $product->brand->name??'بدون برند' }}</td>
+                                            <td>{{ $product->brand->name??'بدون برند' }}{{$product->brand->name_en??''}}</td>
                                             <td>{{ $product->tracking_codes_count }}</td>
                                             <td>{{ verta($product->created_at)->format('H:i - Y/m/d') }}</td>
                                             @can('import-products-id')
