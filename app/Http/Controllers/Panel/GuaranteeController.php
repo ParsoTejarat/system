@@ -100,7 +100,7 @@ class GuaranteeController extends Controller
         $guarantee->save();
 
         // log
-        $this->send_notif_to_accountants($guarantee->product_id);
+        $this->send_notif_to_accountants_update($guarantee->product_id);
         activity_log('edit-guarantee', __METHOD__, [$request->all(), $guarantee]);
 
         alert()->success('گارانتی با موفقیت ویرایش شد', 'ویرایش گارانتی');
@@ -163,6 +163,20 @@ class GuaranteeController extends Controller
         $url = route('guarantees.index');
         $title = "ثبت گارانتی";
         $message = "محصول " . $product->title . " به سریال " . $code . " گارانتی شد.";
+
+        Notification::send($accountants, new SendMessage($message, $url, $title));
+    }
+    private function send_notif_to_accountants_update($product, $code)
+    {
+        $product = Product::find($product);
+        $roles_id = Role::whereHas('permissions', function ($q) {
+            $q->where('name', ['accountant', 'warehouse-keeper']);
+        })->pluck('id');
+        $accountants = User::where('id', '!=', auth()->id())->whereIn('role_id', $roles_id)->get();
+
+        $url = route('guarantees.index');
+        $title = "ویرایش گارانتی";
+        $message = " گارانتی محصول " . $product->title . " به سریال " . $code . " ویرایش شد.";
 
         Notification::send($accountants, new SendMessage($message, $url, $title));
     }
