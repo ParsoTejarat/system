@@ -7,6 +7,7 @@ use App\Http\Controllers\Panel\CompanyInfoController;
 use App\Http\Controllers\Panel\CostController;
 use App\Http\Controllers\Panel\CouponController;
 use App\Http\Controllers\Panel\CustomerController;
+use App\Http\Controllers\Panel\EmployeeRequestController;
 use App\Http\Controllers\Panel\ExitRemittancesController;
 use App\Http\Controllers\Panel\FileManagerController;
 use App\Http\Controllers\Panel\GuaranteeController;
@@ -125,8 +126,8 @@ Route::get('/label/generator', function () {
     return view('panel.pdf.barcode', compact('barcodes'));
 });
 
-Route::get('create-role',function (){
-   return \App\Models\Role::where('name','online_sales')->first();
+Route::get('create-role', function () {
+    return \App\Models\Role::where('name', 'online_sales')->first();
 });
 
 //Route::get('/timeline', function () {
@@ -150,6 +151,11 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     Route::resource('transfers', TransferController::class)->except('show');
     Route::get('transfers/download/{id}', [TransferController::class, 'downloadReceipt'])->name('transfers.download');
     Route::delete('tracking-delete-code/{id}', [WarehouseController::class, 'deleteCode'])->name('tracking.deleteCode');
+
+
+    //EmployeeRequests
+    Route::resource('employee-requests', EmployeeRequestController::class);
+    Route::post('employee-requests/action', [EmployeeRequestController::class, 'employeeAction'])->name('employee-requests.action');
 
     //PreInvoice
     Route::resource('/pre-invoices', PreInvoiceController::class);
@@ -363,6 +369,7 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
 
     // Warehouses
     Route::resource('warehouses', WarehouseController::class);
+    Route::get('warehouses-excel-export', [WarehouseController::class, 'exportExcel'])->name('warehouses.excel-export');
 
     // Reports
     Route::resource('reports', ReportController::class);
@@ -374,7 +381,7 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
 
     // Guarantees
     Route::resource('guarantees', GuaranteeController::class);
-    Route::get('guarantees/{guarantee}/print', [GuaranteeController::class,'print'])->name('guarantees.print');
+    Route::get('guarantees/{guarantee}/print', [GuaranteeController::class, 'print'])->name('guarantees.print');
     Route::post('serial-check', [GuaranteeController::class, 'serialCheck'])->name('serial.check');
     Route::post('guarantees-export', [GuaranteeController::class, 'guaranteesExport'])->name('guarantees.export');
 

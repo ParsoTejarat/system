@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\TrackingCode;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class WarehouseController extends Controller
 {
@@ -18,6 +19,9 @@ class WarehouseController extends Controller
 
         if ($sku = request()->get('sku')) {
             $products = $products->where('sku', 'like', '%' . $sku . '%');
+        }
+        if ($title = request()->get('title')) {
+            $products = $products->where('title', 'like', '%' . $title . '%');
         }
 
         if ($brand_id = request()->get('brand_id')) {
@@ -113,5 +117,10 @@ class WarehouseController extends Controller
         $trackingCode = TrackingCode::findOrFail($id);
         $trackingCode->delete();
         return back();
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new \App\Exports\WarehouseExport, 'warehouse.xlsx');
     }
 }

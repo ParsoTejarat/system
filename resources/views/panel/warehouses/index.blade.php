@@ -30,7 +30,7 @@
                         <div class="card-body">
                             <div class="card-title d-flex justify-content-end">
 
-                                <a href="#" class="btn btn-success mr-2">
+                                <a href="{{route('warehouses.excel-export')}}" class="btn btn-success mr-2">
                                     <i class="fa fa-file-excel mr-2"></i>
                                     خروجی اکسل انبار
                                 </a>
@@ -43,6 +43,12 @@
 
                             <form action="{{ route('warehouses.index') }}" method="get" class="mt-2 mb-2">
                                 <div class="row">
+                                    <div class="col-2">
+                                        <label for="title">شرح کالا</label>
+                                        <input type="text" name="title"
+                                               value="{{old('title',request()->get('title'))}}"
+                                               class="form-control">
+                                    </div>
                                     <div class="col-2">
                                         <label for="order">شناسه کالا</label>
                                         <input type="text" name="sku"

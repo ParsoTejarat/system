@@ -219,7 +219,13 @@ class ActivityLog extends Model
         'return-back-products-create' => 'ثبت کالای مرجوع شده',
         'out-of-warehouse-list' => 'نمایش خروجی ها',
         'approved-products-warehouse' => 'ثبت خروجی ها',
-        'delete-exit_file-file' => 'حذف فایل خروجی انبار'
+        'delete-exit_file-file' => 'حذف فایل خروجی انبار',
+        //employee-request
+        'employee-request-list' => 'لیست درخواست همکاران',
+        'employee-request-create' => 'ایجاد درخواست همکاران',
+        'employee-request-edit' => 'ویرایش درخواست همکاران',
+        'employee-request-delete' => 'حذف درخواست همکاران',
+        'employee-request-action' => 'اقدام درخواست همکاران',
 
 
 
