@@ -342,7 +342,7 @@
                     </li>
                 @endcan
                 @can('employee-request-list')
-                    @php $active_side = active_sidebar(['employee-requests','employee-requests/create','employee-requests/{employee_request}/edit','employee-requests/{employee_request}/action']); @endphp
+                    @php $active_side = active_sidebar(['employee-requests','employee-requests/create','employee-requests/{employee_request}','employee-requests/{employee_request}/edit','employee-requests/{employee_request}/action']); @endphp
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#employeeRequest" data-bs-toggle="collapse" aria-expanded="false" aria-controls="customers">
                             <i class="ri-file-paper-2-fill"></i>

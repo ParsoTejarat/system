@@ -14,7 +14,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable,SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -71,6 +71,7 @@ class User extends Authenticatable
     {
         return $this->role->permissions->pluck('name')->contains('ceo');
     }
+
     public function isItManager()
     {
         return $this->role->permissions->pluck('name')->contains('it-manager');
@@ -80,6 +81,7 @@ class User extends Authenticatable
     {
         return $this->role->permissions->pluck('name')->contains('sales-manager');
     }
+
     public function isSystematicSales()
     {
         return $this->role->permissions->pluck('name')->contains('systematic_sales');
@@ -109,6 +111,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Invoice::class);
     }
+
     public function orders()
     {
         return $this->hasMany(Order::class);
@@ -214,6 +217,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(ActivityLog::class);
     }
+
     public function purchases()
     {
         return $this->hasMany(Purchase::class);

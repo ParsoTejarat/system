@@ -26,12 +26,6 @@
                                     <form action="{{ route('products.excel') }}" method="post" id="excel_form">
                                         @csrf
                                     </form>
-
-                                    {{--                                    <button class="btn btn-success" form="excel_form">--}}
-                                    {{--                                        <i class="fa fa-file-excel mr-2"></i>--}}
-                                    {{--                                        دریافت اکسل--}}
-                                    {{--                                    </button>--}}
-
                                     @can('employee-request-create')
                                         <a href="{{ route('employee-requests.create', ['type' => $type]) }}"
                                            class="btn btn-primary">
@@ -88,12 +82,13 @@
                                         <th>الویت درخواست</th>
                                         <th>وضعیت</th>
                                         <th>پاسخ دهنده</th>
-                                        <th>تاریخ پاسخ</th>
                                         <th>تاریخ ثبت درخواست</th>
+                                        <th>تاریخ پاسخ</th>
+
                                         <th>نمایش درخواست</th>
-{{--                                        @can('employee-request-action')--}}
-{{--                                            <th>اقدام</th>--}}
-{{--                                        @endcan--}}
+                                        {{--                                        @can('employee-request-action')--}}
+                                        {{--                                            <th>اقدام</th>--}}
+                                        {{--                                        @endcan--}}
                                         @can('employee-request-edit')
                                             <th>ویرایش</th>
                                         @endcan
@@ -141,6 +136,8 @@
                                                     -
                                                 @endif
                                             </td>
+
+
                                             <td>
                                                 @if($employeeRequest->answered_at)
                                                     {{verta($employeeRequest->answered_at)->format('H:i Y/m/d')}}
@@ -152,9 +149,10 @@
                                                 {{verta($employeeRequest->created_at)->format('H:i Y/m/d')}}
                                             </td>
 
+
                                             <td>
-                                                <a class="btn btn-info btn-floating"
-                                                   href="{{ route('employee-requests.show', $employeeRequest->id) }}">
+                                                <a href="{{ route('employee-requests.show', ['employee_request' => $employeeRequest->id, 'type' => $employeeRequest->type]) }}"
+                                                   class="btn btn-info btn-floating">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
                                             </td>
@@ -190,7 +188,8 @@
                                     </tfoot>
                                 </table>
                             </div>
-                                                        <div class="d-flex justify-content-center">{{ $employeeRequests->appends(request()->all())->links() }}</div>
+                            <div
+                                class="d-flex justify-content-center">{{ $employeeRequests->appends(request()->all())->links() }}</div>
                         </div>
                     </div>
                 </div>

@@ -20,6 +20,7 @@ class CreateEmployeeRequestsTable extends Migration
             $table->unsignedBigInteger('approver_id')->nullable();
             $table->string('title');
             $table->string('type');
+            $table->string('amount')->nullable();
             $table->string('employee_attachment_path')->nullable();
             $table->string('approver_attachment_path')->nullable();
             $table->enum('status', ['pending', 'approved', 'not_approved']);

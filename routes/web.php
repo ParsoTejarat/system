@@ -155,7 +155,7 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
 
     //EmployeeRequests
     Route::resource('employee-requests', EmployeeRequestController::class);
-    Route::post('employee-requests/action', [EmployeeRequestController::class, 'employeeAction'])->name('employee-requests.action');
+    Route::post('employee-requests/action/store', [EmployeeRequestController::class, 'employeeAction'])->name('employee-requests.action');
 
     //PreInvoice
     Route::resource('/pre-invoices', PreInvoiceController::class);
