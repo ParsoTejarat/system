@@ -220,11 +220,11 @@ class PermissionSeeder extends Seeder
 //            'sale-price-requests-delete' => 'حذف درخواست فروش',
 //            'sale-price-requests-action' => 'تایید درخواست فروش',
 //            'systematic_sales' => 'فروش سامانه ستاد',
-            'employee-request-list' => 'لیست درخواست همکاران',
-            'employee-request-create' => 'ایجاد درخواست همکاران',
-            'employee-request-edit' => 'ویرایش درخواست همکاران',
-            'employee-request-delete' => 'حذف درخواست همکاران',
-            'employee-request-action' => 'اقدام درخواست همکاران',
+//            'employee-request-list' => 'لیست درخواست همکاران',
+//            'employee-request-create' => 'ایجاد درخواست همکاران',
+//            'employee-request-edit' => 'ویرایش درخواست همکاران',
+//            'employee-request-delete' => 'حذف درخواست همکاران',
+//            'employee-request-action' => 'اقدام درخواست همکاران',
 
 
         ];
