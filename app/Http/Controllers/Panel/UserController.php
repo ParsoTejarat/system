@@ -88,8 +88,6 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request, User $user)
     {
-//        $this->authorize('users-edit');
-
         if (!auth()->user()->isSuperuser() && ($user->role->name == 'admin' && $user->id != auth()->id())) {
             alert()->error('شما مجاز به انتخاب این نقش نیستید.', 'عدم دسترسی');
             return redirect()->back();
@@ -134,7 +132,6 @@ class UserController extends Controller
             'phone' => $user->phone,
         ];
         $test = $this->editUserToMoshrefiApp($userData);
-
 
         if (Gate::allows('edit-profile', $user->id)) {
             alert()->success('پروفایل شما با موفقیت ویرایش شد', 'ویرایش پروفایل');
