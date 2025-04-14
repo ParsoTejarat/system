@@ -131,7 +131,7 @@
                                             </td>
                                             <td>
                                                 @if($employeeRequest->approver)
-                                                    {{$employeeRequest->employee->fullname()}}
+                                                    {{$employeeRequest->approver->fullname()}}
                                                 @else
                                                     -
                                                 @endif

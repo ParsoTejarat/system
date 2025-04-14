@@ -83,20 +83,20 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('test/{id}', function ($id) {
-    return auth()->loginUsingId($id);
-});
+//Route::get('test/{id}', function ($id) {
+//    return auth()->loginUsingId($id);
+//});
 
 
-Route::get('/label/generator', function () {
-
-
-    $barcodes = [];
-    for ($i = 1; $i <= 500; $i++) {
-        $code = rand(100000, 99999999);
-        $barcodes[] = $code;
-    }
-    $barcodes = collect($barcodes);
+//Route::get('/label/generator', function () {
+//
+//
+//    $barcodes = [];
+//    for ($i = 1; $i <= 500; $i++) {
+//        $code = rand(100000, 99999999);
+//        $barcodes[] = $code;
+//    }
+//    $barcodes = collect($barcodes);
 //    $html = view('panel.pdf.barcode', compact('barcodes'))->render();
 //
 //    $mpdf = new Mpdf([
@@ -123,8 +123,8 @@ Route::get('/label/generator', function () {
 //    return $mpdf->Output('labels.pdf', 'D');
 
 
-    return view('panel.pdf.barcode', compact('barcodes'));
-});
+//    return view('panel.pdf.barcode', compact('barcodes'));
+//});
 
 Route::get('create-role', function () {
     return \App\Models\Role::where('name', 'online_sales')->first();
