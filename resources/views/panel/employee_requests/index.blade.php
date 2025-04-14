@@ -140,13 +140,14 @@
 
                                             <td>
                                                 @if($employeeRequest->answered_at)
-                                                    {{verta($employeeRequest->answered_at)->format('H:i Y/m/d')}}
+                                                    {{verta($employeeRequest->created_at)->format('H:i Y/m/d')}}
                                                 @else
                                                     -
                                                 @endif
                                             </td>
                                             <td>
-                                                {{verta($employeeRequest->created_at)->format('H:i Y/m/d')}}
+                                                {{verta($employeeRequest->answered_at)->format('H:i Y/m/d')}}
+
                                             </td>
 
 

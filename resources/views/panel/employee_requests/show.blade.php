@@ -172,9 +172,9 @@
                                         <label for="status" class="form-label">وضعیت</label>
                                         <input type="text" id="status" class="form-control
                                             @if($employeeRequest->status == 'approved')
-                                                bg-success text-white
+                                                 text-success border-success bg-white
                                             @elseif($employeeRequest->status == 'not_approved')
-                                                bg-danger text-white
+                                                 text-danger border-danger bg-white
                                             @elseif($employeeRequest->status == 'pending')
                                                 bg-warning text-dark
                                             @endif

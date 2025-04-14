@@ -6,7 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Models\EmployeeRequest;
 use App\Models\Order;
+use App\Models\Permission;
+use App\Models\Role;
+use App\Models\User;
+use App\Notifications\SendMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 
 class EmployeeRequestController extends Controller
@@ -75,6 +80,9 @@ class EmployeeRequestController extends Controller
         }
         $employeeRequest->status = 'pending';
         $employeeRequest->save();
+        $this->sendSmsToUser(auth()->user(), $employeeRequest->type);
+        $this->sendSmsToManager(auth()->user(), $employeeRequest->type);
+        $this->sendNotificationToManager($employeeRequest->type, auth()->user());
         alert()->success('درخواست مورد نظر با موفقیت ثبت شد', 'ثبت درخواست');
         activity_log('employee-request-create', __METHOD__, [$request->all(), $employeeRequest]);
         return redirect()->route('employee-requests.index', ['type' => $employeeRequest->type]);
@@ -175,7 +183,9 @@ class EmployeeRequestController extends Controller
         $employeeRequest->answered_at = now();
 
         $employeeRequest->save();
-        alert()->success('نتیجه درخواست ثبت شد', 'ثبت نتیجه درخواست');
+        $this->sendSmsForResult($employeeRequest->status, $employeeRequest->employee_id, $employeeRequest->type);
+        $this->sendNotificationForResult($employeeRequest->status, $employeeRequest->employee_id, $employeeRequest->type, $employeeRequest->code);
+        alert()->success('نتیجه در خواست ثبت شد', 'ثبت نتیجه درخواست');
 
         activity_log('employee-request-action', __METHOD__, $employeeRequest);
 
@@ -183,35 +193,73 @@ class EmployeeRequestController extends Controller
     }
 
 
-    private function sendSmsToUser()
+    private function sendSmsToUser(User $user, $type)
     {
+        //   316996 اطلاع رسانی ثبت درخواست
+
+        sendSMS(316996, $user->phone, [(string)$user->fullName(), (string)EmployeeRequest::REQUEST_FOR[$type]]);
+    }
+
+    private function sendSmsToManager(User $user, $type)
+    {
+//        317002 اطلاع رسانی درخواست در پرتال
+        $permissionsId = Permission::whereIn('name', ['ceo', 'admin', 'accountant'])->pluck('id');
+        $roles_id = Role::whereHas('permissions', function ($q) use ($permissionsId) {
+            $q->whereIn('permission_id', $permissionsId);
+        })->pluck('id');
+        $managers = User::whereIn('role_id', $roles_id)->get();
+        foreach ($managers as $manager) {
+            sendSMS(317002, $manager->phone, [(string)$manager->fullName(), (string)EmployeeRequest::REQUEST_FOR[$type], (string)$user->fullName()]);
+        }
+
 
     }
 
-    private function sendSmsToManager()
+    private function sendSmsForResult($status, $user_id, $type)
     {
-
+        $user = User::findOrFail($user_id);
+        if ($status === 'approved') {
+            sendSMS(316997, $user->phone, [(string)$user->fullName(), (string)EmployeeRequest::REQUEST_FOR[$type]]);
+        } else {
+            sendSMS(316999, $user->phone, [(string)$user->fullName(), (string)EmployeeRequest::REQUEST_FOR[$type]]);
+        }
+//
     }
 
-    private function sendNotificationToUser()
-    {
 
+    private function sendNotificationToManager($type, User $user)
+    {
+        $type = EmployeeRequest::REQUEST_FOR[$type];
+        $permissionsId = Permission::whereIn('name', ['ceo', 'admin', 'accountant'])->pluck('id');
+        $roles_id = Role::whereHas('permissions', function ($q) use ($permissionsId) {
+            $q->whereIn('permission_id', $permissionsId);
+        })->pluck('id');
+        $managers = User::whereIn('role_id', $roles_id)->get();
+        $url = route('orders.index');
+        $title = "درخواست " . $type;
+        $notif_message = "یک درخواست " . $type . " توسط همکار " . $user->fullName() . " ثبت شد";
+        Notification::send($managers, new SendMessage($notif_message, $url, $title));
+//            dd("test");
     }
 
-    private function sendNotificationToManager()
+    private function sendNotificationForResult($status, $user_id, $type, $code)
     {
+        $type = EmployeeRequest::REQUEST_FOR[$type];
 
+        $user = User::whereIn('id', [$user_id])->get();
+        $url = url('/');
+        $title = "نتیجه درخواست " . $type;
+        $notif_message = "";
+        if ($status === 'approved') {
+
+            $notif_message = " درخواست " . $type . " شما با شناسه " . $code . " تایید شد";
+        } else {
+            $notif_message = " درخواست " . $type . " شما با شناسه " . $code . " تایید شد";
+
+        }
+        Notification::send($user, new SendMessage($notif_message, $url, $title));
     }
 
-    private function sendSmsForResult()
-    {
-
-    }
-
-    private function sendNotificationForResult()
-    {
-
-    }
 
     public function generateCode()
     {
