@@ -43,7 +43,7 @@ class EmployeeRequestController extends Controller
             $employeeRequests = $employeeRequests->where('type', $type)->latest()->paginate(30);
 
         } else {
-            $employeeRequests = $employeeRequests->where(['type' => $type, 'user_id', auth()->id()])->latest()->paginate(30);
+            $employeeRequests = $employeeRequests->where(['type' => $type, 'user_id'=> auth()->id()])->latest()->paginate(30);
 
         }
 
