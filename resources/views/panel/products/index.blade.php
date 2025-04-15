@@ -47,10 +47,30 @@
                                     <input type="text" name="title" class="form-control" placeholder="عنوان محصول"
                                            value="{{ request()->title ?? null }}" form="search_form">
                                 </div>
+                                <div class="col-2">
+                                    <label for="order">دسته بندی</label>
+                                    <select name="category_id" id="category_id" data-toggle="select2">
+                                        <option selected disabled>انتخاب کنید...</option>
+                                        @foreach(\App\Models\Category::all() as $category)
+                                            <option value="{{$category->id}}">{{$category->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-2">
+                                    <label for="order">برند</label>
+                                    <select name="brand_id" id="brand_id" data-toggle="select2">
+                                        <option selected disabled>انتخاب کنید...</option>
+                                        @foreach(\App\Models\Brand::all() as $brand)
+                                            <option value="{{$brand->id}}">{{$brand->name}}({{$brand->name_en}})</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 <div class="col-xl-2 xl-lg-2 col-md-3 col-sm-12 mt-2">
                                     <button type="submit" class="btn btn-primary" form="search_form">جستجو</button>
                                 </div>
+
                             </div>
+
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered dataTable dtr-inline text-center"
                                        style="width: 100%">
