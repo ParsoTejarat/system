@@ -80,7 +80,13 @@
                                             <td>{{ $product->sku }}</td>
                                             <td>{{ $product->code }}</td>
                                             <td>{{ $product->category->name }}</td>
-                                            <td>{{ $product->brand->name ??'-'}}</td>
+                                            <td>
+                                                @if($analysis->brand)
+                                                    {{ $analysis->brand->name}}({{ $analysis->brand->name_en}})
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
                                             <td>{{ number_format($product->single_price / 10) }} تومان</td>
                                             <td>{{ verta($product->created_at)->format('H:i - Y/m/d') }}</td>
                                             @can('products-edit')

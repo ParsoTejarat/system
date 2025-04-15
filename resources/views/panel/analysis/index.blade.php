@@ -127,7 +127,7 @@
                                             <td>{{ $analysis->category->name ?? '---' }}</td>
                                             <td>
                                                 @if($analysis->brand)
-                                                    {{ $analysis->brand->name}}({{ $analysis->brand->name}})
+                                                    {{ $analysis->brand->name}}({{ $analysis->brand->name_en}})
                                                 @else
                                                     -
                                                 @endif

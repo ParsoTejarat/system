@@ -143,7 +143,7 @@
                                 if (brand.id == oldBrandId) {
                                     brandExists = true;
                                 }
-                                $('#brand_id').append(`<option value="${brand.id}">${brand.name}</option>`);
+                                $('#brand_id').append(`<option value="${brand.id}">${brand.name}-${brand.name_en}</option>`);
                             });
 
                             if (oldBrandId && !brandExists) {

@@ -86,7 +86,7 @@
                                                 data-toggle="select2">
                                             @foreach(\App\Models\Brand::all() as $brand)
                                                 <option
-                                                    value="{{ $brand->id }}" {{ old('brand_id',$product->brand_id) == $brand->id ? 'selected' : '' }}>{{ $brand->name }}</option>
+                                                    value="{{ $brand->id }}" {{ old('brand_id',$product->brand_id) == $brand->id ? 'selected' : '' }}>{{ $brand->name }}({{ $brand->name_en }})</option>
                                             @endforeach
                                         </select>
                                         @error('brand_id')
