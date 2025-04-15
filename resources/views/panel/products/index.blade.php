@@ -42,17 +42,17 @@
                                     <div style="min-width: 160px;">
                                         <label for="order">کد محصول</label>
                                         <input type="text" name="sku" class="form-control" placeholder="کد محصول"
-                                               value="{{ request()->sku ?? null }}" form="search_form">
+                                               value="{{ request()->sku ?? null }}" >
                                     </div>
                                     <div style="min-width: 200px;">
                                         <label for="order">شرح کالا</label>
                                         <input type="text" name="title" class="form-control" placeholder="پرینتر"
-                                               value="{{ request()->title ?? null }}" form="search_form">
+                                               value="{{ request()->title ?? null }}" >
                                     </div>
                                     <div style="min-width: 160px;">
                                         <label for="category_id">دسته بندی</label>
                                         <select name="category_id" id="category_id" class="form-control"
-                                                data-toggle="select2" form="search_form">
+                                                data-toggle="select2">
                                             <option selected disabled>انتخاب کنید...</option>
                                             @foreach(\App\Models\Category::all() as $category)
                                                 <option
@@ -64,8 +64,7 @@
                                     </div>
                                     <div style="min-width: 160px;">
                                         <label for="brand_id">برند</label>
-                                        <select name="brand_id" id="brand_id" class="form-control" data-toggle="select2"
-                                                form="search_form">
+                                        <select name="brand_id" id="brand_id" class="form-control" data-toggle="select2">
                                             <option selected disabled>انتخاب کنید...</option>
                                             @foreach(\App\Models\Brand::all() as $brand)
                                                 <option
@@ -76,7 +75,7 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <button type="submit" class="btn btn-primary">جستجو</button>
+                                        <input type="submit" class="btn btn-primary" value="جستجو">
                                     </div>
                                 </div>
                             </form>
