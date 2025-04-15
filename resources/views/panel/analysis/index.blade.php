@@ -156,15 +156,28 @@
         $(document).ready(function () {
             const fontFamily = 'IRANYekanFN Medium';
 
-            // همکاران
+            // آرایه رنگ‌ها برای چرخش
+            function generateColors(length) {
+                const palette = ['#42a5f5', '#66bb6a', '#ffa726', '#ef5350', '#ab47bc'];
+                const colors = [];
+                for (let i = 0; i < length; i++) {
+                    colors.push(palette[i % palette.length]);
+                }
+                return colors;
+            }
+
+            // نمودار همکاران
+            const userLabels = {!! json_encode($topUsers->pluck('name')) !!};
+            const userData = {!! json_encode($topUsers->pluck('total')) !!};
+
             new Chart(document.getElementById('userChart'), {
                 type: 'bar',
                 data: {
-                    labels: {!! json_encode($topUsers->pluck('name')) !!},
+                    labels: userLabels,
                     datasets: [{
                         label: 'تعداد سفارشات',
-                        data: {!! json_encode($topUsers->pluck('total')) !!},
-                        backgroundColor: '#42a5f5'
+                        data: userData,
+                        backgroundColor: generateColors(userLabels.length)
                     }]
                 },
                 options: {
@@ -198,15 +211,18 @@
                 }
             });
 
-            // مشتریان
+            // نمودار مشتریان
+            const customerLabels = {!! json_encode($topCustomers->pluck('customer.name')) !!};
+            const customerData = {!! json_encode($topCustomers->pluck('total')) !!};
+
             new Chart(document.getElementById('customerChart'), {
                 type: 'bar',
                 data: {
-                    labels: {!! json_encode($topCustomers->pluck('customer.name')) !!},
+                    labels: customerLabels,
                     datasets: [{
                         label: 'تعداد سفارشات',
-                        data: {!! json_encode($topCustomers->pluck('total')) !!},
-                        backgroundColor: '#66bb6a'
+                        data: customerData,
+                        backgroundColor: generateColors(customerLabels.length)
                     }]
                 },
                 options: {
@@ -241,6 +257,7 @@
             });
         });
     </script>
+
 
 @endsection
 
