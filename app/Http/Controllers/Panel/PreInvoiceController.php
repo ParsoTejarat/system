@@ -60,7 +60,7 @@ class PreInvoiceController extends Controller
         $preInvoice->invoice_number = $request->code;
         $preInvoice->customer_name = $request->buyer_name;
         $preInvoice->commercial_code = $request->economical_number;
-        $preInvoice->national_code = $request->need_no;
+        $preInvoice->national_code = $request->national_code;
         $preInvoice->need_no = $request->need_no;
         $preInvoice->holding_id = $request->holding_id;
         $preInvoice->zip_code = $request->postal_code;
@@ -123,7 +123,7 @@ class PreInvoiceController extends Controller
         $preInvoice->invoice_number = $request->code;
         $preInvoice->customer_name = $request->buyer_name;
         $preInvoice->commercial_code = $request->economical_number;
-        $preInvoice->national_code = $request->need_no;
+        $preInvoice->national_code = $request->national_code;
         $preInvoice->need_no = $request->need_no;
         $preInvoice->zip_code = $request->postal_code;
         $preInvoice->holding_id = $request->holding_id;

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Panel\AnalysisController;
 use App\Http\Controllers\Panel\BrandController;
 use App\Http\Controllers\Panel\BuyOrderController;
 use App\Http\Controllers\Panel\CategoryController;
@@ -156,6 +157,9 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
     //EmployeeRequests
     Route::resource('employee-requests', EmployeeRequestController::class);
     Route::post('employee-requests/action/store', [EmployeeRequestController::class, 'employeeAction'])->name('employee-requests.action');
+
+    //Analysis
+    Route::get('analysis', [AnalysisController::class, 'index'])->name('analysis.index');
 
     //PreInvoice
     Route::resource('/pre-invoices', PreInvoiceController::class);
