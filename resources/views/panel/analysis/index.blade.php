@@ -122,7 +122,7 @@
                                     @foreach($analysises as $key => $analysis)
                                         <tr>
                                             <td>{{ ++$key }}</td>
-                                            <td>{{ $analysis->product->name ?? '---' }}</td>
+                                            <td>{{ $analysis->product->title ?? '---' }}</td>
                                             <td>{{ $analysis->category->name ?? '---' }}</td>
                                             <td>{{ $analysis->brand->name ?? '---' }}</td>
                                             <td>{{ $analysis->total_count }}</td>
