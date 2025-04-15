@@ -25,7 +25,24 @@ class ProductController extends Controller
     {
         $this->authorize('products-list');
 
-        $products = Product::latest()->paginate(1000);
+        $products = Product::query();
+
+        if ($sku = request()->get('sku')) {
+            $products = $products->where('sku', 'like', '%' . $sku . '%');
+        }
+        if ($title = request()->get('title')) {
+            $products = $products->where('title', 'like', '%' . $title . '%');
+        }
+
+        if ($brand_id = request()->get('brand_id')) {
+            $products = $products->where('brand_id', $brand_id);
+        }
+
+        if ($category_id = request()->get('category_id')) {
+            $products = $products->where('category_id', $category_id);
+        }
+
+        $products = $products->latest()->paginate(30);
         return view('panel.products.index', compact(['products']));
     }
 
@@ -156,18 +173,18 @@ class ProductController extends Controller
     {
         $this->authorize('parso-products');
 
-            $page = $request->input('page', 1);
-            $response = Http::get('https://parsotejarat.com/wp-json/custom-api/v1/products', [
-                'page' => $page
-            ]);
+        $page = $request->input('page', 1);
+        $response = Http::get('https://parsotejarat.com/wp-json/custom-api/v1/products', [
+            'page' => $page
+        ]);
 
-            if ($response->successful()) {
-                $products = collect($response->json())->map(function ($item) {
-                    return (object)$item;
-                })->all();
-            } else {
-                dd('Error:', $response->status());
-            }
+        if ($response->successful()) {
+            $products = collect($response->json())->map(function ($item) {
+                return (object)$item;
+            })->all();
+        } else {
+            dd('Error:', $response->status());
+        }
 
         return view('panel.products.parso', compact(['products', 'page']));
     }
@@ -282,7 +299,7 @@ class ProductController extends Controller
         ]);
 
         if ($response->successful()) {
-            alert()->success('قیمت محصول با موفقیت ویرایش شد.','موفقیت آمیز');
+            alert()->success('قیمت محصول با موفقیت ویرایش شد.', 'موفقیت آمیز');
             return back();
         } else {
             return response()->json(['message' => 'Failed to update price'], 500);

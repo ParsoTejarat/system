@@ -41,8 +41,8 @@
                             <div class="d-flex flex-wrap gap-2 align-items-end mb-3">
                                 <div style="min-width: 160px;">
                                     <label for="order">کد محصول</label>
-                                    <input type="text" name="code" class="form-control" placeholder="کد محصول"
-                                           value="{{ request()->code ?? null }}" form="search_form">
+                                    <input type="text" name="sku" class="form-control" placeholder="کد محصول"
+                                           value="{{ request()->sku ?? null }}" form="search_form">
                                 </div>
                                 <div style="min-width: 200px;">
                                     <label for="order">شرح کالا</label>
