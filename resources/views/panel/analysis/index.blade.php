@@ -2,7 +2,9 @@
 @section('title', 'مدیریت آنالیز فروش')
 @section('styles')
     <style>
-
+         canvas {
+            font-family: 'primary-font', sans-serif;
+        }
 
     </style>
 @endsection
@@ -83,7 +85,7 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title text-center">بیشترین ثبت سفارش توسط همکاران</h5>
-                                            <canvas id="userChart" height="150"></canvas>
+                                            <canvas id="userChart" height="150" style="font-family: 'primary-font'"></canvas>
                                         </div>
                                     </div>
                                 </div>
@@ -92,7 +94,7 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title text-center">مشتریانی با بیشترین سفارش</h5>
-                                            <canvas id="customerChart" height="150"></canvas>
+                                            <canvas id="customerChart" height="150" style="font-family: 'primary-font'"></canvas>
                                         </div>
                                     </div>
                                 </div>
@@ -151,12 +153,11 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="/assets/libs/chart.js/Chart.min.js"></script>
+    <script src="/vendors/charts/chartjs/chart.min.js"></script>
     <script>
         $(document).ready(function () {
-            const fontFamily = 'IRANYekanFN Medium';
+            const fontFamily = 'primary-font'; 
 
-            // آرایه رنگ‌ها برای چرخش
             function generateColors(length) {
                 const palette = ['#42a5f5', '#66bb6a', '#ffa726', '#ef5350', '#ab47bc'];
                 const colors = [];
@@ -165,6 +166,38 @@
                 }
                 return colors;
             }
+
+            const commonOptions = {
+                responsive: true,
+                legend: {
+                    labels: {
+                        fontFamily: fontFamily,
+                        fontSize: 14
+                    }
+                },
+                tooltips: {
+                    bodyFontFamily: fontFamily,
+                    bodyFontSize: 13,
+                    titleFontFamily: fontFamily,
+                    titleFontSize: 14
+                },
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            fontFamily: fontFamily,
+                            fontSize: 12
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            fontFamily: fontFamily,
+                            fontSize: 12
+                        }
+                    }]
+                }
+            };
+
 
             // نمودار همکاران
             const userLabels = {!! json_encode($topUsers->pluck('name')) !!};
@@ -180,35 +213,7 @@
                         backgroundColor: generateColors(userLabels.length)
                     }]
                 },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            labels: {
-                                font: {
-                                    family: fontFamily
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            ticks: {
-                                font: {
-                                    family: fontFamily
-                                }
-                            }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                font: {
-                                    family: fontFamily
-                                }
-                            }
-                        }
-                    }
-                }
+                options: commonOptions
             });
 
             // نمودار مشتریان
@@ -225,38 +230,11 @@
                         backgroundColor: generateColors(customerLabels.length)
                     }]
                 },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            labels: {
-                                font: {
-                                    family: fontFamily
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            ticks: {
-                                font: {
-                                    family: fontFamily
-                                }
-                            }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                font: {
-                                    family: fontFamily
-                                }
-                            }
-                        }
-                    }
-                }
+                options: commonOptions
             });
         });
     </script>
+
 
 
 @endsection
