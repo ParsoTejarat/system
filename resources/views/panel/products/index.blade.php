@@ -38,40 +38,44 @@
                             </div>
 
                             <form action="{{ route('products.search') }}" method="get" id="search_form"></form>
-                            <div class="row mb-3">
-                                <div class="col-xl-2 xl-lg-2 col-md-3 col-sm-12 ">
+                            <div class="d-flex flex-wrap gap-2 align-items-end mb-3">
+                                <div style="min-width: 160px;">
                                     <label for="order">کد محصول</label>
                                     <input type="text" name="code" class="form-control" placeholder="کد محصول"
                                            value="{{ request()->code ?? null }}" form="search_form">
                                 </div>
-                                <div class="col-xl-3 xl-lg-3 col-md-4 col-sm-12 ">
+                                <div style="min-width: 200px;">
                                     <label for="order">شرح کالا</label>
                                     <input type="text" name="title" class="form-control" placeholder="پرینتر"
                                            value="{{ request()->title ?? null }}" form="search_form">
                                 </div>
-                                <div class="col-2">
-                                    <label for="order">دسته بندی</label>
-                                    <select name="category_id" id="category_id" data-toggle="select2">
+                                <div style="min-width: 160px;">
+                                    <label for="category_id">دسته بندی</label>
+                                    <select name="category_id" id="category_id" class="form-control" data-toggle="select2" form="search_form">
                                         <option selected disabled>انتخاب کنید...</option>
                                         @foreach(\App\Models\Category::all() as $category)
-                                            <option value="{{$category->id}}">{{$category->name}}</option>
+                                            <option value="{{$category->id}}" {{ request()->category_id == $category->id ? 'selected' : '' }}>
+                                                {{$category->name}}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-2">
-                                    <label for="order">برند</label>
-                                    <select name="brand_id" id="brand_id" data-toggle="select2">
+                                <div style="min-width: 160px;">
+                                    <label for="brand_id">برند</label>
+                                    <select name="brand_id" id="brand_id" class="form-control" data-toggle="select2" form="search_form">
                                         <option selected disabled>انتخاب کنید...</option>
                                         @foreach(\App\Models\Brand::all() as $brand)
-                                            <option value="{{$brand->id}}">{{$brand->name}}({{$brand->name_en}})</option>
+                                            <option value="{{$brand->id}}" {{ request()->brand_id == $brand->id ? 'selected' : '' }}>
+                                                {{$brand->name}} ({{$brand->name_en}})
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-xl-2 xl-lg-2 col-md-3 col-sm-12 mt-2">
+                                <div>
                                     <button type="submit" class="btn btn-primary" form="search_form">جستجو</button>
                                 </div>
-
                             </div>
+
 
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered dataTable dtr-inline text-center"
