@@ -14,6 +14,7 @@ class AnalysisController extends Controller
         $analysises = Analysis::selectRaw('product_id, category_id, brand_id, SUM(count) as total_count')
             ->groupBy('product_id', 'category_id', 'brand_id')
             ->with(['product', 'category', 'brand'])
+            ->orderByDesc('total_count')
             ->paginate(40);
 
         $topUsers = \App\Models\Order::select('user_id', DB::raw('count(*) as total'))

@@ -62,7 +62,8 @@
                                         <div class="card shadow-lg rounded-3 border-0">
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                    <div class="icon-box bg-{{ $stat['color'] }} bg-opacity-10 text-{{ $stat['color'] }} rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                    <div class="icon-box bg-{{ $stat['color'] }} bg-opacity-10 text-{{ $stat['color'] }} rounded-circle d-flex align-items-center justify-content-center"
+                                                         style="width: 50px; height: 50px;">
                                                         <i class="fa {{ $stat['icon'] }} fs-4"></i>
                                                     </div>
                                                     <div class="text-end">
@@ -124,7 +125,13 @@
                                             <td>{{ ++$key }}</td>
                                             <td>{{ $analysis->product->title ?? '---' }}</td>
                                             <td>{{ $analysis->category->name ?? '---' }}</td>
-                                            <td>{{ $analysis->brand->name ?? '---' }}</td>
+                                            <td>
+                                                @if($analysis->brand)
+                                                    {{ $analysis->brand->name}}({{ $analysis->brand->name}})
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
                                             <td>{{ $analysis->total_count }}</td>
                                             <td><a href="#" class="btn btn-primary">
                                                     <span class="fa fa-chart-bar"></span>
