@@ -81,8 +81,8 @@
                                             <td>{{ $product->code }}</td>
                                             <td>{{ $product->category->name }}</td>
                                             <td>
-                                                @if($analysis->brand)
-                                                    {{ $analysis->brand->name}}({{ $analysis->brand->name_en}})
+                                                @if($product->brand)
+                                                    {{ $product->brand->name}}({{ $analysis->brand->name_en}})
                                                 @else
                                                     -
                                                 @endif
