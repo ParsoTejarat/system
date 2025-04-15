@@ -113,7 +113,7 @@
                                     @foreach($products as $key => $product)
                                         <tr>
                                             <td>{{ ++$key }}</td>
-                                            <td>{{toEnglishNumbers( $product->title) }}</td>
+                                            <td>{{toEnglishNumbers($product->title) }}</td>
                                             <td>{{ $product->sku }}</td>
                                             <td>{{ $product->code }}</td>
                                             <td>{{ $product->category->name }}</td>
