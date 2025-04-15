@@ -25,7 +25,7 @@ class ProductController extends Controller
     {
         $this->authorize('products-list');
 
-        $products = Product::latest()->paginate(30);
+        $products = Product::latest()->paginate(1000);
         return view('panel.products.index', compact(['products']));
     }
 
