@@ -21,8 +21,6 @@
 <!-- App js -->
 <script src="/assets/js/app.min.js"></script>
 
-<script src="/assets/libs/chart.js/Chart.min.js"></script>
-
 @yield('scripts')
 <script src="/assets/js/sweetalert2@11"></script>
 <script src="/assets/js/sweetalert.min.js"></script>
