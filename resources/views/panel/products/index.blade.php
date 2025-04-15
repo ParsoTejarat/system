@@ -37,7 +37,7 @@
                                 </div>
                             </div>
 
-                            <form action="" method="get">
+                            <form action="{{route('products.index')}}" method="get">
                                 <div class="d-flex flex-wrap gap-2 align-items-end mb-3">
                                     <div style="min-width: 160px;">
                                         <label for="order">کد محصول</label>
