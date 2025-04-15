@@ -103,19 +103,11 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @php
-                                            function toEnglishNumbers($string) {
-                                                  $persian = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
-                                                  $english = ['0','1','2','3','4','5','6','7','8','9'];
-                                                  return preg_replace_callback('/[۰-۹]+/', function ($matches) use ($persian, $english) {
-                                                      return str_replace($persian, $english, $matches[0]);
-                                                  }, $string);
-                                              }
-                                    @endphp
+
                                     @foreach($products as $key => $product)
                                         <tr>
                                             <td>{{ ++$key }}</td>
-                                            <td>{{toEnglishNumbers($product->title) }}</td>
+                                            <td>{{ $product->title }}</td>
                                             <td>{{ $product->sku }}</td>
                                             <td>{{ $product->code }}</td>
                                             <td>{{ $product->category->name }}</td>
