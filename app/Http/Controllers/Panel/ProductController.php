@@ -24,7 +24,7 @@ class ProductController extends Controller
     public function index()
     {
         $this->authorize('products-list');
-
+dd(request()->get('category_id'));
         $products = Product::query();
 
         if ($sku = request()->get('sku')) {
@@ -39,6 +39,7 @@ class ProductController extends Controller
         }
 
         if ($category_id = request()->get('category_id')) {
+
             $products = $products->where('category_id', $category_id);
         }
 
