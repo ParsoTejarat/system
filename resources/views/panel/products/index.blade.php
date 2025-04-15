@@ -92,7 +92,7 @@
                                         <th>کد حسابداری</th>
                                         <th>دسته بندی</th>
                                         <th>برند</th>
-                                        <th>قیمت تک فروشی</th>
+                                        <th>قیمت</th>
                                         <th>تاریخ ایجاد</th>
                                         @can('products-edit')
                                             <th>ویرایش</th>
@@ -103,10 +103,17 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    @php
+                                        function toEnglishNumbers($string) {
+                                            $persian = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+                                            $english = ['0','1','2','3','4','5','6','7','8','9'];
+                                            return str_replace($persian, $english, $string);
+                                        }
+                                    @endphp
                                     @foreach($products as $key => $product)
                                         <tr>
                                             <td>{{ ++$key }}</td>
-                                            <td>{{ $product->title }}</td>
+                                            <td>{{toEnglishNumbers( $product->title) }}</td>
                                             <td>{{ $product->sku }}</td>
                                             <td>{{ $product->code }}</td>
                                             <td>{{ $product->category->name }}</td>
