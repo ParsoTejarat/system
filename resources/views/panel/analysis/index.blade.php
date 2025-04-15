@@ -156,7 +156,7 @@
     <script src="/vendors/charts/chartjs/chart.min.js"></script>
     <script>
         $(document).ready(function () {
-            const fontFamily = 'primary-font'; 
+            const fontFamily = 'primary-font';
 
             function generateColors(length) {
                 const palette = ['#42a5f5', '#66bb6a', '#ffa726', '#ef5350', '#ab47bc'];
