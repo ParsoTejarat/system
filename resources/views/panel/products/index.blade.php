@@ -37,44 +37,49 @@
                                 </div>
                             </div>
 
-                            <form action="{{ route('products.search') }}" method="get" id="search_form"></form>
-                            <div class="d-flex flex-wrap gap-2 align-items-end mb-3">
-                                <div style="min-width: 160px;">
-                                    <label for="order">کد محصول</label>
-                                    <input type="text" name="sku" class="form-control" placeholder="کد محصول"
-                                           value="{{ request()->sku ?? null }}" form="search_form">
+                            <form action="" method="get">
+                                <div class="d-flex flex-wrap gap-2 align-items-end mb-3">
+                                    <div style="min-width: 160px;">
+                                        <label for="order">کد محصول</label>
+                                        <input type="text" name="sku" class="form-control" placeholder="کد محصول"
+                                               value="{{ request()->sku ?? null }}" form="search_form">
+                                    </div>
+                                    <div style="min-width: 200px;">
+                                        <label for="order">شرح کالا</label>
+                                        <input type="text" name="title" class="form-control" placeholder="پرینتر"
+                                               value="{{ request()->title ?? null }}" form="search_form">
+                                    </div>
+                                    <div style="min-width: 160px;">
+                                        <label for="category_id">دسته بندی</label>
+                                        <select name="category_id" id="category_id" class="form-control"
+                                                data-toggle="select2" form="search_form">
+                                            <option selected disabled>انتخاب کنید...</option>
+                                            @foreach(\App\Models\Category::all() as $category)
+                                                <option
+                                                    value="{{$category->id}}" {{ request()->category_id == $category->id ? 'selected' : '' }}>
+                                                    {{$category->name}}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div style="min-width: 160px;">
+                                        <label for="brand_id">برند</label>
+                                        <select name="brand_id" id="brand_id" class="form-control" data-toggle="select2"
+                                                form="search_form">
+                                            <option selected disabled>انتخاب کنید...</option>
+                                            @foreach(\App\Models\Brand::all() as $brand)
+                                                <option
+                                                    value="{{$brand->id}}" {{ request()->brand_id == $brand->id ? 'selected' : '' }}>
+                                                    {{$brand->name}} ({{$brand->name_en}})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-primary">جستجو</button>
+                                    </div>
                                 </div>
-                                <div style="min-width: 200px;">
-                                    <label for="order">شرح کالا</label>
-                                    <input type="text" name="title" class="form-control" placeholder="پرینتر"
-                                           value="{{ request()->title ?? null }}" form="search_form">
-                                </div>
-                                <div style="min-width: 160px;">
-                                    <label for="category_id">دسته بندی</label>
-                                    <select name="category_id" id="category_id" class="form-control" data-toggle="select2" form="search_form">
-                                        <option selected disabled>انتخاب کنید...</option>
-                                        @foreach(\App\Models\Category::all() as $category)
-                                            <option value="{{$category->id}}" {{ request()->category_id == $category->id ? 'selected' : '' }}>
-                                                {{$category->name}}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div style="min-width: 160px;">
-                                    <label for="brand_id">برند</label>
-                                    <select name="brand_id" id="brand_id" class="form-control" data-toggle="select2" form="search_form">
-                                        <option selected disabled>انتخاب کنید...</option>
-                                        @foreach(\App\Models\Brand::all() as $brand)
-                                            <option value="{{$brand->id}}" {{ request()->brand_id == $brand->id ? 'selected' : '' }}>
-                                                {{$brand->name}} ({{$brand->name_en}})
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div>
-                                    <button type="submit" class="btn btn-primary" form="search_form">جستجو</button>
-                                </div>
-                            </div>
+                            </form>
 
 
                             <div class="table-responsive">
@@ -141,7 +146,8 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-center">{{ $products->appends(request()->all())->links() }}</div>
+                            <div
+                                class="d-flex justify-content-center">{{ $products->appends(request()->all())->links() }}</div>
                         </div>
                     </div>
                 </div>
