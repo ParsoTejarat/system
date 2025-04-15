@@ -39,12 +39,14 @@
 
                             <form action="{{ route('products.search') }}" method="get" id="search_form"></form>
                             <div class="row mb-3">
-                                <div class="col-xl-2 xl-lg-2 col-md-3 col-sm-12 mt-2">
+                                <div class="col-xl-2 xl-lg-2 col-md-3 col-sm-12 ">
+                                    <label for="order">کد محصول</label>
                                     <input type="text" name="code" class="form-control" placeholder="کد محصول"
                                            value="{{ request()->code ?? null }}" form="search_form">
                                 </div>
-                                <div class="col-xl-3 xl-lg-3 col-md-4 col-sm-12 mt-2">
-                                    <input type="text" name="title" class="form-control" placeholder="عنوان محصول"
+                                <div class="col-xl-3 xl-lg-3 col-md-4 col-sm-12 ">
+                                    <label for="order">شرح کالا</label>
+                                    <input type="text" name="title" class="form-control" placeholder="پرینتر"
                                            value="{{ request()->title ?? null }}" form="search_form">
                                 </div>
                                 <div class="col-2">
