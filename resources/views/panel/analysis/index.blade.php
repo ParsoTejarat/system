@@ -101,7 +101,7 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title text-center">بیشترین ثبت سفارش توسط همکاران</h5>
-                                            <canvas id="userChart" height="180"
+                                            <canvas id="userChart" height="200"
                                                     style="font-family: 'primary-font'"></canvas>
                                         </div>
                                     </div>
