@@ -60,7 +60,7 @@ class AnalysisController extends Controller
 
         $topCustomers = Order::select('customer_id', DB::raw('count(*) as total'))
             ->groupBy('customer_id')
-            ->where('id','!=',1)
+            ->where('customer_id','!=',1)
             ->with('customer')
             ->orderByDesc('total')
             ->take(5)
