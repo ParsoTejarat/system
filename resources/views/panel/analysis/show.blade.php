@@ -111,8 +111,8 @@
                                                 </td>
                                                 <td>{{ $analysis->product->name ?? '---' }}</td>
                                                 <td>{{ $analysis->count }}</td>
-                                                <td>{{ $analysis->Inventory }}</td>
-                                                <td>{{   }}</td>
+                                                <td>{{  number_format($product->Inventory) }}</td>
+                                                <td>{{  number_format($product->tracking_codes_count) }}</td>
                                                 <td>
                                                     <a class="btn btn-info btn-floating"
                                                        href="{{ route('orders.show', $analysis->order->id) }}"
