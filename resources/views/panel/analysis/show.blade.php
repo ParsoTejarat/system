@@ -76,7 +76,7 @@
                                                 <td>
                                                     <a href="/panel/orders?code={{$analysis->order->code??'-'}}">{{ $analysis->order->code??'-' }}</a>
                                                 </td>
-                                                <td>{{ $analysis->product->name ?? '---' }}</td>
+                                                <td>{{ $analysis->product->name }}</td>
                                                 <td>{{ $analysis->count }}</td>
                                                 <td>{{  number_format($product->Inventory) }}</td>
                                                 <td>{{  number_format($product->tracking_codes_count) }}</td>
