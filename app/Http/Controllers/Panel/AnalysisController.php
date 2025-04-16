@@ -69,17 +69,32 @@ class AnalysisController extends Controller
         return view('panel.analysis.index', compact(['analysises', 'topUsers', 'topCustomers']));
     }
 
-    public function showProductAnalysis($product_id)
+
+    public function showProductAnalysis(Request $request, $product_id)
     {
         $product = Product::withCount(['trackingCodes' => function ($query) {
             $query->whereNull('exit_time');
         }])->findOrFail($product_id);
 
-        $analysises = Analysis::where('product_id', $product_id)->latest()->paginate(50);
+        $analysises = Analysis::where('product_id', $product_id);
+
+        if ($request->filled('from_date')) {
+            $from_date = Verta::parse($request->from_date)->toCarbon()->toDateString();
+            $analysises->whereDate('created_at', '>=', $from_date);
+        }
+
+        if ($request->filled('to_date')) {
+            $to_date = Verta::parse($request->to_date)->toCarbon()->toDateString();
+            $analysises->whereDate('created_at', '<=', $to_date);
+        }
+
+        $analysises = $analysises->latest()->paginate(50);
 
         $firstAnalysisTime = Analysis::where('product_id', $product_id)->min('created_at');
         $lastAnalysisTime = Analysis::where('product_id', $product_id)->max('created_at');
 
-        return view('panel.analysis.show', compact(['analysises', 'product', 'firstAnalysisTime', 'lastAnalysisTime']));
+        return view('panel.analysis.show', compact('analysises', 'product', 'firstAnalysisTime', 'lastAnalysisTime'));
     }
+
+
 }
