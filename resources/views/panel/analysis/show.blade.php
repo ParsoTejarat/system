@@ -76,7 +76,7 @@
                                                 <td>
                                                     <a href="/panel/orders?code={{$analysis->order->code??'-'}}">{{ $analysis->order->code??'-' }}</a>
                                                 </td>
-                                                @dd($analysis->product->name)
+                                                @dd($analysis->product)
                                                 <td>{{ $analysis->product->name }}</td>
                                                 <td>{{ $analysis->count }}</td>
                                                 <td>{{  number_format($product->Inventory) }}</td>
