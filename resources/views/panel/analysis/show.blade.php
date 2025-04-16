@@ -109,10 +109,10 @@
                                                 <td>
                                                     <a href="/panel/orders?code={{$analysis->order->code??'-'}}">{{ $analysis->order->code??'-' }}</a>
                                                 </td>
-                                                <td>{{ $analysis->category->name ?? '---' }}</td>
+                                                <td>{{ $analysis->product->name ?? '---' }}</td>
                                                 <td>{{ $analysis->count }}</td>
                                                 <td>{{ $analysis->Inventory }}</td>
-                                                <td>{{ $product->tracking_codes_count ??0}}</td>
+                                                <td>{{   }}</td>
                                                 <td>
                                                     <a class="btn btn-info btn-floating"
                                                        href="{{ route('orders.show', $analysis->order->id) }}"
