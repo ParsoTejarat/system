@@ -85,7 +85,7 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title text-center">بیشترین ثبت سفارش توسط همکاران</h5>
-                                            <canvas id="userChart" height="150" style="font-family: 'primary-font'"></canvas>
+                                            <canvas id="userChart" height="180" style="font-family: 'primary-font'"></canvas>
                                         </div>
                                     </div>
                                 </div>
@@ -94,7 +94,7 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title text-center">مشتریانی با بیشترین سفارش</h5>
-                                            <canvas id="customerChart" height="150" style="font-family: 'primary-font'"></canvas>
+                                            <canvas id="customerChart" height="180" style="font-family: 'primary-font'"></canvas>
                                         </div>
                                     </div>
                                 </div>
@@ -135,10 +135,12 @@
                                                 @endif
                                             </td>
                                             <td>{{ $analysis->total_count }}</td>
-                                            <td><a href="{{route('analysis.show',$analysis->product_id)}}"
+                                            <td>
+                                                <a href="{{route('analysis.show',$analysis->product_id)}}"
                                                    class="btn btn-primary">
                                                     <span class="fa fa-chart-bar"></span>
-                                                </a></td>
+                                                </a>
+                                            </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
