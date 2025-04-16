@@ -49,7 +49,7 @@ class AnalysisController extends Controller
             ->groupBy('user_id')
             ->with('user')
             ->orderByDesc('total')
-            ->take(5)
+            ->take(8)
             ->get()
             ->map(function ($order) {
                 return [
@@ -63,7 +63,7 @@ class AnalysisController extends Controller
             ->where('customer_id','!=',1)
             ->with('customer')
             ->orderByDesc('total')
-            ->take(5)
+            ->take(8)
             ->get();
 
 
