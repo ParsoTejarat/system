@@ -74,6 +74,7 @@ class AnalysisController extends Controller
         $product = Product::withCount(['trackingCodes' => function ($query) {
             $query->whereNull('exit_time');
         }])->findOrFail($product_id);
+        return $product;
 
         $analysises = Analysis::where('product_id', $product_id)->latest()->paginate(50);
 
