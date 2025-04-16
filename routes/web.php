@@ -160,6 +160,7 @@ Route::middleware(['auth', 'web'])->prefix('/panel')->group(function () {
 
     //Analysis
     Route::get('analysis', [AnalysisController::class, 'index'])->name('analysis.index');
+    Route::get('analysis/{product_id}', [AnalysisController::class, 'showProductAnalysis'])->name('analysis.show');
 
     //PreInvoice
     Route::resource('/pre-invoices', PreInvoiceController::class);

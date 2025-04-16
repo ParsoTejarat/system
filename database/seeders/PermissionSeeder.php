@@ -225,6 +225,7 @@ class PermissionSeeder extends Seeder
 //            'employee-request-edit' => 'ویرایش درخواست همکاران',
 //            'employee-request-delete' => 'حذف درخواست همکاران',
 //            'employee-request-action' => 'اقدام درخواست همکاران',
+            'analysis' => 'آنالیز فروش',
 
 
         ];

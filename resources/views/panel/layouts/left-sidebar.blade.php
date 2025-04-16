@@ -67,8 +67,8 @@
             <ul id="side-menu">
                 <li class="menu-title">پنل مدیریت</li>
                 {{-- Dashboard --}}
-                @canany(['users-list','roles-list','tasks-list','notes-list','leaves-list','reports-list','file-manager'])
-                    @php $active_side = active_sidebar(['panel','users','users/create','users/{user}/edit','roles','roles/create','roles/{role}/edit', 'tasks','tasks/create','tasks/{task}/edit', 'tasks/{task}', 'notes','notes/create','notes/{note}/edit','leaves','leaves/create','leaves/{leave}/edit','reports','reports/create','reports/{report}/edit','file-manager']); @endphp
+                @canany(['users-list','roles-list','tasks-list','notes-list','leaves-list','reports-list','file-manager','analysis'])
+                    @php $active_side = active_sidebar(['panel','users','analysis/{product_id}','users/create','users/{user}/edit','analysis','roles','roles/create','roles/{role}/edit', 'tasks','tasks/create','tasks/{task}/edit', 'tasks/{task}', 'notes','notes/create','notes/{note}/edit','leaves','leaves/create','leaves/{leave}/edit','reports','reports/create','reports/{report}/edit','file-manager']); @endphp
                     <li class="{{ $active_side ? 'menuitem-active' : '' }}">
                         <a href="#dashboard" data-bs-toggle="collapse" aria-expanded="false" aria-controls="dashboard">
                             <i class="ri-dashboard-line"></i>
@@ -100,8 +100,15 @@
                                     </li>
                                 @endcan
                                 @can('notes-list')
-                                    <li>
+                                    <li >
                                         <a href="{{ route('notes.index') }}">یادداشت ها</a>
+                                    </li>
+                                @endcan
+                                @can('analysis')
+                                    @php $active_item = active_sidebar(['analysis','analysis/{product_id}']); @endphp
+
+                                    <li class="{{ $active_item ? 'menuitem-active' : '' }}">
+                                        <a href="{{ route('analysis.index') }}">مدیریت آنالیز فروش</a>
                                     </li>
                                 @endcan
                                 @can('leaves-list')

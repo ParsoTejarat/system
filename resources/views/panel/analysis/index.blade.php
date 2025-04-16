@@ -135,7 +135,8 @@
                                                 @endif
                                             </td>
                                             <td>{{ $analysis->total_count }}</td>
-                                            <td><a href="#" class="btn btn-primary">
+                                            <td><a href="{{route('analysis.show',$analysis->product_id)}}"
+                                                   class="btn btn-primary">
                                                     <span class="fa fa-chart-bar"></span>
                                                 </a></td>
                                         </tr>
