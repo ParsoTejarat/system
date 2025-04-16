@@ -1,12 +1,27 @@
 @extends('panel.layouts.master')
 @section('title', 'مدیریت آنالیز فروش')
 @section('styles')
+    <!-- Clockpicker -->
+    <link rel="stylesheet" href="/vendors/clockpicker/bootstrap-clockpicker.min.css" type="text/css">
+    <!-- Datepicker -->
+    <link rel="stylesheet" href="/vendors/datepicker/daterangepicker.css">
+    <link rel="stylesheet" href="/vendors/datepicker-jalali/bootstrap-datepicker.min.css">
     <style>
-         canvas {
+
+        canvas {
             font-family: 'primary-font', sans-serif;
         }
 
+
+        .btn_remove {
+            cursor: pointer;
+        }
+
+        #btn_add {
+            margin-top: 30px
+        }
     </style>
+
 @endsection
 @section('content')
     <div class="content">
@@ -64,8 +79,9 @@
                                         <div class="card shadow-lg rounded-3 border-0">
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                    <div class="icon-box bg-{{ $stat['color'] }} bg-opacity-10 text-{{ $stat['color'] }} rounded-circle d-flex align-items-center justify-content-center"
-                                                         style="width: 50px; height: 50px;">
+                                                    <div
+                                                        class="icon-box bg-{{ $stat['color'] }} bg-opacity-10 text-{{ $stat['color'] }} rounded-circle d-flex align-items-center justify-content-center"
+                                                        style="width: 50px; height: 50px;">
                                                         <i class="fa {{ $stat['icon'] }} fs-4"></i>
                                                     </div>
                                                     <div class="text-end">
@@ -85,7 +101,8 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title text-center">بیشترین ثبت سفارش توسط همکاران</h5>
-                                            <canvas id="userChart" height="180" style="font-family: 'primary-font'"></canvas>
+                                            <canvas id="userChart" height="180"
+                                                    style="font-family: 'primary-font'"></canvas>
                                         </div>
                                     </div>
                                 </div>
@@ -94,21 +111,69 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title text-center">مشتریانی با بیشترین سفارش</h5>
-                                            <canvas id="customerChart" height="200" style="font-family: 'primary-font'"></canvas>
+                                            <canvas id="customerChart" height="200"
+                                                    style="font-family: 'primary-font'"></canvas>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
 
-                            <div class="card-title d-flex justify-content-end align-items-center">
-                                {{--                                @can('brands-create')--}}
-                                {{--                                    <a href="{{ route('brands.create') }}" class="btn btn-primary">--}}
-                                {{--                                        <i class="fa fa-plus mr-2"></i>--}}
-                                {{--                                        ایجاد برند--}}
-                                {{--                                    </a>--}}
-                                {{--                                @endcan--}}
-                            </div>
+                            <form action="{{ route('analysis.index') }}" class="mb-4" method="get">
+                                <div class="row align-items-end mt-4 g-2">
+                                    <div class="col-6 col-md-2">
+                                        <label for="product_id" class="form-label">شرح کالا</label>
+                                        <select name="product_id" id="product_id" class="form-control" data-toggle="select2">
+                                            <option selected disabled>انتخاب کنید...</option>
+                                            @foreach(\App\Models\Product::all() as $product)
+                                                <option value="{{ $product->id }}" {{ request('product_id') == $product->id ? 'selected' : '' }}>
+                                                    {{ $product->title }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-6 col-md-2">
+                                        <label for="category_id" class="form-label">دسته‌بندی</label>
+                                        <select name="category_id" id="category_id" class="form-control" data-toggle="select2">
+                                            <option selected disabled>انتخاب کنید...</option>
+                                            @foreach(\App\Models\Category::all() as $category)
+                                                <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                                    {{ $category->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-6 col-md-2">
+                                        <label for="brand_id" class="form-label">برند</label>
+                                        <select name="brand_id" id="brand_id" class="form-control" data-toggle="select2">
+                                            <option selected disabled>انتخاب کنید...</option>
+                                            @foreach(\App\Models\Brand::all() as $brand)
+                                                <option value="{{ $brand->id }}" {{ request('brand_id') == $brand->id ? 'selected' : '' }}>
+                                                    {{ $brand->name }}({{ $brand->name_en }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-6 col-md-2">
+                                        <label for="from_date" class="form-label">از تاریخ</label>
+                                        <input type="text" name="from_date" id="from_date" class="form-control date-picker-shamsi-list"
+                                               value="{{ request('from_date') }}">
+                                    </div>
+                                    <div class="col-6 col-md-2">
+                                        <label for="to_date" class="form-label">تا تاریخ</label>
+                                        <input type="text" name="to_date" id="to_date" class="form-control date-picker-shamsi-list"
+                                               value="{{ request('to_date') }}">
+                                    </div>
+                                    <div class="col-6 col-md-1">
+                                        <button type="submit" class="btn btn-primary w-100">جست‌وجو</button>
+                                    </div>
+                                </div>
+                            </form>
+
+
+
+
+
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered text-center">
                                     <thead>
@@ -147,7 +212,8 @@
                                 </table>
                             </div>
 
-                            <div class="d-flex justify-content-center">{{ $analysises->appends(request()->all())->links() }}</div>
+                            <div
+                                class="d-flex justify-content-center">{{ $analysises->appends(request()->all())->links() }}</div>
                         </div>
                     </div>
                 </div>
@@ -156,6 +222,12 @@
     </div>
 @endsection
 @section('scripts')
+    <script src="/vendors/datepicker-jalali/bootstrap-datepicker.min.js"></script>
+    <script src="/vendors/datepicker-jalali/bootstrap-datepicker.fa.min.js"></script>
+    <script src="/vendors/datepicker/daterangepicker.js"></script>
+    <script src="/assets/js/examples/datepicker.js"></script>
+    <script src="/vendors/clockpicker/bootstrap-clockpicker.min.js"></script>
+    <script src="/assets/js/examples/clockpicker.js"></script>
     <script src="/vendors/charts/chartjs/chart.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -238,8 +310,6 @@
             });
         });
     </script>
-
-
 
 @endsection
 

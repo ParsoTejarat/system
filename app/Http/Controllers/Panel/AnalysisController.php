@@ -6,14 +6,39 @@ use App\Http\Controllers\Controller;
 use App\Models\Analysis;
 use App\Models\Order;
 use App\Models\Product;
+use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AnalysisController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $analysises = Analysis::selectRaw('product_id, category_id, brand_id, SUM(count) as total_count')
+        $analysises = Analysis::query();
+
+        if ($request->filled('product_id')) {
+            $analysises->where('product_id', $request->product_id);
+        }
+
+        if ($request->filled('category_id')) {
+            $analysises->where('category_id', $request->category_id);
+        }
+
+        if ($request->filled('brand_id')) {
+            $analysises->where('brand_id', $request->brand_id);
+        }
+
+        if ($request->filled('from_date')) {
+            $from_date = Verta::parse($request->from_date)->toCarbon()->toDateString();
+            $analysises->whereDate('created_at', '>=', $from_date);
+        }
+
+        if ($request->filled('to_date')) {
+            $to_date = Verta::parse($request->to_date)->toCarbon()->toDateString();
+            $analysises->whereDate('created_at', '<=', $to_date);
+        }
+
+        $analysises = $analysises->selectRaw('product_id, category_id, brand_id, SUM(count) as total_count')
             ->groupBy('product_id', 'category_id', 'brand_id')
             ->with(['product', 'category', 'brand'])
             ->orderByDesc('total_count')
