@@ -32,9 +32,13 @@
                             <div class="card-title">
                                 <h4 class="page-title mb-3">{{$product->title}}</h4>
 
-                                <h4 class="page-title mb-3">در دسته بندی: {{$product->category->name??''}}</h4>
+                                <h4 class="page-title mb-3">در دسته بندی: {{$product->category->name??''}} از
+                                    تاریخ {{verta($firstAnalysisTime)->format("Y/m/d")}} تا
+                                    {{verta($lastAnalysisTime)->format("Y/m/d")}} </h4>
 
-                                <h4 class="page-title mb-3"> برند: {{$product->brand->name??''}} {{$product->brand->name_en??''}}</h4>
+                                <h4 class="page-title mb-3">
+                                    برند: {{$product->brand->name??''}} {{$product->brand->name_en??''}}</h4>
+
                                 <div class="table-responsive">
                                     <table class="table table-striped table-bordered text-center">
                                         <thead>
@@ -52,15 +56,20 @@
                                         @foreach($analysises as $key => $analysis)
                                             <tr>
                                                 <td>{{ ++$key }}</td>
-                                                <td><a href="/panel/orders?code={{$analysis->order->code??'-'}}">{{ $analysis->order->code??'-' }}</a></td>
+                                                <td>
+                                                    <a href="/panel/orders?code={{$analysis->order->code??'-'}}">{{ $analysis->order->code??'-' }}</a>
+                                                </td>
                                                 <td>{{ $analysis->category->name ?? '---' }}</td>
                                                 <td>{{ $analysis->count }}</td>
                                                 <td>{{ $product->tracking_codes_count}}</td>
                                                 <td>{{ $analysis->Inventory }}</td>
-                                                <td><a href="{{route('analysis.show',$analysis->product_id)}}"
-                                                       class="btn btn-primary">
-                                                        <span class="fa fa-chart-bar"></span>
-                                                    </a></td>
+                                                <td>
+                                                    <a class="btn btn-info btn-floating"
+                                                       href="{{ route('orders.show', $analysis->order->id) }}"
+                                                       target="_blank">
+                                                        <i class="fa fa-file-invoice"></i>
+                                                    </a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                         </tbody>

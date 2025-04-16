@@ -49,8 +49,12 @@ class AnalysisController extends Controller
         $product = Product::withCount(['trackingCodes' => function ($query) {
             $query->whereNull('exit_time');
         }])->findOrFail($product_id);
-        $analysises = Analysis::query();
-        $analysises = $analysises->where('product_id', $product_id)->latest()->paginate(50);
-        return view('panel.analysis.show', compact(['analysises', 'product']));
+
+        $analysises = Analysis::where('product_id', $product_id)->latest()->paginate(50);
+
+        $firstAnalysisTime = Analysis::where('product_id', $product_id)->min('created_at');
+        $lastAnalysisTime = Analysis::where('product_id', $product_id)->max('created_at');
+
+        return view('panel.analysis.show', compact(['analysises', 'product', 'firstAnalysisTime', 'lastAnalysisTime']));
     }
 }
