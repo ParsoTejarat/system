@@ -94,7 +94,7 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title text-center">مشتریانی با بیشترین سفارش</h5>
-                                            <canvas id="customerChart" height="180" style="font-family: 'primary-font'"></canvas>
+                                            <canvas id="customerChart" height="200" style="font-family: 'primary-font'"></canvas>
                                         </div>
                                     </div>
                                 </div>
