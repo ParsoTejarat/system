@@ -178,12 +178,12 @@
                         fontSize: 14
                     }
                 },
-                tooltips: {
-                    bodyFontFamily: fontFamily,
-                    bodyFontSize: 13,
-                    titleFontFamily: fontFamily,
-                    titleFontSize: 14
-                },
+                // tooltips: {
+                //     bodyFontFamily: fontFamily,
+                //     bodyFontSize: 13,
+                //     titleFontFamily: fontFamily,
+                //     titleFontSize: 14
+                // },
                 scales: {
                     xAxes: [{
                         ticks: {
