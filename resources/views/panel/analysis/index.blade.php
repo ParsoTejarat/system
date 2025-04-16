@@ -157,12 +157,12 @@
                                     <div class="col-6 col-md-2">
                                         <label for="from_date" class="form-label">از تاریخ</label>
                                         <input type="text" name="from_date" id="from_date" class="form-control date-picker-shamsi-list"
-                                               value="{{ request('from_date') }}">
+                                               value="{{ request('from_date') }}" placeholder="مثال : 1404/01/01 ">
                                     </div>
                                     <div class="col-6 col-md-2">
                                         <label for="to_date" class="form-label">تا تاریخ</label>
                                         <input type="text" name="to_date" id="to_date" class="form-control date-picker-shamsi-list"
-                                               value="{{ request('to_date') }}">
+                                               value="{{ request('to_date') }}" placeholder="مثال : 1404/01/30 ">
                                     </div>
                                     <div class="col-6 col-md-1">
                                         <button type="submit" class="btn btn-primary w-100">جست‌وجو</button>
