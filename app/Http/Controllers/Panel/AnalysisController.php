@@ -76,7 +76,7 @@ class AnalysisController extends Controller
             $query->whereNull('exit_time');
         }])->findOrFail($product_id);
 
-        $analysises = Analysis::where('product_id', $product_id);
+        $analysises = Analysis::query();
 
         if ($request->filled('from_date')) {
             $from_date = Verta::parse($request->from_date)->toCarbon()->toDateString();
@@ -88,7 +88,7 @@ class AnalysisController extends Controller
             $analysises->whereDate('created_at', '<=', $to_date);
         }
 
-        $analysises = $analysises->latest()->paginate(50);
+        $analysises = $analysises->where('product_id', $product_id)->latest()->paginate(50);
 
         $firstAnalysisTime = Analysis::where('product_id', $product_id)->min('created_at');
         $lastAnalysisTime = Analysis::where('product_id', $product_id)->max('created_at');
