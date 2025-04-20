@@ -545,6 +545,8 @@ class OrderController extends Controller
 
         if ($order->type == 'setad') {
             $statuses = CustomerOrderStatus::ORDER;
+        } elseif ($order->type == 'online_sales') {
+            $statuses = CustomerOrderStatus::ORDER;
         } else {
             $statuses = CustomerOrderStatus::ORDER_OTHER;
         }

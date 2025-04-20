@@ -94,7 +94,7 @@ class AnalysisController extends Controller
         $firstAnalysisTime = Analysis::where('product_id', $product_id)->min('created_at');
         $lastAnalysisTime = Analysis::where('product_id', $product_id)->max('created_at');
 
-        return view('panel.analysis.show', compact('analysises', 'product', 'firstAnalysisTime', 'lastAnalysisTime'));
+        return view('panel.analysis.show', compact(['analysises', 'product', 'firstAnalysisTime', 'lastAnalysisTime']));
     }
 
 
