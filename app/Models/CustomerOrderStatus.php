@@ -56,12 +56,9 @@ class CustomerOrderStatus extends Model
         12 => 'approved_exit_remittance',
     ];
 
-    const ORDER_OTHER = [
+    const ORDER_INTERNET_SALE= [
         1 => 'register',
         2 => 'processing_by_accountant_step_1',
-        3 => 'pre_invoice',
-        4 => 'awaiting_confirm_by_sales_manager',
-        5 => 'upload_receipt_by_sales_manager',
         9 => 'send_factor',
         10 => 'send_exit_remittance',
         11 => 'waiting_for_send_exit_remittance',
