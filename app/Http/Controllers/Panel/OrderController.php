@@ -545,12 +545,11 @@ class OrderController extends Controller
 
         if ($order->type == 'setad') {
             $statuses = CustomerOrderStatus::ORDER;
-        } elseif ($order->type == 'online_sale') {
+        } elseif ($order->type == 'online-sale') {
             $statuses = CustomerOrderStatus::ORDER_INTERNET_SALE;
         } else {
             $statuses = CustomerOrderStatus::ORDER_OTHER;
         }
-        dd($statuses,$order->type);
 
         $statusData = [];
 
