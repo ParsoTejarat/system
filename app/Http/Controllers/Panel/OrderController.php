@@ -550,6 +550,7 @@ class OrderController extends Controller
         } else {
             $statuses = CustomerOrderStatus::ORDER_OTHER;
         }
+        dd($statuses);
 
         $statusData = [];
 
